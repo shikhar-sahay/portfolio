@@ -1,0 +1,29 @@
+# dependencies
+node_modules
+.pnp
+.pnp.js
+
+# next.js
+.next
+out
+build
+
+# generated
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# IDE
+.idea
+.vscode
+
+# OS
+.DS_Store
+Thumbs.db
+
+# misc
+*.log
+*.tsbuildinfo
+dist
+coverage
+.vercel
