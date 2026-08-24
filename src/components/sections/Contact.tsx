@@ -147,11 +147,20 @@ export function Contact() {
         </Reveal>
       </div>
 
-      {/* Final frame: large wordmark + meta */}
-      <div className="mt-[12vh] select-none overflow-hidden" aria-hidden="true">
+      {/* Final frame: the name, fitted to the viewport, letter by letter */}
+      <div className="mt-[12vh] overflow-hidden" aria-hidden="true">
         <Reveal y={60}>
-          <p className="whitespace-nowrap text-center text-[clamp(3.5rem,12.5vw,12rem)] font-semibold uppercase leading-none tracking-tight text-ink">
-            Shikhar Sahay
+          <p className="flex items-baseline justify-center whitespace-nowrap text-[10.4vw] font-semibold uppercase leading-none tracking-[-0.02em] text-ink">
+            {`${profile.name}`.split('').map((letter, i) => (
+              <span
+                key={`${letter}-${i}`}
+                className={`inline-block transition-all duration-500 ease-expo hover:-translate-y-2 hover:rotate-3 hover:text-accent ${
+                  letter === ' ' ? 'w-[0.25em]' : ''
+                }`}
+              >
+                {letter === ' ' ? '\u00a0' : letter}
+              </span>
+            ))}
           </p>
         </Reveal>
       </div>
