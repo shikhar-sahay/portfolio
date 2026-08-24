@@ -43,11 +43,11 @@ export function Skills() {
                 <p className="mt-5 max-w-[52ch] text-lg leading-loose text-muted">
                   {group.items.map((item, i) => (
                     <span key={item}>
-                      <span className="cursor-default text-ink transition-all duration-300 ease-expo hover:text-accent">
+                      <span className="cursor-default text-ink transition-colors duration-300 ease-expo hover:text-accent">
                         {item}
                       </span>
                       {i < group.items.length - 1 && (
-                        <span className="text-ink/25 mx-2.5 select-none">/</span>
+                        <span className="text-ink/25 select-none"> / </span>
                       )}
                     </span>
                   ))}

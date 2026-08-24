@@ -33,7 +33,7 @@ export function Magnetic({
   return (
     <motion.span
       ref={ref}
-      className={`inline-block ${className ?? ''}`}
+      className={className ?? 'inline-block'}
       style={{ x: sx, y: sy }}
       onPointerMove={e => {
         const el = ref.current;

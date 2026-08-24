@@ -80,7 +80,7 @@ export function SiteNav() {
         >
           <nav
             aria-label="Primary"
-            className={`flex items-center justify-between gap-4 px-5 transition-all duration-500 ease-expo sm:px-10 ${
+            className={`flex items-center justify-between gap-3 px-4 transition-all duration-500 ease-expo sm:gap-4 sm:px-10 ${
               compact ? 'py-3' : 'py-5 sm:py-7'
             }`}
           >
@@ -96,7 +96,7 @@ export function SiteNav() {
               </a>
             </Magnetic>
 
-            <ul className="flex items-center gap-3.5 sm:gap-7">
+            <ul className="flex items-center gap-2.5 sm:gap-7">
               {navLinks.map(link => {
                 const section = sections.find(s => `#${s.id}` === link.href);
                 const isActive = section?.id === active.id;
@@ -106,7 +106,7 @@ export function SiteNav() {
                       <a
                         href={link.href}
                         aria-current={isActive ? 'true' : undefined}
-                        className={`relative inline-block text-micro uppercase tracking-[0.16em] transition-colors duration-300 ${linkHover} ${
+                        className={`relative inline-block whitespace-nowrap text-micro uppercase tracking-[0.1em] transition-colors duration-300 sm:tracking-[0.16em] ${linkHover} ${
                           isActive ? 'text-ink after:scale-x-100' : 'text-muted hover:text-ink'
                         }`}
                       >

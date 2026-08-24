@@ -96,9 +96,7 @@ export function ControlCenter() {
                     <span className="text-ink transition-colors duration-300 hover:text-accent">
                       {tool}
                     </span>
-                    {i < tools.length - 1 && (
-                      <span className="text-ink/25 mx-2 select-none">/</span>
-                    )}
+                    {i < tools.length - 1 && <span className="text-ink/25 select-none"> / </span>}
                   </span>
                 ))}
               </p>
