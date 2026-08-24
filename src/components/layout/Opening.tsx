@@ -1,17 +1,19 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 /**
- * Title sequence. The name renders at the hero's exact position and scale,
- * so when the ink field lifts away the composition reads as one continuous
- * moment rather than "loading screen, then hero". A vermilion sweep draws
- * under the name just before the lift. ~2.1s, once per session, skipped
- * pre-paint for returning visitors and reduced-motion users.
+ * Loading sequence: a quiet ink field with a thin signal line that draws
+ * while a small vermilion marker rides its tip, like a cursor writing the
+ * page into existence. When the line completes, the field lifts into the
+ * hero. ~1.6s, once per session, skipped pre-paint for returning visitors
+ * and reduced-motion users. No counters, no "loading" text.
  */
 export function Opening() {
+  const [progress, setProgress] = useState(0);
   const [phase, setPhase] = useState<'hidden' | 'play' | 'exit'>('hidden');
   const [gone, setGone] = useState(false);
+  const raf = useRef(0);
 
   useEffect(() => {
     if (document.documentElement.dataset.intro === 'skip') {
@@ -20,16 +22,26 @@ export function Opening() {
     }
     document.body.style.overflow = 'hidden';
     setPhase('play');
-    const exitAt = window.setTimeout(() => {
-      setPhase('exit');
-      document.body.style.overflow = '';
-      try {
-        sessionStorage.setItem('opened', '1');
-      } catch {}
-    }, 1400);
-    const doneAt = window.setTimeout(() => setGone(true), 2250);
+    const duration = 1050;
+    const start = performance.now();
+    const tick = (now: number) => {
+      const t = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
+      setProgress(eased);
+      if (t < 1) {
+        raf.current = requestAnimationFrame(tick);
+      } else {
+        setPhase('exit');
+        document.body.style.overflow = '';
+        try {
+          sessionStorage.setItem('opened', '1');
+        } catch {}
+      }
+    };
+    raf.current = requestAnimationFrame(tick);
+    const doneAt = window.setTimeout(() => setGone(true), 1900);
     return () => {
-      clearTimeout(exitAt);
+      cancelAnimationFrame(raf.current);
       clearTimeout(doneAt);
       document.body.style.overflow = '';
     };
@@ -37,35 +49,52 @@ export function Opening() {
 
   if (gone) return null;
 
+  const line = 200;
+
   return (
     <div
       aria-hidden="true"
-      className={`opening-overlay fixed inset-0 z-[100] overflow-hidden bg-ink transition-transform duration-[850ms] ease-expo ${
+      className={`opening-overlay fixed inset-0 z-[100] flex flex-col justify-between overflow-hidden bg-ink px-5 py-6 text-paper transition-transform duration-[850ms] ease-expo sm:px-10 sm:py-8 ${
         phase === 'exit' ? '-translate-y-full' : 'translate-y-0'
       }`}
     >
-      <div
-        className={`flex h-full flex-col justify-center px-5 transition-opacity duration-300 sm:px-10 ${
+      <p
+        className={`text-paper/50 text-micro uppercase tracking-[0.18em] transition-opacity duration-300 ${
           phase === 'exit' ? 'opacity-0' : 'opacity-100'
         }`}
       >
-        <p className="anim-fade-in text-paper/60 mb-5 flex items-center gap-3 text-micro uppercase tracking-[0.16em] [animation-delay:0.25s] sm:mb-7">
-          <span className="inline-block h-px w-10 bg-accent" aria-hidden="true" />
-          Portfolio, 2026
+        shikhar sahay
+      </p>
+
+      {/* The signal: a line drawing itself, a marker riding its tip */}
+      <div
+        className={`transition-opacity duration-200 ${
+          phase === 'exit' ? 'opacity-0' : 'opacity-100'
+        }`}
+      >
+        <div className="bg-paper/15 relative h-px w-[min(200px,50vw)]">
+          <div
+            className="bg-paper/70 absolute inset-y-0 left-0"
+            style={{ width: `${progress * 100}%` }}
+          />
+          <span
+            className="absolute top-1/2 h-1.5 w-1.5 -translate-y-1/2 bg-accent"
+            style={{ left: `calc(${progress * 100}% - 3px)` }}
+          />
+        </div>
+        <p className="text-paper/40 mt-4 text-micro uppercase tracking-[0.18em]">
+          {phase === 'exit' ? 'Ready' : '\u00a0'}
         </p>
-
-        {/* Same position and scale as the hero name: continuity on the lift */}
-        <h1 className="select-none text-display uppercase text-paper">
-          <span className="anim-mask">
-            <span className="[animation-delay:0.4s]">Shikhar</span>
-          </span>
-          <span className="anim-mask pl-[8vw] lg:pl-[4vw]">
-            <span className="type-outline-light [animation-delay:0.55s]">Sahay</span>
-          </span>
-        </h1>
-
-        <div className="sweep-line bg-accent/80 mt-7 h-px w-40 sm:mt-9" />
       </div>
+
+      {/* Serif year, quiet anchor */}
+      <p
+        className={`text-paper/60 self-end font-serif text-2xl italic transition-opacity duration-300 ${
+          phase === 'exit' ? 'opacity-0' : 'opacity-100'
+        }`}
+      >
+        2026
+      </p>
     </div>
   );
 }
