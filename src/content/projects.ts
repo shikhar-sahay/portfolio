@@ -15,7 +15,7 @@ export interface Project {
   metric?: { value: number; decimals?: number; suffix: string; label: string };
   secondMetric?: { value: number; decimals?: number; suffix: string; label: string };
   links: ProjectLinks;
-  visual: 'utility' | 'signal' | 'manifest';
+  visual: 'utility' | 'signal' | 'manifest' | 'honeypot' | 'site';
 }
 
 /**
@@ -59,5 +59,28 @@ export const projects: Project[] = [
     stack: ['PowerShell', 'Batch'],
     links: { live: '#', github: '#', caseStudy: '#' },
     visual: 'manifest',
+  },
+  {
+    id: 'honeypot',
+    index: 'P.04',
+    name: 'SSH Honeypot',
+    kind: 'Security experiment',
+    description:
+      'An AWS honeypot that pretends to be a vulnerable Linux box. It logs every probe, adapts its shell responses, and turns attacker curiosity into structured telemetry.',
+    role: 'Built during the Cyber Defenders internship',
+    stack: ['Beelzebub', 'Python', 'AWS'],
+    links: { live: '#', github: '#', caseStudy: '#' },
+    visual: 'honeypot',
+  },
+  {
+    id: 'site',
+    index: 'P.05',
+    name: 'This Site',
+    kind: 'The page you are on',
+    description:
+      'A continuous editorial portfolio: scroll-driven typography, an arch portrait, and a control panel, composed to feel like one world.',
+    stack: ['Next.js', 'TypeScript', 'Tailwind', 'Motion'],
+    links: { live: '#', github: '#', caseStudy: '#' },
+    visual: 'site',
   },
 ];
