@@ -14,27 +14,26 @@ import portrait from '../../assets/shikhar-hero.jpg';
 import { profile } from '@/content/profile';
 
 /**
- * 01 / Identity. The portrait is an instrument: a circular aperture with a
- * technical ring system (hairline orbit, dashed ring, rotating accent arc,
- * coordinate labels). Scrolling does NOT zoom the face: the composition
- * changes scenes. Typography separates into layers, the instrument exits
- * laterally, and a hairline draws to hand off into About.
+ * 01 / Identity. The portrait is an editorial arch: a tall aperture with a
+ * rounded crown and an offset vermilion echo behind it, overlapping the
+ * display type. Scrolling never zooms the face: the scene changes.
+ * Typography separates into layers, the arch exits laterally, and a
+ * hairline draws to hand off into About.
  */
 export function Hero() {
   const sceneRef = useRef<HTMLDivElement>(null);
   const reduceMotion = useReducedMotion();
 
-  // Pointer parallax: the crop drifts toward the cursor, the ring system
-  // drifts slightly against it. Fine pointers only, never under reduced
-  // motion. Spring-smoothed, values normalized to -1..1.
+  // Pointer parallax: the crop drifts gently toward the cursor while the
+  // echo arch counters it. Fine pointers only, never under reduced motion.
   const px = useMotionValue(0);
   const py = useMotionValue(0);
   const spx = useSpring(px, { stiffness: 55, damping: 18 });
   const spy = useSpring(py, { stiffness: 55, damping: 18 });
-  const photoX = useTransform(spx, [-1, 1], [9, -9]);
-  const photoY = useTransform(spy, [-1, 1], [7, -7]);
-  const ringX = useTransform(spx, [-1, 1], [-6, 6]);
-  const ringY = useTransform(spy, [-1, 1], [-5, 5]);
+  const photoX = useTransform(spx, [-1, 1], [10, -10]);
+  const photoY = useTransform(spy, [-1, 1], [8, -8]);
+  const echoX = useTransform(spx, [-1, 1], [-7, 7]);
+  const echoY = useTransform(spy, [-1, 1], [-6, 6]);
 
   useEffect(() => {
     if (reduceMotion) return;
@@ -63,7 +62,7 @@ export function Hero() {
     offset: ['start start', 'end end'],
   });
 
-  // Scene change: typography separates into layers, the instrument exits
+  // Scene change: typography separates into layers, the arch exits
   // laterally, a hairline draws to hand content over to About.
   const nameAY = useTransform(scrollYProgress, [0, 0.55, 1], ['0svh', '-9svh', '-12svh']);
   const nameAX = useTransform(scrollYProgress, [0, 0.55, 1], ['0vw', '-5vw', '-6vw']);
@@ -72,16 +71,14 @@ export function Hero() {
   const nameBX = useTransform(scrollYProgress, [0, 0.55, 1], ['0vw', '4vw', '5vw']);
   const nameBO = useTransform(scrollYProgress, [0.16, 0.55, 1], [1, 0, 0]);
   const metaO = useTransform(scrollYProgress, [0, 0.3, 1], [1, 0, 0]);
-  const instrumentX = useTransform(scrollYProgress, [0, 0.6, 1], ['0vw', '14vw', '22vw']);
-  const instrumentY = useTransform(scrollYProgress, [0, 1], ['0svh', '-8svh']);
-  const instrumentS = useTransform(scrollYProgress, [0, 1], [1, 0.72]);
-  const instrumentO = useTransform(scrollYProgress, [0.55, 0.9, 1], [1, 1, 0]);
+  const archX = useTransform(scrollYProgress, [0, 0.6, 1], ['0vw', '16vw', '26vw']);
+  const archY = useTransform(scrollYProgress, [0, 1], ['0svh', '6svh']);
+  const archR = useTransform(scrollYProgress, [0, 1], [0, 4]);
+  const archO = useTransform(scrollYProgress, [0.55, 0.92, 1], [1, 1, 0]);
   const handoffLine = useTransform(scrollYProgress, [0.35, 0.8], [0, 1]);
   const cueO = useTransform(scrollYProgress, [0, 0.12, 1], [1, 0, 0]);
 
   const scroll = (style: Record<string, unknown>) => (reduceMotion ? undefined : { style });
-
-  const ticks = Array.from({ length: 12 }, (_, i) => i * 30);
 
   return (
     <div ref={sceneRef} id="top" className="relative h-[150svh]">
@@ -90,16 +87,11 @@ export function Hero() {
           {/* Identity column */}
           <div className="relative z-10 order-2 lg:order-1">
             <motion.p
-              className="mb-6 flex items-center gap-3 text-micro uppercase tracking-[0.16em] text-muted sm:mb-8"
+              className="anim-fade-in mb-6 flex items-center gap-3 text-micro uppercase tracking-[0.16em] text-muted [animation-delay:calc(var(--intro-delay)+0.2s)] sm:mb-8"
               {...scroll({ opacity: metaO })}
             >
-              <span
-                className="anim-fade-in inline-block h-px w-10 bg-accent [animation-delay:calc(var(--intro-delay)+0.2s)]"
-                aria-hidden="true"
-              />
-              <span className="anim-fade-in [animation-delay:calc(var(--intro-delay)+0.2s)]">
-                Portfolio, 2026
-              </span>
+              <span className="inline-block h-px w-10 bg-accent" aria-hidden="true" />
+              Portfolio, 2026
             </motion.p>
 
             <h1 className="select-none text-display uppercase">
@@ -139,102 +131,42 @@ export function Hero() {
             </motion.div>
           </div>
 
-          {/* Portrait instrument */}
+          {/* Portrait arch */}
           <motion.div
-            className="relative z-0 order-1 mx-auto w-[62vw] max-w-[300px] sm:w-[44vw] sm:max-w-[380px] lg:order-2 lg:w-full lg:max-w-[520px] lg:max-w-none lg:justify-self-center"
+            className="group/arch relative z-0 order-1 mx-auto w-[64vw] max-w-[300px] sm:w-[42vw] sm:max-w-[380px] lg:order-2 lg:w-full lg:max-w-[460px] lg:justify-self-center"
             {...scroll({
-              x: instrumentX,
-              y: instrumentY,
-              scale: instrumentS,
-              opacity: instrumentO,
+              x: archX,
+              y: archY,
+              rotate: archR,
+              opacity: archO,
             })}
           >
             <motion.div
-              className="relative aspect-square"
-              {...(reduceMotion ? undefined : { style: { x: ringX, y: ringY } })}
+              className="relative"
+              {...(reduceMotion ? undefined : { style: { x: echoX, y: echoY } })}
             >
-              {/* Ring system */}
-              <svg
-                viewBox="0 0 100 100"
-                className="absolute -inset-[9%] h-[118%] w-[118%]"
+              {/* Offset echo arch behind the photograph */}
+              <div
                 aria-hidden="true"
-              >
-                <circle
-                  cx="50"
-                  cy="50"
-                  r="48"
-                  fill="none"
-                  stroke="var(--ink)"
-                  strokeOpacity="0.25"
-                  strokeWidth="0.35"
-                  className="ring-boot"
-                />
-                <g className="ring-late">
-                  <circle
-                    cx="50"
-                    cy="50"
-                    r="43"
-                    fill="none"
-                    stroke="var(--ink)"
-                    strokeOpacity="0.3"
-                    strokeWidth="0.3"
-                    strokeDasharray="0.8 3.2"
-                    className="ring-dash"
-                  />
-                  {ticks.map(deg => (
-                    <line
-                      key={deg}
-                      x1="50"
-                      y1="1.5"
-                      x2="50"
-                      y2="4"
-                      stroke="var(--ink)"
-                      strokeOpacity="0.35"
-                      strokeWidth="0.35"
-                      transform={`rotate(${deg} 50 50)`}
+                className="arch-echo absolute -inset-0 translate-x-4 translate-y-4 sm:translate-x-5 sm:translate-y-5"
+              />
+              <div className="arch-reveal relative aspect-[3/3.9] overflow-hidden">
+                <div className="arch absolute inset-0 overflow-hidden">
+                  <motion.div
+                    className="absolute inset-[-4%]"
+                    {...(reduceMotion ? undefined : { style: { x: photoX, y: photoY } })}
+                  >
+                    <Image
+                      src={portrait}
+                      alt="Portrait of Shikhar Sahay"
+                      fill
+                      priority
+                      placeholder="blur"
+                      sizes="(max-width: 640px) 70vw, 40vw"
+                      className="arch-photo object-cover object-[center_22%]"
                     />
-                  ))}
-                </g>
-                <circle
-                  cx="50"
-                  cy="50"
-                  r="48"
-                  fill="none"
-                  stroke="var(--accent)"
-                  strokeWidth="0.8"
-                  strokeDasharray="34 268"
-                  strokeLinecap="round"
-                  className="ring-arc ring-late"
-                />
-              </svg>
-
-              {/* Orbit label */}
-              <motion.p
-                aria-hidden="true"
-                className="absolute -bottom-2 left-1/2 -translate-x-1/2"
-                {...scroll({ opacity: metaO })}
-              >
-                <span className="anim-fade-in block text-micro uppercase tracking-[0.18em] text-muted [animation-delay:calc(var(--intro-delay)+1.2s)]">
-                  Shikhar Sahay
-                </span>
-              </motion.p>
-
-              {/* Circular aperture */}
-              <div className="portrait-photo absolute inset-[6.5%] overflow-hidden rounded-full">
-                <motion.div
-                  className="absolute inset-[-4%]"
-                  {...(reduceMotion ? undefined : { style: { x: photoX, y: photoY } })}
-                >
-                  <Image
-                    src={portrait}
-                    alt="Portrait of Shikhar Sahay"
-                    fill
-                    priority
-                    placeholder="blur"
-                    sizes="(max-width: 640px) 70vw, 40vw"
-                    className="object-cover object-[center_24%]"
-                  />
-                </motion.div>
+                  </motion.div>
+                </div>
               </div>
             </motion.div>
           </motion.div>

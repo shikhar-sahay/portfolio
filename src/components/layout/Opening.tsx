@@ -3,14 +3,13 @@
 import { useEffect, useState } from 'react';
 
 /**
- * Title sequence: an ink field establishes, "SHIKHAR SAHAY" reveals
- * word by word while section indices tick 01 to 07 along a signal line,
- * then the whole field lifts away as the hero boots beneath it.
- * ~2.2s total. Skipped (pre-paint, via html[data-intro]) for returning
- * visitors and reduced-motion users.
+ * Title sequence. The name renders at the hero's exact position and scale,
+ * so when the ink field lifts away the composition reads as one continuous
+ * moment rather than "loading screen, then hero". A vermilion sweep draws
+ * under the name just before the lift. ~2.1s, once per session, skipped
+ * pre-paint for returning visitors and reduced-motion users.
  */
 export function Opening() {
-  const [count, setCount] = useState(0);
   const [phase, setPhase] = useState<'hidden' | 'play' | 'exit'>('hidden');
   const [gone, setGone] = useState(false);
 
@@ -21,19 +20,15 @@ export function Opening() {
     }
     document.body.style.overflow = 'hidden';
     setPhase('play');
-    const ticks = [0, 1, 2, 3, 4, 5, 6].map(i =>
-      window.setTimeout(() => setCount(i + 1), 250 + i * 120)
-    );
     const exitAt = window.setTimeout(() => {
       setPhase('exit');
       document.body.style.overflow = '';
       try {
         sessionStorage.setItem('opened', '1');
       } catch {}
-    }, 1500);
-    const doneAt = window.setTimeout(() => setGone(true), 2300);
+    }, 1400);
+    const doneAt = window.setTimeout(() => setGone(true), 2250);
     return () => {
-      ticks.forEach(clearTimeout);
       clearTimeout(exitAt);
       clearTimeout(doneAt);
       document.body.style.overflow = '';
@@ -45,55 +40,31 @@ export function Opening() {
   return (
     <div
       aria-hidden="true"
-      className={`opening-overlay fixed inset-0 z-[100] flex flex-col justify-between overflow-hidden bg-ink px-5 py-6 text-paper transition-transform duration-[800ms] ease-expo sm:px-10 sm:py-8 ${
+      className={`opening-overlay fixed inset-0 z-[100] overflow-hidden bg-ink transition-transform duration-[850ms] ease-expo ${
         phase === 'exit' ? '-translate-y-full' : 'translate-y-0'
       }`}
     >
-      {/* Top row */}
       <div
-        className={`flex items-start justify-between transition-opacity duration-300 ${
+        className={`flex h-full flex-col justify-center px-5 transition-opacity duration-300 sm:px-10 ${
           phase === 'exit' ? 'opacity-0' : 'opacity-100'
         }`}
       >
-        <p className="text-paper/60 text-micro uppercase tracking-[0.18em]">Portfolio</p>
-        <p className="text-paper/60 text-micro uppercase tabular-nums tracking-[0.18em]">2026</p>
-      </div>
+        <p className="anim-fade-in text-paper/60 mb-5 flex items-center gap-3 text-micro uppercase tracking-[0.16em] [animation-delay:0.25s] sm:mb-7">
+          <span className="inline-block h-px w-10 bg-accent" aria-hidden="true" />
+          Portfolio, 2026
+        </p>
 
-      {/* Name reveal: words rise out of masks */}
-      <div>
-        <h1 className="select-none text-[clamp(2.75rem,9vw,8.5rem)] font-semibold uppercase leading-[0.95] tracking-tight">
+        {/* Same position and scale as the hero name: continuity on the lift */}
+        <h1 className="select-none text-display uppercase text-paper">
           <span className="anim-mask">
-            <span className="text-paper [animation-delay:0.35s]">Shikhar</span>
+            <span className="[animation-delay:0.4s]">Shikhar</span>
           </span>
-          <span className="anim-mask pl-[6vw]">
+          <span className="anim-mask pl-[8vw] lg:pl-[4vw]">
             <span className="type-outline-light [animation-delay:0.55s]">Sahay</span>
           </span>
         </h1>
-        <p className="anim-fade-in text-paper/60 mt-6 text-micro uppercase tracking-[0.18em] [animation-delay:0.9s]">
-          Software, security &amp; the web
-        </p>
-      </div>
 
-      {/* Signal line + indices */}
-      <div>
-        <div className="mb-5 flex items-baseline justify-between">
-          <p
-            className={`text-paper/60 text-micro uppercase tracking-[0.18em] transition-opacity duration-300 ${
-              phase === 'exit' ? 'opacity-0' : 'opacity-100'
-            }`}
-          >
-            Establishing
-          </p>
-          <p className="text-paper/80 font-serif text-2xl italic tabular-nums">
-            {String(Math.max(count, 1)).padStart(2, '0')}
-          </p>
-        </div>
-        <div className="bg-paper/15 h-px w-full">
-          <div
-            className="h-px origin-left bg-accent transition-transform duration-150 ease-linear"
-            style={{ transform: `scaleX(${count / 7})` }}
-          />
-        </div>
+        <div className="sweep-line bg-accent/80 mt-7 h-px w-40 sm:mt-9" />
       </div>
     </div>
   );

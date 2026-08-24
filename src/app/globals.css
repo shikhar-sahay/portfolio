@@ -157,6 +157,64 @@ html[data-intro='skip'] .opening-overlay {
   }
 }
 
+/* Arch aperture: editorial portrait mask (rounded top, straight base) */
+.arch {
+  border-radius: 999px 999px 18px 18px;
+}
+
+.arch-echo {
+  border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  border-radius: 999px 999px 18px 18px;
+}
+
+.arch-reveal {
+  clip-path: inset(100% 0 0 0);
+  animation: arch-up 1.25s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+  animation-delay: calc(var(--intro-delay) + 0.25s);
+}
+
+@keyframes arch-up {
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+.arch-photo {
+  transform: scale(1.14);
+  animation: arch-settle 1.9s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+  animation-delay: calc(var(--intro-delay) + 0.25s);
+  filter: grayscale(0.2);
+  transition:
+    filter 0.9s ease,
+    transform 1.9s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.group\/arch:hover .arch-photo {
+  filter: grayscale(0);
+}
+
+@keyframes arch-settle {
+  to {
+    transform: scale(1);
+  }
+}
+
+/* Opening sequence light sweep */
+@keyframes sweep {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.sweep-line {
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: sweep 1s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+}
+
 .anim-mask {
   display: block;
   overflow: hidden;
@@ -174,55 +232,9 @@ html[data-intro='skip'] .opening-overlay {
   opacity: 0;
   animation: fade-rise 0.9s cubic-bezier(0.19, 1, 0.22, 1) forwards;
 }
-
 .anim-fade-in {
   opacity: 0;
   animation: fade-in 1s ease forwards;
-}
-
-/* ------------------------------------------------------------------ */
-/* Portrait instrument: circular aperture + technical ring system      */
-/* ------------------------------------------------------------------ */
-
-.portrait-photo {
-  animation: iris-in 1.3s cubic-bezier(0.19, 1, 0.22, 1) forwards;
-  animation-delay: calc(var(--intro-delay) + 0.15s);
-  opacity: 0;
-}
-
-.ring-boot {
-  stroke-dasharray: 302;
-  stroke-dashoffset: 302;
-  animation: ring-draw 1.5s cubic-bezier(0.19, 1, 0.22, 1) forwards;
-  animation-delay: calc(var(--intro-delay) + 0.3s);
-}
-
-.ring-late {
-  opacity: 0;
-  animation: fade-in 1s ease forwards;
-  animation-delay: calc(var(--intro-delay) + 0.9s);
-}
-
-@keyframes spin-cw {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes spin-ccw {
-  to {
-    transform: rotate(-360deg);
-  }
-}
-
-.ring-dash {
-  transform-origin: 50% 50%;
-  animation: spin-cw 90s linear infinite;
-}
-
-.ring-arc {
-  transform-origin: 50% 50%;
-  animation: spin-ccw 26s linear infinite;
 }
 
 /* ------------------------------------------------------------------ */
@@ -318,8 +330,17 @@ html[data-intro='skip'] .opening-overlay {
     transform: none;
   }
 
-  .ring-boot {
-    stroke-dashoffset: 0;
+  .arch-reveal {
+    clip-path: inset(0 0 0 0);
+  }
+
+  .arch-photo {
+    transform: none;
+    filter: grayscale(0.2);
+  }
+
+  .sweep-line {
+    transform: scaleX(1);
   }
 
   .ring-late {
