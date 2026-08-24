@@ -2,6 +2,7 @@ import { Opening } from '@/components/layout/Opening';
 import { SiteNav } from '@/components/layout/SiteNav';
 import { Hero } from '@/components/sections/Hero';
 import { About } from '@/components/sections/About';
+import { TransitionStatements } from '@/components/sections/TransitionStatements';
 import { Experience } from '@/components/sections/Experience';
 import { Skills } from '@/components/sections/Skills';
 import { Projects } from '@/components/sections/Projects';
@@ -21,6 +22,7 @@ export default function Home() {
       <SiteNav />
       <main>
         <Hero />
+        <TransitionStatements />
         <About />
         <Experience />
         <Skills />
