@@ -14,9 +14,10 @@ The goal is a directed digital experience that feels personal, cinematic, and te
 
 ## 2. Current Visual Direction
 
-- **Identity system:** warm print-editorial. Cream paper / warm charcoal ink / vermilion accent (single accent, semantic uses only). Instrument Sans (workhorse) + Instrument Serif italic (accent moments, ghost numerals).
-- **Signature motifs** (recurring, keep consistent): section indices `01` to `07`, hairline rules with accent ticks, coordinates, ghost serif numerals, numbered tags, film grain, outline display type.
-- **Portrait treatment:** the portrait is an instrument object (circular aperture with a technical ring system: concentric hairline rings, dashed orbit ring, rotating accent arc, coordinate labels). It is never a rectangular photo beside text.
+- **Identity system:** warm print-editorial. Cream paper / warm charcoal ink / vermilion accent (single accent, semantic uses only). Instrument Sans (workhorse) + Instrument Serif italic (accent moments). Themeable: intentional light and dark colorways, system default, persisted toggle in the header.
+- **Signature motifs** (recurring, keep consistent): section eyebrows as plain editorial labels (e.g. `Experience`), hairline rules with accent ticks, ghost serif numerals (decorative only), numbered artifact tags (e.g. `P.01`), film grain, drifting light field, outline display type.
+- **Portrait treatment:** an editorial arch aperture (rounded crown, straight base) with an offset vermilion echo arch behind it, overlapping the display type. Subtle pointer parallax. Never a rectangle beside text, never a circular avatar, never a zoom-on-scroll.
+- **Opening:** a title sequence on an ink field; the name renders at the hero's exact position and scale so the lift reads as one continuous composition. Once per session, skipped pre-paint for returning visitors and reduced motion.
 - **Atmosphere:** static film grain plus a very slow drifting light field. Nothing space-like, nothing neon.
 - Full status and values: `docs/DESIGN_SYSTEM.md`.
 
@@ -25,10 +26,13 @@ The goal is a directed digital experience that feels personal, cinematic, and te
 - No cyberpunk, hacker, terminal, neon, matrix aesthetics. Security is content, not visual identity.
 - No generic SaaS/dashboard/card-grid layouts, no glassmorphism, no particle spam, no random blobs, no gratuitous 3D.
 - No scroll behavior that zooms a camera into the portrait's face (explicitly rejected).
+- **No visible presentation numbering**: never render `01 / 07` style section counters or "seven parts" language. The registry keeps order internally; the visitor sees a continuous page. Section labels are plain editorial words.
+- **No CGPA or academic scores anywhere** in the visible site.
+- **No coordinates / latitude-longitude decoration.**
 - Mobile is art-directed intentionally, not a shrunken desktop.
 - Performance is a hard requirement (see section 7).
 - Accessibility is first-class: reduced motion gets a complete, beautiful page.
-- Do not invent achievements, employers, metrics, dates, quotes, or personal facts. Content comes from owner-supplied source material in `src/content/` and `docs/CONTENT.md`.
+- Do not invent achievements, employers, metrics, dates, quotes, or personal facts. Content comes from owner-supplied source material in `src/content/` and `docs/CONTENT.md`. Unsupplied links stay as clearly-marked placeholders (`#`, `/resume.pdf`).
 
 ## 4. Animation Philosophy
 
@@ -44,16 +48,17 @@ The goal is a directed digital experience that feels personal, cinematic, and te
 Long-scroll narrative, in this order:
 
 ```
-01 / OPENING + IDENTITY   (title sequence, then hero with portrait instrument)
-02 / ABOUT                (compact personal context, editorial index)
-03 / EXPERIENCE           (era chronology, 2020 to now)
-04 / SKILLS               (inventory, education, credentials)
-05 / PROJECTS             (three artifacts: Papers, HawkEye, HolmesKit)
+01 / OPENING + IDENTITY   (title sequence, then hero with arch portrait)
+02 / ABOUT                (reading-highlight statement, meta, editorial index)
+03 / EXPERIENCE           (org-grouped progression, latest first)
+04 / SKILLS               (editorial tool index, serif group headings)
+05 / PROJECTS             (compact artifact panels with preview motifs)
 06 / PERSONALITY          (fragment instrument, inverted panel)
-07 / CONTACT + FOOTER     (resume artifact moment, ending callback)
+07 / CONTROL CENTER       (utility grid: now, IST clock, toolbox, links)
+08 / CONTACT + FOOTER     (resume moment, say hello, large wordmark)
 ```
 
-Experience precedes Skills; Skills precede Projects. The section registry in `src/content/sections.ts` drives navigation, the opening indices, and the editorial index. Changing IA means updating that registry and the docs together.
+Experience precedes Skills; Skills precedes Projects. The section registry in `src/content/sections.ts` drives navigation and the editorial index. Numbers are internal only: the visitor never sees section counters (see section 3).
 
 ## 6. Copy Rules
 

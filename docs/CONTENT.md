@@ -9,7 +9,7 @@
 
 ```
 src/content/
-├── profile.ts       # Name, location, coordinates, statement, education, links
+├── profile.ts       # Name, location, statement, education, links
 ├── sections.ts      # Section registry: id, number, name, note (drives nav + opening + index)
 ├── projects.ts      # Three artifacts with visual treatment keys and metrics
 ├── experience.ts    # Era-grouped chronology (year, mood, entries)

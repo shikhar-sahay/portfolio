@@ -52,24 +52,26 @@ Remaining candidates remain UNDECIDED until more patterns exist.
 
 ### Opening Sequence v4 (title sequence, `Opening.tsx`)
 
-An ink-field title sequence, ~2.2s, once per session:
+An ink-field title sequence, ~2.1s, once per session. The name renders at
+the hero's exact position and scale, so the lift reads as one continuous
+composition rather than "loading screen, then hero":
 
-| t         | Beat                                                                                              |
-| --------- | ------------------------------------------------------------------------------------------------- |
-| 0.00s     | Ink field (charcoal, grain) with micro frame: "A portfolio, in seven parts" / "2026"              |
-| 0.35s     | "SHIKHAR" mask-rises; 0.55s: "SAHAY" rises in outline-stroke treatment                            |
-| 0.90s     | "Software, security & the web" fades in under the name                                            |
-| 0.25-1.0s | Indices tick 01 to 07 (120ms steps) with the vermilion progress hairline; serif "07 / 07" counter |
-| 1.50s     | Field lifts: translateY(-100%), 800ms ease-expo; scroll unlocked; `sessionStorage.opened` set     |
-| 2.30s     | Overlay unmounts                                                                                  |
+| t     | Beat                                                                                          |
+| ----- | --------------------------------------------------------------------------------------------- |
+| 0.00s | Ink field (charcoal, grain), completely quiet                                                 |
+| 0.25s | Eyebrow ("Portfolio, 2026") fades in at the hero's eyebrow position                           |
+| 0.40s | "SHIKHAR" mask-rises; 0.55s: "SAHAY" rises in outline-stroke treatment                        |
+| 1.00s | Vermilion sweep line draws under the name (no counters, no progress bar)                      |
+| 1.40s | Field lifts: translateY(-100%), 850ms ease-expo; scroll unlocked; `sessionStorage.opened` set |
+| 2.25s | Overlay unmounts                                                                              |
 
 **Synchronization with the hero:** an inline head script runs before paint and sets `html[data-intro]` plus `--intro-delay` (1.35s when the sequence will play, 0s when skipped). Hero entrance delays are `calc(var(--intro-delay) + Ns)`, so the hero boots as the field lifts. Returning visitors and reduced-motion users get `data-intro="skip"`: the overlay is display:none pre-hydration (no flash) and the hero plays immediately. Verified: returning-visitor overlay hidden, reduced-motion overlay absent.
 
-### Portrait Instrument motion
+### Portrait motion (v4.1 arch; the v3 ring instrument is removed)
 
-- Boot: outer ring draws via stroke-dashoffset (1.5s), aperture iris-in (scale 0.9 to 1 + fade), dashed ring/ticks/arc fade in late
-- Ambient: dashed ring rotates 90s clockwise; vermilion arc rotates 26s counter-clockwise (transform-only, GPU)
-- Pointer parallax (fine pointers, reduced-motion-gated): crop drifts up to 9px toward the cursor, ring system up to 6px against it, spring-smoothed (stiffness 55, damping 18), resets on pointerleave
+- Boot: the arch reveals via clip-path inset bottom-to-top (1.25s) while the photograph settles from 1.14x scale and 20% grayscale
+- Ambient: none. The portrait is calm at rest; the only ambient layers are the site-wide grain and light field
+- Pointer parallax (fine pointers, reduced-motion-gated): crop drifts up to 10px toward the cursor, echo arch up to 7px against it, spring-smoothed (stiffness 55, damping 18), resets on pointerleave
 
 ### Scene-change scroll transition (replaces the rejected face zoom)
 

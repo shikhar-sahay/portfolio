@@ -118,15 +118,15 @@ Warm print-inspired identity: cream paper, warm ink, vermilion accent. Dark is a
 - **Source file:** `src/assets/shikhar-hero.jpg` (3024×4032, owner-provided)
 - Amended from `public/images/shikhar-hero.jpg` so it can be statically imported (enables automatic blur placeholder). Served URL is unchanged in spirit; next/image optimizes on demand.
 
-### Image Treatment v3: the Portrait Instrument (EXPERIMENTAL)
+### Image Treatment v4.1: the Arch Aperture (EXPERIMENTAL; supersedes the v3 circular instrument)
 
-The portrait is never a rectangle beside text. It is an **instrument object**:
+The portrait is never a rectangle beside text and never an avatar. It is an **editorial arch aperture**:
 
-- Circular aperture (rounded-full, `inset 6.5%` of the instrument box), image oversized 4% inside for crop latitude, `object-position: center 24%` so the face stays composed at every viewport
-- Technical ring system drawn as one SVG around the aperture: outer hairline orbit (draws in on boot), dashed inner ring (rotates 90s clockwise), 12 tick marks, and a vermilion arc (rotates 26s counter-clockwise)
-- Coordinate labels orbit the ring: `11.94 N, 79.16 E` above, `SHIKHAR SAHAY` below
-- Pointer parallax (fine pointers only, disabled under reduced motion): the crop drifts toward the cursor (max 9px), the ring system drifts against it (max 6px), spring-smoothed
-- The name's display type overlaps the instrument edge: image and typography share the composition
+- Arch aperture: `border-radius: 999px 999px 18px 18px`, aspect 3/3.9, image oversized 4% inside for crop latitude, `object-position: center 22%` so the face stays composed at every viewport
+- Offset echo arch behind the photograph: 1px vermilion line at 55% strength, translated 20px down-right, countering the photo on pointer parallax
+- Photograph sits slightly desaturated (20% grayscale) and resolves to full color on hover
+- Pointer parallax (fine pointers only, disabled under reduced motion): the crop drifts toward the cursor (max 10px), the echo arch drifts against it (max 7px), spring-smoothed
+- The name's display type overlaps the arch edge: image and typography share the composition
 - Loading: static import, `priority`, `placeholder="blur"`, AVIF/WebP via next/image
 - The face-zoom scroll treatment from v2 is **rejected** (owner directive); see ANIMATION.md for the replacement scene-change transition
 
@@ -169,7 +169,6 @@ The identity system beyond type and color. Used consistently so sections read as
 | ---------------------- | ---------------------------------------------------------------------------- | ----------------------------------------------- |
 | Section indices        | `01` to `07` micro numerals, tabular-nums, accent tick prefix                | Eyebrows, nav, opening, index, contact callback |
 | Hairline rules         | 1px `border-ink/15` row separators; accent 40px tick before labels           | Every section                                   |
-| Coordinates            | `11.94 N, 79.16 E` (Vellore) micro label                                     | Hero instrument, About                          |
 | Ghost numerals         | Oversized serif italic section number at ~5% opacity                         | About (02), Personality (06)                    |
 | Measurement/flow lines | Dashed SVG edges with slow marching-ants animation                           | HawkEye signal map                              |
 | Numbered tags          | Bordered micro tags with running index numbers                               | Stack labels, skill items                       |
@@ -177,7 +176,7 @@ The identity system beyond type and color. Used consistently so sections read as
 | Serif interventions    | Instrument Serif italic for emphasis words, era moods, roles, ghost numerals | Statements, timeline, resume                    |
 | Inverted panel         | Single full-tone shift: Personality section uses `bg-ink` + `text-paper`     | Section 06 (inverts per theme)                  |
 | Drifting light field   | Two fixed radial gradients (~5% opacity), 80s transform drift                | Whole site (`.atmosphere`)                      |
-| Portrait instrument    | Circular aperture + ring system (see Imagery)                                | Hero (01)                                       |
+| Arch aperture portrait | Arch mask + offset vermilion echo arch (see Imagery)                         | Hero (01)                                       |
 | Outline display type   | `-webkit-text-stroke` transparent fill for second name line                  | Hero                                            |
 
 ## Component Inventory (implemented v2)

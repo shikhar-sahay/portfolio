@@ -7,196 +7,131 @@
 
 ## CURRENT STATE
 
-**Milestone:** 1-2 (v4 opening redesign + IA foundation), spanning ROADMAP M1/M2 scope
-**Status:** IMPLEMENTED and browser-validated; awaiting owner review
+**Milestone:** v4.1 art direction + interaction pass (ROADMAP M1/M2/M3 scope)
+**Status:** IMPLEMENTED and browser-validated; awaiting owner review; PUSHED to GitHub
 **Last Updated:** 2026-08-24
-**Last Session:** Major visual redesign of the opening experience, portrait treatment, hero scroll transition, and information architecture; canonical `AGENTS.md` established
 
 ### What Exists
 
-**Canonical agent instructions:**
-
-- Root `AGENTS.md` is the single canonical instruction file (purpose, visual direction, constraints, animation philosophy, IA, performance, copy rules, documentation protocol). `CLAUDE.md` is a pointer to it. `docs/AGENTS.md` extends it with multi-agent protocol.
-
-**Opening experience (v4):**
-
-- Title sequence: ink field, "SHIKHAR" solid + "SAHAY" outline mask-rises, indices tick 01 to 07 along a vermilion signal line with a serif counter, field lifts at 1.5s (800ms ease-expo), unmounts at 2.3s
-- Pre-paint head script sets `html[data-intro]` and `--intro-delay`: returning visitors and reduced-motion users get `data-intro="skip"` (overlay display:none before hydration, no flash) and `--intro-delay: 0s`
-- Hero entrance delays stack on `--intro-delay`, so the hero boots as the field lifts
-
-**Hero (01 Identity):**
-
-- Portrait is now an INSTRUMENT: circular aperture (face centered, `object-position: center 24%`) inside a technical ring system drawn as one SVG: outer hairline orbit (stroke-draws on boot), dashed ring rotating 90s cw, 12 tick marks, vermilion arc rotating 26s ccw, coordinate labels (`11.94 N, 79.16 E` / name) on the orbit
-- Pointer parallax (fine pointers, reduced-motion-gated): crop drifts up to 9px toward cursor, rings up to 6px against it, spring-smoothed
-- Composition: eyebrow `( 01 ) Portfolio, 2026`, giant name (solid + outline, overlapping the instrument edge), statement, compact context row (CS @ VIT Vellore / software, security & the web / coordinates)
-- Scroll transition: NO face zoom (rejected). Scene change over a 150svh pinned stage: name layers separate (up-left / down-right) and fade, instrument exits laterally (x 22vw, scale 0.72), a hairline draws as the handoff into About
-
-**Narrative sections (v4 IA, registry in `src/content/sections.ts`):**
-
-- 01 Identity, 02 About (statement, meta, sticky editorial index), 03 Experience (era chronology), 04 Skills (inventory + CGPA + credentials), 05 Projects (three artifacts), 06 Personality (fragment instrument, inverted panel), 07 Contact + Footer (resume artifact moment + ending callback)
-- Components renamed to match IA: `About.tsx`, `Skills.tsx`, `Projects.tsx`, `Personality.tsx`; Resume folded into Contact
-
-**Atmosphere:** static film grain + `.atmosphere` fixed light field (two radial gradients, ~5-7% opacity, 80s transform drift)
-
-**Navigation instrument:** progress hairline, live `NN / 07 Name` readout, difference-blend white links, hidden wordmark on mobile, fades during hero, returns after
+- **Canonical root `AGENTS.md`** (CLAUDE.md points to it; docs/AGENTS.md is protocol detail)
+- **Opening:** ink-field title sequence; the name renders at the hero's exact position/scale so the lift is one continuous composition; vermilion sweep under the name; ~2.1s; session-gated with pre-paint `data-intro`/`--intro-delay` gating; skipped for reduced motion and returning visitors
+- **Hero (Identity):** editorial arch aperture portrait (rounded crown, offset vermilion echo arch, 20% grayscale resolving to color on hover, pointer parallax with counter-drifting echo), display type overlapping the arch, statement, compact context row; scene-change scroll transition (typography separates into layers, arch exits laterally, hairline handoff into About). Face zoom: REMOVED and prohibited
+- **Persistent header:** transparent at top, compact with paper backdrop + hairline after 64px, tucks away scrolling down past the hero, returns on scroll up, active link accent underline (IO), magnetic links, theme toggle in header, progress hairline
+- **02 About:** reading-highlight statement (scroll-driven ink sweep via `HighlightSweep`), meta (location/studying/otherwise), editorial site index (no numbers)
+- **03 Experience:** organizations appear once, latest first (GDG, Cyber Defenders, Recipharm, CodeChef, skilledity, Team Shade); multiple roles at one org render as a progression down a shared line with filled/hollow markers; hover interactions
+- **04 Skills:** editorial tool index (serif group headings, flowing inline tool lists with hover accents); education + credentials sidebar; no CGPA
+- **05 Projects:** three compact artifact panels with per-project SVG preview motifs (paper grid, signal map, manifest toggles), count-up metrics on Papers, tech lists, structured placeholder links (Live/GitHub/Case study)
+- **06 Personality:** inverted panel, fragment word-swap instrument
+- **07 Control center:** utility grid: Now (recent roles), live IST clock, Studying, Toolbox, Direct lines, Navigate
+- **Footer:** resume moment (Everything, condensed. + View/Download), Say hello gesture, link rows with magnetic pull, giant SHIKHAR SAHAY wordmark, designed-and-built meta
+- **Removed everywhere:** coordinates, CGPA, `NN / 07` counters, "seven parts" language, ghost numerals, numbered eyebrows
+- **Atmosphere:** grain + slow drifting light field
 
 ### What Does NOT Exist Yet
 
-- Real destinations: email, GitHub, LinkedIn URLs, project links, real resume PDF (owner must supply)
-- Deep About content (kept compact per scope), case studies, footer beyond Contact
-- CI/CD, Husky, Lighthouse measurement, real-device testing
+- Real links (email, GitHub, LinkedIn, project URLs) and the real resume PDF (placeholder at `public/resume.pdf`)
+- Case studies, blog, depth passes on About
+- CI/CD, Lighthouse measurement, real-device testing
 - Final copy approval
 
 ---
 
-## RECENT CHANGES
+## RECENT CHANGES (v4.1)
 
-| Date       | Session      | Changes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| ---------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 2026-08-23 | Long-form v3 | Content modules, 7 sections, opening v3, nav instrument (see DECISIONS #25-27)                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| 2026-08-24 | v4 redesign  | Canonical root `AGENTS.md` (CLAUDE.md now a pointer); opening v4 (ink field title sequence, pre-paint intro gating); portrait instrument (circular aperture + ring system + pointer parallax); face zoom REMOVED, replaced by lateral scene change; hero shortened to 150svh; IA reordered (Experience before Skills before Projects) with sections registry + component renames; Resume folded into Contact; `.atmosphere` light field; docs updated (DECISIONS #28, DESIGN_SYSTEM, ANIMATION v4, CONTENT, ROADMAP, README) |
-
----
-
-## CURRENT MILESTONE
-
-**v4 opening redesign + IA foundation** - **IMPLEMENTED, REVIEW PENDING**
-
-### Completed
-
-- [x] Full-screen opening sequence (cinematic, session-gated, reduced-motion skip, pre-paint gating, no layout shift)
-- [x] Portrait as visual object (instrument treatment, recognizable face at all viewports)
-- [x] Face-zoom scroll removed; scene-change transition implemented
-- [x] New IA established (registry, anchors, nav behavior, hero-to-About transition)
-- [x] Compact personal context in the landing composition
-- [x] Atmosphere system (grain + light field)
-- [x] Micro-interactions capped at: pointer parallax, ring rotation, nav readout/progress, index hover notes, fragment swap, underline hovers
-- [x] Validation: 16 screenshots across 4 viewports, dark, reduced motion, returning visitor, overflow checks
-
-### Remaining
-
-- [ ] Owner review of v4 direction
-- [ ] Real links + real resume PDF
-- [ ] Copy approval
-- [ ] Depth passes on About/Experience/Skills/Projects/Personality per subsequent milestones
-- [ ] Real-device check, Lighthouse (M8)
+| Date       | Changes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 2026-08-24 | Removed coordinates, CGPA, `NN / 07` counters, "seven parts" copy, ghost numerals, numbered eyebrows; persistent header rebuild (tuck/reveal, compact state, active link, theme toggle, magnetic links); opening v4.1 (name at hero position, sweep line, no counters); portrait reworked from circular instrument to arch aperture with echo; About reading-highlight; Experience rebuilt as org progression (latest first); Skills as editorial tool index; Projects as compact artifact panels with SVG preview motifs and placeholder links; Control center added; Footer closing scene with giant wordmark; overflow fixes (unbreakable inline lists, mobile nav); docs updated |
 
 ---
 
-## DECISIONS MADE (This Session)
+## DECISIONS (v4.1, see docs/DECISIONS.md #29)
 
-See `DECISIONS.md` #28 (EXPERIMENTAL):
-
-1. **Opening v4 title sequence** with pre-paint `data-intro`/`--intro-delay` synchronization
-2. **Portrait instrument** (circular aperture + ring system + pointer parallax)
-3. **Face zoom rejected and removed**; scene-change transition (layers separate, lateral instrument exit, hairline handoff)
-4. **IA reorder** (01 Identity, 02 About, 03 Experience, 04 Skills, 05 Projects, 06 Personality, 07 Contact + Footer; Resume folded into 07)
-5. **Canonical root `AGENTS.md`** created; `CLAUDE.md` is a pointer; `docs/AGENTS.md` is protocol detail
+1. Presentation numbering prohibited in the visible UI (registry stays internal)
+2. CGPA and coordinates removed entirely
+3. Persistent header with tuck/reveal and compact scrolled state; theme toggle in header
+4. Portrait: arch aperture + echo arch (circular instrument retired)
+5. Experience grouped by organization, latest first, roles as progressions
+6. Skills as editorial inline tool index (no pills)
+7. Projects as compact artifact panels with preview motifs and structured placeholder links
+8. Control center section added before the footer
+9. Footer closing scene with giant wordmark
 
 ---
 
 ## KNOWN ISSUES
 
-| Issue                                                 | Severity | Notes                                                                                     |
-| ----------------------------------------------------- | -------- | ----------------------------------------------------------------------------------------- |
-| Placeholder links (email, GitHub, LinkedIn, projects) | High     | Replace before any public sharing                                                         |
-| `public/resume.pdf` placeholder                       | High     | Owner PDF could not be read by the agent; drop real file in place                         |
-| First Load JS ~147 kB of 150 kB budget                | Medium   | No headroom for new client JS without audit                                               |
-| First image request can be slow on cold start         | Low      | squoosh fallback without sharp locally; Vercel uses sharp. Warm-up observed in validation |
-| Copy provisional throughout                           | Medium   | Owner-supplied facts, unapproved wording                                                  |
-| Ring/parallax constants hand-tuned                    | Low      | Re-tune if instrument size changes                                                        |
-| Reduced motion verified via emulation                 | Low      | Human check recommended                                                                   |
-| `sharp` warning at build                              | Low      | Vercel provides sharp; revisit if self-hosting                                            |
+| Issue                                                                       | Severity | Notes                                                                                           |
+| --------------------------------------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------- |
+| Placeholder links (email, GitHub, LinkedIn, project Live/GitHub/Case study) | High     | Rendered muted with "coming soon" titles; replace in `src/content/profile.ts` and `projects.ts` |
+| `public/resume.pdf` placeholder                                             | High     | Owner PDF could not be read by the agent; drop the real file in place                           |
+| First Load JS ~149 kB of 150 kB budget                                      | Medium   | No headroom; audit before adding client JS                                                      |
+| Copy provisional                                                            | Medium   | Owner-supplied facts, wording unapproved                                                        |
+| Reduced motion verified via emulation                                       | Low      | Human check recommended                                                                         |
+| `sharp` warning at build                                                    | Low      | Vercel provides sharp                                                                           |
+| Parallax/ring constants hand-tuned                                          | Low      | Re-tune if the arch size changes                                                                |
 
 ---
 
 ## NEXT STEPS
 
-### Immediate
-
-1. Owner review of v4 (opening, instrument, scene change, IA) at desktop + mobile, light + dark
-2. Supply real links and the real resume PDF
-3. Copy approval pass
-4. Then depth passes in v4 order: About depth, Experience depth, Skills, Projects, Personality
+1. Owner review (desktop + mobile, light + dark, reduced motion)
+2. Real links + real resume PDF
+3. Copy approval
+4. Depth passes (About, case studies) and M6 signature experience
+5. Lighthouse + real-device checks (M8)
 
 ---
 
 ## FILES TO KNOW
 
-| File                                      | Purpose                                                   | Status          |
-| ----------------------------------------- | --------------------------------------------------------- | --------------- |
-| `AGENTS.md`                               | CANONICAL agent instructions                              | New (canonical) |
-| `CLAUDE.md`                               | Pointer to AGENTS.md                                      | Rewritten       |
-| `docs/HANDOFF.md`                         | This file                                                 | Current         |
-| `docs/DESIGN_SYSTEM.md`                   | Tokens, motifs, portrait instrument                       | Updated         |
-| `docs/ANIMATION.md`                       | Motion language, opening v4, scene change                 | Updated         |
-| `docs/DECISIONS.md`                       | #28 added                                                 | Updated         |
-| `docs/CONTENT.md`                         | Content model + v4 IA                                     | Updated         |
-| `docs/ROADMAP.md`                         | Milestone statuses + IA note                              | Updated         |
-| `src/content/sections.ts`                 | IA registry (drives nav/opening/index)                    | Updated         |
-| `src/components/layout/Opening.tsx`       | Title sequence v4 (client)                                | Rewritten       |
-| `src/components/layout/SiteNav.tsx`       | Navigation instrument (client)                            | Revised         |
-| `src/components/sections/Hero.tsx`        | Identity: instrument + scene change (client)              | Rewritten       |
-| `src/components/sections/About.tsx`       | 02 (renamed from Intro.tsx)                               | Renamed         |
-| `src/components/sections/Experience.tsx`  | 03 (unchanged)                                            | -               |
-| `src/components/sections/Skills.tsx`      | 04 (renamed from Systems.tsx)                             | Renamed         |
-| `src/components/sections/Projects.tsx`    | 05 (renamed from Work.tsx)                                | Renamed         |
-| `src/components/sections/Personality.tsx` | 06 (renamed from Outside.tsx)                             | Renamed         |
-| `src/components/sections/Contact.tsx`     | 07 + resume artifact moment (server)                      | Extended        |
-| `src/components/sections/Resume.tsx`      | REMOVED (folded into Contact)                             | Deleted         |
-| `src/app/globals.css`                     | Tokens, intro-delay choreography, ring styles, atmosphere | Rewritten       |
-| `src/app/layout.tsx`                      | Pre-paint theme + intro-mode script                       | Updated         |
-
-**Client components (deliberate):** Opening, SiteNav, ThemeToggle, Hero, About, Experience, Personality, Reveal, Counter, InView. Server: Skills, Projects, Contact, page shell.
+| File                                        | Purpose                                                                     |
+| ------------------------------------------- | --------------------------------------------------------------------------- |
+| `AGENTS.md`                                 | CANONICAL instructions                                                      |
+| `docs/HANDOFF.md`                           | This file                                                                   |
+| `src/content/*.ts`                          | All content (profile, sections, projects, experience, systems, personality) |
+| `src/components/layout/Opening.tsx`         | Title sequence (client)                                                     |
+| `src/components/layout/SiteNav.tsx`         | Persistent header (client)                                                  |
+| `src/components/layout/ThemeToggle.tsx`     | Theme control (header)                                                      |
+| `src/components/sections/Hero.tsx`          | Identity: arch portrait + scene change (client)                             |
+| `src/components/sections/About.tsx`         | About + reading highlight + index (client)                                  |
+| `src/components/sections/Experience.tsx`    | Org progression (client)                                                    |
+| `src/components/sections/Skills.tsx`        | Editorial tool index (server)                                               |
+| `src/components/sections/Projects.tsx`      | Artifact panels + preview motifs (client)                                   |
+| `src/components/sections/Personality.tsx`   | Fragment instrument (client)                                                |
+| `src/components/sections/ControlCenter.tsx` | Utility grid + IST clock (client)                                           |
+| `src/components/sections/Contact.tsx`       | Footer: resume moment + wordmark (server)                                   |
+| `src/components/ui/*`                       | Reveal, Counter, InView, Magnetic, HighlightSweep                           |
+| `public/resume.pdf`                         | PLACEHOLDER                                                                 |
 
 ---
 
 ## TESTING STATUS
 
-| Test                | Status                 | Notes                                                                                                                      |
-| ------------------- | ---------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `pnpm typecheck`    | Pass                   |                                                                                                                            |
-| `pnpm lint`         | Pass                   |                                                                                                                            |
-| `pnpm format:check` | Pass                   |                                                                                                                            |
-| `pnpm build`        | Pass                   | Static; `/` = 59.6 kB page, First Load JS ~147 kB (budget 150)                                                             |
-| Browser validation  | Performed              | Playwright-core + system Chrome against prod build                                                                         |
-| Screenshots         | 16                     | Opening early/mid/late, hero settled, transition mid/end, About, mobile opening/hero, laptop, tablet, dark, reduced motion |
-| Viewports           | 4                      | 1440x900, 1024x768, 768x1024, 390x844                                                                                      |
-| Overflow-x          | 0 px                   | All four widths                                                                                                            |
-| Opening gating      | Verified               | Reduced motion: overlay absent (`data-intro="skip"`); returning visitor: display none                                      |
-| Face zoom removed   | Verified               | Transition screenshots show lateral scene change, no scaling into face                                                     |
-| Nav readout         | Verified               | "02 / 07 About" at #about                                                                                                  |
-| Dark mode           | Verified               | Hero + Contact                                                                                                             |
-| Reduced motion      | Verified via emulation | Hero complete, no overlay, no parallax                                                                                     |
-| Keyboard navigation | Partial                | Full audit pending                                                                                                         |
-| Real mobile device  | Not tested             | Recommended                                                                                                                |
-| Lighthouse          | Not measured           | M8 scope                                                                                                                   |
+| Test                   | Status    | Notes                                                                                                                                    |
+| ---------------------- | --------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| typecheck/lint/format  | Pass      |                                                                                                                                          |
+| build                  | Pass      | Static; First Load JS ~149 kB (budget 150)                                                                                               |
+| Browser validation     | Performed | 19+ screenshots: opening, hero, transition, all sections, control center, footer, light mode, mobile (5), laptop, tablet, reduced motion |
+| Overflow-x             | 0 px      | 1440/1024/768/390 after unbreakable-list fixes                                                                                           |
+| Header tuck/reveal     | Verified  | top -54 scrolling down, 0 scrolling up                                                                                                   |
+| Opening gating         | Verified  | skip for reduced motion + returning visitors                                                                                             |
+| Em dash audit          | Clean     | src + docs                                                                                                                               |
+| `NN / 07` audit        | Clean     | no visible section counters                                                                                                              |
+| CGPA / coordinates     | Removed   |                                                                                                                                          |
+| Keyboard navigation    | Partial   | links/buttons focusable; full audit pending                                                                                              |
+| Lighthouse/real device | Pending   | M8                                                                                                                                       |
 
 ---
 
 ## AGENT NOTES FOR NEXT SESSION
 
-> **Read order:** `AGENTS.md` (root, canonical) > `docs/HANDOFF.md` > `docs/CONTENT.md` > `docs/DESIGN_SYSTEM.md` > `docs/ANIMATION.md` > `docs/DECISIONS.md` > `docs/ARCHITECTURE.md` > `docs/ROADMAP.md` > `docs/AGENTS.md`
+> **Read order:** `AGENTS.md` > `docs/HANDOFF.md` > `docs/CONTENT.md` > `docs/DESIGN_SYSTEM.md` > `docs/ANIMATION.md` > `docs/DECISIONS.md`
 
-**Key implementation facts:**
-
-- The intro gating mechanism: inline head script sets `html[data-intro="play"|"skip"]` and `--intro-delay` (1.35s or 0s) BEFORE paint. Opening reads `data-intro` on mount; hero entrance delays use `calc(var(--intro-delay) + Ns)`. Never hardcode hero entrance delays.
-- The portrait instrument SVG uses `ring-boot` (stroke-draw), `ring-dash`/`ring-arc` (rotation), `ring-late` (delayed fade). The photo circle is `portrait-photo` (iris-in). All delays key off `--intro-delay`.
-- Scroll transition = Motion transforms on the pinned 150svh stage. No scaling of the portrait toward the viewer, ever (owner-rejected).
-- Pointer parallax attaches only for `(pointer: fine)` and skips under reduced motion; springs normalize pointer position to -1..1.
-- `sections.ts` is the IA registry: nav readout, opening indices, About index, and Contact callback all consume it. Update it and the docs together when IA changes.
-- Nav is white text + `mix-blend-difference`; do not change to ink/muted colors.
-- Motion v13: always explicit 3-point `useTransform` ranges.
-- Elements combining CSS entrance animations with Motion styles use nested wrappers (animation fill overrides inline styles).
-- No em dashes anywhere (copy, docs, comments).
-- Owner inputs needed: real links, real resume PDF, v4 verdict, copy approval.
-
----
-
-## BROWSER VALIDATION PERFORMED (this session)
-
-- Tooling: playwright-core (temp dir outside repo) driving system Chrome headless against `next start` production build
-- Captures: opening early/mid/late frames, settled hero, transition at 45% and 90% scene progress, About, mobile opening + hero, laptop hero, tablet hero, dark hero, reduced motion, returning-visitor overlay check
-- Programmatic: overflow-x at 4 widths (all 0), nav readout at #about ("02 / 07 About"), reduced-motion overlay absence + `data-intro` value, returning-visitor overlay display:none
-- Issues found and fixed: mobile wordmark wrap (hidden below sm), stale blur-placeholder screenshot (first-request image optimization warm-up; noted as known issue)
-- Screenshots live outside the repo: `%LOCALAPPDATA%\Temp\opencode\pv\shots\`
+- Intro gating: head script sets `html[data-intro]` + `--intro-delay` before paint; hero delays use `calc(var(--intro-delay) + Ns)`.
+- Motion v13: explicit 3-point `useTransform` ranges only.
+- CSS entrance + Motion styles on the same element conflict (animation fill wins): use nested wrappers.
+- `data-inview` motifs come from `<InView>`; `[data-sweep]` reading highlight from `<HighlightSweep>`.
+- Inline tool lists MUST include breakable spaces around separators (overflow lesson from v4.1).
+- Nav is theme-colored (no blend); the compact state adds a paper backdrop.
+- No visible section numbering, no CGPA, no coordinates, no em dashes. Ever.
+- Owner inputs needed: real links, real resume PDF, copy approval.
