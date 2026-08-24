@@ -19,17 +19,10 @@ export function Personality() {
       className="theme-fade border-ink/10 relative overflow-hidden border-t bg-ink px-5 py-[18vh] text-paper sm:px-10"
     >
       {/* Inverted panel: the site's one full-tone shift */}
-      <span
-        aria-hidden="true"
-        className="pointer-events-none absolute -bottom-[6vw] left-[2vw] select-none font-serif text-[clamp(10rem,26vw,22rem)] italic leading-none text-paper opacity-[0.05]"
-      >
-        06
-      </span>
-
       <div className="relative mx-auto max-w-6xl">
         <p className="text-paper/50 flex items-center gap-3 text-micro uppercase tracking-[0.16em]">
           <span className="inline-block h-px w-10 bg-accent" aria-hidden="true" />
-          06 · Personality
+          Personality
         </p>
 
         <h2 className="mt-8 max-w-[24ch] text-lede font-medium tracking-tight text-paper">

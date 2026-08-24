@@ -9,7 +9,7 @@ function SectionHeading() {
       <Reveal>
         <p className="flex items-center gap-3 text-micro uppercase tracking-[0.16em] text-muted">
           <span className="inline-block h-px w-10 bg-accent" aria-hidden="true" />
-          05 · Projects
+          Projects
         </p>
       </Reveal>
       <Reveal delay={0.08}>

@@ -2,15 +2,16 @@ import { ThemeToggle } from '@/components/layout/ThemeToggle';
 import { Reveal } from '@/components/ui/Reveal';
 import { profile } from '@/content/profile';
 import { certifications } from '@/content/systems';
-import { timeline } from '@/content/experience';
+import { organizations } from '@/content/experience';
 
 /**
  * 07 / Contact + Footer: the resume artifact moment ("Everything,
- * condensed.") followed by the ending. The opening indices return as a
- * quiet callback; the system returns to its initial state.
+ * condensed.") followed by the ending.
  */
 export function Contact() {
-  const roles = timeline.flatMap(era => era.entries.map(entry => ({ ...entry, year: era.year })));
+  const roles = organizations.flatMap(org =>
+    org.roles.map(role => ({ title: role.title, org: org.org, period: role.period }))
+  );
 
   return (
     <footer
@@ -22,7 +23,7 @@ export function Contact() {
         <Reveal>
           <p className="flex items-center gap-3 text-micro uppercase tracking-[0.16em] text-muted">
             <span className="inline-block h-px w-10 bg-accent" aria-hidden="true" />
-            07 · Contact
+            Contact
           </p>
         </Reveal>
 
@@ -86,11 +87,11 @@ export function Contact() {
               <ul className="divide-ink/10 mt-3 divide-y">
                 {roles.map((role, i) => (
                   <li
-                    key={`${role.org}-${role.role}-${i}`}
+                    key={`${role.org}-${role.title}-${i}`}
                     className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-0.5 py-2.5"
                   >
                     <span className="text-sm text-ink">
-                      {role.role}, {role.org}
+                      {role.title}, {role.org}
                     </span>
                     <span className="text-micro uppercase tabular-nums tracking-[0.14em] text-muted">
                       {role.period}

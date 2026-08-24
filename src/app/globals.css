@@ -307,6 +307,17 @@ html[data-intro='skip'] .opening-overlay {
   animation: signal-flow 1.6s linear infinite;
 }
 
+/* Reading highlight: text sweeps from muted to ink as the visitor scrolls.
+   Driven by --sweep (0% to 118%) set by <HighlightSweep>. No-JS and
+   reduced motion render fully inked. */
+[data-sweep] {
+  --sweep: 118%;
+  color: transparent;
+  background-image: linear-gradient(to bottom, var(--ink) var(--sweep), var(--muted) var(--sweep));
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
 /* ------------------------------------------------------------------ */
 /* Reduced motion: everything lands in final state instantly           */
 /* ------------------------------------------------------------------ */

@@ -25,13 +25,6 @@ export function About() {
       aria-label="About"
       className="theme-fade relative z-10 bg-paper px-5 pb-[14vh] pt-[20vh] sm:px-10"
     >
-      <span
-        aria-hidden="true"
-        className="pointer-events-none absolute -top-[4vw] right-[2vw] select-none font-serif text-[clamp(10rem,28vw,24rem)] italic leading-none text-ink opacity-[0.05]"
-      >
-        02
-      </span>
-
       <div className="mx-auto grid max-w-6xl gap-16 lg:grid-cols-[1fr_360px] lg:gap-24">
         <div>
           <motion.p
@@ -40,7 +33,7 @@ export function About() {
             className="mb-10 flex items-center gap-3 text-micro uppercase tracking-[0.16em] text-muted"
           >
             <span className="inline-block h-px w-10 bg-accent" aria-hidden="true" />
-            02 · About
+            About
           </motion.p>
 
           <motion.h2
