@@ -2,21 +2,20 @@
 
 import { motion } from 'motion/react';
 import { WordReveal } from '@/components/ui/WordReveal';
-import { organizations } from '@/content/experience';
+import { timeline } from '@/content/experience';
 
 const ease = [0.19, 1, 0.22, 1] as const;
 
 const reveal = {
-  initial: { opacity: 0, y: 28 },
+  initial: { opacity: 0, y: 24 },
   whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: '-10% 0px' },
+  viewport: { once: true, margin: '-8% 0px' },
 };
 
 /**
- * Experience: a story of progression, not a LinkedIn clone. Organizations
- * appear once, latest first; multiple roles at one organization read as a
- * progression down a shared line. Facts come from the owner's source
- * material only.
+ * Experience: one continuous timeline, latest first. Every entry is a
+ * single scannable row: period, role, organization, one factual line.
+ * The line itself draws downward as the visitor scrolls.
  */
 export function Experience() {
   return (
@@ -45,72 +44,65 @@ export function Experience() {
           ]}
         />
 
-        <div className="mt-[12vh] space-y-[12vh]">
-          {organizations.map(org => (
-            <motion.div
-              key={org.org}
-              {...reveal}
-              transition={{ duration: 0.9, ease }}
-              className="grid gap-6 lg:grid-cols-[1fr_1.4fr] lg:gap-16"
-            >
-              {/* Organization header */}
-              <div className="lg:sticky lg:top-32 lg:self-start">
-                <h3 className="text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
-                  {org.org}
-                </h3>
-                {org.location && (
-                  <p className="mt-2 text-micro uppercase tracking-[0.14em] text-muted">
-                    {org.location}
-                  </p>
-                )}
-                {org.roles.length > 1 && (
-                  <p className="mt-3 text-micro uppercase tracking-[0.14em] text-accent">
-                    {org.roles.length} roles, one run
-                  </p>
-                )}
-              </div>
+        {/* Unified timeline */}
+        <div className="relative mt-[12vh]">
+          {/* The line, drawing with scroll */}
+          <motion.div
+            aria-hidden="true"
+            className="bg-ink/15 absolute bottom-0 left-[7px] top-0 w-px origin-top max-sm:hidden"
+            initial={{ scaleY: 0 }}
+            whileInView={{ scaleY: 1 }}
+            viewport={{ once: true, margin: '-10% 0px' }}
+            transition={{ duration: 1.6, ease }}
+          />
 
-              {/* Role progression */}
-              <div className="border-ink/15 relative space-y-10 border-l pl-7 lg:pl-9">
-                {org.roles.map((role, ri) => (
-                  <motion.article
-                    key={role.title}
-                    {...reveal}
-                    transition={{ duration: 0.9, delay: ri * 0.08, ease }}
-                    className="group relative"
-                  >
-                    {/* Progression marker: filled for the latest role */}
-                    <span
-                      aria-hidden="true"
-                      className={`absolute -left-7 top-[0.45em] h-2.5 w-2.5 rounded-full border lg:-left-[2.35rem] ${
-                        ri === 0 ? 'border-accent bg-accent' : 'border-ink/40 bg-paper'
-                      }`}
-                    />
-                    <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
-                      <h4 className="text-lg font-semibold tracking-tight text-ink transition-transform duration-500 ease-expo group-hover:translate-x-1">
-                        {role.title}
-                      </h4>
-                      <p className="text-micro uppercase tabular-nums tracking-[0.14em] text-muted transition-colors duration-500 group-hover:text-accent">
-                        {role.period}
-                      </p>
-                    </div>
-                    <ul className="mt-3 max-w-[62ch] space-y-2">
-                      {role.points.map(point => (
-                        <li key={point} className="flex gap-3 text-sm leading-relaxed text-muted">
-                          <span
-                            className="mt-[0.55em] h-px w-3 shrink-0 bg-accent transition-all duration-500 ease-expo group-hover:w-5"
-                            aria-hidden="true"
-                          />
-                          {point}
-                        </li>
-                      ))}
-                    </ul>
-                  </motion.article>
-                ))}
-              </div>
-            </motion.div>
-          ))}
+          <ol className="space-y-14">
+            {timeline.map((entry, i) => (
+              <motion.li
+                key={`${entry.org}-${entry.role}-${i}`}
+                {...reveal}
+                transition={{ duration: 0.8, delay: 0.05, ease }}
+                className="group relative grid gap-1 pl-10 sm:grid-cols-[150px_1fr] sm:gap-8 sm:pl-14"
+              >
+                {/* Marker: a small square that fills on hover, no dots */}
+                <span
+                  aria-hidden="true"
+                  className="border-ink/30 absolute left-0 top-[0.4em] h-3.5 w-3.5 rotate-45 border bg-paper transition-colors duration-500 group-hover:border-accent group-hover:bg-accent sm:left-[-3px]"
+                />
+                <p className="text-micro uppercase tabular-nums tracking-[0.14em] text-muted sm:pt-1 sm:text-right">
+                  {entry.period}
+                </p>
+                <div>
+                  <h3 className="text-lg font-semibold tracking-tight text-ink">
+                    {entry.role}
+                    <span className="text-muted"> · {entry.org}</span>
+                  </h3>
+                  <p className="group-hover:text-ink/80 mt-1.5 max-w-[58ch] text-sm leading-relaxed text-muted transition-colors duration-500">
+                    {entry.summary}
+                    {entry.location ? (
+                      <span className="text-ink/40"> ({entry.location})</span>
+                    ) : null}
+                  </p>
+                </div>
+              </motion.li>
+            ))}
+          </ol>
         </div>
+
+        <motion.p
+          {...reveal}
+          transition={{ duration: 0.9, ease }}
+          className="mt-[8vh] max-w-[52ch] text-sm leading-relaxed text-muted"
+        >
+          Full details for every role live in the{' '}
+          <a
+            href="/resume.pdf"
+            className="text-ink underline decoration-accent underline-offset-4 transition-colors hover:text-accent"
+          >
+            resume
+          </a>
+          .
+        </motion.p>
       </div>
     </section>
   );
