@@ -3,7 +3,6 @@ export const profile = {
   shortName: 'S. Sahay',
   firstName: 'Shikhar',
   location: 'Vellore, India',
-  coordinates: '11.94 N, 79.16 E',
   role: 'Computer Science @ VIT Vellore, building across software, security and the web.',
   statementPre: 'I build things worth ',
   statementEm: 'remembering.',
@@ -15,7 +14,6 @@ export const profile = {
     school: 'Vellore Institute of Technology, Vellore',
     degree: 'B.Tech, Computer Science and Engineering (Cybersecurity)',
     period: '2024 - Present',
-    cgpa: '9.31',
   },
   // Placeholders until the owner supplies real destinations (see HANDOFF.md)
   links: {

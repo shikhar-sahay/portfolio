@@ -14,7 +14,7 @@ const ease = [0.19, 1, 0.22, 1] as const;
 
 /**
  * 02 / About: personal context plus the editorial index, which acts
- * as a navigation instrument (numbers, notes, hover reveals).
+ * as a navigation instrument (names, notes, hover reveals).
  */
 export function About() {
   const rest = sections.slice(2);
@@ -61,16 +61,10 @@ export function About() {
             <div className="border-ink/15 border-t pt-4">
               <p className="text-micro uppercase tracking-[0.16em] text-accent">Based in</p>
               <p className="mt-2 text-sm text-muted">{profile.location}</p>
-              <p className="mt-1 text-micro uppercase tabular-nums tracking-[0.16em] text-muted">
-                {profile.coordinates}
-              </p>
             </div>
             <div className="border-ink/15 border-t pt-4">
               <p className="text-micro uppercase tracking-[0.16em] text-accent">Studying</p>
               <p className="mt-2 text-sm text-muted">B.Tech CSE (Cybersecurity), VIT</p>
-              <p className="mt-1 text-micro uppercase tabular-nums tracking-[0.16em] text-muted">
-                CGPA {profile.education.cgpa}
-              </p>
             </div>
           </motion.div>
         </div>
@@ -90,11 +84,8 @@ export function About() {
                   href={`#${section.id}`}
                   className="group flex items-baseline justify-between gap-4 py-3.5 transition-colors duration-300"
                 >
-                  <span className="flex items-baseline gap-4">
-                    <span className="text-micro tabular-nums text-accent">{section.number}</span>
-                    <span className="font-medium tracking-tight text-ink transition-transform duration-500 ease-expo group-hover:translate-x-1.5">
-                      {section.name}
-                    </span>
+                  <span className="font-medium tracking-tight text-ink transition-transform duration-500 ease-expo group-hover:translate-x-1.5">
+                    {section.name}
                   </span>
                   <span className="text-micro uppercase tracking-[0.14em] text-muted opacity-0 transition-opacity duration-300 group-focus-within:opacity-100 group-hover:opacity-100">
                     {section.note}

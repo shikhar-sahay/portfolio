@@ -55,9 +55,7 @@ export function Opening() {
           phase === 'exit' ? 'opacity-0' : 'opacity-100'
         }`}
       >
-        <p className="text-paper/60 text-micro uppercase tracking-[0.18em]">
-          A portfolio, in seven parts
-        </p>
+        <p className="text-paper/60 text-micro uppercase tracking-[0.18em]">Portfolio</p>
         <p className="text-paper/60 text-micro uppercase tabular-nums tracking-[0.18em]">2026</p>
       </div>
 
@@ -88,7 +86,6 @@ export function Opening() {
           </p>
           <p className="text-paper/80 font-serif text-2xl italic tabular-nums">
             {String(Math.max(count, 1)).padStart(2, '0')}
-            <span className="text-paper/40 ml-1">/ 07</span>
           </p>
         </div>
         <div className="bg-paper/15 h-px w-full">

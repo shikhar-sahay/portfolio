@@ -72,14 +72,6 @@ export function Skills() {
                 <p className="mt-1 text-micro uppercase tabular-nums tracking-[0.14em] text-muted">
                   {profile.education.period}
                 </p>
-                <div className="border-ink/15 mt-8 border p-6 text-center">
-                  <p className="text-[clamp(3rem,4vw,4.5rem)] font-semibold tabular-nums leading-none tracking-tight text-ink">
-                    {profile.education.cgpa}
-                  </p>
-                  <p className="mt-2 text-micro uppercase tracking-[0.16em] text-muted">
-                    CGPA / 10
-                  </p>
-                </div>
               </div>
             </Reveal>
 

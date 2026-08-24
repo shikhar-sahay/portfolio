@@ -1,7 +1,6 @@
 import { ThemeToggle } from '@/components/layout/ThemeToggle';
 import { Reveal } from '@/components/ui/Reveal';
 import { profile } from '@/content/profile';
-import { sections } from '@/content/sections';
 import { certifications } from '@/content/systems';
 import { timeline } from '@/content/experience';
 
@@ -69,7 +68,7 @@ export function Contact() {
               <p className="mt-3 text-sm font-medium text-ink">{profile.education.degree}</p>
               <p className="mt-1 text-sm text-muted">{profile.education.school}</p>
               <p className="mt-1 text-micro uppercase tabular-nums tracking-[0.14em] text-muted">
-                {profile.education.period} · CGPA {profile.education.cgpa}
+                {profile.education.period}
               </p>
               <p className="mt-10 text-micro uppercase tracking-[0.16em] text-accent">
                 Credentials
@@ -143,20 +142,10 @@ export function Contact() {
           </ul>
         </Reveal>
 
-        {/* Callback to the opening sequence */}
+        {/* Closing mark */}
         <Reveal delay={0.1}>
-          <div
-            className="mt-[14vh] flex flex-wrap items-end justify-between gap-6"
-            aria-hidden="true"
-          >
-            <div className="flex items-baseline gap-3 tabular-nums text-muted">
-              {sections.map(s => (
-                <span key={s.id} className="text-micro tracking-[0.2em]">
-                  {s.number}
-                </span>
-              ))}
-              <span className="ml-2 font-serif text-2xl italic text-accent">fin.</span>
-            </div>
+          <div className="mt-[14vh] flex flex-wrap items-end justify-between gap-6">
+            <p className="font-serif text-3xl italic text-accent">fin.</p>
             <div className="flex items-center gap-6">
               <ThemeToggle />
               <p className="text-micro uppercase tracking-[0.16em] text-muted">

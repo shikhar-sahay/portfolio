@@ -98,7 +98,7 @@ export function Hero() {
                 aria-hidden="true"
               />
               <span className="anim-fade-in [animation-delay:calc(var(--intro-delay)+0.2s)]">
-                ( 01 ) &nbsp;Portfolio, 2026
+                Portfolio, 2026
               </span>
             </motion.p>
 
@@ -134,10 +134,6 @@ export function Hero() {
                 <span className="bg-ink/25 hidden h-3 w-px sm:block" aria-hidden="true" />
                 <p className="text-micro uppercase tracking-[0.16em] text-muted">
                   Software, security &amp; the web
-                </p>
-                <span className="bg-ink/25 hidden h-3 w-px sm:block" aria-hidden="true" />
-                <p className="text-micro uppercase tabular-nums tracking-[0.16em] text-muted">
-                  {profile.coordinates}
                 </p>
               </div>
             </motion.div>
@@ -212,16 +208,7 @@ export function Hero() {
                 />
               </svg>
 
-              {/* Coordinate labels on the orbit */}
-              <motion.p
-                aria-hidden="true"
-                className="absolute -top-2 left-1/2 -translate-x-1/2"
-                {...scroll({ opacity: metaO })}
-              >
-                <span className="anim-fade-in block text-micro uppercase tabular-nums tracking-[0.18em] text-muted [animation-delay:calc(var(--intro-delay)+1.1s)]">
-                  {profile.coordinates}
-                </span>
-              </motion.p>
+              {/* Orbit label */}
               <motion.p
                 aria-hidden="true"
                 className="absolute -bottom-2 left-1/2 -translate-x-1/2"
