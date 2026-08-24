@@ -14,6 +14,7 @@
   --ink: #1d1915;
   --muted: #7c7568;
   --accent: #bc3f1a;
+  --gold: #b08d2f;
   /* Hero entrance waits for the opening sequence; the head script sets
      this to 0s for returning visitors and reduced-motion users. */
   --intro-delay: 1.35s;
@@ -25,6 +26,7 @@
   --ink: #ece4d4;
   --muted: #998f7e;
   --accent: #e0643b;
+  --gold: #d4af5a;
 }
 
 html {

@@ -15,6 +15,7 @@ const config: Config = {
         ink: 'var(--ink)',
         muted: 'var(--muted)',
         accent: 'var(--accent)',
+        gold: 'var(--gold)',
       },
       fontFamily: {
         sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],

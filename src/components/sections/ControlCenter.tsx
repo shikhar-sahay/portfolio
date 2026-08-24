@@ -24,7 +24,7 @@ export function ControlCenter() {
     'AWS',
   ];
   const tools = selectedTools.filter(tool =>
-    skillGroups.some(group => (group.items as readonly string[]).includes(tool))
+    skillGroups.some(group => group.items.some(item => item.name === tool))
   );
 
   return (

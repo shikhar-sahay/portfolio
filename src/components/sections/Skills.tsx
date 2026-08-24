@@ -1,12 +1,11 @@
 import { Reveal } from '@/components/ui/Reveal';
-import { profile } from '@/content/profile';
-import { certifications, skillGroups } from '@/content/systems';
+import { certifications, skillGroups, type Skill } from '@/content/systems';
 
 /**
- * 04 / Skills: an editorial tool index, not a wall of badges. Each group
- * is a large serif heading with the tools as a flowing inline list;
- * hovering a tool pulls it into the accent. No fake proficiency bars:
- * tools are either in use or they are not listed.
+ * 04 / Skills: each technology is a small golden emblem, an object rather
+ * than a line of text. The gold exists only here (and in certifications),
+ * so it reads as its own material within the palette. No proficiency bars,
+ * no pills. Education lives in the control center and footer.
  */
 export function Skills() {
   return (
@@ -28,66 +27,76 @@ export function Skills() {
           </h2>
         </Reveal>
 
-        <div className="mt-[10vh] grid gap-16 lg:grid-cols-[1fr_320px] lg:gap-24">
-          <div className="space-y-[9vh]">
-            {skillGroups.map((group, gi) => (
-              <Reveal key={group.id} delay={gi * 0.06}>
-                <div className="border-ink/15 flex items-baseline justify-between border-t pt-5">
-                  <h3 className="font-serif text-3xl italic tracking-tight text-ink sm:text-4xl">
-                    {group.label}
-                  </h3>
-                  <p className="text-micro uppercase tabular-nums tracking-[0.16em] text-muted">
-                    {group.items.length}
-                  </p>
-                </div>
-                <p className="mt-5 max-w-[52ch] text-lg leading-loose text-muted">
-                  {group.items.map((item, i) => (
-                    <span key={item}>
-                      <span className="cursor-default text-ink transition-colors duration-300 ease-expo hover:text-accent">
-                        {item}
-                      </span>
-                      {i < group.items.length - 1 && (
-                        <span className="text-ink/25 select-none"> / </span>
-                      )}
-                    </span>
-                  ))}
-                </p>
-              </Reveal>
-            ))}
-          </div>
-
-          <div className="space-y-12 lg:sticky lg:top-32 lg:self-start">
-            <Reveal>
-              <div className="border-ink/15 border-t pt-4">
-                <p className="text-micro uppercase tracking-[0.16em] text-accent">Education</p>
-                <p className="mt-4 text-sm font-medium leading-relaxed text-ink">
-                  {profile.education.degree}
-                </p>
-                <p className="mt-1 text-sm text-muted">{profile.education.school}</p>
-                <p className="mt-1 text-micro uppercase tabular-nums tracking-[0.14em] text-muted">
-                  {profile.education.period}
+        <div className="mt-[10vh] space-y-[10vh]">
+          {skillGroups.map((group, gi) => (
+            <Reveal key={group.id} delay={gi * 0.05}>
+              <div className="border-ink/15 flex items-baseline justify-between border-t pt-5">
+                <h3 className="font-serif text-3xl italic tracking-tight text-ink sm:text-4xl">
+                  {group.label}
+                </h3>
+                <p className="text-micro uppercase tabular-nums tracking-[0.16em] text-muted">
+                  {group.items.length}
                 </p>
               </div>
+              <ul className="mt-9 flex flex-wrap gap-x-7 gap-y-9">
+                {group.items.map(skill => (
+                  <li key={skill.name}>
+                    <SkillEmblem skill={skill} />
+                  </li>
+                ))}
+              </ul>
             </Reveal>
-
-            <Reveal delay={0.1}>
-              <div className="border-ink/15 border-t pt-4">
-                <p className="text-micro uppercase tracking-[0.16em] text-accent">Credentials</p>
-                <ul className="mt-4 space-y-3">
-                  {certifications.map(cert => (
-                    <li key={cert.name} className="flex items-baseline justify-between gap-4">
-                      <span className="text-sm text-ink">{cert.name}</span>
-                      <span className="shrink-0 text-micro uppercase tracking-[0.14em] text-muted">
-                        {cert.issuer}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </Reveal>
-          </div>
+          ))}
         </div>
+
+        {/* Certifications: their own quiet register */}
+        <Reveal>
+          <div className="border-ink/15 mt-[12vh] border-t pt-5">
+            <h3 className="text-micro uppercase tracking-[0.16em] text-accent">Certifications</h3>
+            <ul className="mt-6 grid gap-x-12 gap-y-4 sm:grid-cols-2">
+              {certifications.map(cert => (
+                <li
+                  key={cert.name}
+                  className="border-ink/10 flex items-baseline justify-between gap-4 border-b pb-3"
+                >
+                  <span className="text-sm text-ink">{cert.name}</span>
+                  <span className="shrink-0 text-micro uppercase tracking-[0.14em] text-muted">
+                    {cert.issuer}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </Reveal>
       </div>
     </section>
+  );
+}
+
+function SkillEmblem({ skill }: { skill: Skill }) {
+  return (
+    <div className="group flex w-[76px] flex-col items-center gap-3">
+      {/* Emblem: gold ring, monogram core, a dashed orbit that wakes on hover */}
+      <div className="relative flex h-16 w-16 items-center justify-center">
+        <span
+          aria-hidden="true"
+          className="border-gold/60 absolute inset-0 rounded-full border transition-transform duration-700 ease-expo group-hover:rotate-90"
+        />
+        <span
+          aria-hidden="true"
+          className="border-gold/0 group-hover:border-gold/40 absolute -inset-1.5 rounded-full border border-dashed transition-all duration-700 group-hover:rotate-45"
+        />
+        <span
+          aria-hidden="true"
+          className="group-hover:bg-gold/10 absolute inset-[7px] rounded-full bg-surface transition-colors duration-500"
+        />
+        <span className="relative font-serif text-lg italic tracking-tight text-gold">
+          {skill.abbr}
+        </span>
+      </div>
+      <p className="text-center text-micro uppercase leading-tight tracking-[0.12em] text-muted transition-colors duration-300 group-hover:text-ink">
+        {skill.name}
+      </p>
+    </div>
   );
 }
