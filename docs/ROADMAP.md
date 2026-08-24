@@ -6,37 +6,39 @@
 
 ## Milestone Overview
 
-| #   | Milestone                               | Focus                                  | Status        |
-| --- | --------------------------------------- | -------------------------------------- | ------------- |
-| 0   | Documentation & Project Foundation      | Docs, repo setup, config               | **COMPLETED** |
-| 1   | Entrance + Hero                         | Arrival experience, hero section       | NOT_STARTED   |
-| 2   | Navigation + Scroll Architecture        | Nav, smooth scroll, section structure  | NOT_STARTED   |
-| 3   | Selected Projects                       | Work showcase, project cards/detail    | NOT_STARTED   |
-| 4   | Experience / Journey                    | Timeline, career/education narrative   | NOT_STARTED   |
-| 5   | Personality / Human Layer               | Interests, writing, human touches      | NOT_STARTED   |
-| 6   | Signature Interactive Experience        | The "holy shit" moment                 | NOT_STARTED   |
-| 7   | Final Polish                            | Micro-interactions, content refinement | NOT_STARTED   |
-| 8   | Performance, Accessibility & Deployment | Audits, optimization, launch           | NOT_STARTED   |
+| #   | Milestone                               | Focus                                  | Status                                                                               |
+| --- | --------------------------------------- | -------------------------------------- | ------------------------------------------------------------------------------------ |
+| 0   | Documentation & Project Foundation      | Docs, repo setup, config               | **COMPLETED**                                                                        |
+| 1   | Entrance + Hero                         | Arrival experience, hero section       | **IN_PROGRESS** (v4 opening + portrait instrument implemented, owner review pending) |
+| 2   | Navigation + Scroll Architecture        | Nav, smooth scroll, section structure  | **IN_PROGRESS** (navigation instrument, section anchors, IA registry done)           |
+| 3   | Selected Projects                       | Work showcase, project artifacts       | **IN_PROGRESS** (artifact treatments implemented, links pending)                     |
+| 4   | Experience / Journey                    | Timeline, career/education narrative   | **IN_PROGRESS** (era chronology implemented, copy pending approval)                  |
+| 5   | Personality / Human Layer               | Interests, writing, human touches      | **IN_PROGRESS** (fragment instrument implemented)                                    |
+| 6   | Signature Interactive Experience        | The "holy shit" moment                 | NOT_STARTED                                                                          |
+| 7   | Final Polish                            | Micro-interactions, content refinement | NOT_STARTED                                                                          |
+| 8   | Performance, Accessibility & Deployment | Audits, optimization, launch           | NOT_STARTED                                                                          |
+
+> **IA note (2026-08-23, v4):** The narrative order is now 01 Identity, 02 About, 03 Experience, 04 Skills, 05 Projects, 06 Personality, 07 Contact + Footer (Experience before Skills before Projects, owner-directed). The registry in `src/content/sections.ts` is the IA source of truth. The original milestone numbering above is retained for history; implementation now follows the v4 order.
 
 ---
 
-## MILESTONE 0 — Documentation & Project Foundation
+## MILESTONE 0 - Documentation & Project Foundation
 
 **Goal:** Establish persistent documentation, repo structure, and tooling config.
 
 ### Tasks
 
-- [x] Create `CLAUDE.md` — Permanent session instructions
-- [x] Create `docs/PROJECT_CONTEXT.md` — Person, purpose, creative direction
-- [x] Create `docs/DESIGN_SYSTEM.md` — Typography, color, spacing, visual decisions
-- [x] Create `docs/ARCHITECTURE.md` — Framework, structure, rendering, components
-- [x] Create `docs/ROADMAP.md` — This file
-- [x] Create `docs/DECISIONS.md` — Decision log
-- [x] Create `docs/ANIMATION.md` — Motion philosophy
-- [x] Create `docs/CONTENT.md` — Content source of truth
-- [x] Create `docs/PERFORMANCE.md` — Performance principles
-- [x] Create `docs/HANDOFF.md` — Session-to-session state
-- [x] Create `docs/AGENTS.md` — Multi-agent guidelines
+- [x] Create `CLAUDE.md` - Permanent session instructions
+- [x] Create `docs/PROJECT_CONTEXT.md` - Person, purpose, creative direction
+- [x] Create `docs/DESIGN_SYSTEM.md` - Typography, color, spacing, visual decisions
+- [x] Create `docs/ARCHITECTURE.md` - Framework, structure, rendering, components
+- [x] Create `docs/ROADMAP.md` - This file
+- [x] Create `docs/DECISIONS.md` - Decision log
+- [x] Create `docs/ANIMATION.md` - Motion philosophy
+- [x] Create `docs/CONTENT.md` - Content source of truth
+- [x] Create `docs/PERFORMANCE.md` - Performance principles
+- [x] Create `docs/HANDOFF.md` - Session-to-session state
+- [x] Create `docs/AGENTS.md` - Multi-agent guidelines
 - [x] Initialize git repository (already done)
 - [x] Add `.gitignore` for Node/Next.js
 - [x] Decide on package manager (pnpm recommended)
@@ -59,9 +61,9 @@
 
 ---
 
-## MILESTONE 1 — Entrance + Hero
+## MILESTONE 1 - Entrance + Hero
 
-**Goal:** The arrival experience — first impression, hero section, portrait.
+**Goal:** The arrival experience - first impression, hero section, portrait.
 
 ### Tasks
 
@@ -92,7 +94,7 @@
 
 ---
 
-## MILESTONE 2 — Navigation + Scroll Architecture
+## MILESTONE 2 - Navigation + Scroll Architecture
 
 **Goal:** Cohesive navigation and the long-scroll backbone.
 
@@ -124,9 +126,9 @@
 
 ---
 
-## MILESTONE 3 — Selected Projects
+## MILESTONE 3 - Selected Projects
 
-**Goal:** Showcase work — the portfolio core.
+**Goal:** Showcase work - the portfolio core.
 
 ### Tasks
 
@@ -156,7 +158,7 @@
 
 ---
 
-## MILESTONE 4 — Experience / Journey
+## MILESTONE 4 - Experience / Journey
 
 **Goal:** Narrative timeline of career, education, key moments.
 
@@ -185,15 +187,15 @@
 
 ---
 
-## MILESTONE 5 — Personality / Human Layer
+## MILESTONE 5 - Personality / Human Layer
 
-**Goal:** Human touches — interests, writing, values — without forcing them.
+**Goal:** Human touches - interests, writing, values - without forcing them.
 
 ### Tasks
 
 - [ ] Curate content: writing links, music, football, theatre, etc.
 - [ ] Design personality section (not a "hobbies list")
-- [ ] Implement component(s) — could be integrated or separate
+- [ ] Implement component(s) - could be integrated or separate
 - [ ] Ensure it feels editorial, not tacked on
 - [ ] Add micro-interactions (hover, click)
 
@@ -212,9 +214,9 @@
 
 ---
 
-## MILESTONE 6 — Signature Interactive Experience
+## MILESTONE 6 - Signature Interactive Experience
 
-**Goal:** The "holy shit" moment — a memorable, technically impressive interaction.
+**Goal:** The "holy shit" moment - a memorable, technically impressive interaction.
 
 ### Tasks
 
@@ -228,7 +230,7 @@
 
 ### Design Decisions Needed
 
-- **Concept:** What is the experience? (Keep open — explore in milestone)
+- **Concept:** What is the experience? (Keep open - explore in milestone)
 - Technology: Three.js/R3F? Canvas 2D? CSS/SVG? GSAP?
 - Trigger: scroll? mouse/touch? time? input?
 - Duration: how long does it last?
@@ -239,7 +241,7 @@
 - Must be performant (lazy-loaded, not on initial bundle)
 - Must have reduced-motion equivalent
 - Must work on mobile (touch-adapted)
-- Must not feel like a "tech demo" — serves the narrative
+- Must not feel like a "tech demo" - serves the narrative
 
 ### Exit Criteria
 
@@ -250,7 +252,7 @@
 
 ---
 
-## MILESTONE 7 — Final Polish
+## MILESTONE 7 - Final Polish
 
 **Goal:** Micro-interactions, content refinement, cross-browser, edge cases.
 
@@ -277,9 +279,9 @@
 
 ---
 
-## MILESTONE 8 — Performance, Accessibility & Deployment
+## MILESTONE 8 - Performance, Accessibility & Deployment
 
-**Goal:** Ship it — fast, accessible, deployed.
+**Goal:** Ship it - fast, accessible, deployed.
 
 ### Tasks
 
@@ -295,7 +297,7 @@
 - [ ] Final performance budget sign-off
 - [ ] Deploy to production
 
-### Performance Budgets (FINALIZED — Targets)
+### Performance Budgets (FINALIZED - Targets)
 
 | Metric                   | Target                            |
 | ------------------------ | --------------------------------- |

@@ -12,40 +12,189 @@
 | **Restrained**          | Fewer, better animations. Subtle by default. Dramatic only when earned.                                 |
 | **Smooth**              | 60fps minimum. No jank, no layout shift. Prefer transform/opacity over layout-triggering properties.    |
 | **Cohesive**            | Shared easing, duration scales, and choreography across the site. Feels like one system.                |
-| **Cinematic in places** | Select moments can be dramatic — hero entrance, signature experience, section transitions.              |
+| **Cinematic in places** | Select moments can be dramatic - hero entrance, signature experience, section transitions.              |
 | **Clean at rest**       | Static state is calm. Motion reveals depth on interaction/scroll.                                       |
 | **Respectful**          | Honor `prefers-reduced-motion`. Provide meaningful static alternatives.                                 |
 
 ---
 
-## Easing (UNDECIDED)
+## Easing (EXPERIMENTAL)
 
-### Candidate Easing Functions
+### Adopted in M1 prototype
 
-| Name               | CSS / JS Value                                          | Use Case                       | Status    |
-| ------------------ | ------------------------------------------------------- | ------------------------------ | --------- |
-| `ease-out-expo`    | `cubic-bezier(0.19, 1, 0.22, 1)` / `[0.19, 1, 0.22, 1]` | Default exit, reveals          | UNDECIDED |
-| `ease-out-circ`    | `cubic-bezier(0.075, 0.82, 0.165, 1)`                   | Smooth deceleration            | UNDECIDED |
-| `ease-out-quart`   | `cubic-bezier(0.25, 1, 0.5, 1)`                         | Standard UI transitions        | UNDECIDED |
-| `ease-in-out-expo` | `cubic-bezier(0.87, 0, 0.13, 1)`                        | Full transitions, page changes | UNDECIDED |
-| `ease-spring`      | `spring({ stiffness: 300, damping: 30 })`               | Motion for React spring        | UNDECIDED |
-| `ease-bounce`      | `spring({ stiffness: 400, damping: 20 })`               | Playful micro-interactions     | UNDECIDED |
+| Name            | CSS Value                        | Use Case                                      | Status       |
+| --------------- | -------------------------------- | --------------------------------------------- | ------------ |
+| `ease-out-expo` | `cubic-bezier(0.19, 1, 0.22, 1)` | **Primary** - all entrance reveals and drifts | EXPERIMENTAL |
+| `ease`          | CSS default                      | Nav/cue fade-in only                          | EXPERIMENTAL |
 
-**Decision Needed:** Select 3-4 primary easings: default, expressive, spring, cinematic.
+Remaining candidates remain UNDECIDED until more patterns exist.
+
+| Name               | CSS / JS Value                        | Use Case                       | Status    |
+| ------------------ | ------------------------------------- | ------------------------------ | --------- |
+| `ease-out-circ`    | `cubic-bezier(0.075, 0.82, 0.165, 1)` | Smooth deceleration            | UNDECIDED |
+| `ease-out-quart`   | `cubic-bezier(0.25, 1, 0.5, 1)`       | Standard UI transitions        | UNDECIDED |
+| `ease-in-out-expo` | `cubic-bezier(0.87, 0, 0.13, 1)`      | Full transitions, page changes | UNDECIDED |
 
 ---
 
-## Duration Scale (UNDECIDED)
+## Duration Scale (EXPERIMENTAL)
 
-| Token                | Range      | Use Case                                  | Status    |
-| -------------------- | ---------- | ----------------------------------------- | --------- |
-| `duration-instant`   | 0–50ms     | Immediate feedback (tap, hover)           | UNDECIDED |
-| `duration-fast`      | 100–150ms  | Micro-interactions, hover, focus          | UNDECIDED |
-| `duration-base`      | 200–300ms  | Standard transitions, reveals             | UNDECIDED |
-| `duration-slow`      | 400–600ms  | Section transitions, complex choreography | UNDECIDED |
-| `duration-cinematic` | 800–1200ms | Hero entrance, signature moments          | UNDECIDED |
+| Token                | Value       | Use Case                            | Status       |
+| -------------------- | ----------- | ----------------------------------- | ------------ |
+| `duration-fast`      | ~300ms      | Hover/color transitions in nav      | EXPERIMENTAL |
+| `duration-base`      | 900ms       | Fade-rise reveals                   | EXPERIMENTAL |
+| `duration-slow`      | 1050ms      | Mask-rise type reveals              | EXPERIMENTAL |
+| `duration-cinematic` | 1150-1800ms | Portrait clip reveal / scale settle | EXPERIMENTAL |
 
-**Decision Needed:** Exact values per token. Prefer consistent scale (e.g., 1.5x or 2x steps).
+---
+
+## Implemented Patterns (v4, opening redesign - EXPERIMENTAL)
+
+### Opening Sequence v4 (title sequence, `Opening.tsx`)
+
+An ink-field title sequence, ~2.2s, once per session:
+
+| t         | Beat                                                                                              |
+| --------- | ------------------------------------------------------------------------------------------------- |
+| 0.00s     | Ink field (charcoal, grain) with micro frame: "A portfolio, in seven parts" / "2026"              |
+| 0.35s     | "SHIKHAR" mask-rises; 0.55s: "SAHAY" rises in outline-stroke treatment                            |
+| 0.90s     | "Software, security & the web" fades in under the name                                            |
+| 0.25-1.0s | Indices tick 01 to 07 (120ms steps) with the vermilion progress hairline; serif "07 / 07" counter |
+| 1.50s     | Field lifts: translateY(-100%), 800ms ease-expo; scroll unlocked; `sessionStorage.opened` set     |
+| 2.30s     | Overlay unmounts                                                                                  |
+
+**Synchronization with the hero:** an inline head script runs before paint and sets `html[data-intro]` plus `--intro-delay` (1.35s when the sequence will play, 0s when skipped). Hero entrance delays are `calc(var(--intro-delay) + Ns)`, so the hero boots as the field lifts. Returning visitors and reduced-motion users get `data-intro="skip"`: the overlay is display:none pre-hydration (no flash) and the hero plays immediately. Verified: returning-visitor overlay hidden, reduced-motion overlay absent.
+
+### Portrait Instrument motion
+
+- Boot: outer ring draws via stroke-dashoffset (1.5s), aperture iris-in (scale 0.9 to 1 + fade), dashed ring/ticks/arc fade in late
+- Ambient: dashed ring rotates 90s clockwise; vermilion arc rotates 26s counter-clockwise (transform-only, GPU)
+- Pointer parallax (fine pointers, reduced-motion-gated): crop drifts up to 9px toward the cursor, ring system up to 6px against it, spring-smoothed (stiffness 55, damping 18), resets on pointerleave
+
+### Scene-change scroll transition (replaces the rejected face zoom)
+
+The v2 full-bleed face zoom is **explicitly rejected** (owner directive). The hero pins for 150svh and the scene changes:
+
+- Typography separates into layers: "SHIKHAR" travels up-left, "SAHAY" (outline) travels down-right, both fading by p=0.55
+- The instrument exits laterally: x 0 to 22vw, y to -8svh, scale to 0.72, fading at the end
+- A hairline draws left-to-right (p 0.35 to 0.8) at the stage bottom, becoming the boundary into About
+- Statement/context/cue fade early; the handoff reads as a scene change, never a camera move
+
+### Reduced Motion (v4 status)
+
+- Opening overlay: never rendered (`data-intro="skip"` set pre-paint)
+- Hero: `--intro-delay` is 0s; entrance animations collapse via the global duration rule; portrait/rings/labels render in final state
+- Ring rotation, atmosphere drift, cue travel: stopped by the global rule (iteration-count 1, duration 0.01ms)
+- Pointer parallax: not attached under reduced motion
+- Verified via Playwright `reducedMotion: 'reduce'`: overlay absent, hero complete
+
+### Motion language: ARRIVE / DISCOVER / TRANSFORM / SETTLE / DEPART
+
+| Verb      | Meaning                              | Patterns                                                              |
+| --------- | ------------------------------------ | --------------------------------------------------------------------- |
+| ARRIVE    | A thing enters with intention        | Opening curtain-lift, masked type rises, clip/curtain reveals         |
+| DISCOVER  | Content reveals itself progressively | Counters count up on view, signal map flows in, manifest rows stagger |
+| TRANSFORM | State changes as you travel          | Aperture expansion, sticky era year/mood swap, fragment word swap     |
+| SETTLE    | The page comes to rest, calm         | Full-bleed photo hold, sticky index, quiet section padding            |
+| DEPART    | The journey closes the loop          | Contact callback to opening indices, "fin."                           |
+
+### Opening Sequence v3 (SUPERSEDED by v4 above; kept for history)
+
+- Full-screen paper overlay: name top-left, "A portfolio, in seven parts" top-right, giant ticking index `01` to `07` with serif "/ 07", accent progress hairline, "Establishing / 2026" footer
+- Numbers tick every 115ms (7 ticks, ~900ms), exit at 1150ms via translateY(-100%) 700ms ease-expo, unmount at 1850ms
+- Scroll locked during the sequence
+- Skipped entirely when `prefers-reduced-motion: reduce` or when `sessionStorage.opened` is set (repeat visits in the same session see nothing)
+- Total cost: ~1.6s once per session; no media, no layout shift (overlay is fixed)
+
+### Section patterns (new in v3)
+
+| Pattern               | Section    | Implementation                                                                                                                                                        |
+| --------------------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Editorial index       | Intro      | Sticky list; hover/focus reveals note, name nudges x (CSS only)                                                                                                       |
+| Contextual counters   | Work       | `Counter` counts up on first view (rAF, quartic ease-out, 1400ms); static under reduced motion                                                                        |
+| Signal flow           | Work       | `InView` sets `data-inview`; nodes transition in staggered, dashed edges run `signal-flow` (marching dashes, 1.6s linear infinite)                                    |
+| Manifest stagger      | Work       | HolmesKit rows fade-rise staggered 80ms via the same `data-inview` gate                                                                                               |
+| Sticky era chronology | Experience | IntersectionObserver updates sticky year + serif mood; era indicator lines switch accent                                                                              |
+| Fragment instrument   | Outside    | Hover/focus/click swaps large serif word + caption (aria-live polite)                                                                                                 |
+| Navigation instrument | Global     | Progress hairline (scaleX via scrollYProgress), live `NN / 07 Name` readout (IO), difference-blend white links so the nav survives the inverted panel and both themes |
+| Ending callback       | Contact    | Static `01 02 03 04 05 06 07` row + serif "fin." echoes the opening                                                                                                   |
+
+### Hero scene (revised in v3)
+
+- Scene length history: 240svh (v2) to 180svh (v3) to 150svh (v4); the full-bleed zoom was removed entirely in v4
+- All v2 aperture mechanics unchanged (see decision history); drift constants re-validated after shortening
+
+### Reduced Motion (v3 status, superseded by v4 above)
+
+- Opening overlay: skipped entirely (immediate portfolio)
+- Counters: render final values statically
+- Signal map / manifest: `data-inview` still applied; global duration collapse makes transitions instant; marching-ants loop collapses (iteration-count 1)
+- Era tracking, fragment swap, nav readout: functional without motion (state changes are instant)
+- Verified via Playwright `reducedMotion: 'reduce'` emulation: overlay absent, page fully composed
+
+### Hero/aperture details (v2, retained)
+
+### Animation Library (added this session)
+
+**Motion for React** (package `motion`, ~15 KB gzipped) is now installed and used for:
+
+- Scroll-scrubbed choreography (`useScroll` + `useTransform`) in the hero scene
+- `whileInView` reveals in the introduction
+- Nav fade tied to scroll position
+
+Rationale: the aperture sequence needs multi-phase, scroll-scrubbed interpolation of transform values. Hand-rolled CSS custom-property math was brittle to tune; Motion provides reliable scrubbing with built-in `useReducedMotion`. This matches the architecture principle (Motion is the planned primary animation library). Entrance choreography remains pure CSS (works pre-hydration).
+
+> **IMPORTANT for future agents (Motion v13 quirk):** 2-point `useTransform` ranges did not hold their end value beyond the range in testing (opacity mirrored back toward its start value). Always use explicit 3-point ranges with a terminal stop, e.g. `useTransform(p, [0.16, 0.36, 1], [1, 0, 0])`.
+
+### Entrance Sequence (time-based, CSS-only keyframes, `forwards` fill)
+
+Runs on page load; no JS required. All easing `ease-out-expo` unless noted.
+
+| t (delay) | Element                 | Motion                                                                                   |
+| --------- | ----------------------- | ---------------------------------------------------------------------------------------- |
+| 0.15s     | Portrait aperture       | "Curtain" opens: outer scaleX 0.02 → 1 with counter-scaled inner (no distortion), 1400ms |
+| 0.75s     | Name line 1 ("SHIKHAR") | Mask rise: translateY(115%) → 0 inside overflow-hidden span, 1100ms                      |
+| 0.92s     | Name line 2 ("SAHAY")   | Mask rise (outline stroke treatment), 1100ms                                             |
+| 1.10s     | Statement               | Fade-rise (opacity 0→1, translateY 14px→0), 900ms                                        |
+| 1.25s     | Corner meta             | Fade-rise                                                                                |
+| 1.50s     | Navigation              | Fade-in                                                                                  |
+| 1.90s     | Scroll cue              | Fade-in, then continuous cue-travel loop (accent segment sliding down a hairline, 2.2s)  |
+
+### Scroll Sequence (hero → full-bleed photograph → introduction)
+
+- Scene wrapper was `240svh` in v2, `180svh` in v3, `150svh` in v4 with a `sticky top-0 h-dvh` stage: native pinning, no scroll hijacking
+- `useScroll({ offset: ['start start', 'end end'] })` drives `scrollYProgress` (p)
+- Phases:
+  - p 0 → 0.08: scroll cue fades
+  - p 0 → 0.22: statement and corner meta fade out
+  - p 0.04 → 0.62: aperture scales 1 → 4.35 with compensating x/y drift so the face lands centered at full bleed (desktop drift: -30vw, +56svh; mobile: -34vw, +36svh; chosen via matchMedia)
+  - p 0.16 → 0.36: display title scales to 1.32, rises 30svh, fades out (pushed "past the camera")
+  - p 0.42 → 0.56: photo credit ("Shikhar Sahay · 2026", accent dot) fades in bottom-right
+  - p 0.62 → 1: full-bleed hold with slow inner zoom (1 → 1.09) and upward photo drift; then the stage unpins and the introduction slides over
+- Inner photo has constant counter-parallax (drifts -9% over the scene)
+- Transform/opacity only; compositor-friendly
+
+### Navigation Fade
+
+- Nav fades out (opacity + slight rise) over scrollY 140 → 460px: once the aperture takes the viewport, fixed nav text would sit illegibly on the photograph
+- `pointer-events: none` when hidden; nav behavior is revisited in M2
+
+### Introduction Reveals
+
+- `whileInView` (IntersectionObserver via Motion), once per element, 12% viewport margin
+- Staggered: eyebrow, lede statement, then fragment columns (+0.08s each)
+- ease-out-expo, y 28px → 0
+
+### Theme Crossfade
+
+- 0.7s CSS transition of background-color/color/border-color on body and `.theme-fade` containers; no JS animation
+
+### Reduced Motion Behavior (implemented)
+
+- Global media query collapses all CSS animation/transition durations to 0.01ms → elements jump to final visible state instantly
+- `useReducedMotion()` from Motion: all scroll-driven styles are omitted (scene renders in resting composed state; content complete and coherent)
+- Cue travel loop is disabled by the global duration collapse
+- Theme crossfade collapses to instant switch
 
 ---
 
@@ -75,8 +224,8 @@
 | Pattern         | Description                       | Status    |
 | --------------- | --------------------------------- | --------- |
 | **Hover Lift**  | `translateY: -4px`, subtle shadow | UNDECIDED |
-| **Hover Scale** | `scale: 1.02–1.05`                | UNDECIDED |
-| **Tap Press**   | `scale: 0.97–0.98` on press       | UNDECIDED |
+| **Hover Scale** | `scale: 1.02-1.05`                | UNDECIDED |
+| **Tap Press**   | `scale: 0.97-0.98` on press       | UNDECIDED |
 | **Focus Ring**  | Animated focus outline            | UNDECIDED |
 | **Magnetic**    | Element follows cursor slightly   | UNDECIDED |
 
@@ -86,7 +235,7 @@
 
 ### Stagger
 
-- **Default stagger:** UNDECIDED (e.g., 50–100ms per item)
+- **Default stagger:** UNDECIDED (e.g., 50-100ms per item)
 - **Max stagger:** UNDECIDED (e.g., 300ms total for a group)
 - **Direction:** Top-to-bottom, left-to-right, or center-out
 
@@ -147,7 +296,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
 
 | Rule                           | Description                                                                              |
 | ------------------------------ | ---------------------------------------------------------------------------------------- |
-| **Transform/Opacity only**     | Prefer `transform` and `opacity` — they run on compositor thread                         |
+| **Transform/Opacity only**     | Prefer `transform` and `opacity` - they run on compositor thread                         |
 | **Will-change sparingly**      | Only on elements actively animating; remove after                                        |
 | **Layout thrashing avoidance** | Batch reads/writes; use `requestAnimationFrame`                                          |
 | **GPU layers**                 | Promote animated elements (`transform: translateZ(0)`) but don't overdo                  |
@@ -202,13 +351,13 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
 
 ## Testing Checklist
 
-- [ ] `prefers-reduced-motion: reduce` — all motion disabled/instant
-- [ ] `prefers-reduced-motion: no-preference` — full experience
-- [ ] Low-end device (throttled CPU) — 60fps maintained
-- [ ] Mobile touch — no hover-only interactions
-- [ ] Keyboard navigation — focus visible, no motion traps
-- [ ] Screen reader — no announcements for decorative animation
-- [ ] Cross-browser — Chrome, Firefox, Safari, Edge
+- [ ] `prefers-reduced-motion: reduce` - all motion disabled/instant
+- [ ] `prefers-reduced-motion: no-preference` - full experience
+- [ ] Low-end device (throttled CPU) - 60fps maintained
+- [ ] Mobile touch - no hover-only interactions
+- [ ] Keyboard navigation - focus visible, no motion traps
+- [ ] Screen reader - no announcements for decorative animation
+- [ ] Cross-browser - Chrome, Firefox, Safari, Edge
 
 ---
 

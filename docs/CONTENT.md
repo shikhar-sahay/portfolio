@@ -1,19 +1,47 @@
 # CONTENT.md
 
-> **Status:** This file is the eventual source of truth for all portfolio content.
-> Currently **EMPTY** — content will be populated during relevant milestones.
-> **Format:** Structured data (TypeScript/JSON) preferred over markdown for programmatic use.
+> **Status:** Implemented (2026-08-23). Content lives in typed modules under `src/content/` and is consumed by section components. This file documents the model.
+> **Format:** Structured TypeScript data modules, single source of truth per topic.
 
 ---
 
-## Content Structure Overview
+## Implemented Content Modules (v2)
+
+```
+src/content/
+├── profile.ts       # Name, location, coordinates, statement, education, links
+├── sections.ts      # Section registry: id, number, name, note (drives nav + opening + index)
+├── projects.ts      # Three artifacts with visual treatment keys and metrics
+├── experience.ts    # Era-grouped chronology (year, mood, entries)
+├── systems.ts       # Skill groups + certifications
+└── personality.ts   # Fragment words + voice captions (tonal, not factual claims)
+```
+
+### Rules encoded in the model
+
+- Metrics and claims come only from owner-supplied source material (55K+ users, 1.2M+ views, top 1% of 4,000+, top 3% of 2,000+, 1.8L+ rupees, CGPA 9.31, tens of thousands of followers, 4 to 7 member team).
+- `profile.links` values are placeholders (`#`, `/resume.pdf`) until the owner supplies real destinations.
+- Personality captions are voice lines, deliberately not factual claims.
+- No em dashes anywhere in content.
+
+### Section registry (drives navigation instrument, opening sequence, editorial index)
+
+v4 information architecture (owner-directed reorder: Experience precedes Skills, Skills precedes Projects):
+
+01 Identity (opening + hero), 02 About, 03 Experience, 04 Skills, 05 Projects, 06 Personality, 07 Contact + Footer.
+
+The resume artifact moment lives inside 07 (Contact + Footer) rather than as its own section.
+
+---
+
+## Legacy planning sections (pre-implementation, kept for reference)
 
 ```
 content/
 ├── hero.ts              # Hero copy, portrait reference
-├── projects.ts          # Selected work — full project data
+├── projects.ts          # Selected work  -  full project data
 ├── experience.ts        # Career/education timeline
-├── personality.ts       # Human layer — interests, writing, etc.
+├── personality.ts       # Human layer  -  interests, writing, etc.
 ├── contact.ts           # Contact info, social links
 └── meta.ts              # SEO, Open Graph, site metadata
 ```
@@ -22,15 +50,20 @@ content/
 
 ## Hero Content (M1)
 
+> **Note (2026-08-23, v2):** Hero statement and intro lede now come from
+> `src/content/profile.ts` (statementPre/statementEm, introLedePre/Em/Post).
+> They remain owner-provided provisional copy. Rule: no em dashes in any
+> website copy.
+
 ### Data Structure (UNDECIDED)
 
 ```typescript
 // content/hero.ts
 export const heroContent = {
   name: 'Shikhar Sahay',
-  // Striking statement — NOT "Hi, I'm Shikhar, a passionate Computer Science student..."
+  // Striking statement  -  NOT "Hi, I'm Shikhar, a passionate Computer Science student..."
   statement: 'UNDECIDED',
-  // Role indication — what he does
+  // Role indication  -  what he does
   role: 'UNDECIDED',
   // Invitation to continue
   cta: 'UNDECIDED',
@@ -43,10 +76,10 @@ export const heroContent = {
 
 ### Copy Guidelines (FINALIZED)
 
-- **No generic intros** — "Hi, I'm...", "Passionate...", "Aspiring..."
-- **Editorial voice** — confident, distinctive, memorable
-- **Concise** — hero is scanned in seconds
-- **Action-oriented** — invitation to explore, not just consume
+- **No generic intros** - "Hi, I'm...", "Passionate...", "Aspiring..."
+- **Editorial voice** - confident, distinctive, memorable
+- **Concise** - hero is scanned in seconds
+- **Action-oriented** - invitation to explore, not just consume
 
 ---
 
@@ -90,10 +123,10 @@ export interface Project {
 
 ### Content Guidelines (FINALIZED)
 
-- **Show, don't just tell** — metrics, outcomes, specific technical challenges
-- **Security work** — describe impact without sensitive details
-- **Images** — hero + gallery, optimized, with descriptive alt text
-- **Links** — live demo preferred, repo if public, case study if written
+- **Show, don't just tell** - metrics, outcomes, specific technical challenges
+- **Security work** - describe impact without sensitive details
+- **Images** - hero + gallery, optimized, with descriptive alt text
+- **Links** - live demo preferred, repo if public, case study if written
 
 ---
 
@@ -132,9 +165,9 @@ export interface ExperienceEntry {
 ### Content Guidelines (FINALIZED)
 
 - **Reverse chronological** (most recent first)
-- **Impact over duties** — "Built X that achieved Y" not "Responsible for X"
-- **Technical specificity** — name tools, languages, scale, constraints
-- **Security context** — frame cybersecurity work technically, not aesthetically
+- **Impact over duties** - "Built X that achieved Y" not "Responsible for X"
+- **Technical specificity** - name tools, languages, scale, constraints
+- **Security context** - frame cybersecurity work technically, not aesthetically
 
 ---
 
@@ -163,10 +196,10 @@ export const personalityContent = {
 
 ### Content Guidelines (FINALIZED)
 
-- **Curated, not comprehensive** — a few meaningful items per category
-- **Authentic voice** — not corporate, not forced
-- **Visual integration** — this content informs design but doesn't dictate a "hobbies section"
-- **Links to external** — writing on personal blog, Goodreads, Letterboxd, etc.
+- **Curated, not comprehensive** - a few meaningful items per category
+- **Authentic voice** - not corporate, not forced
+- **Visual integration** - this content informs design but doesn't dictate a "hobbies section"
+- **Links to external** - writing on personal blog, Goodreads, Letterboxd, etc.
 
 ---
 
@@ -201,8 +234,8 @@ export const contactContent = {
 ```typescript
 // content/meta.ts
 export const siteMeta = {
-  title: 'Shikhar Sahay — Portfolio',
-  description: 'UNDECIDED — ~160 chars for SEO',
+  title: 'Shikhar Sahay  -  Portfolio',
+  description: 'UNDECIDED  -  ~160 chars for SEO',
   url: 'UNDECIDED', // Production URL
   ogImage: '/images/og-portrait.jpg', // 1200x630
   twitterHandle: 'UNDECIDED',
@@ -221,10 +254,10 @@ export const siteMeta = {
 
 When populating:
 
-1. **Start with real data** — even draft content is better than placeholder
-2. **Keep in sync** — `CONTENT.md` documents the schema; actual data lives in `src/content/*.ts`
-3. **Version content** — if content changes, update both the data file and this doc
-4. **Review for security** — no internal IPs, secrets, PII, or sensitive project details
+1. **Start with real data** - even draft content is better than placeholder
+2. **Keep in sync** - `CONTENT.md` documents the schema; actual data lives in `src/content/*.ts`
+3. **Version content** - if content changes, update both the data file and this doc
+4. **Review for security** - no internal IPs, secrets, PII, or sensitive project details
 
 ---
 

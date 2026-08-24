@@ -1,6 +1,7 @@
-# AGENTS.md
+# docs/AGENTS.md
 
 > **Multi-Agent Working Guidelines**
+> The canonical agent instruction set is the root `AGENTS.md`. This file extends it with multi-agent session protocol details (read order per agent type, conflict resolution, onboarding). Where this file and the root `AGENTS.md` disagree, the root file wins.
 > This repository will be worked on by multiple AI coding agents across many sessions:
 >
 > - **Claude Code** (primary)
