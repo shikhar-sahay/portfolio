@@ -41,7 +41,7 @@ export function Experience() {
         </HighlightSweep>
 
         <div className="mt-[12vh] space-y-[12vh]">
-          {organizations.map((org, oi) => (
+          {organizations.map(org => (
             <motion.div
               key={org.org}
               {...reveal}

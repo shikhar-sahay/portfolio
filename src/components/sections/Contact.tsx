@@ -1,12 +1,12 @@
-import { ThemeToggle } from '@/components/layout/ThemeToggle';
+import { Magnetic } from '@/components/ui/Magnetic';
 import { Reveal } from '@/components/ui/Reveal';
 import { profile } from '@/content/profile';
 import { certifications } from '@/content/systems';
 import { organizations } from '@/content/experience';
 
 /**
- * 07 / Contact + Footer: the resume artifact moment ("Everything,
- * condensed.") followed by the ending.
+ * Footer: the resume artifact moment ("Everything, condensed."), the
+ * contact gesture, and the final frame with a large wordmark.
  */
 export function Contact() {
   const roles = organizations.flatMap(org =>
@@ -16,8 +16,8 @@ export function Contact() {
   return (
     <footer
       id="contact"
-      aria-label="Contact"
-      className="theme-fade border-ink/10 border-t bg-paper px-5 pb-10 pt-[18vh] sm:px-10"
+      aria-label="Contact and footer"
+      className="theme-fade border-ink/10 border-t bg-paper px-5 pt-[16vh] sm:px-10"
     >
       <div className="mx-auto max-w-6xl">
         <Reveal>
@@ -103,9 +103,11 @@ export function Contact() {
           </div>
         </Reveal>
 
-        {/* The ending */}
+        {/* Contact gesture */}
         <Reveal delay={0.08}>
-          <h2 className="mt-[16vh] max-w-[16ch] text-display uppercase text-ink">Say hello.</h2>
+          <h2 className="mt-[16vh] max-w-[16ch] text-display uppercase text-ink">
+            Say hello<span className="text-accent">.</span>
+          </h2>
         </Reveal>
 
         <Reveal delay={0.14}>
@@ -121,40 +123,48 @@ export function Contact() {
               { label: 'Email', href: profile.links.email, external: false },
               { label: 'GitHub', href: profile.links.github, external: true },
               { label: 'LinkedIn', href: profile.links.linkedin, external: true },
+              { label: 'Resume', href: profile.links.resume, external: false },
             ].map(link => (
               <li key={link.label} className="border-ink/15 border-b">
-                <a
-                  href={link.href}
-                  {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                  className="group flex items-baseline justify-between py-5"
-                >
-                  <span className="text-[clamp(1.5rem,3.5vw,2.75rem)] font-medium tracking-tight text-ink transition-transform duration-500 ease-expo group-hover:translate-x-2">
-                    {link.label}
-                  </span>
-                  <span
-                    aria-hidden="true"
-                    className="text-2xl text-accent transition-transform duration-500 ease-expo group-hover:translate-x-2"
+                <Magnetic strength={0.12} max={3} className="block">
+                  <a
+                    href={link.href}
+                    {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                    className="group flex items-baseline justify-between py-5"
                   >
-                    &rarr;
-                  </span>
-                </a>
+                    <span className="text-[clamp(1.5rem,3.5vw,2.75rem)] font-medium tracking-tight text-ink transition-transform duration-500 ease-expo group-hover:translate-x-2">
+                      {link.label}
+                    </span>
+                    <span
+                      aria-hidden="true"
+                      className="text-2xl text-accent transition-transform duration-500 ease-expo group-hover:translate-x-2"
+                    >
+                      &rarr;
+                    </span>
+                  </a>
+                </Magnetic>
               </li>
             ))}
           </ul>
         </Reveal>
+      </div>
 
-        {/* Closing mark */}
-        <Reveal delay={0.1}>
-          <div className="mt-[14vh] flex flex-wrap items-end justify-between gap-6">
-            <p className="font-serif text-3xl italic text-accent">fin.</p>
-            <div className="flex items-center gap-6">
-              <ThemeToggle />
-              <p className="text-micro uppercase tracking-[0.16em] text-muted">
-                {profile.location} · 2026
-              </p>
-            </div>
-          </div>
+      {/* Final frame: large wordmark + meta */}
+      <div className="mt-[12vh] select-none overflow-hidden" aria-hidden="true">
+        <Reveal y={60}>
+          <p className="whitespace-nowrap text-center text-[clamp(3.5rem,12.5vw,12rem)] font-semibold uppercase leading-none tracking-tight text-ink">
+            Shikhar Sahay
+          </p>
         </Reveal>
+      </div>
+
+      <div className="border-ink/10 mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 border-t py-6">
+        <p className="text-micro uppercase tracking-[0.16em] text-muted">
+          Designed and built by Shikhar Sahay
+        </p>
+        <p className="text-micro uppercase tracking-[0.16em] text-muted">
+          {profile.location} · 2026
+        </p>
       </div>
     </footer>
   );

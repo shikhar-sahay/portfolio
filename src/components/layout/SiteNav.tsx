@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { motion, useMotionValueEvent, useReducedMotion, useScroll } from 'motion/react';
 import { navLinks, sections } from '@/content/sections';
 import { Magnetic } from '@/components/ui/Magnetic';
+import { ThemeToggle } from '@/components/layout/ThemeToggle';
 
 /**
  * Persistent site header. Behaves like a high-end site navigation:
@@ -115,6 +116,10 @@ export function SiteNav() {
                   </li>
                 );
               })}
+              <li aria-hidden="true" className="bg-ink/20 hidden h-3 w-px sm:block" />
+              <li>
+                <ThemeToggle />
+              </li>
             </ul>
           </nav>
         </div>
