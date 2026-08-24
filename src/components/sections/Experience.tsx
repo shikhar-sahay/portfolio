@@ -95,13 +95,13 @@ export function Experience() {
                   {t.entries.map((entry, i) => (
                     <article
                       key={`${entry.org}-${entry.role}-${i}`}
-                      className="border-ink/15 border-t pt-6"
+                      className="border-ink/15 hover:border-accent/50 group border-t pt-6 transition-colors duration-500"
                     >
                       <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
-                        <h3 className="text-xl font-semibold tracking-tight text-ink">
+                        <h3 className="text-xl font-semibold tracking-tight text-ink transition-transform duration-500 ease-expo group-hover:translate-x-1.5">
                           {entry.org}
                         </h3>
-                        <p className="text-micro uppercase tabular-nums tracking-[0.14em] text-muted">
+                        <p className="text-micro uppercase tabular-nums tracking-[0.14em] text-muted transition-colors duration-500 group-hover:text-accent">
                           {entry.period}
                           {entry.location ? ` · ${entry.location}` : ''}
                         </p>
@@ -111,7 +111,7 @@ export function Experience() {
                         {entry.points.map(point => (
                           <li key={point} className="flex gap-3 text-sm leading-relaxed text-muted">
                             <span
-                              className="mt-[0.55em] h-px w-3 shrink-0 bg-accent"
+                              className="mt-[0.55em] h-px w-3 shrink-0 bg-accent transition-all duration-500 ease-expo group-hover:w-5"
                               aria-hidden="true"
                             />
                             {point}

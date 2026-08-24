@@ -3,12 +3,12 @@ import { profile } from '@/content/profile';
 import { certifications, skillGroups } from '@/content/systems';
 
 /**
- * 04 / Systems: a plain inventory, honestly presented. No fake proficiency
- * bars: groups, counts, and the credentials that back them.
+ * 04 / Skills: an editorial tool index, not a wall of badges. Each group
+ * is a large serif heading with the tools as a flowing inline list;
+ * hovering a tool pulls it into the accent. No fake proficiency bars:
+ * tools are either in use or they are not listed.
  */
 export function Skills() {
-  let running = 0;
-
   return (
     <section
       id="skills"
@@ -19,44 +19,39 @@ export function Skills() {
         <Reveal>
           <p className="flex items-center gap-3 text-micro uppercase tracking-[0.16em] text-muted">
             <span className="inline-block h-px w-10 bg-accent" aria-hidden="true" />
-            04 · Skills
+            Skills
           </p>
         </Reveal>
         <Reveal delay={0.08}>
           <h2 className="mt-8 max-w-[26ch] text-lede font-medium tracking-tight text-ink">
-            The inventory behind the work. No proficiency percentages; tools are either in use or
-            they are not listed.
+            The inventory behind the work. Tools are either in use or they are not listed.
           </h2>
         </Reveal>
 
         <div className="mt-[10vh] grid gap-16 lg:grid-cols-[1fr_320px] lg:gap-24">
-          <div className="space-y-14">
+          <div className="space-y-[9vh]">
             {skillGroups.map((group, gi) => (
               <Reveal key={group.id} delay={gi * 0.06}>
-                <div className="border-ink/15 flex items-baseline justify-between border-t pt-4">
-                  <p className="text-micro uppercase tracking-[0.16em] text-accent">
-                    {group.id} · {group.label}
-                  </p>
+                <div className="border-ink/15 flex items-baseline justify-between border-t pt-5">
+                  <h3 className="font-serif text-3xl italic tracking-tight text-ink sm:text-4xl">
+                    {group.label}
+                  </h3>
                   <p className="text-micro uppercase tabular-nums tracking-[0.16em] text-muted">
-                    {group.items.length} items
+                    {group.items.length}
                   </p>
                 </div>
-                <ul className="mt-6 flex flex-wrap gap-2.5">
-                  {group.items.map(item => {
-                    running += 1;
-                    return (
-                      <li
-                        key={item}
-                        className="border-ink/15 border px-3 py-1.5 text-sm text-ink transition-colors duration-300 hover:border-accent"
-                      >
-                        <span className="mr-2 text-micro tabular-nums text-muted">
-                          {String(running).padStart(2, '0')}
-                        </span>
+                <p className="mt-5 max-w-[52ch] text-lg leading-loose text-muted">
+                  {group.items.map((item, i) => (
+                    <span key={item}>
+                      <span className="cursor-default text-ink transition-all duration-300 ease-expo hover:text-accent">
                         {item}
-                      </li>
-                    );
-                  })}
-                </ul>
+                      </span>
+                      {i < group.items.length - 1 && (
+                        <span className="text-ink/25 mx-2.5 select-none">/</span>
+                      )}
+                    </span>
+                  ))}
+                </p>
               </Reveal>
             ))}
           </div>

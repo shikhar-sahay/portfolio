@@ -56,7 +56,7 @@ export function About() {
           <motion.div
             {...reveal}
             transition={{ duration: 0.9, delay: 0.16, ease }}
-            className="mt-[8vh] grid max-w-md grid-cols-2 gap-6"
+            className="mt-[8vh] grid max-w-xl grid-cols-2 gap-6 sm:grid-cols-3"
           >
             <div className="border-ink/15 border-t pt-4">
               <p className="text-micro uppercase tracking-[0.16em] text-accent">Based in</p>
@@ -65,6 +65,12 @@ export function About() {
             <div className="border-ink/15 border-t pt-4">
               <p className="text-micro uppercase tracking-[0.16em] text-accent">Studying</p>
               <p className="mt-2 text-sm text-muted">B.Tech CSE (Cybersecurity), VIT</p>
+            </div>
+            <div className="border-ink/15 col-span-2 border-t pt-4 sm:col-span-1">
+              <p className="text-micro uppercase tracking-[0.16em] text-accent">Otherwise</p>
+              <p className="mt-2 text-sm text-muted">
+                Writing, music, football, theatre, and long detours through security rabbit holes.
+              </p>
             </div>
           </motion.div>
         </div>
