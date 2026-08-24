@@ -2,35 +2,331 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ------------------------------------------------------------------ */
+/* Design tokens. EXPERIMENTAL palette: warm paper, vermilion accent.  */
+/* Dark is an intentional alternate colorway, not inverted black.      */
+/* See docs/DESIGN_SYSTEM.md.                                          */
+/* ------------------------------------------------------------------ */
+
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 255, 255, 255;
-  --background-end-rgb: 255, 255, 255;
+  --paper: #f3efe6;
+  --surface: #e9e2d3;
+  --ink: #1d1915;
+  --muted: #7c7568;
+  --accent: #bc3f1a;
+  /* Hero entrance waits for the opening sequence; the head script sets
+     this to 0s for returning visitors and reduced-motion users. */
+  --intro-delay: 1.35s;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+.dark {
+  --paper: #161310;
+  --surface: #211c16;
+  --ink: #ece4d4;
+  --muted: #998f7e;
+  --accent: #e0643b;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb)))
-    rgb(var(--background-start-rgb));
+  background-color: var(--paper);
+  color: var(--ink);
   font-family:
+    var(--font-sans),
     system-ui,
     -apple-system,
-    BlinkMacSystemFont,
     'Segoe UI',
-    Roboto,
     sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+  transition:
+    background-color 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.7s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+::selection {
+  background-color: var(--accent);
+  color: var(--paper);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+/* Theme crossfade for surfaces that do not inherit body transitions */
+.theme-fade,
+.theme-fade::before,
+.theme-fade::after {
+  transition:
+    background-color 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Returning visitors / reduced motion: never show the opening overlay */
+html[data-intro='skip'] .opening-overlay {
+  display: none;
+}
+
+/* Film grain: static SVG turbulence, no runtime cost */
+.grain::after {
+  content: '';
+  position: fixed;
+  inset: -50%;
+  z-index: 60;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.05;
+}
+
+/* Atmosphere: a very slow drifting light field above content, below nav */
+.atmosphere {
+  position: fixed;
+  inset: -25%;
+  z-index: 45;
+  pointer-events: none;
+  background-image: radial-gradient(42% 42% at 68% 32%, rgba(188, 63, 26, 0.05), transparent 70%),
+    radial-gradient(46% 46% at 28% 72%, rgba(124, 117, 104, 0.07), transparent 70%);
+  animation: atmosphere-drift 80s ease-in-out infinite alternate;
+}
+
+@keyframes atmosphere-drift {
+  from {
+    transform: translate3d(-1.5%, -1%, 0);
+  }
+  to {
+    transform: translate3d(1.5%, 1.5%, 0);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Entrance choreography (time-based, CSS only, ease-out-expo)         */
+/* Delays stack on --intro-delay so the hero boots as the opening      */
+/* sequence lifts. Returning visitors get 0s delays via the head       */
+/* script. Reduced motion collapses everything to final state.         */
+/* ------------------------------------------------------------------ */
+
+@keyframes mask-rise {
+  from {
+    transform: translateY(115%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes iris-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes ring-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.anim-mask {
+  display: block;
+  overflow: hidden;
+  padding-block-end: 0.08em;
+  margin-block-end: -0.08em;
+}
+
+.anim-mask > span {
+  display: block;
+  transform: translateY(115%);
+  animation: mask-rise 1.1s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+}
+
+.anim-fade-rise {
+  opacity: 0;
+  animation: fade-rise 0.9s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+}
+
+.anim-fade-in {
+  opacity: 0;
+  animation: fade-in 1s ease forwards;
+}
+
+/* ------------------------------------------------------------------ */
+/* Portrait instrument: circular aperture + technical ring system      */
+/* ------------------------------------------------------------------ */
+
+.portrait-photo {
+  animation: iris-in 1.3s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+  animation-delay: calc(var(--intro-delay) + 0.15s);
+  opacity: 0;
+}
+
+.ring-boot {
+  stroke-dasharray: 302;
+  stroke-dashoffset: 302;
+  animation: ring-draw 1.5s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+  animation-delay: calc(var(--intro-delay) + 0.3s);
+}
+
+.ring-late {
+  opacity: 0;
+  animation: fade-in 1s ease forwards;
+  animation-delay: calc(var(--intro-delay) + 0.9s);
+}
+
+@keyframes spin-cw {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spin-ccw {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+.ring-dash {
+  transform-origin: 50% 50%;
+  animation: spin-cw 90s linear infinite;
+}
+
+.ring-arc {
+  transform-origin: 50% 50%;
+  animation: spin-ccw 26s linear infinite;
+}
+
+/* ------------------------------------------------------------------ */
+/* Scroll cue: hairline with a traveling segment                       */
+/* ------------------------------------------------------------------ */
+
+@keyframes cue-travel {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(200%);
+  }
+}
+
+.cue-line {
+  position: relative;
+  width: 1px;
+  height: 44px;
+  overflow: hidden;
+  background-color: rgba(127, 118, 102, 0.35);
+  background-color: color-mix(in srgb, var(--ink) 18%, transparent);
+}
+
+.cue-line::before {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  height: 40%;
+  background-color: var(--accent);
+  animation: cue-travel 2.2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+/* Outline display type: second line of the name */
+.type-outline {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--ink);
+}
+
+/* Light variant for the opening sequence's ink field */
+.type-outline-light {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--paper);
+}
+
+/* ------------------------------------------------------------------ */
+/* In-view signal motifs (gated by data-inview set by <InView>)        */
+/* ------------------------------------------------------------------ */
+
+@keyframes signal-flow {
+  to {
+    stroke-dashoffset: -28;
+  }
+}
+
+.signal-node {
+  opacity: 0;
+  transform: translateY(6px);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+[data-inview] .signal-node {
+  opacity: 1;
+  transform: none;
+}
+
+[data-inview] .signal-edge {
+  animation: signal-flow 1.6s linear infinite;
+}
+
+/* ------------------------------------------------------------------ */
+/* Reduced motion: everything lands in final state instantly           */
+/* ------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .portrait-photo {
+    opacity: 1;
+    transform: none;
+  }
+
+  .ring-boot {
+    stroke-dashoffset: 0;
+  }
+
+  .ring-late {
+    opacity: 1;
+  }
+
+  .atmosphere {
+    animation: none;
   }
 }

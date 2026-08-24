@@ -1,13 +1,32 @@
+import { Opening } from '@/components/layout/Opening';
+import { SiteNav } from '@/components/layout/SiteNav';
+import { Hero } from '@/components/sections/Hero';
+import { About } from '@/components/sections/About';
+import { Experience } from '@/components/sections/Experience';
+import { Skills } from '@/components/sections/Skills';
+import { Projects } from '@/components/sections/Projects';
+import { Personality } from '@/components/sections/Personality';
+import { Contact } from '@/components/sections/Contact';
+
+/**
+ * Long-scroll narrative, in order (see AGENTS.md section 5):
+ * 01 Identity, 02 About, 03 Experience, 04 Skills, 05 Projects,
+ * 06 Personality, 07 Contact + Footer.
+ */
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center px-4 py-20 text-center">
-      <h1 className="mb-4 text-4xl font-bold tracking-tight sm:text-6xl">Shikhar Sahay</h1>
-      <p className="text-muted-foreground mx-auto max-w-2xl text-lg">
-        Portfolio — Computer Science student, cybersecurity enthusiast, builder of memorable things.
-      </p>
-      <p className="text-muted-foreground mt-8 text-sm">
-        Technical foundation initialized. Milestone 0 complete.
-      </p>
-    </main>
+    <>
+      <Opening />
+      <SiteNav />
+      <main>
+        <Hero />
+        <About />
+        <Experience />
+        <Skills />
+        <Projects />
+        <Personality />
+        <Contact />
+      </main>
+    </>
   );
 }
