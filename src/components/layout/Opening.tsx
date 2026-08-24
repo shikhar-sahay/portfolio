@@ -49,8 +49,6 @@ export function Opening() {
 
   if (gone) return null;
 
-  const line = 200;
-
   return (
     <div
       aria-hidden="true"

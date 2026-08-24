@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'motion/react';
-import { sections } from '@/content/sections';
+import { WordReveal } from '@/components/ui/WordReveal';
 import { profile } from '@/content/profile';
 
 const reveal = {
@@ -13,87 +13,55 @@ const reveal = {
 const ease = [0.19, 1, 0.22, 1] as const;
 
 /**
- * 02 / About: personal context plus the editorial index, which acts
- * as a navigation instrument (names, notes, hover reveals).
+ * 02 / About: the lede reveals word by word with scroll, grounded by a
+ * small meta row. No index: the persistent header is the navigation.
  */
 export function About() {
-  const rest = sections.slice(2);
-
   return (
     <section
       id="about"
       aria-label="About"
-      className="theme-fade relative z-10 bg-paper px-5 pb-[14vh] pt-[20vh] sm:px-10"
+      className="theme-fade relative z-10 bg-paper px-5 pb-[16vh] pt-[18vh] sm:px-10"
     >
-      <div className="mx-auto grid max-w-6xl gap-16 lg:grid-cols-[1fr_360px] lg:gap-24">
-        <div>
-          <motion.p
-            {...reveal}
-            transition={{ duration: 0.9, ease }}
-            className="mb-10 flex items-center gap-3 text-micro uppercase tracking-[0.16em] text-muted"
-          >
-            <span className="inline-block h-px w-10 bg-accent" aria-hidden="true" />
-            About
-          </motion.p>
-
-          <motion.h2
-            {...reveal}
-            transition={{ duration: 1, delay: 0.08, ease }}
-            className="max-w-[24ch] text-lede font-medium tracking-tight text-ink"
-          >
-            {profile.introLedePre}
-            <em className="font-serif font-normal italic">{profile.introLedeEm}</em>
-            {profile.introLedePost}
-          </motion.h2>
-
-          <motion.div
-            {...reveal}
-            transition={{ duration: 0.9, delay: 0.16, ease }}
-            className="mt-[8vh] grid max-w-xl grid-cols-2 gap-6 sm:grid-cols-3"
-          >
-            <div className="border-ink/15 border-t pt-4">
-              <p className="text-micro uppercase tracking-[0.16em] text-accent">Based in</p>
-              <p className="mt-2 text-sm text-muted">{profile.location}</p>
-            </div>
-            <div className="border-ink/15 border-t pt-4">
-              <p className="text-micro uppercase tracking-[0.16em] text-accent">Studying</p>
-              <p className="mt-2 text-sm text-muted">B.Tech CSE (Cybersecurity), VIT</p>
-            </div>
-            <div className="border-ink/15 col-span-2 border-t pt-4 sm:col-span-1">
-              <p className="text-micro uppercase tracking-[0.16em] text-accent">Otherwise</p>
-              <p className="mt-2 text-sm text-muted">
-                Writing, music, football, theatre, and long detours through security rabbit holes.
-              </p>
-            </div>
-          </motion.div>
-        </div>
-
-        {/* Editorial index: a navigation instrument */}
-        <motion.nav
+      <div className="mx-auto max-w-6xl">
+        <motion.p
           {...reveal}
-          transition={{ duration: 1, delay: 0.2, ease }}
-          aria-label="Site index"
-          className="self-start lg:sticky lg:top-28"
+          transition={{ duration: 0.9, ease }}
+          className="mb-10 flex items-center gap-3 text-micro uppercase tracking-[0.16em] text-muted"
         >
-          <p className="mb-4 text-micro uppercase tracking-[0.16em] text-muted">Index</p>
-          <ul>
-            {rest.map(section => (
-              <li key={section.id} className="border-ink/15 border-t last:border-b">
-                <a
-                  href={`#${section.id}`}
-                  className="group flex items-baseline justify-between gap-4 py-3.5 transition-colors duration-300"
-                >
-                  <span className="font-medium tracking-tight text-ink transition-transform duration-500 ease-expo group-hover:translate-x-1.5">
-                    {section.name}
-                  </span>
-                  <span className="text-micro uppercase tracking-[0.14em] text-muted opacity-0 transition-opacity duration-300 group-focus-within:opacity-100 group-hover:opacity-100">
-                    {section.note}
-                  </span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </motion.nav>
+          <span className="inline-block h-px w-10 bg-accent" aria-hidden="true" />
+          About
+        </motion.p>
+
+        <WordReveal
+          className="max-w-[30ch] text-[clamp(1.75rem,4.5vw,3.5rem)] font-medium leading-[1.25] tracking-tight text-ink sm:max-w-[34ch]"
+          segments={[
+            { text: profile.introLedePre },
+            { text: profile.introLedeEm, em: true },
+            { text: profile.introLedePost },
+          ]}
+        />
+
+        <motion.div
+          {...reveal}
+          transition={{ duration: 0.9, delay: 0.1, ease }}
+          className="mt-[9vh] grid max-w-xl grid-cols-2 gap-6 sm:grid-cols-3"
+        >
+          <div className="border-ink/15 border-t pt-4">
+            <p className="text-micro uppercase tracking-[0.16em] text-accent">Based in</p>
+            <p className="mt-2 text-sm text-muted">{profile.location}</p>
+          </div>
+          <div className="border-ink/15 border-t pt-4">
+            <p className="text-micro uppercase tracking-[0.16em] text-accent">Studying</p>
+            <p className="mt-2 text-sm text-muted">B.Tech CSE (Cybersecurity), VIT</p>
+          </div>
+          <div className="border-ink/15 col-span-2 border-t pt-4 sm:col-span-1">
+            <p className="text-micro uppercase tracking-[0.16em] text-accent">Otherwise</p>
+            <p className="mt-2 text-sm text-muted">
+              Writing, music, football, theatre, and long detours through security rabbit holes.
+            </p>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

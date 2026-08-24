@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'motion/react';
-import { HighlightSweep } from '@/components/ui/HighlightSweep';
+import { WordReveal } from '@/components/ui/WordReveal';
 import { organizations } from '@/content/experience';
 
 const ease = [0.19, 1, 0.22, 1] as const;
@@ -35,10 +35,15 @@ export function Experience() {
           Experience
         </motion.p>
 
-        <HighlightSweep className="mt-8 max-w-[26ch] text-lede font-medium tracking-tight">
-          From esports group chats to GMP-regulated infrastructure, one long thread:{' '}
-          <em className="font-serif font-normal italic">build the thing, gather the people.</em>
-        </HighlightSweep>
+        <WordReveal
+          className="mt-8 max-w-[26ch] text-lede font-medium tracking-tight"
+          segments={[
+            {
+              text: 'From esports group chats to GMP-regulated infrastructure, one long thread: ',
+            },
+            { text: 'build the thing, gather the people.', em: true },
+          ]}
+        />
 
         <div className="mt-[12vh] space-y-[12vh]">
           {organizations.map(org => (
