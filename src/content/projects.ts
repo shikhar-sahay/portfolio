@@ -6,7 +6,6 @@ export interface ProjectLinks {
 
 export interface Project {
   id: string;
-  index: string;
   name: string;
   kind: string;
   description: string;
@@ -26,7 +25,6 @@ export interface Project {
 export const projects: Project[] = [
   {
     id: 'papers',
-    index: 'P.01',
     name: 'Papers',
     kind: 'Public platform',
     description:
@@ -40,7 +38,6 @@ export const projects: Project[] = [
   },
   {
     id: 'hawkeye',
-    index: 'P.02',
     name: 'HawkEye',
     kind: 'Security visualization',
     description:
@@ -51,7 +48,6 @@ export const projects: Project[] = [
   },
   {
     id: 'holmeskit',
-    index: 'P.03',
     name: 'HolmesKit',
     kind: 'Windows toolkit',
     description:
@@ -62,7 +58,6 @@ export const projects: Project[] = [
   },
   {
     id: 'honeypot',
-    index: 'P.04',
     name: 'SSH Honeypot',
     kind: 'Security experiment',
     description:
@@ -74,7 +69,6 @@ export const projects: Project[] = [
   },
   {
     id: 'site',
-    index: 'P.05',
     name: 'This Site',
     kind: 'The page you are on',
     description:

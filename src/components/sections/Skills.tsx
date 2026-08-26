@@ -2,17 +2,18 @@ import { Reveal } from '@/components/ui/Reveal';
 import { certifications, skillGroups, type Skill } from '@/content/systems';
 
 /**
- * 04 / Skills: each technology is a small golden emblem, an object rather
- * than a line of text. The gold exists only here (and in certifications),
- * so it reads as its own material within the palette. No proficiency bars,
- * no pills. Education lives in the control center and footer.
+ * Skills: each group is a slow drifting marquee of golden emblems, one
+ * direction per row, pausing under the cursor. The emblem core is a slot:
+ * a serif monogram today, a technology logo can drop into the same frame
+ * later without touching the layout. No counts, no proficiency bars.
+ * Certifications keep their own quiet register below.
  */
 export function Skills() {
   return (
     <section
       id="skills"
       aria-label="Skills"
-      className="theme-fade border-ink/10 border-t bg-paper px-5 py-[16vh] sm:px-10"
+      className="theme-fade border-ink/10 border-t bg-paper px-5 py-[14vh] sm:px-10"
     >
       <div className="mx-auto max-w-6xl">
         <Reveal>
@@ -27,40 +28,37 @@ export function Skills() {
           </h2>
         </Reveal>
 
-        <div className="mt-[10vh] space-y-[10vh]">
+        <div className="mt-[9vh] space-y-[9vh]">
           {skillGroups.map((group, gi) => (
             <Reveal key={group.id} delay={gi * 0.05}>
-              <div className="border-ink/15 flex items-baseline justify-between border-t pt-5">
+              <div className="border-ink/15 border-t pt-5">
                 <h3 className="font-serif text-3xl italic tracking-tight text-ink sm:text-4xl">
                   {group.label}
                 </h3>
-                <p className="text-micro uppercase tabular-nums tracking-[0.16em] text-muted">
-                  {group.items.length}
-                </p>
               </div>
-              <ul className="mt-9 flex flex-wrap gap-x-7 gap-y-9">
-                {group.items.map(skill => (
-                  <li key={skill.name}>
-                    <SkillEmblem skill={skill} />
-                  </li>
-                ))}
-              </ul>
+              <SkillRow items={group.items} reverse={gi % 2 === 1} />
             </Reveal>
           ))}
         </div>
 
         {/* Certifications: their own quiet register */}
         <Reveal>
-          <div className="border-ink/15 mt-[12vh] border-t pt-5">
+          <div className="border-ink/15 mt-[11vh] border-t pt-5">
             <h3 className="text-micro uppercase tracking-[0.16em] text-accent">Certifications</h3>
-            <ul className="mt-6 grid gap-x-12 gap-y-4 sm:grid-cols-2">
+            <ul className="mt-6 grid gap-x-14 sm:grid-cols-2">
               {certifications.map(cert => (
                 <li
                   key={cert.name}
-                  className="border-ink/10 flex items-baseline justify-between gap-4 border-b pb-3"
+                  className="group/cert border-ink/10 flex items-center justify-between gap-4 border-b py-4"
                 >
-                  <span className="text-sm text-ink">{cert.name}</span>
-                  <span className="shrink-0 text-micro uppercase tracking-[0.14em] text-muted">
+                  <span className="flex items-baseline gap-3 text-sm text-ink">
+                    <span
+                      aria-hidden="true"
+                      className="inline-block h-1.5 w-1.5 shrink-0 rotate-45 border border-ink/40 transition-colors duration-500 group-hover/cert:border-accent group-hover/cert:bg-accent"
+                    />
+                    {cert.name}
+                  </span>
+                  <span className="shrink-0 text-micro uppercase tracking-[0.14em] text-muted transition-colors duration-300 group-hover/cert:text-ink">
                     {cert.issuer}
                   </span>
                 </li>
@@ -73,11 +71,44 @@ export function Skills() {
   );
 }
 
+/**
+ * One drifting row. The track holds two identical halves so the -50%
+ * translate loops seamlessly; each half is repeated enough times to
+ * always cover the widest container.
+ */
+function SkillRow({ items, reverse }: { items: Skill[]; reverse: boolean }) {
+  const half: Skill[] = [];
+  do {
+    for (const item of items) half.push(item);
+  } while (half.length < 12);
+  const duration = `${20 + half.length * 2.2}s`;
+
+  return (
+    <div className={`marquee marquee-fade mt-8 ${reverse ? 'marquee-reverse' : ''}`}>
+      <div
+        className="marquee-track"
+        style={{ ['--marquee-duration' as string]: duration }}
+        aria-hidden="true"
+      >
+        {[...half, ...half].map((skill, i) => (
+          <SkillEmblem key={`${skill.name}-${i}`} skill={skill} />
+        ))}
+      </div>
+      {/* Screen readers get one static copy of the row */}
+      <ul className="sr-only">
+        {items.map(skill => (
+          <li key={skill.name}>{skill.name}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 function SkillEmblem({ skill }: { skill: Skill }) {
   return (
-    <div className="group flex w-[76px] flex-col items-center gap-3">
-      {/* Emblem: gold ring, monogram core, a dashed orbit that wakes on hover */}
-      <div className="relative flex h-16 w-16 items-center justify-center">
+    <div className="group mx-4 flex w-[88px] shrink-0 flex-col items-center gap-3 py-2">
+      {/* Emblem frame: the core is a slot, ready to hold a real logo later */}
+      <div className="relative flex h-20 w-20 items-center justify-center">
         <span
           aria-hidden="true"
           className="border-gold/60 absolute inset-0 rounded-full border transition-transform duration-700 ease-expo group-hover:rotate-90"
@@ -88,9 +119,9 @@ function SkillEmblem({ skill }: { skill: Skill }) {
         />
         <span
           aria-hidden="true"
-          className="group-hover:bg-gold/10 absolute inset-[7px] rounded-full bg-surface transition-colors duration-500"
+          className="group-hover:bg-gold/10 absolute inset-[8px] rounded-full bg-surface transition-colors duration-500"
         />
-        <span className="relative font-serif text-lg italic tracking-tight text-gold">
+        <span className="relative font-serif text-xl italic tracking-tight text-gold">
           {skill.abbr}
         </span>
       </div>

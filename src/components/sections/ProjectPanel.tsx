@@ -12,15 +12,16 @@ export function ProjectPanel({ project }: { project: Project }) {
   return (
     <article className="border-ink/15 hover:border-accent/70 group flex h-full flex-col border transition-colors duration-500">
       {/* Preview surface: fixed height, project-specific motif */}
-      <div className="border-ink/15 relative h-40 border-b">
-        <InView>
-          {project.visual === 'utility' && <UtilityPreview />}
-          {project.visual === 'signal' && <SignalPreview />}
-          {project.visual === 'manifest' && <ManifestPreview />}
-          {project.visual === 'honeypot' && <HoneypotPreview />}
-          {project.visual === 'site' && <SitePreview />}
-        </InView>
-        <p className="absolute right-3 top-3 text-micro tabular-nums text-muted">{project.index}</p>
+      <div className="bg-surface/60 border-ink/15 relative h-44 border-b">
+        <div className="absolute inset-0 flex items-center justify-center p-4">
+          <InView className="w-full">
+            {project.visual === 'utility' && <UtilityPreview />}
+            {project.visual === 'signal' && <SignalPreview />}
+            {project.visual === 'manifest' && <ManifestPreview />}
+            {project.visual === 'honeypot' && <HoneypotPreview />}
+            {project.visual === 'site' && <SitePreview />}
+          </InView>
+        </div>
       </div>
 
       {/* Info block: clamped so every panel stays the same height */}

@@ -1,7 +1,8 @@
 'use client';
 
-import dynamic from 'next/dynamic';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import dynamic from 'next/dynamic';
+import { useReducedMotion } from 'motion/react';
 import { Reveal } from '@/components/ui/Reveal';
 import { projects } from '@/content/projects';
 
@@ -10,54 +11,144 @@ const ProjectPanel = dynamic(() => import('./ProjectPanel').then(m => m.ProjectP
   loading: () => <div className="border-ink/10 h-[540px] border" aria-hidden="true" />,
 });
 
+const AUTO_SPEED = 40; // px per second, the resting drift
+
 /**
- * Projects: a horizontal, looping, keyboard-accessible carousel of
- * artifact panels. Every panel shares the same architecture: fixed
- * preview surface, fixed info block (clamped), fixed stack/links row.
+ * Projects: a continuously drifting infinite carousel. The track holds two
+ * copies of the row and the offset wraps modulo one copy width, so cards
+ * leaving the right re-enter from the left with no seam. The drift runs
+ * until the visitor touches it (drag, swipe, arrows, keys): from that
+ * moment it stays manual for the session. One rAF loop owns the track and
+ * pauses entirely when the carousel is offscreen.
  */
 export function Projects() {
-  const count = projects.length;
-  const [index, setIndex] = useState(0);
-  const [animated, setAnimated] = useState(true);
+  const reduce = useReducedMotion();
   const viewportRef = useRef<HTMLDivElement>(null);
-  const [slideWidth, setSlideWidth] = useState(0);
-  const touchX = useRef<number | null>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const s = useRef({
+    offset: 0,
+    setWidth: 0,
+    step: 1,
+    target: null as number | null,
+    dragging: false,
+    lastX: 0,
+    moved: 0,
+    auto: true,
+    visible: true,
+    lastT: 0,
+  });
+  const [drifting, setDrifting] = useState(true);
 
-  const slideStep = slideWidth + 24; // slide + gap
+  const stopAuto = useCallback(() => {
+    if (s.current.auto) {
+      s.current.auto = false;
+      setDrifting(false);
+    }
+  }, []);
 
   useEffect(() => {
+    const track = trackRef.current;
+    const viewport = viewportRef.current;
+    if (!track || !viewport) return;
+    const st = s.current;
+
     const measure = () => {
-      const el = viewportRef.current;
-      if (el) setSlideWidth(el.querySelector('[data-slide]')?.clientWidth ?? 0);
+      const slides = track.querySelectorAll<HTMLElement>('[data-slide]');
+      if (slides.length >= 2) {
+        st.step = slides[1].offsetLeft - slides[0].offsetLeft;
+      }
+      st.setWidth = track.scrollWidth / 2;
     };
     measure();
     window.addEventListener('resize', measure);
-    return () => window.removeEventListener('resize', measure);
+
+    const io = new IntersectionObserver(([entry]) => {
+      st.visible = entry.isIntersecting;
+    });
+    io.observe(viewport);
+
+    let raf = 0;
+    const tick = (t: number) => {
+      const dt = Math.min(64, t - (st.lastT || t));
+      st.lastT = t;
+      if (st.visible) {
+        if (st.target !== null) {
+          st.offset += (st.target - st.offset) * 0.16;
+          if (Math.abs(st.target - st.offset) < 0.5) {
+            st.offset = st.target;
+            st.target = null;
+          }
+        } else if (!st.dragging && st.auto) {
+          st.offset -= (AUTO_SPEED * dt) / 1000;
+        }
+        if (st.setWidth > 0) {
+          while (st.offset <= -st.setWidth) {
+            st.offset += st.setWidth;
+            if (st.target !== null) st.target += st.setWidth;
+          }
+          while (st.offset > 0) {
+            st.offset -= st.setWidth;
+            if (st.target !== null) st.target -= st.setWidth;
+          }
+        }
+        track.style.transform = `translate3d(${st.offset}px,0,0)`;
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      io.disconnect();
+      window.removeEventListener('resize', measure);
+    };
   }, []);
 
-  const go = useCallback((dir: 1 | -1) => {
-    setAnimated(true);
-    setIndex(i => i + dir);
-  }, []);
+  const go = useCallback(
+    (dir: 1 | -1) => {
+      stopAuto();
+      const st = s.current;
+      st.target = Math.round(st.offset / st.step) * st.step + dir * st.step;
+    },
+    [stopAuto]
+  );
 
-  // Seamless loop: after sliding into the cloned region, snap back silently.
-  const onSettled = () => {
-    if (index >= count) {
-      setAnimated(false);
-      setIndex(index - count);
-    } else if (index < 0) {
-      setAnimated(false);
-      setIndex(index + count);
-    }
+  const onPointerDown = (e: React.PointerEvent) => {
+    const st = s.current;
+    stopAuto();
+    st.dragging = true;
+    st.lastX = e.clientX;
+    st.moved = 0;
+    st.target = null;
+    viewportRef.current?.setPointerCapture(e.pointerId);
   };
 
-  // Re-enable animation on the frame after a silent snap.
-  useEffect(() => {
-    if (!animated) {
-      const id = requestAnimationFrame(() => setAnimated(true));
-      return () => cancelAnimationFrame(id);
+  const onPointerMove = (e: React.PointerEvent) => {
+    const st = s.current;
+    if (!st.dragging) return;
+    const dx = e.clientX - st.lastX;
+    st.lastX = e.clientX;
+    st.offset += dx;
+    st.moved += Math.abs(dx);
+  };
+
+  const endDrag = () => {
+    const st = s.current;
+    if (!st.dragging) return;
+    st.dragging = false;
+    // Settle gently onto the card grid; no hard snap.
+    st.target = Math.round(st.offset / st.step) * st.step;
+  };
+
+  // A drag should not fire the links under the pointer on release.
+  const onClickCapture = (e: React.MouseEvent) => {
+    const st = s.current;
+    if (st.moved > 6) {
+      e.preventDefault();
+      e.stopPropagation();
+      st.moved = 0;
     }
-  }, [animated]);
+  };
 
   const onKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'ArrowLeft') {
@@ -70,11 +161,13 @@ export function Projects() {
     }
   };
 
+  const count = projects.length;
+
   return (
     <section
       id="projects"
       aria-label="Selected projects"
-      className="theme-fade border-ink/10 border-t bg-paper px-5 py-[16vh] sm:px-10"
+      className="theme-fade border-ink/10 border-t bg-paper px-5 py-[14vh] sm:px-10"
     >
       <div className="mx-auto max-w-6xl">
         <Reveal>
@@ -85,8 +178,8 @@ export function Projects() {
         </Reveal>
         <Reveal delay={0.08}>
           <h2 className="mt-8 max-w-[24ch] text-lede font-medium tracking-tight text-ink">
-            Artifacts from the communities around them: a public utility, a signal map, a toolkit, a
-            trap, and this page.
+            Artifacts from the communities around them: a public utility, a signal map, a toolkit,
+            a trap, and this page.
           </h2>
         </Reveal>
       </div>
@@ -95,56 +188,72 @@ export function Projects() {
         role="region"
         aria-roledescription="carousel"
         aria-label="Project artifacts"
-        className="mt-[8vh]"
-        onKeyDown={onKeyDown}
+        className="mt-[7vh]"
         tabIndex={0}
-        onTouchStart={e => {
-          touchX.current = e.touches[0].clientX;
-        }}
-        onTouchEnd={e => {
-          if (touchX.current === null) return;
-          const dx = e.changedTouches[0].clientX - touchX.current;
-          if (Math.abs(dx) > 48) go(dx < 0 ? 1 : -1);
-          touchX.current = null;
-        }}
+        onKeyDown={reduce ? undefined : onKeyDown}
       >
-        <div ref={viewportRef} className="overflow-hidden" style={{ clipPath: 'inset(0 0 0 0)' }}>
-          <div
-            className="flex gap-6"
-            style={{
-              transform: `translateX(${-(index * slideStep)}px)`,
-              transition: animated ? 'transform 0.65s cubic-bezier(0.19, 1, 0.22, 1)' : 'none',
-            }}
-            onTransitionEnd={onSettled}
-          >
-            {[...projects, ...projects].map((project, i) => (
-              <div
-                key={`${project.id}-${i}`}
-                data-slide
-                aria-hidden={i >= count}
-                aria-roledescription="slide"
-                aria-label={`${project.name}, ${(i % count) + 1} of ${count}`}
-                className="w-[82vw] max-w-[440px] shrink-0 sm:w-[420px]"
-              >
-                <ProjectPanel project={project} />
-              </div>
-            ))}
+        {reduce ? (
+          /* Reduced motion: a plain native scroll row, no drift */
+          <div className="border-ink/10 border-y">
+            <div
+              ref={viewportRef}
+              className="flex w-full overflow-x-auto px-5 py-10 sm:px-10"
+              style={{ scrollBehavior: 'smooth' }}
+            >
+              {projects.map(project => (
+                <div key={project.id} data-slide className="mr-6 w-[82vw] max-w-[420px] shrink-0">
+                  <ProjectPanel project={project} />
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        ) : (
+          <div
+            ref={viewportRef}
+            className="marquee-fade cursor-grab touch-pan-y overflow-hidden select-none active:cursor-grabbing"
+            onPointerDown={onPointerDown}
+            onPointerMove={onPointerMove}
+            onPointerUp={endDrag}
+            onPointerCancel={endDrag}
+            onClickCapture={onClickCapture}
+          >
+            <div ref={trackRef} className="flex will-change-transform">
+              {[...projects, ...projects].map((project, i) => (
+                <div
+                  key={`${project.id}-${i}`}
+                  data-slide
+                  aria-hidden={i >= count}
+                  className="mr-6 w-[80vw] max-w-[420px] shrink-0 sm:w-[400px]"
+                >
+                  <ProjectPanel project={project} />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Controls */}
-        <div className="mx-auto mt-8 flex max-w-6xl items-center justify-between">
+        <div className="mx-auto mt-8 flex max-w-6xl items-center justify-between gap-4">
           <p className="text-micro uppercase tracking-[0.16em] text-muted">
-            Drag, swipe, or use the arrows
+            {reduce
+              ? 'Swipe or use the arrows'
+              : drifting
+                ? 'It drifts on its own: drag, swipe, or take the wheel'
+                : 'Paused: you have the wheel'}
           </p>
           <div className="flex gap-3">
-            <CarouselButton direction="previous" onClick={() => go(-1)} />
-            <CarouselButton direction="next" onClick={() => go(1)} />
+            <CarouselButton direction="previous" onClick={() => (reduce ? scrollBy(-1) : go(-1))} />
+            <CarouselButton direction="next" onClick={() => (reduce ? scrollBy(1) : go(1))} />
           </div>
         </div>
       </div>
     </section>
   );
+
+  function scrollBy(dir: 1 | -1) {
+    const st = s.current;
+    viewportRef.current?.scrollBy({ left: dir * st.step, behavior: 'smooth' });
+  }
 }
 
 function CarouselButton({

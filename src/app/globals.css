@@ -283,6 +283,49 @@ html[data-intro='skip'] .opening-overlay {
 }
 
 /* ------------------------------------------------------------------ */
+/* Marquee rows (skills inventory). Pure transform loop, pauses on     */
+/* hover, disabled under reduced motion.                               */
+/* ------------------------------------------------------------------ */
+
+@keyframes marquee-x {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.marquee {
+  overflow: hidden;
+}
+
+.marquee-fade {
+  mask-image: linear-gradient(to right, transparent, black 7%, black 93%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 7%, black 93%, transparent);
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-x var(--marquee-duration, 46s) linear infinite;
+}
+
+.marquee-reverse .marquee-track {
+  animation-direction: reverse;
+}
+
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
 /* In-view signal motifs (gated by data-inview set by <InView>)        */
 /* ------------------------------------------------------------------ */
 

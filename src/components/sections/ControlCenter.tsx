@@ -46,13 +46,31 @@ export function ControlCenter() {
           </h2>
         </Reveal>
 
-        {/* One instrument: outer frame, title strip, divided modules */}
-        <div className="border-ink/15 mt-[8vh] border">
+        {/* One instrument: outer frame with corner ticks, title strip,
+            divided modules, and a footer strip. The gap-px grid keeps every
+            division a crisp hairline. */}
+        <div className="border-ink/15 relative mt-[8vh] border">
+          <span aria-hidden="true" className="bg-accent absolute -left-px -top-px h-1.5 w-1.5" />
+          <span
+            aria-hidden="true"
+            className="bg-accent absolute -right-px -top-px h-1.5 w-1.5"
+          />
+          <span aria-hidden="true" className="bg-accent absolute -bottom-px -left-px h-1.5 w-1.5" />
+          <span
+            aria-hidden="true"
+            className="bg-accent absolute -bottom-px -right-px h-1.5 w-1.5"
+          />
           <div className="border-ink/15 flex items-center justify-between border-b px-5 py-3 sm:px-7">
             <p className="text-micro uppercase tracking-[0.16em] text-muted">
               shikharsahay / control
             </p>
-            <p className="text-micro uppercase tracking-[0.16em] text-muted">All systems nominal</p>
+            <p className="flex items-center gap-2 text-micro uppercase tracking-[0.16em] text-muted">
+              <span className="relative inline-flex h-1.5 w-1.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60" />
+                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent" />
+              </span>
+              All systems nominal
+            </p>
           </div>
           <div className="bg-ink/15 grid gap-px sm:grid-cols-2 lg:grid-cols-3">
             {/* Now */}
@@ -66,10 +84,7 @@ export function ControlCenter() {
                   Ongoing: senior core member at GDG On Campus, VIT Vellore.
                 </p>
                 <span className="mt-4 inline-flex items-center gap-2 text-micro uppercase tracking-[0.14em] text-muted">
-                  <span className="relative inline-flex h-1.5 w-1.5">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60" />
-                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent" />
-                  </span>
+                  <span className="h-px w-3 bg-accent" aria-hidden="true" />
                   Active on campus
                 </span>
               </Module>
@@ -142,6 +157,12 @@ export function ControlCenter() {
               </Module>
             </Reveal>
           </div>
+          <div className="border-ink/15 flex items-center justify-between border-t px-5 py-3 sm:px-7">
+            <p className="text-micro uppercase tracking-[0.16em] text-muted">
+              Vellore, India · UTC +05:30
+            </p>
+            <p className="text-micro uppercase tracking-[0.16em] text-muted">End of panel</p>
+          </div>
         </div>
       </div>
     </section>
@@ -150,9 +171,12 @@ export function ControlCenter() {
 
 function Module({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="border-ink/10 flex h-full flex-col p-6 transition-colors duration-500 hover:bg-surface sm:p-7">
-      <p className="mb-4 flex items-center gap-2.5 text-micro uppercase tracking-[0.16em] text-accent">
-        <span className="inline-block h-1 w-1 rounded-full bg-accent" aria-hidden="true" />
+    <div className="group/module flex h-full flex-col p-6 transition-colors duration-500 hover:bg-surface sm:p-7">
+      <p className="border-ink/10 mb-4 flex items-center gap-2.5 border-b pb-3 text-micro uppercase tracking-[0.16em] text-accent">
+        <span
+          aria-hidden="true"
+          className="inline-block h-1 w-1 rotate-45 bg-accent transition-transform duration-500 ease-expo group-hover/module:rotate-[135deg]"
+        />
         {label}
       </p>
       {children}
