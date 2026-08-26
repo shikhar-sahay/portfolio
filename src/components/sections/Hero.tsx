@@ -12,13 +12,14 @@ import {
 } from 'motion/react';
 import portrait from '../../assets/shikhar-hero.jpg';
 import { profile } from '@/content/profile';
+import { InteractiveLetters } from '@/components/ui/InteractiveLetters';
 
 /**
  * 01 / Identity. The portrait is an editorial arch: a tall aperture with a
  * rounded crown and an offset vermilion echo behind it, overlapping the
- * display type. Scrolling never zooms the face: the scene changes.
- * Typography separates into layers, the arch exits laterally, and a
- * hairline draws to hand off into About.
+ * display type. The name reacts letter by letter under the pointer.
+ * Scrolling never zooms the face: the scene changes, and every element
+ * holds the frame until late so no dead scroll space opens up.
  */
 export function Hero() {
   const sceneRef = useRef<HTMLDivElement>(null);
@@ -62,26 +63,29 @@ export function Hero() {
     offset: ['start start', 'end end'],
   });
 
-  // Scene change: typography separates into layers, the arch exits
-  // laterally, a hairline draws to hand content over to About.
-  const nameAY = useTransform(scrollYProgress, [0, 0.55, 1], ['0svh', '-9svh', '-12svh']);
-  const nameAX = useTransform(scrollYProgress, [0, 0.55, 1], ['0vw', '-5vw', '-6vw']);
-  const nameAO = useTransform(scrollYProgress, [0.12, 0.5, 1], [1, 0, 0]);
-  const nameBY = useTransform(scrollYProgress, [0, 0.55, 1], ['0svh', '7svh', '10svh']);
-  const nameBX = useTransform(scrollYProgress, [0, 0.55, 1], ['0vw', '4vw', '5vw']);
-  const nameBO = useTransform(scrollYProgress, [0.16, 0.55, 1], [1, 0, 0]);
-  const metaO = useTransform(scrollYProgress, [0, 0.3, 1], [1, 0, 0]);
-  const archX = useTransform(scrollYProgress, [0, 0.6, 1], ['0vw', '16vw', '26vw']);
-  const archY = useTransform(scrollYProgress, [0, 1], ['0svh', '6svh']);
-  const archR = useTransform(scrollYProgress, [0, 1], [0, 4]);
-  const archO = useTransform(scrollYProgress, [0.55, 0.92, 1], [1, 1, 0]);
-  const handoffLine = useTransform(scrollYProgress, [0.35, 0.8], [0, 1]);
+  // Scene change: typography separates into layers while staying legible,
+  // the arch exits laterally late, a hairline draws to hand content over
+  // to the statements. Everything fades only in the last stretch so the
+  // frame is never empty.
+  const nameAY = useTransform(scrollYProgress, [0, 0.6, 1], ['0svh', '-7svh', '-10svh']);
+  const nameAX = useTransform(scrollYProgress, [0, 0.6, 1], ['0vw', '-3.5vw', '-5vw']);
+  const nameAO = useTransform(scrollYProgress, [0.35, 0.78, 0.98], [1, 1, 0]);
+  const nameBY = useTransform(scrollYProgress, [0, 0.6, 1], ['0svh', '5svh', '8svh']);
+  const nameBX = useTransform(scrollYProgress, [0, 0.6, 1], ['0vw', '3vw', '4vw']);
+  const nameBO = useTransform(scrollYProgress, [0.38, 0.78, 0.98], [1, 1, 0]);
+  const metaO = useTransform(scrollYProgress, [0, 0.35, 0.7], [1, 1, 0]);
+  const ledeO = useTransform(scrollYProgress, [0, 0.4, 0.72], [1, 1, 0]);
+  const archX = useTransform(scrollYProgress, [0, 0.55, 1], ['0vw', '10vw', '22vw']);
+  const archY = useTransform(scrollYProgress, [0, 1], ['0svh', '5svh']);
+  const archR = useTransform(scrollYProgress, [0, 1], [0, 3]);
+  const archO = useTransform(scrollYProgress, [0.6, 0.95, 1], [1, 1, 0]);
+  const handoffLine = useTransform(scrollYProgress, [0.45, 0.9], [0, 1]);
   const cueO = useTransform(scrollYProgress, [0, 0.12, 1], [1, 0, 0]);
 
   const scroll = (style: Record<string, unknown>) => (reduceMotion ? undefined : { style });
 
   return (
-    <div ref={sceneRef} id="top" className="relative h-[150svh]">
+    <div ref={sceneRef} id="top" className="relative h-[130svh]">
       <div className="sticky top-0 flex h-dvh items-center overflow-hidden">
         <div className="grid w-full grid-cols-1 items-center gap-10 px-5 pb-16 pt-24 sm:px-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-4 lg:pb-0 lg:pt-0">
           {/* Identity column */}
@@ -97,7 +101,10 @@ export function Hero() {
             <h1 className="select-none text-display uppercase">
               <motion.span className="block" {...scroll({ y: nameAY, x: nameAX, opacity: nameAO })}>
                 <span className="anim-mask">
-                  <span className="[animation-delay:calc(var(--intro-delay)+0.25s)]">Shikhar</span>
+                  <InteractiveLetters
+                    text="Shikhar"
+                    className="[animation-delay:calc(var(--intro-delay)+0.25s)]"
+                  />
                 </span>
               </motion.span>
               <motion.span
@@ -105,21 +112,27 @@ export function Hero() {
                 {...scroll({ y: nameBY, x: nameBX, opacity: nameBO })}
               >
                 <span className="anim-mask">
-                  <span className="type-outline [animation-delay:calc(var(--intro-delay)+0.4s)]">
-                    Sahay
-                  </span>
+                  <InteractiveLetters
+                    text="Sahay"
+                    letterClassName="type-outline"
+                    tint="stroke"
+                    className="[animation-delay:calc(var(--intro-delay)+0.4s)]"
+                  />
                 </span>
               </motion.span>
             </h1>
 
-            <motion.div {...scroll({ opacity: metaO })}>
+            <motion.div {...scroll({ opacity: ledeO })}>
               <p className="anim-fade-rise mt-6 max-w-[26ch] text-lede font-medium tracking-tight text-ink [animation-delay:calc(var(--intro-delay)+0.6s)] sm:mt-8">
                 {profile.statementPre}
                 <em className="font-serif font-normal italic">{profile.statementEm}</em>
               </p>
 
               {/* Compact personal context: part of the composition, not cards */}
-              <div className="anim-fade-rise mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 [animation-delay:calc(var(--intro-delay)+0.8s)]">
+              <motion.div
+                {...scroll({ opacity: metaO })}
+                className="anim-fade-rise mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 [animation-delay:calc(var(--intro-delay)+0.8s)]"
+              >
                 <p className="text-micro uppercase tracking-[0.16em] text-muted">
                   CS @ VIT Vellore
                 </p>
@@ -127,7 +140,7 @@ export function Hero() {
                 <p className="text-micro uppercase tracking-[0.16em] text-muted">
                   Software, security &amp; the web
                 </p>
-              </div>
+              </motion.div>
             </motion.div>
           </div>
 
@@ -172,7 +185,7 @@ export function Hero() {
           </motion.div>
         </div>
 
-        {/* Handoff hairline: becomes the boundary into About */}
+        {/* Handoff hairline: becomes the boundary into the statements bridge */}
         <motion.div
           aria-hidden="true"
           className="bg-ink/20 absolute inset-x-5 bottom-0 h-px origin-left sm:inset-x-10"

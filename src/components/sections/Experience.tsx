@@ -1,28 +1,43 @@
 'use client';
 
-import { motion } from 'motion/react';
+import { useRef } from 'react';
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+} from 'motion/react';
 import { WordReveal } from '@/components/ui/WordReveal';
-import { timeline } from '@/content/experience';
+import { orgTimeline, type OrgEntry } from '@/content/experience';
 
 const ease = [0.19, 1, 0.22, 1] as const;
 
-const reveal = {
-  initial: { opacity: 0, y: 24 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: '-8% 0px' },
-};
-
 /**
- * Experience: one continuous timeline, latest first. Every entry is a
- * single scannable row: period, role, organization, one factual line.
- * The line itself draws downward as the visitor scrolls.
+ * Experience: one visual timeline grouped by organization. A hairline
+ * spine fills with accent as the visitor scrolls; org blocks alternate
+ * sides on wide screens and stack along the spine on small ones. Every
+ * role is a compact block: title, period, one factual line.
  */
 export function Experience() {
+  const listRef = useRef<HTMLDivElement>(null);
+  const reduce = useReducedMotion();
+  const { scrollYProgress } = useScroll({
+    target: listRef,
+    offset: ['start 0.78', 'end 0.55'],
+  });
+  const spineScale = useSpring(scrollYProgress, { stiffness: 70, damping: 22 });
+
+  const reveal = {
+    initial: { opacity: 0, y: 28 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, margin: '-10% 0px' },
+  };
+
   return (
     <section
       id="experience"
       aria-label="Experience"
-      className="theme-fade border-ink/10 border-t bg-paper px-5 py-[16vh] sm:px-10"
+      className="theme-fade border-ink/10 border-t bg-paper px-5 py-[14vh] sm:px-10"
     >
       <div className="mx-auto max-w-6xl">
         <motion.p
@@ -38,53 +53,28 @@ export function Experience() {
           className="mt-8 max-w-[26ch] text-lede font-medium tracking-tight"
           segments={[
             {
-              text: 'From esports group chats to GMP-regulated infrastructure, one long thread: ',
+              text: 'From esports group chats to GMP-regulated infrastructure: ',
             },
             { text: 'build the thing, gather the people.', em: true },
           ]}
         />
 
-        {/* Unified timeline */}
-        <div className="relative mt-[12vh]">
-          {/* The line, drawing with scroll */}
+        {/* The timeline */}
+        <div ref={listRef} className="relative mt-[10vh]">
+          {/* Spine: base hairline plus the accent fill that draws with scroll */}
+          <div
+            aria-hidden="true"
+            className="bg-ink/15 absolute bottom-0 left-[7px] top-0 w-px lg:left-1/2"
+          />
           <motion.div
             aria-hidden="true"
-            className="bg-ink/15 absolute bottom-0 left-[7px] top-0 w-px origin-top max-sm:hidden"
-            initial={{ scaleY: 0 }}
-            whileInView={{ scaleY: 1 }}
-            viewport={{ once: true, margin: '-10% 0px' }}
-            transition={{ duration: 1.6, ease }}
+            className="bg-accent absolute top-0 left-[7px] w-px origin-top lg:left-1/2"
+            style={reduce ? { scaleY: 1, height: '100%' } : { scaleY: spineScale, height: '100%' }}
           />
 
-          <ol className="space-y-14">
-            {timeline.map((entry, i) => (
-              <motion.li
-                key={`${entry.org}-${entry.role}-${i}`}
-                {...reveal}
-                transition={{ duration: 0.8, delay: 0.05, ease }}
-                className="group relative grid gap-1 pl-10 sm:grid-cols-[150px_1fr] sm:gap-8 sm:pl-14"
-              >
-                {/* Marker: a small square that fills on hover, no dots */}
-                <span
-                  aria-hidden="true"
-                  className="border-ink/30 absolute left-0 top-[0.4em] h-3.5 w-3.5 rotate-45 border bg-paper transition-colors duration-500 group-hover:border-accent group-hover:bg-accent sm:left-[-3px]"
-                />
-                <p className="text-micro uppercase tabular-nums tracking-[0.14em] text-muted sm:pt-1 sm:text-right">
-                  {entry.period}
-                </p>
-                <div>
-                  <h3 className="text-lg font-semibold tracking-tight text-ink">
-                    {entry.role}
-                    <span className="text-muted"> · {entry.org}</span>
-                  </h3>
-                  <p className="group-hover:text-ink/80 mt-1.5 max-w-[58ch] text-sm leading-relaxed text-muted transition-colors duration-500">
-                    {entry.summary}
-                    {entry.location ? (
-                      <span className="text-ink/40"> ({entry.location})</span>
-                    ) : null}
-                  </p>
-                </div>
-              </motion.li>
+          <ol className="space-y-[9vh] lg:space-y-[11vh]">
+            {orgTimeline.map((entry, i) => (
+              <OrgBlock key={entry.org} entry={entry} index={i} reveal={reveal} />
             ))}
           </ol>
         </div>
@@ -105,5 +95,81 @@ export function Experience() {
         </motion.p>
       </div>
     </section>
+  );
+}
+
+function OrgBlock({
+  entry,
+  index,
+  reveal,
+}: {
+  entry: OrgEntry;
+  index: number;
+  reveal: {
+    initial: { opacity: number; y: number };
+    whileInView: { opacity: number; y: number };
+    viewport: { once: boolean; margin: string };
+  };
+}) {
+  const left = index % 2 === 0;
+  return (
+    <motion.li
+      {...reveal}
+      transition={{ duration: 0.8, ease }}
+      className="relative max-lg:pl-10 lg:grid lg:grid-cols-[1fr_5rem_1fr] lg:items-start"
+    >
+      {/* Marker: a diamond riding the spine, wakes as the block arrives */}
+      <motion.span
+        aria-hidden="true"
+        initial={{ scale: 0, opacity: 0 }}
+        whileInView={{ scale: 1, opacity: 1 }}
+        viewport={{ once: true, margin: '-10% 0px' }}
+        transition={{ duration: 0.5, ease }}
+        className="border-ink/40 absolute left-[1.5px] top-[0.5em] block h-3 w-3 rotate-45 border bg-paper transition-colors duration-500 hover:border-accent hover:bg-accent lg:left-1/2 lg:-translate-x-1/2"
+      />
+
+      <div
+        className={
+          left
+            ? 'lg:col-start-1 lg:pr-14 lg:text-right'
+            : 'lg:col-start-3 lg:pl-14'
+        }
+      >
+        <h3 className="text-xl font-semibold tracking-tight text-ink sm:text-2xl">{entry.org}</h3>
+        {entry.location && (
+          <p className="mt-1 text-micro uppercase tracking-[0.16em] text-muted">
+            {entry.location}
+          </p>
+        )}
+
+        <ul className="mt-4 space-y-4">
+          {entry.roles.map(role => (
+            <li key={role.role} className="group/role">
+              <div
+                className={`flex flex-wrap items-baseline gap-x-4 gap-y-0.5 ${
+                  left ? 'lg:justify-end' : ''
+                }`}
+              >
+                <p className="text-sm font-semibold text-ink">{role.role}</p>
+                {role.period && (
+                  <p className="text-micro uppercase tabular-nums tracking-[0.14em] text-accent">
+                    {role.period}
+                  </p>
+                )}
+              </div>
+              {role.summary && (
+                <p
+                  className={`mt-1 max-w-[54ch] text-sm leading-relaxed text-muted transition-colors duration-500 group-hover/role:text-ink/80 ${
+                    left ? 'lg:ml-auto' : ''
+                  }`}
+                >
+                  {role.summary}
+                </p>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </motion.li>
   );
 }
