@@ -532,3 +532,22 @@ When a decision is made during implementation:
 4. Commit with message: `docs: record decision - <short description>`
 
 Do not make significant design/architecture decisions without documenting them here.
+
+---
+
+### 30. v5 Iteration: Loader, Statements Bridge, Timeline, Emblems, Carousel, Control Panel, Letter Footer
+
+**Decision:** Owner-directed iteration on v4.1. Opening replaced by a minimal signal-line loader (hairline draws, vermilion marker rides its tip, about 1.6s); the v4 title card read as a blank frame.
+
+2. A statements bridge (pinned 300svh ink field) sits between hero and About: three large statements (I build. / I break. / I rebuild.) reveal with scroll, removing the dead space after the portrait exits.
+3. About: the editorial index is removed (header and progress bar suffice); the lede reveals word by word with scroll (WordReveal component).
+4. Experience: one continuous timeline, latest first, one condensed factual line per role; details live in the resume. Markers are rotated squares that fill on hover; no org metadata.
+5. Skills: each tool is a golden emblem (gold ring, serif monogram, hover rotation); gold exists only in Skills and Certifications. Certifications get their own sub-block. Education removed from Skills (lives in control center and footer).
+6. Projects: a looping, keyboard- and touch-accessible horizontal carousel with five artifact panels (three real, the honeypot, and this site); consistent panel architecture with clamped copy and structured placeholder links.
+7. Control center structured as one framed instrument (title strip, divided modules). Footer wordmark fitted to viewport with per-letter hover interaction.
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-08-24
+
+**Rationale:** Owner screenshot review found the title card blank, the post-portrait void empty, the About index redundant, Experience too dense, Skills too plain, projects too spread out, and the control panel too loose. Each change maps to one of those findings.

@@ -48,24 +48,69 @@ Remaining candidates remain UNDECIDED until more patterns exist.
 
 ---
 
-## Implemented Patterns (v4, opening redesign - EXPERIMENTAL)
+## Implemented Patterns (v5 - EXPERIMENTAL)
 
-### Opening Sequence v4 (title sequence, `Opening.tsx`)
+### Opening: signal-line loader (`Opening.tsx`)
 
-An ink-field title sequence, ~2.1s, once per session. The name renders at
-the hero's exact position and scale, so the lift reads as one continuous
-composition rather than "loading screen, then hero":
+An ink-field loader, ~1.6s, once per session. Replaces the v4 title
+sequence (owner feedback: it read as a blank title card).
 
 | t     | Beat                                                                                          |
 | ----- | --------------------------------------------------------------------------------------------- |
-| 0.00s | Ink field (charcoal, grain), completely quiet                                                 |
-| 0.25s | Eyebrow ("Portfolio, 2026") fades in at the hero's eyebrow position                           |
-| 0.40s | "SHIKHAR" mask-rises; 0.55s: "SAHAY" rises in outline-stroke treatment                        |
-| 1.00s | Vermilion sweep line draws under the name (no counters, no progress bar)                      |
-| 1.40s | Field lifts: translateY(-100%), 850ms ease-expo; scroll unlocked; `sessionStorage.opened` set |
-| 2.25s | Overlay unmounts                                                                              |
+| 0.00s | Ink field, quiet. Micro "shikhar sahay" top-left, serif "2026" bottom-right                    |
+| 0-1.05s | A hairline draws left to right while a vermilion marker rides its tip (rAF, cubic ease-out) |
+| 1.05s | Micro "Ready" appears; field lifts translateY(-100%), 850ms ease-expo; session flagged         |
+| 1.9s  | Overlay unmounts                                                                              |
 
-**Synchronization with the hero:** an inline head script runs before paint and sets `html[data-intro]` plus `--intro-delay` (1.35s when the sequence will play, 0s when skipped). Hero entrance delays are `calc(var(--intro-delay) + Ns)`, so the hero boots as the field lifts. Returning visitors and reduced-motion users get `data-intro="skip"`: the overlay is display:none pre-hydration (no flash) and the hero plays immediately. Verified: returning-visitor overlay hidden, reduced-motion overlay absent.
+No counters, no percentage, no spinner. The hero boots beneath via the
+`--intro-delay` mechanism (head script sets `html[data-intro]` and
+`--intro-delay`; skipped pre-paint for returning visitors and reduced
+motion).
+
+### Statements bridge (hero to About, `TransitionStatements.tsx`)
+
+A pinned 300svh ink-field section between hero and About. Three large
+statements reveal in sequence with scroll: "I build." / "I break." /
+"I rebuild.", each with a micro caption, middle line indented. Earlier
+lines dim to 30% as the next arrives; the stage fades into About.
+Reduced motion: a static stacked block.
+
+### Word-by-word reading reveal (`WordReveal.tsx`)
+
+Used in About and Experience ledes. Words start at 18% opacity and
+brighten to full ink in reading order, driven by one scroll progress
+value; each word is a motion.span with a per-word range. Reduced motion
+and no-JS: fully inked plain text.
+
+### Experience timeline
+
+The vertical hairline draws downward (scaleY, whileInView once). Entries
+reveal with stagger. Markers are small rotated squares that fill
+vermilion on hover (no dots). One line of summary per role.
+
+### Skill emblems
+
+Each tool is a gold-ring emblem with a serif italic monogram; the ring
+rotates 90 degrees and a dashed orbit wakes on hover. Gold exists only in
+Skills and Certifications.
+
+### Project carousel
+
+Looping horizontal carousel: duplicated list, translateX by slide step,
+silent snap after crossing the clone boundary; prev/next buttons, arrow
+keys, touch swipe. Panels are code-split (dynamic, ssr:false) with a
+fixed-height skeleton.
+
+### Footer wordmark
+
+Per-letter spans: hover/touch lifts a letter 8px, rotates 3 degrees, and
+shifts it to the accent. Fitted with viewport-relative sizing; no
+overflow at any width.
+
+### Older patterns (v4 and earlier)
+
+The v4 title sequence, circular instrument, and aperture-zoom history are
+documented in git history and DECISIONS.md; they are superseded.
 
 ### Portrait motion (v4.1 arch; the v3 ring instrument is removed)
 
