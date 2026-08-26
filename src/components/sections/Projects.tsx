@@ -19,7 +19,8 @@ const AUTO_SPEED = 40; // px per second, the resting drift
  * leaving the right re-enter from the left with no seam. The drift runs
  * until the visitor touches it (drag, swipe, arrows, keys): from that
  * moment it stays manual for the session. One rAF loop owns the track and
- * pauses entirely when the carousel is offscreen.
+ * pauses entirely when the carousel is offscreen. Reduced motion gets the
+ * same cards in a plain native scroll row with no drift.
  */
 export function Projects() {
   const reduce = useReducedMotion();
@@ -62,6 +63,8 @@ export function Projects() {
     measure();
     window.addEventListener('resize', measure);
 
+    if (reduce) return () => window.removeEventListener('resize', measure);
+
     const io = new IntersectionObserver(([entry]) => {
       st.visible = entry.isIntersecting;
     });
@@ -102,15 +105,19 @@ export function Projects() {
       io.disconnect();
       window.removeEventListener('resize', measure);
     };
-  }, []);
+  }, [reduce]);
 
-  const go = useCallback(
+  const nudge = useCallback(
     (dir: 1 | -1) => {
+      if (reduce) {
+        viewportRef.current?.scrollBy({ left: dir * s.current.step, behavior: 'smooth' });
+        return;
+      }
       stopAuto();
       const st = s.current;
       st.target = Math.round(st.offset / st.step) * st.step + dir * st.step;
     },
-    [stopAuto]
+    [reduce, stopAuto]
   );
 
   const onPointerDown = (e: React.PointerEvent) => {
@@ -153,11 +160,11 @@ export function Projects() {
   const onKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'ArrowLeft') {
       e.preventDefault();
-      go(-1);
+      nudge(-1);
     }
     if (e.key === 'ArrowRight') {
       e.preventDefault();
-      go(1);
+      nudge(1);
     }
   };
 
@@ -178,8 +185,8 @@ export function Projects() {
         </Reveal>
         <Reveal delay={0.08}>
           <h2 className="mt-8 max-w-[24ch] text-lede font-medium tracking-tight text-ink">
-            Artifacts from the communities around them: a public utility, a signal map, a toolkit,
-            a trap, and this page.
+            Artifacts from the communities around them: a public utility, a signal map, a toolkit, a
+            trap, and this page.
           </h2>
         </Reveal>
       </div>
@@ -190,47 +197,41 @@ export function Projects() {
         aria-label="Project artifacts"
         className="mt-[7vh]"
         tabIndex={0}
-        onKeyDown={reduce ? undefined : onKeyDown}
+        onKeyDown={onKeyDown}
       >
-        {reduce ? (
-          /* Reduced motion: a plain native scroll row, no drift */
-          <div className="border-ink/10 border-y">
-            <div
-              ref={viewportRef}
-              className="flex w-full overflow-x-auto px-5 py-10 sm:px-10"
-              style={{ scrollBehavior: 'smooth' }}
-            >
-              {projects.map(project => (
-                <div key={project.id} data-slide className="mr-6 w-[82vw] max-w-[420px] shrink-0">
-                  <ProjectPanel project={project} />
-                </div>
-              ))}
-            </div>
-          </div>
-        ) : (
+        <div
+          ref={viewportRef}
+          className={
+            reduce
+              ? 'border-ink/10 overflow-x-auto border-y'
+              : 'marquee-fade cursor-grab touch-pan-y select-none overflow-hidden active:cursor-grabbing'
+          }
+          {...(reduce
+            ? {}
+            : {
+                onPointerDown,
+                onPointerMove,
+                onPointerUp: endDrag,
+                onPointerCancel: endDrag,
+                onClickCapture,
+              })}
+        >
           <div
-            ref={viewportRef}
-            className="marquee-fade cursor-grab touch-pan-y overflow-hidden select-none active:cursor-grabbing"
-            onPointerDown={onPointerDown}
-            onPointerMove={onPointerMove}
-            onPointerUp={endDrag}
-            onPointerCancel={endDrag}
-            onClickCapture={onClickCapture}
+            ref={trackRef}
+            className={`flex will-change-transform ${reduce ? 'px-5 py-10 sm:px-10' : ''}`}
           >
-            <div ref={trackRef} className="flex will-change-transform">
-              {[...projects, ...projects].map((project, i) => (
-                <div
-                  key={`${project.id}-${i}`}
-                  data-slide
-                  aria-hidden={i >= count}
-                  className="mr-6 w-[80vw] max-w-[420px] shrink-0 sm:w-[400px]"
-                >
-                  <ProjectPanel project={project} />
-                </div>
-              ))}
-            </div>
+            {[...projects, ...projects].map((project, i) => (
+              <div
+                key={`${project.id}-${i}`}
+                data-slide
+                aria-hidden={i >= count}
+                className="mr-6 w-[80vw] max-w-[420px] shrink-0 sm:w-[400px]"
+              >
+                <ProjectPanel project={project} />
+              </div>
+            ))}
           </div>
-        )}
+        </div>
 
         {/* Controls */}
         <div className="mx-auto mt-8 flex max-w-6xl items-center justify-between gap-4">
@@ -242,18 +243,13 @@ export function Projects() {
                 : 'Paused: you have the wheel'}
           </p>
           <div className="flex gap-3">
-            <CarouselButton direction="previous" onClick={() => (reduce ? scrollBy(-1) : go(-1))} />
-            <CarouselButton direction="next" onClick={() => (reduce ? scrollBy(1) : go(1))} />
+            <CarouselButton direction="previous" onClick={() => nudge(-1)} />
+            <CarouselButton direction="next" onClick={() => nudge(1)} />
           </div>
         </div>
       </div>
     </section>
   );
-
-  function scrollBy(dir: 1 | -1) {
-    const st = s.current;
-    viewportRef.current?.scrollBy({ left: dir * st.step, behavior: 'smooth' });
-  }
 }
 
 function CarouselButton({

@@ -65,7 +65,10 @@ export function InteractiveLetters({
         if (tint !== 'none' && f > 0.05) {
           const a = Math.round(Math.min(1, f / lift) * 85);
           if (tint === 'stroke') {
-            el.style.setProperty('-webkit-text-stroke-color', `color-mix(in srgb, var(--accent) ${a}%, var(--ink))`);
+            el.style.setProperty(
+              '-webkit-text-stroke-color',
+              `color-mix(in srgb, var(--accent) ${a}%, var(--ink))`
+            );
           } else {
             el.style.color = `color-mix(in srgb, var(--accent) ${a}%, currentColor)`;
           }

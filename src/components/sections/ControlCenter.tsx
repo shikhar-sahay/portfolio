@@ -50,15 +50,12 @@ export function ControlCenter() {
             divided modules, and a footer strip. The gap-px grid keeps every
             division a crisp hairline. */}
         <div className="border-ink/15 relative mt-[8vh] border">
-          <span aria-hidden="true" className="bg-accent absolute -left-px -top-px h-1.5 w-1.5" />
+          <span aria-hidden="true" className="absolute -left-px -top-px h-1.5 w-1.5 bg-accent" />
+          <span aria-hidden="true" className="absolute -right-px -top-px h-1.5 w-1.5 bg-accent" />
+          <span aria-hidden="true" className="absolute -bottom-px -left-px h-1.5 w-1.5 bg-accent" />
           <span
             aria-hidden="true"
-            className="bg-accent absolute -right-px -top-px h-1.5 w-1.5"
-          />
-          <span aria-hidden="true" className="bg-accent absolute -bottom-px -left-px h-1.5 w-1.5" />
-          <span
-            aria-hidden="true"
-            className="bg-accent absolute -bottom-px -right-px h-1.5 w-1.5"
+            className="absolute -bottom-px -right-px h-1.5 w-1.5 bg-accent"
           />
           <div className="border-ink/15 flex items-center justify-between border-b px-5 py-3 sm:px-7">
             <p className="text-micro uppercase tracking-[0.16em] text-muted">

@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, useMotionValueEvent, useReducedMotion, useScroll } from 'motion/react';
 import { navLinks, sections } from '@/content/sections';
-import { Magnetic } from '@/components/ui/Magnetic';
 import { ThemeToggle } from '@/components/layout/ThemeToggle';
 
 /**
@@ -84,17 +83,15 @@ export function SiteNav() {
               compact ? 'py-3' : 'py-5 sm:py-7'
             }`}
           >
-            <Magnetic>
-              <a
-                href="#top"
-                aria-label="Back to top"
-                className={`inline-block whitespace-nowrap font-semibold uppercase tracking-[0.16em] text-ink transition-opacity duration-300 hover:opacity-60 ${linkHover} ${
-                  compact ? 'text-micro' : 'text-micro sm:text-sm'
-                }`}
-              >
-                S. Sahay
-              </a>
-            </Magnetic>
+            <a
+              href="#top"
+              aria-label="Back to top"
+              className={`inline-block whitespace-nowrap font-semibold uppercase tracking-[0.16em] text-ink transition-opacity duration-300 hover:opacity-60 ${linkHover} ${
+                compact ? 'text-micro' : 'text-micro sm:text-sm'
+              }`}
+            >
+              S. Sahay
+            </a>
 
             <ul className="flex items-center gap-2.5 sm:gap-7">
               {navLinks.map(link => {
@@ -102,17 +99,15 @@ export function SiteNav() {
                 const isActive = section?.id === active.id;
                 return (
                   <li key={link.label}>
-                    <Magnetic strength={0.3} max={4}>
-                      <a
-                        href={link.href}
-                        aria-current={isActive ? 'true' : undefined}
-                        className={`relative inline-block whitespace-nowrap text-micro uppercase tracking-[0.1em] transition-colors duration-300 sm:tracking-[0.16em] ${linkHover} ${
-                          isActive ? 'text-ink after:scale-x-100' : 'text-muted hover:text-ink'
-                        }`}
-                      >
-                        {link.label}
-                      </a>
-                    </Magnetic>
+                    <a
+                      href={link.href}
+                      aria-current={isActive ? 'true' : undefined}
+                      className={`relative inline-block whitespace-nowrap text-micro uppercase tracking-[0.1em] transition-colors duration-300 sm:tracking-[0.16em] ${linkHover} ${
+                        isActive ? 'text-ink after:scale-x-100' : 'text-muted hover:text-ink'
+                      }`}
+                    >
+                      {link.label}
+                    </a>
                   </li>
                 );
               })}

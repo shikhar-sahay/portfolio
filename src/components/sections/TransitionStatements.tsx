@@ -15,22 +15,33 @@ function StatementLine({
   line,
   index,
   progress,
+  animate,
 }: {
   line: (typeof lines)[number];
   index: number;
   progress: MotionValue<number>;
+  animate: boolean;
 }) {
   const start = index * SEGMENT;
   // First line is already on stage when the bridge arrives; later lines
   // rise quickly. Each line keeps drifting sideways for its whole life so
-  // the composition never sits still.
+  // the composition never sits still. Under reduced motion everything
+  // lands in its final position immediately.
   const opacity = useTransform(
     progress,
-    index === 0 ? [0, 1] : [start, start + 0.1, 1],
-    index === 0 ? [1, 1] : [0, 1, 1]
+    !animate || index === 0 ? [0, 1] : [start, start + 0.1, 1],
+    !animate || index === 0 ? [1, 1] : [0, 1, 1]
   );
-  const y = useTransform(progress, index === 0 ? [0, 1] : [start, start + 0.12, 1], [0, 0, -30]);
-  const x = useTransform(progress, [0, 1], [`${line.drift[0]}vw`, `${line.drift[1]}vw`]);
+  const y = useTransform(
+    progress,
+    !animate || index === 0 ? [0, 1] : [start, start + 0.12, 1],
+    !animate || index === 0 ? [0, 0] : [0, 0, -30]
+  );
+  const x = useTransform(
+    progress,
+    [0, 1],
+    animate ? [`${line.drift[0]}vw`, `${line.drift[1]}vw`] : ['0vw', '0vw']
+  );
   // The trailing period carries the accent; the words carry the weight.
   const words = line.text.split(' ');
   const last = words[words.length - 1];
@@ -43,7 +54,7 @@ function StatementLine({
         {head}
         <span className="text-accent">{period}</span>
       </p>
-      <p className="mt-3 text-micro uppercase tracking-[0.16em] text-paper/50 sm:mt-4">
+      <p className="text-paper/50 mt-3 text-micro uppercase tracking-[0.16em] sm:mt-4">
         {line.note}
       </p>
     </motion.div>
@@ -65,35 +76,30 @@ export function TransitionStatements() {
     offset: ['start start', 'end end'],
   });
 
-  if (reduce) {
-    return (
-      <section
-        aria-label="Introduction statements"
-        className="bg-ink px-5 py-[14vh] text-paper sm:px-10"
-      >
-        <div className="mx-auto max-w-6xl space-y-[6vh]">
-          {lines.map(line => (
-            <div key={line.text}>
-              <p className="text-[clamp(3.4rem,12.5vw,11.5rem)] font-semibold uppercase leading-[0.92] tracking-[-0.03em]">
-                {line.text.slice(0, -1)}
-                <span className="text-accent">{line.text.slice(-1)}</span>
-              </p>
-              <p className="mt-3 text-micro uppercase tracking-[0.16em] text-paper/50">
-                {line.note}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
-    );
-  }
-
   return (
-    <section ref={ref} aria-label="Introduction statements" className="relative h-[220svh]">
-      <div className="sticky top-0 flex h-dvh flex-col justify-center overflow-hidden bg-ink px-5 text-paper sm:px-10">
-        <div className="flex w-full flex-col gap-[7vh]">
+    <section
+      ref={reduce ? undefined : ref}
+      aria-label="Introduction statements"
+      className={`relative ${reduce ? '' : 'h-[220svh]'}`}
+    >
+      <div
+        className={`${
+          reduce
+            ? 'bg-ink px-5 py-[14vh]'
+            : 'sticky top-0 flex h-dvh flex-col justify-center overflow-hidden bg-ink'
+        } px-5 text-paper sm:px-10`}
+      >
+        <div
+          className={`flex w-full flex-col ${reduce ? 'mx-auto max-w-6xl gap-[6vh]' : 'gap-[7vh]'}`}
+        >
           {lines.map((line, i) => (
-            <StatementLine key={line.text} line={line} index={i} progress={scrollYProgress} />
+            <StatementLine
+              key={line.text}
+              line={line}
+              index={i}
+              progress={scrollYProgress}
+              animate={!reduce}
+            />
           ))}
         </div>
       </div>

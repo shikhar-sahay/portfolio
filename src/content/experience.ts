@@ -70,7 +70,8 @@ export const orgTimeline: OrgEntry[] = [
       {
         role: 'Junior Core Member',
         period: 'Feb 2025 - Jan 2026',
-        summary: 'Top 3% of 2,000+ applicants. Built Papers by CodeChef, serving 55K+ active users.',
+        summary:
+          'Top 3% of 2,000+ applicants. Built Papers by CodeChef, serving 55K+ active users.',
       },
     ],
   },
@@ -99,8 +100,3 @@ export const orgTimeline: OrgEntry[] = [
     ],
   },
 ];
-
-/** Flat role list for compact recaps (footer sheet), latest first. */
-export const timeline = orgTimeline.flatMap(org =>
-  org.roles.map(role => ({ ...role, org: org.org }))
-);

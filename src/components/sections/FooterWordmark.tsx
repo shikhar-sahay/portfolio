@@ -35,7 +35,7 @@ export function FooterWordmark() {
           />
           <span
             aria-hidden="true"
-            className="bg-accent mx-[0.45em] inline-block h-[0.09em] w-[0.09em] shrink-0 rotate-45 self-center"
+            className="mx-[0.45em] inline-block h-[0.09em] w-[0.09em] shrink-0 rotate-45 self-center bg-accent"
           />
         </span>
       ))}

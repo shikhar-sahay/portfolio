@@ -54,7 +54,7 @@ export function Skills() {
                   <span className="flex items-baseline gap-3 text-sm text-ink">
                     <span
                       aria-hidden="true"
-                      className="inline-block h-1.5 w-1.5 shrink-0 rotate-45 border border-ink/40 transition-colors duration-500 group-hover/cert:border-accent group-hover/cert:bg-accent"
+                      className="border-ink/40 inline-block h-1.5 w-1.5 shrink-0 rotate-45 border transition-colors duration-500 group-hover/cert:border-accent group-hover/cert:bg-accent"
                     />
                     {cert.name}
                   </span>

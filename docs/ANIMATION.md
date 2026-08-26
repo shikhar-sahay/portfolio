@@ -55,12 +55,12 @@ Remaining candidates remain UNDECIDED until more patterns exist.
 An ink-field loader, ~1.6s, once per session. Replaces the v4 title
 sequence (owner feedback: it read as a blank title card).
 
-| t     | Beat                                                                                          |
-| ----- | --------------------------------------------------------------------------------------------- |
-| 0.00s | Ink field, quiet. Micro "shikhar sahay" top-left, serif "2026" bottom-right                    |
+| t       | Beat                                                                                        |
+| ------- | ------------------------------------------------------------------------------------------- |
+| 0.00s   | Ink field, quiet. Micro "shikhar sahay" top-left, serif "2026" bottom-right                 |
 | 0-1.05s | A hairline draws left to right while a vermilion marker rides its tip (rAF, cubic ease-out) |
-| 1.05s | Micro "Ready" appears; field lifts translateY(-100%), 850ms ease-expo; session flagged         |
-| 1.9s  | Overlay unmounts                                                                              |
+| 1.05s   | Micro "Ready" appears; field lifts translateY(-100%), 850ms ease-expo; session flagged      |
+| 1.9s    | Overlay unmounts                                                                            |
 
 No counters, no percentage, no spinner. The hero boots beneath via the
 `--intro-delay` mechanism (head script sets `html[data-intro]` and

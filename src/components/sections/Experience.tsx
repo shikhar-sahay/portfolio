@@ -1,12 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
-import {
-  motion,
-  useReducedMotion,
-  useScroll,
-  useSpring,
-} from 'motion/react';
+import { motion, useReducedMotion, useScroll, useSpring } from 'motion/react';
 import { WordReveal } from '@/components/ui/WordReveal';
 import { orgTimeline, type OrgEntry } from '@/content/experience';
 
@@ -68,7 +63,7 @@ export function Experience() {
           />
           <motion.div
             aria-hidden="true"
-            className="bg-accent absolute top-0 left-[7px] w-px origin-top lg:left-1/2"
+            className="absolute left-[7px] top-0 w-px origin-top bg-accent lg:left-1/2"
             style={reduce ? { scaleY: 1, height: '100%' } : { scaleY: spineScale, height: '100%' }}
           />
 
@@ -128,18 +123,10 @@ function OrgBlock({
         className="border-ink/40 absolute left-[1.5px] top-[0.5em] block h-3 w-3 rotate-45 border bg-paper transition-colors duration-500 hover:border-accent hover:bg-accent lg:left-1/2 lg:-translate-x-1/2"
       />
 
-      <div
-        className={
-          left
-            ? 'lg:col-start-1 lg:pr-14 lg:text-right'
-            : 'lg:col-start-3 lg:pl-14'
-        }
-      >
+      <div className={left ? 'lg:col-start-1 lg:pr-14 lg:text-right' : 'lg:col-start-3 lg:pl-14'}>
         <h3 className="text-xl font-semibold tracking-tight text-ink sm:text-2xl">{entry.org}</h3>
         {entry.location && (
-          <p className="mt-1 text-micro uppercase tracking-[0.16em] text-muted">
-            {entry.location}
-          </p>
+          <p className="mt-1 text-micro uppercase tracking-[0.16em] text-muted">{entry.location}</p>
         )}
 
         <ul className="mt-4 space-y-4">
@@ -159,7 +146,7 @@ function OrgBlock({
               </div>
               {role.summary && (
                 <p
-                  className={`mt-1 max-w-[54ch] text-sm leading-relaxed text-muted transition-colors duration-500 group-hover/role:text-ink/80 ${
+                  className={`group-hover/role:text-ink/80 mt-1 max-w-[54ch] text-sm leading-relaxed text-muted transition-colors duration-500 ${
                     left ? 'lg:ml-auto' : ''
                   }`}
                 >

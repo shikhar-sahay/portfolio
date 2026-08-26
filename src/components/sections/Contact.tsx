@@ -31,8 +31,8 @@ export function Contact() {
               Let&apos;s talk.
             </h2>
             <p className="mt-5 max-w-[42ch] text-sm leading-relaxed text-muted">
-              Internships, collaborations, security rabbit holes, or a good argument about
-              football: the inbox is open.
+              Internships, collaborations, security rabbit holes, or a good argument about football:
+              the inbox is open.
             </p>
             <EmailLink />
           </Reveal>
@@ -127,7 +127,7 @@ function EmailLink() {
       aria-disabled={placeholder || undefined}
       title={placeholder ? 'Email link coming soon' : undefined}
       className={`group mt-7 inline-flex items-baseline gap-3 text-lg font-medium tracking-tight sm:text-xl ${
-        placeholder ? 'cursor-default text-muted/60' : 'text-ink hover:text-accent'
+        placeholder ? 'text-muted/60 cursor-default' : 'text-ink hover:text-accent'
       } transition-colors duration-300`}
     >
       Email
@@ -150,7 +150,7 @@ function CompactLink({ label, href }: { label: string; href: string }) {
       aria-disabled={placeholder || undefined}
       title={placeholder ? `${label} link coming soon` : undefined}
       className={`group inline-flex items-baseline gap-2 text-sm transition-colors duration-300 ${
-        placeholder ? 'cursor-default text-muted/60' : 'text-muted hover:text-ink'
+        placeholder ? 'text-muted/60 cursor-default' : 'text-muted hover:text-ink'
       }`}
     >
       <span className="h-px w-2 bg-accent transition-all duration-500 ease-expo group-hover:w-4" />
