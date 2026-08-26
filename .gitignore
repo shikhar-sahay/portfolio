@@ -44,3 +44,7 @@ next-env.d.ts
 Thumbs.db
 ehthumbs.db
 Desktop.ini
+# local test artifacts
+.playwright-mcp/
+/*.jpeg
+/*.png
