@@ -164,6 +164,13 @@ html[data-intro='skip'] .opening-overlay {
   border-radius: 999px 999px 18px 18px;
 }
 
+/* Cinematic ink field (opening sequence, statements bridge): stays dark
+   in both themes so the dark colorway never flashes to cream mid-story. */
+.ink-stage {
+  background-color: #1d1915;
+  color: #f3efe6;
+}
+
 .arch-echo {
   border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
   border-radius: 999px 999px 18px 18px;

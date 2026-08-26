@@ -1,7 +1,8 @@
 'use client';
 
 import { useRef } from 'react';
-import { motion, useReducedMotion, useScroll, useTransform, type MotionValue } from 'motion/react';
+import { motion, useScroll, useTransform, type MotionValue } from 'motion/react';
+import { useMountedReducedMotion } from '@/hooks/useMountedReducedMotion';
 
 export interface WordSegment {
   text: string;
@@ -41,7 +42,7 @@ export function WordReveal({
   className?: string;
 }) {
   const ref = useRef<HTMLParagraphElement>(null);
-  const reduce = useReducedMotion();
+  const reduce = useMountedReducedMotion();
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ['start 0.85', 'end 0.45'],

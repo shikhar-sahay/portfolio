@@ -52,12 +52,12 @@ export function Opening() {
   return (
     <div
       aria-hidden="true"
-      className={`opening-overlay fixed inset-0 z-[100] flex flex-col justify-between overflow-hidden bg-ink px-5 py-6 text-paper transition-transform duration-[850ms] ease-expo sm:px-10 sm:py-8 ${
+      className={`opening-overlay ink-stage fixed inset-0 z-[100] flex flex-col justify-between overflow-hidden px-5 py-6 transition-transform duration-[850ms] ease-expo sm:px-10 sm:py-8 ${
         phase === 'exit' ? '-translate-y-full' : 'translate-y-0'
       }`}
     >
       <p
-        className={`text-paper/50 text-micro uppercase tracking-[0.18em] transition-opacity duration-300 ${
+        className={`text-\[#f3efe6\]/50 text-micro uppercase tracking-[0.18em] transition-opacity duration-300 ${
           phase === 'exit' ? 'opacity-0' : 'opacity-100'
         }`}
       >
@@ -80,14 +80,14 @@ export function Opening() {
             style={{ left: `calc(${progress * 100}% - 3px)` }}
           />
         </div>
-        <p className="text-paper/40 mt-4 text-micro uppercase tracking-[0.18em]">
+        <p className="text-\[#f3efe6\]/40 mt-4 text-micro uppercase tracking-[0.18em]">
           {phase === 'exit' ? 'Ready' : '\u00a0'}
         </p>
       </div>
 
       {/* Serif year, quiet anchor */}
       <p
-        className={`text-paper/60 self-end font-serif text-2xl italic transition-opacity duration-300 ${
+        className={`text-\[#f3efe6\]/60 self-end font-serif text-2xl italic transition-opacity duration-300 ${
           phase === 'exit' ? 'opacity-0' : 'opacity-100'
         }`}
       >

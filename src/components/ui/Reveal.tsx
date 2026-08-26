@@ -1,6 +1,7 @@
 'use client';
 
-import { motion, useReducedMotion } from 'motion/react';
+import { motion } from 'motion/react';
+import { useMountedReducedMotion } from '@/hooks/useMountedReducedMotion';
 
 /**
  * Generic in-view reveal. Motion variant is per-use so sections can differ
@@ -19,7 +20,7 @@ export function Reveal({
   y?: number;
   once?: boolean;
 }) {
-  const reduce = useReducedMotion();
+  const reduce = useMountedReducedMotion();
   if (reduce) {
     return <div className={className}>{children}</div>;
   }

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
-import { useReducedMotion } from 'motion/react';
+import { useMountedReducedMotion } from '@/hooks/useMountedReducedMotion';
 import { Reveal } from '@/components/ui/Reveal';
 import { projects } from '@/content/projects';
 
@@ -23,7 +23,7 @@ const AUTO_SPEED = 40; // px per second, the resting drift
  * same cards in a plain native scroll row with no drift.
  */
 export function Projects() {
-  const reduce = useReducedMotion();
+  const reduce = useMountedReducedMotion();
   const viewportRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const s = useRef({
@@ -63,7 +63,12 @@ export function Projects() {
     measure();
     window.addEventListener('resize', measure);
 
-    if (reduce) return () => window.removeEventListener('resize', measure);
+    if (reduce) {
+      // The animated variant may have mounted for a frame before the
+      // reduced-motion flag landed: clear any drift offset.
+      track.style.transform = '';
+      return () => window.removeEventListener('resize', measure);
+    }
 
     const io = new IntersectionObserver(([entry]) => {
       st.visible = entry.isIntersecting;
@@ -110,7 +115,9 @@ export function Projects() {
   const nudge = useCallback(
     (dir: 1 | -1) => {
       if (reduce) {
-        viewportRef.current?.scrollBy({ left: dir * s.current.step, behavior: 'smooth' });
+        // Instant scroll: Chrome drops smooth scrolling entirely under
+        // forced reduced motion.
+        viewportRef.current?.scrollBy({ left: dir * s.current.step, behavior: 'auto' });
         return;
       }
       stopAuto();
@@ -219,8 +226,7 @@ export function Projects() {
           <div
             ref={trackRef}
             className={`flex will-change-transform ${reduce ? 'px-5 py-10 sm:px-10' : ''}`}
-          >
-            {[...projects, ...projects].map((project, i) => (
+          >            {[...projects, ...projects].map((project, i) => (
               <div
                 key={`${project.id}-${i}`}
                 data-slide

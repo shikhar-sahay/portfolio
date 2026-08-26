@@ -1,6 +1,6 @@
 'use client';
 
-import { useReducedMotion } from 'motion/react';
+import { useMountedReducedMotion } from '@/hooks/useMountedReducedMotion';
 import { InteractiveLetters } from '@/components/ui/InteractiveLetters';
 import { profile } from '@/content/profile';
 
@@ -11,7 +11,7 @@ import { profile } from '@/content/profile';
  * static wordmark instead.
  */
 export function FooterWordmark() {
-  const reduce = useReducedMotion();
+  const reduce = useMountedReducedMotion();
   const name = profile.name.toUpperCase();
 
   if (reduce) {

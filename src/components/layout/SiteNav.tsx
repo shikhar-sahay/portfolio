@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { motion, useMotionValueEvent, useReducedMotion, useScroll } from 'motion/react';
+import { motion, useMotionValueEvent, useScroll } from 'motion/react';
+import { useMountedReducedMotion } from '@/hooks/useMountedReducedMotion';
 import { navLinks, sections } from '@/content/sections';
 import { ThemeToggle } from '@/components/layout/ThemeToggle';
 
@@ -18,7 +19,7 @@ import { ThemeToggle } from '@/components/layout/ThemeToggle';
  */
 export function SiteNav() {
   const { scrollY, scrollYProgress } = useScroll();
-  const reduce = useReducedMotion();
+  const reduce = useMountedReducedMotion();
   const [compact, setCompact] = useState(false);
   const [tucked, setTucked] = useState(false);
   const [active, setActive] = useState(sections[0]);

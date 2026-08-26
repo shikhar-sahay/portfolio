@@ -2,14 +2,8 @@
 
 import { useEffect, useRef } from 'react';
 import Image from 'next/image';
-import {
-  motion,
-  useMotionValue,
-  useReducedMotion,
-  useScroll,
-  useSpring,
-  useTransform,
-} from 'motion/react';
+import { motion, useMotionValue, useScroll, useSpring, useTransform } from 'motion/react';
+import { useMountedReducedMotion } from '@/hooks/useMountedReducedMotion';
 import portrait from '../../assets/shikhar-hero.jpg';
 import { profile } from '@/content/profile';
 import { InteractiveLetters } from '@/components/ui/InteractiveLetters';
@@ -23,7 +17,7 @@ import { InteractiveLetters } from '@/components/ui/InteractiveLetters';
  */
 export function Hero() {
   const sceneRef = useRef<HTMLDivElement>(null);
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useMountedReducedMotion();
 
   // Pointer parallax: the crop drifts gently toward the cursor while the
   // echo arch counters it. Fine pointers only, never under reduced motion.

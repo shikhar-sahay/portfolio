@@ -1,7 +1,8 @@
 'use client';
 
 import { useRef } from 'react';
-import { motion, useReducedMotion, useScroll, useSpring } from 'motion/react';
+import { motion, useScroll, useSpring } from 'motion/react';
+import { useMountedReducedMotion } from '@/hooks/useMountedReducedMotion';
 import { WordReveal } from '@/components/ui/WordReveal';
 import { orgTimeline, type OrgEntry } from '@/content/experience';
 
@@ -15,7 +16,7 @@ const ease = [0.19, 1, 0.22, 1] as const;
  */
 export function Experience() {
   const listRef = useRef<HTMLDivElement>(null);
-  const reduce = useReducedMotion();
+  const reduce = useMountedReducedMotion();
   const { scrollYProgress } = useScroll({
     target: listRef,
     offset: ['start 0.78', 'end 0.55'],
