@@ -433,3 +433,32 @@ export const variants = {
 This file will be populated with concrete values as milestones progress. M1 (Hero) will finalize entrance choreography. M2 (Scroll) will finalize scroll-driven patterns. M6 (Signature Experience) may introduce new patterns.
 
 **Key rule:** If you add a new animation pattern, document it here with its easing, duration, and reduced-motion behavior.
+
+---
+
+## v4.2 Patterns (EXPERIMENTAL, 2026-08-26)
+
+### InteractiveLetters (per-letter pointer reactivity)
+
+- Letters near the cursor rise up to lift em (default 0.14) with a gaussian falloff (sigma 110px) and take an accent tint (fill via color-mix, or -webkit-text-stroke-color for outline type).
+- One rAF loop per instance, lerp factor 0.16; letter centers cached on pointerenter so the loop never reads layout.
+- Fine pointers only; static under reduced motion and on touch. Used by the hero name and the footer wordmark.
+
+### Statements bridge (shared-stage emphasis)
+
+- All three statements render on one sticky stage from progress 0 (inactive at opacity 0.16); scroll crossfades emphasis in 0.14-wide windows at 1/3 boundaries; 36px rise on activation; continuous lateral drift (1.5 to 5vw) over the whole section.
+- Stage is opaque to the end: no background fade-out, the sticky releases into About.
+- Reduced motion: static stack, no indents, full ink.
+
+### Experience spine
+
+- Accent line scaleY bound to section scroll progress via useSpring (stiffness 70, damping 22), origin top. Diamond markers scale in once per org block (whileInView).
+
+### Skills marquee
+
+- CSS ranslate3d keyframe loop, width: max-content, two identical halves, uniform item slots (margins, not gap) so -50% is seamless. 20 to 50s per row, alternate rows reversed, nimation-play-state: paused on hover,
+  one under reduced motion, edge fade via mask-image.
+
+### Projects carousel
+
+- Single rAF loop owns the track: drift 40px/s; arrow/keyboard targets tween at lerp 0.16; drag writes offset directly; on release the offset eases to the nearest card boundary. Offset wraps modulo one copy width (two copies rendered). Loop pauses via IntersectionObserver when offscreen. Reduced motion: no loop, native overflow scroll, instant arrow scrolls.

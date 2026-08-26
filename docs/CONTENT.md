@@ -132,27 +132,31 @@ export interface Project {
 
 ## Experience Content (M4)
 
-### Data Structure (UNDECIDED)
+### Data Structure (EXPERIMENTAL, updated 2026-08-26)
+
+Experience is grouped by organization; roles nest inside each org entry.
 
 ```typescript
 // content/experience.ts
-export interface ExperienceEntry {
-  id: string;
-  type: 'work' | 'education' | 'research' | 'leadership' | 'side-project';
-  title: string;
-  organization: string;
-  location: string; // City, Country / Remote
-  startDate: string; // ISO date
-  endDate?: string; // ISO date or "Present"
-  isCurrent: boolean;
-  description: string; // 2-3 sentences
-  highlights: string[]; // Bullet points: achievements, scope, tech
-  skills: string[]; // Key skills demonstrated
-  // Optional
-  logo?: string; // Organization logo path
-  url?: string; // Org website
+export interface RoleEntry {
+  role: string;
+  period?: string; // omitted only when the owner's source supplies no dates
+  summary?: string; // one condensed factual line; detail lives in the resume
 }
+
+export interface OrgEntry {
+  org: string;
+  location?: string;
+  roles: RoleEntry[];
+}
+
+// Canonical order (owner-mandated, v4.2):
+// Cyber Defenders, Recipharm, GDG On Campus (Senior Core, Inner Core),
+// CodeChef-VIT (Senior Core, Junior Core), Skilledity (Team Lead, Intern),
+// Team Shade.
 ```
+
+Note: the Skilledity "Social Media Management Intern" entry intentionally has no period or summary until the owner supplies dates and facts. Do not invent them.
 
 ### Entries To Populate (UNDECIDED)
 

@@ -246,3 +246,15 @@ The identity system beyond type and color. Used consistently so sections read as
 ## Notes
 
 This file will evolve as design decisions are finalized. Each section should be updated with `FINALIZED` status once decided, with the actual values documented.
+
+---
+
+## v4.2 Additions (EXPERIMENTAL, 2026-08-26)
+
+- **.ink-stage** (globals.css): cinematic ink fields (opening overlay, statements bridge) render #1d1915 on #f3efe6 in BOTH themes so the dark colorway never flashes to cream mid-story. Accent stays ar(--accent).
+- **Statements bridge type:** clamp(3.2rem, 10.5vw, 13rem), weight 600, leading 0.95, tracking -0.03em, uppercase; accent trailing period; micro notes at #f3efe6/60.
+- **Skills marquee rows:** serif italic group headings (existing), gold emblems enlarged to 80px with a logo-ready core slot; rows drift with edge fade masks; certifications keep the hairline register with diamond bullets.
+- **Experience timeline:** central spine (g-ink/15 hairline + accent fill), 45deg-square diamond markers, org blocks at ext-xl/2xl, role periods in accent micro tabular numerals, one-line summaries in muted.
+- **Control panel:** outer frame with 6px accent corner ticks, title strip (shikharsahay / control + live status), modules divided by gap-px hairlines with underlined accent labels, footer strip (Vellore, India · UTC +05:30).
+- **Footer:** compact contact grid (serif italic Let's talk + structured Elsewhere/Pages columns), slim resume row, closing marquee wordmark at 9.5vw with accent diamond separators and edge fades.
+- **Removed from the system:** Magnetic component (deleted), P.0x artifact tags, the large Say hello block and footer link rows.

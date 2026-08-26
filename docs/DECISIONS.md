@@ -551,3 +551,30 @@ Do not make significant design/architecture decisions without documenting them h
 **Date:** 2026-08-24
 
 **Rationale:** Owner screenshot review found the title card blank, the post-portrait void empty, the About index redundant, Experience too dense, Skills too plain, projects too spread out, and the control panel too loose. Each change maps to one of those findings.
+
+---
+
+### 31. v4.2 Owner Brief: Opening Rhythm, Org Timeline, Marquee Skills, Drifting Carousel, Compact Footer
+
+**Decision:** Owner-directed iteration on the v5 structure.
+
+1. Hero name reacts letter by letter under the pointer (InteractiveLetters: gaussian rise field, accent tint, one rAF loop, fine pointers only, static on touch and reduced motion).
+2. Opening compressed: hero 130svh, every layer holds the frame until late; the statements bridge keeps all three statements on one sticky ink stage from the first pixel and moves emphasis down the stack with scroll; the stage stays opaque to the end so no blank beige screen can appear before About.
+3. Experience content grouped by organization in the owner's mandated order (Cyber Defenders, Recipharm, GDG, CodeChef-VIT, Skilledity, Team Shade); the Skilledity Social Media Management Intern role is listed without dates because the owner's source supplies none. Timeline rebuilt around a central spine whose accent fill draws with scroll; org blocks alternate sides on lg and stack along the spine below lg; one condensed line per role.
+4. Skills rebuilt as three drifting marquee rows of golden emblems (alternate directions, pause on hover, edge fade). No numeric counts. The emblem core is a slot so technology logos can drop in later without layout changes. Certifications remain a separate register.
+5. Projects: continuous auto-drift (40px/s) that permanently stops on the first user interaction (drag, swipe, arrows, keys); seamless wrap via a two-copy track whose offset wraps modulo one copy width; pointer drag with gentle grid settle and click suppression after drags; strictly uniform cards; P.0x tags removed.
+6. Control center: framed panel with accent corner ticks, title strip with live status, six hairline-divided modules, footer strip.
+7. Footer: compact contact grid (Let's talk, Elsewhere, Pages), slim resume row, and the closing element is the name as an infinite marquee with reactive letters; the large Say hello block and the large link rows are removed.
+8. .ink-stage utility keeps cinematic ink fields (opening, bridge) dark in both themes; dark mode never flashes to cream mid-story.
+9. Reduced-motion variants gate on useMountedReducedMotion (post-mount flip) so server and client markup always match; Chrome ignores smooth scrolling under forced reduced motion, so reduced-mode carousel arrows scroll instantly.
+10. Nav magnetic pull removed to reclaim first-load budget; Magnetic component deleted (unused).
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-08-26
+
+**Rationale:** The owner's brief mapped each section to a concrete defect: dead scroll after the hero, a bland statements section, an empty right column in Experience, a static resume-list Skills, an unacceptable carousel, loose control-panel divisions, and a footer that spent its space on Say hello. References: Aryan Randeriya (opening typography, utility panel, footer), DevJams screenshot (timeline), Devansh Arora (compact structures), Swayam (art direction).
+
+**Alternatives Considered:** Sequential statement reveals (rejected: empty stage time); index-based carousel with clone-snap (rejected: visible seams and glitchy snapping); CSS-only footer letter hover (kept JS for parity with the hero wave); code-splitting below-fold sections via next/dynamic in RSC (rejected: does not produce separate chunks in the App Router client manifest, adds indirection without benefit).
+
+**Impact:** First Load JS ~151 kB (budget 150, baseline was already 150 at checkpoint); reclamation options recorded in HANDOFF known issues. All interactions degrade to complete static layouts under reduced motion and on touch.

@@ -226,7 +226,9 @@ export function Projects() {
           <div
             ref={trackRef}
             className={`flex will-change-transform ${reduce ? 'px-5 py-10 sm:px-10' : ''}`}
-          >            {[...projects, ...projects].map((project, i) => (
+          >
+            {' '}
+            {[...projects, ...projects].map((project, i) => (
               <div
                 key={`${project.id}-${i}`}
                 data-slide

@@ -233,3 +233,11 @@ jobs:
 - If a feature threatens budgets, it must be justified in `DECISIONS.md`
 - Performance is everyone's responsibility — every milestone includes perf checklist
 - `ANIMATION.md` has complementary animation-specific performance rules
+
+---
+
+## v4.2 Status (2026-08-26)
+
+- First Load JS: ~151 kB against the 150 kB budget. Note: the checkpoint build before this pass already measured 150 kB (the "~145 kB" figure in AGENTS.md was stale). This pass added ~1 kB net (InteractiveLetters, carousel logic, footer marquee) and removed the nav magnetic pull.
+- Reclamation options: cheapen the InteractiveLetters tint, trim carousel hint state, or move Counter out of the lazy chunk. Track in HANDOFF known issues.
+- Runtime: one rAF loop per marquee is CSS-driven (compositor only); the carousel runs one rAF loop that pauses offscreen via IntersectionObserver; hero/footer letter fields run one rAF loop per instance gated by pointer presence.
