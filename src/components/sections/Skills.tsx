@@ -1,12 +1,14 @@
 import { Reveal } from '@/components/ui/Reveal';
+import { TechLogo, hasGlyph } from '@/components/ui/TechLogo';
 import { certifications, skillGroups, type Skill } from '@/content/systems';
 
 /**
  * Skills: each group is a slow drifting marquee of golden emblems, one
- * direction per row, pausing under the cursor. The emblem core is a slot:
- * a serif monogram today, a technology logo can drop into the same frame
- * later without touching the layout. No counts, no proficiency bars.
- * Certifications keep their own quiet register below.
+ * direction per row, pausing under the cursor. The emblem core holds the
+ * real technology mark wherever one exists (vendored CC0 paths, drawn
+ * monochrome to keep the editorial voice); tools without a mark keep
+ * their serif monogram. No counts, no proficiency bars. Certifications
+ * keep their own quiet register below.
  */
 export function Skills() {
   return (
@@ -105,9 +107,10 @@ function SkillRow({ items, reverse }: { items: Skill[]; reverse: boolean }) {
 }
 
 function SkillEmblem({ skill }: { skill: Skill }) {
+  const logo = hasGlyph(skill.name);
   return (
     <div className="group mx-4 flex w-[88px] shrink-0 flex-col items-center gap-3 py-2">
-      {/* Emblem frame: the core is a slot, ready to hold a real logo later */}
+      {/* Emblem frame: the core holds the real mark where one exists */}
       <div className="relative flex h-20 w-20 items-center justify-center">
         <span
           aria-hidden="true"
@@ -121,9 +124,16 @@ function SkillEmblem({ skill }: { skill: Skill }) {
           aria-hidden="true"
           className="group-hover:bg-gold/10 absolute inset-[8px] rounded-full bg-surface transition-colors duration-500"
         />
-        <span className="relative font-serif text-xl italic tracking-tight text-gold">
-          {skill.abbr}
-        </span>
+        {logo ? (
+          <TechLogo
+            name={skill.name}
+            className="text-ink relative h-7 w-7 transition-all duration-500 ease-expo group-hover:scale-110 group-hover:text-accent"
+          />
+        ) : (
+          <span className="relative font-serif text-xl italic tracking-tight text-gold">
+            {skill.abbr}
+          </span>
+        )}
       </div>
       <p className="text-center text-micro uppercase leading-tight tracking-[0.12em] text-muted transition-colors duration-300 group-hover:text-ink">
         {skill.name}
