@@ -3,14 +3,16 @@
 import { useEffect, useState } from 'react';
 import { Reveal } from '@/components/ui/Reveal';
 import { profile } from '@/content/profile';
+import { channelGlyphs } from '@/content/channelGlyphs';
 import { skillGroups } from '@/content/systems';
 import { navLinks } from '@/content/sections';
 
 /**
  * Control center: a utility panel near the end of the page. Live clock
- * (IST), current context, selected tools, and every important link, in
- * one bordered grid. Facts only: education, roles, and tools that appear
- * in the owner's source material.
+ * (IST), session uptime, current context, selected tools, brand channel
+ * tiles, and navigation, in one bordered grid. Facts only: education,
+ * roles, and tools that appear in the owner's source material. Links the
+ * owner has not supplied yet stay visibly marked as coming soon.
  */
 export function ControlCenter() {
   const selectedTools = [
@@ -123,14 +125,33 @@ export function ControlCenter() {
               </Module>
             </Reveal>
 
-            {/* Direct lines */}
+            {/* Channels: real interactive tiles with brand marks */}
             <Reveal delay={0.1} className="bg-paper">
-              <Module label="Direct lines">
-                <ul className="space-y-2.5">
-                  <ControlLink label="Email" href={profile.links.email} />
-                  <ControlLink label="GitHub" href={profile.links.github} />
-                  <ControlLink label="LinkedIn" href={profile.links.linkedin} />
-                  <ControlLink label="Resume" href={profile.links.resume} />
+              <Module label="Channels">
+                <ul className="grid grid-cols-2 gap-2">
+                  <ChannelTile
+                    label="Email"
+                    href={profile.links.email}
+                    glyph={channelGlyphs.Email}
+                  />
+                  <ChannelTile
+                    label="GitHub"
+                    href={profile.links.github}
+                    glyph={channelGlyphs.GitHub}
+                    external
+                  />
+                  <ChannelTile
+                    label="LinkedIn"
+                    href={profile.links.linkedin}
+                    glyph={channelGlyphs.LinkedIn}
+                    external
+                  />
+                  <ChannelTile
+                    label="Resume"
+                    href={profile.links.resume}
+                    glyph={channelGlyphs.Resume}
+                    external
+                  />
                 </ul>
               </Module>
             </Reveal>
@@ -158,7 +179,9 @@ export function ControlCenter() {
             <p className="text-micro uppercase tracking-[0.16em] text-muted">
               Vellore, India · UTC +05:30
             </p>
-            <p className="text-micro uppercase tracking-[0.16em] text-muted">End of panel</p>
+            <p className="text-micro uppercase tracking-[0.16em] text-muted">
+              <SessionUptime />
+            </p>
           </div>
         </div>
       </div>
@@ -181,21 +204,81 @@ function Module({ label, children }: { label: string; children: React.ReactNode 
   );
 }
 
-function ControlLink({ label, href }: { label: string; href: string }) {
+function ChannelTile({
+  label,
+  href,
+  glyph,
+  external,
+}: {
+  label: string;
+  href: string;
+  glyph: { title: string; path: string };
+  external?: boolean;
+}) {
+  // Links the owner has not supplied stay visibly marked instead of
+  // pretending to work; the Resume tile points at /resume.pdf.
   const placeholder = href === '#';
   return (
-    <a
-      href={href}
-      {...(label !== 'Email' ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-      aria-disabled={placeholder || undefined}
-      title={placeholder ? `${label} link coming soon` : undefined}
-      className={`group inline-flex items-baseline gap-2 text-sm transition-colors duration-300 ${
-        placeholder ? 'text-muted/60 cursor-default' : 'text-muted hover:text-ink'
-      }`}
-    >
-      <span className="h-px w-2 bg-accent transition-all duration-500 ease-expo group-hover:w-4" />
-      {label}
-    </a>
+    <li>
+      <a
+        href={href}
+        {...(!placeholder && external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+        aria-disabled={placeholder || undefined}
+        aria-label={placeholder ? `${label} (link coming soon)` : label}
+        title={placeholder ? `${label} link coming soon` : label}
+        className={`group/tile flex h-full min-h-[88px] flex-col items-center justify-center gap-2 border p-3 transition-all duration-500 ease-expo ${
+          placeholder
+            ? 'border-ink/10 cursor-default'
+            : 'border-ink/15 hover:-translate-y-1 hover:border-accent hover:bg-surface focus-visible:border-accent'
+        }`}
+      >
+        <svg
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+          fill="currentColor"
+          className={`h-6 w-6 transition-colors duration-300 ${
+            placeholder ? 'text-muted/60' : 'text-ink group-hover/tile:text-accent'
+          }`}
+        >
+          <path d={glyph.path} />
+        </svg>
+        <span
+          className={`text-micro uppercase tracking-[0.14em] transition-colors duration-300 ${
+            placeholder ? 'text-muted/60' : 'text-muted group-hover/tile:text-ink'
+          }`}
+        >
+          {label}
+        </span>
+        {placeholder && (
+          <span className="text-[0.6rem] uppercase leading-none tracking-[0.14em] text-muted/50">
+            soon
+          </span>
+        )}
+      </a>
+    </li>
+  );
+}
+
+/** Seconds since this page load, ticking in the panel footer. */
+function SessionUptime() {
+  const [secs, setSecs] = useState(0);
+
+  useEffect(() => {
+    const start = Date.now();
+    const id = window.setInterval(
+      () => setSecs(Math.floor((Date.now() - start) / 1000)),
+      1000
+    );
+    return () => window.clearInterval(id);
+  }, []);
+
+  const h = String(Math.floor(secs / 3600)).padStart(2, '0');
+  const m = String(Math.floor((secs % 3600) / 60)).padStart(2, '0');
+  const s = String(secs % 60).padStart(2, '0');
+  return (
+    <span aria-hidden="true" className="tabular-nums">
+      Session T+ {h}:{m}:{s}
+    </span>
   );
 }
 
