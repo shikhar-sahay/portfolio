@@ -12,8 +12,10 @@ import { InteractiveLetters } from '@/components/ui/InteractiveLetters';
  * 01 / Identity. The portrait is an editorial arch: a tall aperture with a
  * rounded crown and an offset vermilion echo behind it, overlapping the
  * display type. The name reacts letter by letter under the pointer.
- * Scrolling never zooms the face: the scene changes, and every element
- * holds the frame until late so no dead scroll space opens up.
+ * Scrolling never zooms the face: the scene changes in two beats. First
+ * the composition separates while the frame stays full; then an ink veil
+ * rises from the bottom carrying the opening statement, so the hero hands
+ * a full, moving frame directly to the statements bridge.
  */
 export function Hero() {
   const sceneRef = useRef<HTMLDivElement>(null);
@@ -57,29 +59,34 @@ export function Hero() {
     offset: ['start start', 'end end'],
   });
 
-  // Scene change: typography separates into layers while staying legible,
-  // the arch exits laterally late, a hairline draws to hand content over
-  // to the statements. Everything fades only in the last stretch so the
-  // frame is never empty.
-  const nameAY = useTransform(scrollYProgress, [0, 0.6, 1], ['0svh', '-7svh', '-10svh']);
-  const nameAX = useTransform(scrollYProgress, [0, 0.6, 1], ['0vw', '-3.5vw', '-5vw']);
-  const nameAO = useTransform(scrollYProgress, [0.35, 0.78, 0.98], [1, 1, 0]);
-  const nameBY = useTransform(scrollYProgress, [0, 0.6, 1], ['0svh', '5svh', '8svh']);
-  const nameBX = useTransform(scrollYProgress, [0, 0.6, 1], ['0vw', '3vw', '4vw']);
-  const nameBO = useTransform(scrollYProgress, [0.38, 0.78, 0.98], [1, 1, 0]);
+  // Scene change, two beats. Beat one: the composition separates while
+  // the frame stays full. Beat two: the identity sweeps aside and an ink
+  // veil rises from the bottom carrying the opening statement, handing a
+  // full frame to the statements bridge. Nothing fades on its own.
+  const nameAY = useTransform(scrollYProgress, [0, 0.6, 1], ['0svh', '-7svh', '-22svh']);
+  const nameAX = useTransform(scrollYProgress, [0, 0.6, 1], ['0vw', '-3.5vw', '-12vw']);
+  const nameAO = useTransform(scrollYProgress, [0.4, 0.82, 1], [1, 1, 0]);
+  const nameBY = useTransform(scrollYProgress, [0, 0.6, 1], ['0svh', '5svh', '16svh']);
+  const nameBX = useTransform(scrollYProgress, [0, 0.6, 1], ['0vw', '3vw', '10vw']);
+  const nameBO = useTransform(scrollYProgress, [0.42, 0.82, 1], [1, 1, 0]);
+  const nameScale = useTransform(scrollYProgress, [0, 0.55, 1], [1, 1, 1.1]);
   const metaO = useTransform(scrollYProgress, [0, 0.35, 0.7], [1, 1, 0]);
   const ledeO = useTransform(scrollYProgress, [0, 0.4, 0.72], [1, 1, 0]);
-  const archX = useTransform(scrollYProgress, [0, 0.55, 1], ['0vw', '10vw', '22vw']);
-  const archY = useTransform(scrollYProgress, [0, 1], ['0svh', '5svh']);
+  const archX = useTransform(scrollYProgress, [0, 0.55, 1], ['0vw', '10vw', '34vw']);
+  const archY = useTransform(scrollYProgress, [0, 0.55, 1], ['0svh', '5svh', '-6svh']);
   const archR = useTransform(scrollYProgress, [0, 1], [0, 3]);
-  const archO = useTransform(scrollYProgress, [0.6, 0.95, 1], [1, 1, 0]);
+  const archO = useTransform(scrollYProgress, [0.6, 0.9, 1], [1, 1, 0]);
   const handoffLine = useTransform(scrollYProgress, [0.45, 0.9], [0, 1]);
   const cueO = useTransform(scrollYProgress, [0, 0.12, 1], [1, 0, 0]);
+  // The exit veil: ink rises from the bottom with the opening statement.
+  const veilY = useTransform(scrollYProgress, [0.5, 0.85, 1], ['100%', '0%', '0%']);
+  const veilTextY = useTransform(scrollYProgress, [0.5, 0.88, 1], ['24svh', '0svh', '0svh']);
+  const veilTextO = useTransform(scrollYProgress, [0.5, 0.72, 0.9], [0, 1, 1]);
 
   const scroll = (style: Record<string, unknown>) => (reduceMotion ? undefined : { style });
 
   return (
-    <div ref={sceneRef} id="top" className="relative h-[130svh]">
+    <div ref={sceneRef} id="top" className="relative h-[120svh]">
       <div className="sticky top-0 flex h-dvh items-center overflow-hidden">
         <div className="grid w-full grid-cols-1 items-center gap-10 px-5 pb-16 pt-24 sm:px-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-4 lg:pb-0 lg:pt-0">
           {/* Identity column */}
@@ -92,29 +99,32 @@ export function Hero() {
               Portfolio, 2026
             </motion.p>
 
-            <h1 className="select-none text-display uppercase">
+            <motion.h1
+              className="select-none text-display uppercase"
+              {...scroll({ scale: nameScale })}
+            >
               <motion.span className="block" {...scroll({ y: nameAY, x: nameAX, opacity: nameAO })}>
-                <span className="anim-mask">
-                  <InteractiveLetters
-                    text="Shikhar"
-                    className="[animation-delay:calc(var(--intro-delay)+0.25s)]"
-                  />
-                </span>
+                <InteractiveLetters
+                  text="Shikhar"
+                  entrance
+                  entranceDelay="var(--intro-delay) + 0.25s"
+                  className="block"
+                />
               </motion.span>
               <motion.span
                 className="block pl-[8vw] lg:pl-[4vw]"
                 {...scroll({ y: nameBY, x: nameBX, opacity: nameBO })}
               >
-                <span className="anim-mask">
-                  <InteractiveLetters
-                    text="Sahay"
-                    letterClassName="type-outline"
-                    tint="stroke"
-                    className="[animation-delay:calc(var(--intro-delay)+0.4s)]"
-                  />
-                </span>
+                <InteractiveLetters
+                  text="Sahay"
+                  letterClassName="type-outline"
+                  tint="stroke"
+                  entrance
+                  entranceDelay="var(--intro-delay) + 0.4s"
+                  className="block"
+                />
               </motion.span>
-            </h1>
+            </motion.h1>
 
             <motion.div {...scroll({ opacity: ledeO })}>
               <p className="anim-fade-rise mt-6 max-w-[26ch] text-lede font-medium tracking-tight text-ink [animation-delay:calc(var(--intro-delay)+0.6s)] sm:mt-8">
@@ -198,6 +208,27 @@ export function Hero() {
             <span className="cue-line" aria-hidden="true" />
           </div>
         </motion.div>
+
+        {/* Exit veil: ink rises from the bottom carrying the opening
+            statement, handing a full frame to the statements bridge. */}
+        {!reduceMotion && (
+          <motion.div aria-hidden="true" className="absolute inset-0 z-20" style={{ y: veilY }}>
+            <div className="ink-stage flex h-full flex-col justify-center px-5 sm:px-10">
+              <motion.p
+                style={{ y: veilTextY, opacity: veilTextO }}
+                className="-mt-[12svh] text-[clamp(3.2rem,10.5vw,13rem)] font-semibold uppercase leading-[0.95] tracking-[-0.03em]"
+              >
+                I build<span className="text-accent">.</span>
+              </motion.p>
+              <motion.p
+                style={{ opacity: veilTextO }}
+                className="mt-2 text-micro uppercase tracking-[0.16em] text-[#f3efe6]/60 sm:mt-3"
+              >
+                tools, experiments, platforms
+              </motion.p>
+            </div>
+          </motion.div>
+        )}
       </div>
     </div>
   );

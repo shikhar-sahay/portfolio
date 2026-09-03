@@ -113,11 +113,13 @@ html[data-intro='skip'] .opening-overlay {
 /* script. Reduced motion collapses everything to final state.         */
 /* ------------------------------------------------------------------ */
 
-@keyframes mask-rise {
+@keyframes letter-rise {
   from {
-    transform: translateY(115%);
+    opacity: 0;
+    transform: translateY(0.45em);
   }
   to {
+    opacity: 1;
     transform: translateY(0);
   }
 }
@@ -222,19 +224,6 @@ html[data-intro='skip'] .opening-overlay {
   transform: scaleX(0);
   transform-origin: left;
   animation: sweep 1s cubic-bezier(0.19, 1, 0.22, 1) forwards;
-}
-
-.anim-mask {
-  display: block;
-  overflow: hidden;
-  padding-block-end: 0.08em;
-  margin-block-end: -0.08em;
-}
-
-.anim-mask > span {
-  display: block;
-  transform: translateY(115%);
-  animation: mask-rise 1.1s cubic-bezier(0.19, 1, 0.22, 1) forwards;
 }
 
 .anim-fade-rise {
