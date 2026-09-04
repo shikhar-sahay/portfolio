@@ -250,7 +250,7 @@ function ChannelTile({
           {label}
         </span>
         {placeholder && (
-          <span className="text-[0.6rem] uppercase leading-none tracking-[0.14em] text-muted/50">
+          <span className="text-muted/50 text-[0.6rem] uppercase leading-none tracking-[0.14em]">
             soon
           </span>
         )}
@@ -265,10 +265,7 @@ function SessionUptime() {
 
   useEffect(() => {
     const start = Date.now();
-    const id = window.setInterval(
-      () => setSecs(Math.floor((Date.now() - start) / 1000)),
-      1000
-    );
+    const id = window.setInterval(() => setSecs(Math.floor((Date.now() - start) / 1000)), 1000);
     return () => window.clearInterval(id);
   }, []);
 
