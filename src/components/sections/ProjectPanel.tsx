@@ -28,6 +28,9 @@ export function ProjectPanel({ project }: { project: Project }) {
       <div className="flex flex-1 flex-col p-5 sm:p-6">
         <p className="text-micro uppercase tracking-[0.16em] text-accent">{project.kind}</p>
         <h3 className="mt-2 text-2xl font-semibold tracking-tight text-ink">{project.name}</h3>
+        {project.role && (
+          <p className="mt-1.5 text-micro uppercase tracking-[0.12em] text-muted">{project.role}</p>
+        )}
         <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-muted">
           {project.description}
         </p>

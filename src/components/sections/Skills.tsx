@@ -127,7 +127,7 @@ function SkillEmblem({ skill }: { skill: Skill }) {
         {logo ? (
           <TechLogo
             name={skill.name}
-            className="relative h-7 w-7 text-ink transition-all duration-500 ease-expo group-hover:scale-110 group-hover:text-accent"
+            className="text-ink transition-all duration-500 ease-expo group-hover:scale-110 group-hover:text-accent"
           />
         ) : (
           <span className="relative font-serif text-xl italic tracking-tight text-gold">
@@ -135,7 +135,7 @@ function SkillEmblem({ skill }: { skill: Skill }) {
           </span>
         )}
       </div>
-      <p className="text-center text-micro uppercase leading-tight tracking-[0.12em] text-muted transition-colors duration-300 group-hover:text-ink">
+      <p className="flex min-h-[2.6em] items-center justify-center text-center text-micro uppercase leading-tight tracking-[0.12em] text-muted transition-colors duration-300 [text-wrap:balance] group-hover:text-ink">
         {skill.name}
       </p>
     </div>

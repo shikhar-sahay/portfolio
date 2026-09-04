@@ -604,3 +604,25 @@ Do not make significant design/architecture decisions without documenting them h
 **Alternatives Considered:** Rebuilding sections from scratch (rejected: the brief mandates preserving working implementation); installing an icon library (rejected: vendoring three CC0 paths keeps the bundle lean).
 
 **Impact:** First Load JS ~153 kB (budget 150); reclamation options recorded in HANDOFF known issues. Placeholder-link policy recorded in CONTENT.md. Motion patterns recorded in ANIMATION.md v4.3.
+
+---
+
+### 33. v4.4 Visual Polish Pass (EXPERIMENTAL polish)
+
+**Decision:** Top-to-bottom polish with DOM/layout verification (one targeted screenshot to check the hero type over portrait overlap). No system rewrites.
+
+1. Hero name never wraps: `whitespace-nowrap` on the letter containers plus `min-w-0` on the identity column, so oversized display type stays on one line and bleeds over the arch instead of wrapping mid-word (which had doubled the h1 height and pushed it to the viewport top) or squeezing the portrait. Verified: single line at 375/1440/1920, 122px interlock at 1440, face clear.
+2. Footer wordmark interaction quieted: new `tintStrength` prop (footer 45 versus hero 85) and footer lift 0.16 to 0.10.
+3. Skills emblems: solid full-bleed marks (JavaScript, TypeScript, HTML, CSS, Next.js, C++) render one step smaller for matching optical weight; labels reserve two lines with balanced wrap so every emblem slot is uniform.
+4. Project cards render the existing `role` field (previously dropped) as a muted micro line; stack naming unified to Tailwind.
+5. Footer Elsewhere links wrapped in `li` (they flowed horizontally as bare inline spans in the list).
+6. Skilledity intern row renders a muted "Details coming soon" line (owner supplies no dates or summary) to keep the progression rhythm.
+7. Metadata title/description spacing cleaned to single spaces; favicon wired via `src/app/icon.svg`.
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-09-04
+
+**Rationale:** Each change fixes an observed defect (mid-word wrap, orange wash, uneven emblems, dropped content, horizontal links) without altering any working system.
+
+**Impact:** First Load JS unchanged at ~153 kB. No new dependencies.

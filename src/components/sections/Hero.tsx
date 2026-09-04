@@ -92,8 +92,9 @@ export function Hero() {
         className={`${reduceMotion ? '' : 'sticky top-0'} flex ${reduceMotion ? 'min-h-dvh' : 'h-dvh'} items-center overflow-hidden`}
       >
         <div className="grid w-full grid-cols-1 items-center gap-10 px-5 pb-16 pt-24 sm:px-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-4 lg:pb-0 lg:pt-0">
-          {/* Identity column */}
-          <div className="relative z-10 order-2 lg:order-1">
+          {/* Identity column: min-w-0 so the oversized name can bleed over
+              the portrait instead of squeezing the grid. */}
+          <div className="relative z-10 order-2 min-w-0 lg:order-1">
             <motion.p
               className="anim-fade-in mb-6 flex items-center gap-3 text-micro uppercase tracking-[0.16em] text-muted [animation-delay:calc(var(--intro-delay)+0.2s)] sm:mb-8"
               {...scroll({ opacity: metaO })}

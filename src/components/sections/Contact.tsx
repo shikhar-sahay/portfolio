@@ -42,9 +42,15 @@ export function Contact() {
               <div>
                 <p className="text-micro uppercase tracking-[0.16em] text-accent">Elsewhere</p>
                 <ul className="mt-4 space-y-3">
-                  <CompactLink label="GitHub" href={profile.links.github} />
-                  <CompactLink label="LinkedIn" href={profile.links.linkedin} />
-                  <CompactLink label="Resume" href={profile.links.resume} />
+                  <li>
+                    <CompactLink label="GitHub" href={profile.links.github} />
+                  </li>
+                  <li>
+                    <CompactLink label="LinkedIn" href={profile.links.linkedin} />
+                  </li>
+                  <li>
+                    <CompactLink label="Resume" href={profile.links.resume} />
+                  </li>
                 </ul>
               </div>
               <div>

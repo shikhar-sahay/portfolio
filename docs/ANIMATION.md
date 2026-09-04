@@ -441,6 +441,8 @@ This file will be populated with concrete values as milestones progress. M1 (Her
 ### InteractiveLetters (per-letter pointer reactivity)
 
 - Each letter owns an independent spring (stiffness 170, damping 15) driven by a two-dimensional gaussian proximity field around the pointer (sigma X 130px, sigma Y 85px; lift default 0.12em). The tight vertical falloff keeps stacked rows independent: hovering one row leaves the other at rest.
+- Containers never wrap (`whitespace-nowrap`) so display type stays on one line at any width.
+- Accent wash strength is tunable per use (`tintStrength`, default 85; the footer marquee uses 45 with lift 0.10 to stay subtle).
 - One rAF loop per instance; letter centers cached in viewport coordinates on pointerenter and refreshed on scroll while the pointer is inside (scroll-driven transforms move the letters), so the loop never reads layout per frame.
 - Clip-free by construction: overflow visible through the whole ancestor chain except the viewport-sized sticky frame; hero rows separated by a small top margin; the footer marquee carries vertical bleed inside its overflow mask.
 - Fine pointers only; static under reduced motion and on touch. Used by the hero name and the footer wordmark.

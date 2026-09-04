@@ -30,7 +30,7 @@ export const projects: Project[] = [
     description:
       "One of VIT's most-used platforms for previous year question papers. Find your course, pull the paper, get back to work.",
     role: 'Front-end and back-end development, CodeChef-VIT',
-    stack: ['Next.js', 'TypeScript', 'TailwindCSS', 'MongoDB'],
+    stack: ['Next.js', 'TypeScript', 'Tailwind', 'MongoDB'],
     metric: { value: 55, suffix: 'K+', label: 'active users' },
     secondMetric: { value: 1.2, decimals: 1, suffix: 'M+', label: 'page views' },
     links: { live: '#', github: '#', caseStudy: '#' },

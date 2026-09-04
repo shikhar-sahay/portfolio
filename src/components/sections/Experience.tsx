@@ -177,6 +177,11 @@ function OrgBlock({
                     {role.summary}
                   </p>
                 )}
+                {!role.period && !role.summary && (
+                  <p className="text-muted/60 mt-1 text-micro uppercase tracking-[0.14em]">
+                    Details coming soon
+                  </p>
+                )}
               </>
             );
             return reduce ? (

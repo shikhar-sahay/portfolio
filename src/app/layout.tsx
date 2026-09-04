@@ -17,21 +17,21 @@ const instrumentSerif = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
-  title: 'Shikhar Sahay  -  Portfolio',
+  title: 'Shikhar Sahay - Portfolio',
   description:
-    'Portfolio of Shikhar Sahay  -  Computer Science student, cybersecurity enthusiast, builder of memorable things.',
+    'Portfolio of Shikhar Sahay - Computer Science student, cybersecurity enthusiast, builder of memorable things.',
   authors: [{ name: 'Shikhar Sahay' }],
   openGraph: {
-    title: 'Shikhar Sahay  -  Portfolio',
+    title: 'Shikhar Sahay - Portfolio',
     description:
-      'Portfolio of Shikhar Sahay  -  Computer Science student, cybersecurity enthusiast, builder of memorable things.',
+      'Portfolio of Shikhar Sahay - Computer Science student, cybersecurity enthusiast, builder of memorable things.',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Shikhar Sahay  -  Portfolio',
+    title: 'Shikhar Sahay - Portfolio',
     description:
-      'Portfolio of Shikhar Sahay  -  Computer Science student, cybersecurity enthusiast, builder of memorable things.',
+      'Portfolio of Shikhar Sahay - Computer Science student, cybersecurity enthusiast, builder of memorable things.',
   },
   robots: {
     index: true,

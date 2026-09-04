@@ -30,7 +30,8 @@ export function FooterWordmark() {
         <span key={copy} className="flex items-baseline">
           <InteractiveLetters
             text={name}
-            lift={0.16}
+            lift={0.1}
+            tintStrength={45}
             className="whitespace-nowrap text-[9.5vw] font-semibold uppercase leading-none tracking-[-0.02em] text-ink"
           />
           <span

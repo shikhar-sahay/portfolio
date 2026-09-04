@@ -27,6 +27,8 @@ export function InteractiveLetters({
   letterClassName,
   lift = 0.12,
   tint = 'color',
+  /** Maximum accent mix in percent (the footer uses a quieter wash). */
+  tintStrength = 85,
   entrance = false,
   entranceDelay = '0s',
 }: {
@@ -37,6 +39,8 @@ export function InteractiveLetters({
   lift?: number;
   /** What reacts besides the rise: fill color, or the stroke of outline type. */
   tint?: 'color' | 'stroke' | 'none';
+  /** Maximum accent mix in percent (the footer uses a quieter wash). */
+  tintStrength?: number;
   /** Staggered fade-and-rise entrance instead of appearing instantly. */
   entrance?: boolean;
   /** CSS time expression the per-letter stagger builds on. */
@@ -81,7 +85,7 @@ export function InteractiveLetters({
       if (!el) return;
       el.style.transform = f === 0 ? '' : `translateY(${-f}em)`;
       if (tint !== 'none' && f > 0.04) {
-        const a = Math.round(Math.min(1, f / lift) * 85);
+        const a = Math.round(Math.min(1, f / lift) * tintStrength);
         if (tint === 'stroke') {
           el.style.setProperty(
             '-webkit-text-stroke-color',
@@ -201,12 +205,12 @@ export function InteractiveLetters({
       window.removeEventListener('scroll', onScroll);
       cancelAnimationFrame(raf);
     };
-  }, [text, lift, tint, reduce]);
+  }, [text, lift, tint, tintStrength, reduce]);
 
   return (
     <span
       ref={containerRef}
-      className={`overflow-visible ${className ?? ''}`}
+      className={`overflow-visible whitespace-nowrap ${className ?? ''}`}
       aria-label={text}
       role="text"
     >
