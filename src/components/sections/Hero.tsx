@@ -15,7 +15,8 @@ import { InteractiveLetters } from '@/components/ui/InteractiveLetters';
  * Scrolling never zooms the face: the scene changes in two beats. First
  * the composition separates while the frame stays full; then an ink veil
  * rises from the bottom carrying the opening statement, so the hero hands
- * a full, moving frame directly to the statements bridge.
+ * a full, moving frame directly to the statements bridge. Reduced motion
+ * never pins: the scene is a normal section that scrolls away cleanly.
  */
 export function Hero() {
   const sceneRef = useRef<HTMLDivElement>(null);
@@ -86,8 +87,10 @@ export function Hero() {
   const scroll = (style: Record<string, unknown>) => (reduceMotion ? undefined : { style });
 
   return (
-    <div ref={sceneRef} id="top" className="relative h-[120svh]">
-      <div className="sticky top-0 flex h-dvh items-center overflow-hidden">
+    <div ref={sceneRef} id="top" className={`relative ${reduceMotion ? '' : 'h-[120svh]'}`}>
+      <div
+        className={`${reduceMotion ? '' : 'sticky top-0'} flex ${reduceMotion ? 'min-h-dvh' : 'h-dvh'} items-center overflow-hidden`}
+      >
         <div className="grid w-full grid-cols-1 items-center gap-10 px-5 pb-16 pt-24 sm:px-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-4 lg:pb-0 lg:pt-0">
           {/* Identity column */}
           <div className="relative z-10 order-2 lg:order-1">
