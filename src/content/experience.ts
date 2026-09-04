@@ -60,7 +60,7 @@ export const orgTimeline: OrgEntry[] = [
     ],
   },
   {
-    org: 'CodeChef-VIT',
+    org: 'CodeChef-VIT Student Chapter',
     roles: [
       {
         role: 'Senior Core Member',
