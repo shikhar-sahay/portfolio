@@ -1,8 +1,8 @@
 import { brandGlyphs, type BrandGlyphKey } from '@/content/techLogos';
 
-/** Normalizes a display name to a glyph key (Next.js becomes Nextjs). */
+/** Normalizes a display name to a glyph key (Next.js to Nextjs, C++ to Cplusplus). */
 export function glyphKeyFor(name: string): string {
-  return name.replace(/[^A-Za-z0-9]/g, '');
+  return name.replace(/\+\+/g, 'plusplus').replace(/[^A-Za-z0-9]/g, '');
 }
 
 export function hasGlyph(name: string): boolean {
