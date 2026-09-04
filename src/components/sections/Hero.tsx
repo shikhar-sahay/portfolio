@@ -100,10 +100,13 @@ export function Hero() {
             </motion.p>
 
             <motion.h1
-              className="select-none text-display uppercase"
+              className="select-none overflow-visible text-display uppercase"
               {...scroll({ scale: nameScale })}
             >
-              <motion.span className="block" {...scroll({ y: nameAY, x: nameAX, opacity: nameAO })}>
+              <motion.span
+                className="block overflow-visible"
+                {...scroll({ y: nameAY, x: nameAX, opacity: nameAO })}
+              >
                 <InteractiveLetters
                   text="Shikhar"
                   entrance
@@ -112,7 +115,7 @@ export function Hero() {
                 />
               </motion.span>
               <motion.span
-                className="block pl-[8vw] lg:pl-[4vw]"
+                className="mt-[0.05em] block overflow-visible pl-[8vw] lg:pl-[4vw]"
                 {...scroll({ y: nameBY, x: nameBX, opacity: nameBO })}
               >
                 <InteractiveLetters
