@@ -10,21 +10,29 @@ const lines = [
     note: 'tools, experiments, platforms',
     align: 'left' as const,
     edge: '0vw',
-    drift: [-1.5, -3.5],
+    drift: [-4, -1],
+    // Controlled overlap with the next line (negative top margin pulls the
+    // stack into one interlocked composition instead of spaced rows).
+    overlap: '0vh',
+    size: 'clamp(3.2rem,11vw,14rem)',
   },
   {
     text: 'I break.',
     note: 'systems, to understand them: the ethical kind',
     align: 'right' as const,
-    edge: '4vw',
-    drift: [4, 1],
+    edge: '0vw',
+    drift: [5, 1.5],
+    overlap: '-3vh',
+    size: 'clamp(3.2rem,12vw,15rem)',
   },
   {
     text: 'I rebuild.',
     note: 'better than before',
     align: 'left' as const,
-    edge: '10vw',
-    drift: [6, 2],
+    edge: '6vw',
+    drift: [3, -2],
+    overlap: '-3vh',
+    size: 'clamp(3.2rem,11vw,14rem)',
   },
 ] as const;
 
@@ -44,12 +52,15 @@ function StatementLine({
 }) {
   // All three statements share the stage from the first pixel: the inactive
   // ones sit back at low opacity, scrolling moves the emphasis down the
-  // stack. The stage is never empty. The choreography alternates sides:
-  // BUILD holds the left, BREAK answers from the right, REBUILD lands
-  // center-left and carries the finale. Each line drifts laterally and
-  // settles from a slight scale and a whisper of rotation, so every scroll
-  // step lands somewhere visible. Everything stays readable: motion is
-  // small, type never distorts.
+  // stack. The stage is never empty. The choreography owns the full width:
+  // BUILD holds the left edge, BREAK answers flush from the right at a
+  // larger size, REBUILD lands indented as the finale; negative margins
+  // interlock the rows into one overlapping composition (DOM order paints
+  // later lines above earlier ones, so the finale settles on top). Each
+  // line drifts laterally and settles from a slight scale and a whisper of
+  // rotation, so every scroll step lands somewhere visible. Everything
+  // stays readable: motion is small, type never distorts, and the active
+  // line is always full opacity at full scale.
   // Motion v13 quirk: ranges must be explicit, strictly increasing, and
   // three or more points, so every case below spells out its keyframes.
   const activate = index * SHARE;
@@ -79,8 +90,12 @@ function StatementLine({
   );
   const scale = useTransform(
     progress,
-    isFirst ? [0, 0.5, 1] : [activate - FADE, activate + FADE, 1],
-    isFirst ? [1, 1, 1] : [0.94, 1, 1]
+    isFirst
+      ? [0, deactivate - FADE, deactivate + FADE, 1]
+      : isLast
+        ? [activate - FADE, activate + FADE, 1]
+        : [activate - FADE, activate + FADE, deactivate - FADE, deactivate + FADE],
+    isFirst ? [1, 1, 0.94, 0.94] : isLast ? [0.94, 1, 1] : [0.94, 1, 1, 0.94]
   );
   const rotate = useTransform(
     progress,
@@ -104,11 +119,15 @@ function StatementLine({
         rotate,
         paddingLeft: right ? undefined : line.edge,
         paddingRight: right ? line.edge : undefined,
+        marginTop: line.overlap,
         textAlign: right ? 'right' : 'left',
       }}
-      className="will-change-transform"
+      className="w-full will-change-transform"
     >
-      <p className="text-[clamp(3.2rem,10.5vw,13rem)] font-semibold uppercase leading-[0.95] tracking-[-0.03em]">
+      <p
+        className="font-semibold uppercase leading-[0.95] tracking-[-0.03em]"
+        style={{ fontSize: line.size }}
+      >
         {head}
         <span className="text-accent">{period}</span>
       </p>
@@ -140,8 +159,16 @@ export function TransitionStatements() {
       <section aria-label="Introduction statements" className="ink-stage px-5 py-[14vh] sm:px-10">
         <div className="mx-auto max-w-6xl space-y-[6vh]">
           {lines.map(line => (
-            <div key={line.text}>
-              <p className="text-[clamp(3.2rem,10.5vw,13rem)] font-semibold uppercase leading-[0.95] tracking-[-0.03em]">
+            <div
+              key={line.text}
+              style={{
+                textAlign: line.align === 'right' ? 'right' : 'left',
+              }}
+            >
+              <p
+                className="font-semibold uppercase leading-[0.95] tracking-[-0.03em]"
+                style={{ fontSize: line.size }}
+              >
                 {line.text.slice(0, -1)}
                 <span className="text-accent">{line.text.slice(-1)}</span>
               </p>
@@ -158,7 +185,7 @@ export function TransitionStatements() {
   return (
     <section ref={ref} aria-label="Introduction statements" className="relative h-[200svh]">
       <div className="ink-stage sticky top-0 flex h-dvh flex-col justify-center overflow-hidden px-5 sm:px-10">
-        <div className="flex w-full flex-col gap-[4.5vh]">
+        <div className="flex w-full flex-col">
           {lines.map((line, i) => (
             <StatementLine key={line.text} line={line} index={i} progress={scrollYProgress} />
           ))}
