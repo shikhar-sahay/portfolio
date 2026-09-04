@@ -127,7 +127,7 @@ function EmailLink() {
     return (
       <span
         title="Email link coming soon"
-        className="mt-7 inline-flex cursor-default items-baseline gap-3 text-lg font-medium tracking-tight text-muted/60 sm:text-xl"
+        className="text-muted/60 mt-7 inline-flex cursor-default items-baseline gap-3 text-lg font-medium tracking-tight sm:text-xl"
       >
         Email
         <span aria-hidden="true" className="text-accent">
@@ -160,7 +160,7 @@ function CompactLink({ label, href }: { label: string; href: string }) {
     return (
       <span
         title={`${label} link coming soon`}
-        className="inline-flex cursor-default items-baseline gap-2 text-sm text-muted/60"
+        className="text-muted/60 inline-flex cursor-default items-baseline gap-2 text-sm"
       >
         <span className="h-px w-2 bg-accent" />
         {label}
