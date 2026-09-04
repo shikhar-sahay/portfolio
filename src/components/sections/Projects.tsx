@@ -58,7 +58,14 @@ export function Projects() {
       if (slides.length >= 2) {
         st.step = slides[1].offsetLeft - slides[0].offsetLeft;
       }
-      st.setWidth = track.scrollWidth / 2;
+      // One copy width measured from the slides themselves: scrollWidth
+      // drops the last slide's trailing margin, which would put every wrap
+      // 24px off the card grid.
+      const half = Array.from(slides).slice(0, projects.length);
+      st.setWidth = half.reduce((w, s) => {
+        const mr = parseFloat(getComputedStyle(s).marginRight || '0');
+        return w + s.offsetWidth + mr;
+      }, 0);
     };
     measure();
     window.addEventListener('resize', measure);
@@ -116,8 +123,8 @@ export function Projects() {
     (dir: 1 | -1) => {
       if (reduce) {
         // Instant scroll: Chrome drops smooth scrolling entirely under
-        // forced reduced motion.
-        viewportRef.current?.scrollBy({ left: dir * s.current.step, behavior: 'auto' });
+        // forced reduced motion. Forward is down the row (positive scroll).
+        viewportRef.current?.scrollBy({ left: -dir * s.current.step, behavior: 'auto' });
         return;
       }
       stopAuto();
@@ -165,13 +172,14 @@ export function Projects() {
   };
 
   const onKeyDown = (e: React.KeyboardEvent) => {
+    // Forward (following the drift) is negative offset: next goes left.
     if (e.key === 'ArrowLeft') {
       e.preventDefault();
-      nudge(-1);
+      nudge(1);
     }
     if (e.key === 'ArrowRight') {
       e.preventDefault();
-      nudge(1);
+      nudge(-1);
     }
   };
 
@@ -227,7 +235,6 @@ export function Projects() {
             ref={trackRef}
             className={`flex will-change-transform ${reduce ? 'px-5 py-10 sm:px-10' : ''}`}
           >
-            {' '}
             {[...projects, ...projects].map((project, i) => (
               <div
                 key={`${project.id}-${i}`}
@@ -251,8 +258,8 @@ export function Projects() {
                 : 'Paused: you have the wheel'}
           </p>
           <div className="flex gap-3">
-            <CarouselButton direction="previous" onClick={() => nudge(-1)} />
-            <CarouselButton direction="next" onClick={() => nudge(1)} />
+            <CarouselButton direction="previous" onClick={() => nudge(1)} />
+            <CarouselButton direction="next" onClick={() => nudge(-1)} />
           </div>
         </div>
       </div>

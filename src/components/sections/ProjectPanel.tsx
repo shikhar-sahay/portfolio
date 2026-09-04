@@ -83,6 +83,9 @@ function PanelLink({ label, href }: { label: string; href: string }) {
       href={href}
       aria-disabled={placeholder || undefined}
       title={placeholder ? `${label} link coming soon` : label}
+      // Placeholders must never navigate: href="#" would jump to the top
+      // of the page (and hijack drag releases), so the click is swallowed.
+      onClick={placeholder ? e => e.preventDefault() : undefined}
       className={`group/link inline-flex items-center gap-1.5 text-micro font-semibold uppercase tracking-[0.14em] transition-colors duration-300 ${
         placeholder ? 'text-muted/60 cursor-default' : 'text-ink hover:text-accent'
       }`}
