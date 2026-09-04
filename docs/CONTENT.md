@@ -21,6 +21,7 @@ src/content/
 
 - Metrics and claims come only from owner-supplied source material (55K+ users, 1.2M+ views, top 1% of 4,000+, top 3% of 2,000+, 1.8L+ rupees, CGPA 9.31, tens of thousands of followers, 4 to 7 member team).
 - `profile.links` values are placeholders (`#`, `/resume.pdf`) until the owner supplies real destinations.
+- Placeholder links never navigate: client components swallow the click, server components render plain text instead of anchors, and every placeholder carries a "coming soon" label. Nothing pretends to work.
 - Personality captions are voice lines, deliberately not factual claims.
 - No em dashes anywhere in content.
 
@@ -150,10 +151,10 @@ export interface OrgEntry {
   roles: RoleEntry[];
 }
 
-// Canonical order (owner-mandated, v4.2):
+// Canonical order (owner-mandated, v4.2; full chapter name since v4.3):
 // Cyber Defenders, Recipharm, GDG On Campus (Senior Core, Inner Core),
-// CodeChef-VIT (Senior Core, Junior Core), Skilledity (Team Lead, Intern),
-// Team Shade.
+// CodeChef-VIT Student Chapter (Senior Core, Junior Core),
+// Skilledity (Team Lead, Intern), Team Shade.
 ```
 
 Note: the Skilledity "Social Media Management Intern" entry intentionally has no period or summary until the owner supplies dates and facts. Do not invent them.

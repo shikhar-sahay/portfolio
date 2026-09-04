@@ -241,3 +241,11 @@ jobs:
 - First Load JS: ~151 kB against the 150 kB budget. Note: the checkpoint build before this pass already measured 150 kB (the "~145 kB" figure in AGENTS.md was stale). This pass added ~1 kB net (InteractiveLetters, carousel logic, footer marquee) and removed the nav magnetic pull.
 - Reclamation options: cheapen the InteractiveLetters tint, trim carousel hint state, or move Counter out of the lazy chunk. Track in HANDOFF known issues.
 - Runtime: one rAF loop per marquee is CSS-driven (compositor only); the carousel runs one rAF loop that pauses offscreen via IntersectionObserver; hero/footer letter fields run one rAF loop per instance gated by pointer presence.
+
+---
+
+## v4.3 Status (2026-09-04)
+
+- First Load JS: ~153 kB against the 150 kB budget (was ~151 kB at v4.2). The delta comes from the InteractiveLetters scroll handler, three added brand paths, and the inert-link guards.
+- Reclamation options: cheapen the InteractiveLetters tint, trim carousel hint state, or move Counter out of the lazy chunk. Track in HANDOFF known issues.
+- Runtime: one rAF loop per marquee is CSS-driven (compositor only); the carousel runs one rAF loop that pauses offscreen via IntersectionObserver; hero/footer letter fields run one rAF loop per instance gated by pointer presence.

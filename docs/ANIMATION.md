@@ -436,19 +436,26 @@ This file will be populated with concrete values as milestones progress. M1 (Her
 
 ---
 
-## v4.2 Patterns (EXPERIMENTAL, 2026-08-26)
+## v4.3 Patterns (EXPERIMENTAL, 2026-09-04)
 
 ### InteractiveLetters (per-letter pointer reactivity)
 
-- Letters near the cursor rise up to lift em (default 0.14) with a gaussian falloff (sigma 110px) and take an accent tint (fill via color-mix, or -webkit-text-stroke-color for outline type).
-- One rAF loop per instance, lerp factor 0.16; letter centers cached on pointerenter so the loop never reads layout.
+- Each letter owns an independent spring (stiffness 170, damping 15) driven by a two-dimensional gaussian proximity field around the pointer (sigma X 130px, sigma Y 85px; lift default 0.12em). The tight vertical falloff keeps stacked rows independent: hovering one row leaves the other at rest.
+- One rAF loop per instance; letter centers cached in viewport coordinates on pointerenter and refreshed on scroll while the pointer is inside (scroll-driven transforms move the letters), so the loop never reads layout per frame.
+- Clip-free by construction: overflow visible through the whole ancestor chain except the viewport-sized sticky frame; hero rows separated by a small top margin; the footer marquee carries vertical bleed inside its overflow mask.
 - Fine pointers only; static under reduced motion and on touch. Used by the hero name and the footer wordmark.
+
+### Hero exit (ink veil handoff)
+
+- Two beats over a 120svh scene: the composition separates (name lines sweep apart, portrait exits laterally) while the frame stays full, then an ink veil rises from the bottom carrying the opening statement and hands a full ink frame to the statements bridge. Late opacity fades happen behind the veil, never on their own.
+- Reduced motion: the scene never pins (static section scrolls away normally); no veil is rendered.
 
 ### Statements bridge (shared-stage emphasis)
 
-- All three statements render on one sticky stage from progress 0 (inactive at opacity 0.16); scroll crossfades emphasis in 0.14-wide windows at 1/3 boundaries; 36px rise on activation; continuous lateral drift (1.5 to 5vw) over the whole section.
+- All three statements render on one sticky stage from progress 0 (inactive at opacity 0.16); scroll crossfades emphasis in 0.14-wide windows at 1/3 boundaries; 36px rise on activation (later lines only); receding lines shrink to 0.94 scale.
+- Full-width registers: BUILD flush left, BREAK flush right at a larger size, REBUILD indented as the finale; rows interlock with negative top margins (later lines paint above earlier ones). Continuous lateral drift over the whole section.
 - Stage is opaque to the end: no background fade-out, the sticky releases into About.
-- Reduced motion: static stack, no indents, full ink.
+- Reduced motion: static stack with matching alignment, full ink.
 
 ### Experience spine
 
@@ -456,9 +463,9 @@ This file will be populated with concrete values as milestones progress. M1 (Her
 
 ### Skills marquee
 
-- CSS ranslate3d keyframe loop, width: max-content, two identical halves, uniform item slots (margins, not gap) so -50% is seamless. 20 to 50s per row, alternate rows reversed, nimation-play-state: paused on hover,
-  one under reduced motion, edge fade via mask-image.
+- CSS translate3d keyframe loop, width: max-content, two identical halves, uniform item slots (margins, not gap) so -50% is seamless. 20 to 50s per row, alternate rows reversed, animation-play-state: paused on hover, none under reduced motion, edge fade via mask-image.
 
 ### Projects carousel
 
 - Single rAF loop owns the track: drift 40px/s; arrow/keyboard targets tween at lerp 0.16; drag writes offset directly; on release the offset eases to the nearest card boundary. Offset wraps modulo one copy width (two copies rendered). Loop pauses via IntersectionObserver when offscreen. Reduced motion: no loop, native overflow scroll, instant arrow scrolls.
+- Forward (Next, ArrowRight, drift) is negative offset. One copy width is summed from slide offsetWidth plus margin (scrollWidth drops the trailing margin and would put every wrap 24px off grid). Placeholder links are inert (client preventDefault; server components render plain text) so clicks and drag releases never navigate.

@@ -249,11 +249,19 @@ This file will evolve as design decisions are finalized. Each section should be 
 
 ---
 
+## v4.3 Additions (EXPERIMENTAL, 2026-09-04)
+
+- **Hero name interaction:** 2D gaussian field (sigma X 130px, sigma Y 85px), lift 0.12em, per-letter springs; rows carry overflow-visible boundaries plus a 0.05em airspace gap; footer marquee carries 0.18em vertical bleed inside its mask. Reduced motion never pins the hero scene.
+- **Statements bridge type:** per-line sizes (BUILD 11vw, BREAK 12vw, REBUILD 11vw, same clamp ends), flush-left / flush-right / indented registers, controlled row overlap, activation scale 0.94 to 1.
+- **Skills emblems:** real CC0 brand marks rendered monochrome via currentColor (19 of 23 tools); monogram fallback only where no genuine mark exists; hover tints the mark to accent at 1.1 scale.
+- **Placeholder links:** client components swallow the click; server components render plain text; every placeholder carries a "coming soon" label.
+- **Favicon:** `src/app/icon.svg`, ink field with vermilion diamond.
+
 ## v4.2 Additions (EXPERIMENTAL, 2026-08-26)
 
 - **.ink-stage** (globals.css): cinematic ink fields (opening overlay, statements bridge) render #1d1915 on #f3efe6 in BOTH themes so the dark colorway never flashes to cream mid-story. Accent stays ar(--accent).
-- **Statements bridge type:** clamp(3.2rem, 10.5vw, 13rem), weight 600, leading 0.95, tracking -0.03em, uppercase; accent trailing period; micro notes at #f3efe6/60.
-- **Skills marquee rows:** serif italic group headings (existing), gold emblems enlarged to 80px with a logo-ready core slot; rows drift with edge fade masks; certifications keep the hairline register with diamond bullets.
+- **Statements bridge type:** clamp(3.2rem, 10.5vw, 13rem), weight 600, leading 0.95, tracking -0.03em, uppercase; accent trailing period; micro notes at #f3efe6/60. (v4.3: per-line sizes 11/12/11vw with flush-left, flush-right, indented registers; see v4.3 Additions.)
+- **Skills marquee rows:** serif italic group headings (existing), gold emblems enlarged to 80px with a logo-ready core slot; rows drift with edge fade masks; certifications keep the hairline register with diamond bullets. (v4.3: the slot now holds real CC0 brand marks for 19 of 23 tools; see v4.3 Additions.)
 - **Experience timeline:** central spine (g-ink/15 hairline + accent fill), 45deg-square diamond markers, org blocks at ext-xl/2xl, role periods in accent micro tabular numerals, one-line summaries in muted.
 - **Control panel:** outer frame with 6px accent corner ticks, title strip (shikharsahay / control + live status), modules divided by gap-px hairlines with underlined accent labels, footer strip (Vellore, India · UTC +05:30).
 - **Footer:** compact contact grid (serif italic Let's talk + structured Elsewhere/Pages columns), slim resume row, closing marquee wordmark at 9.5vw with accent diamond separators and edge fades.

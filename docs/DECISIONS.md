@@ -578,3 +578,29 @@ Do not make significant design/architecture decisions without documenting them h
 **Alternatives Considered:** Sequential statement reveals (rejected: empty stage time); index-based carousel with clone-snap (rejected: visible seams and glitchy snapping); CSS-only footer letter hover (kept JS for parity with the hero wave); code-splitting below-fold sections via next/dynamic in RSC (rejected: does not produce separate chunks in the App Router client manifest, adds indirection without benefit).
 
 **Impact:** First Load JS ~151 kB (budget 150, baseline was already 150 at checkpoint); reclamation options recorded in HANDOFF known issues. All interactions degrade to complete static layouts under reduced motion and on touch.
+
+---
+
+### 32. v4.3 Polish Pass: Eight-Issue Sweep (FINALIZED behaviors, EXPERIMENTAL polish)
+
+**Decision:** Sequential inspect, implement, verify pass over eight reported issues. Verified with DOM/bbox/scroll-state harnesses (no screenshot loops), production build, and a 12-point end-to-end pass.
+
+1. Hero letters use a 2D gaussian proximity field (sigma X 130px, sigma Y 85px) with per-letter springs, scroll-aware center re-caching, an explicit overflow-visible chain, row separation, and footer marquee bleed. Hovering one row leaves the other at rest (measured 0.000 crosstalk both directions).
+2. Hero exit kept as the ink veil handoff (verified frame by frame: no dead viewport, no paper gap); reduced motion no longer pins the hero scene.
+3. Statements recomposed as full-width interlocked registers (flush-left BUILD, flush-right larger BREAK, indented REBUILD finale) with controlled overlap, per-line sizes, and unified activation scale.
+4. Experience geometry verified numerically (spine centered 0.00px, markers on spine 0.00px, fill coincident, alternation exact, mobile stacking correct); org renamed to the owner-specified "CodeChef-VIT Student Chapter". Cyber Defenders content untouched (single factual role).
+5. Skills emblems now carry real CC0 marks for 19 of 23 tools (added C, C++, R from Simple Icons; C++ key disambiguated via a plusplus normalization rule). SQL, Nmap, CrowdStrike Falcon, and Beelzebub have no genuine CC0 mark and keep honest monograms. No new dependency.
+6. Carousel direction corrected (forward is negative offset, matching the drift; arrows, keys, and reduced-motion scrolls all follow it); one copy width is summed from slide metrics so wraps land exactly on grid; placeholder links are inert everywhere.
+7. Control center kept as the framed instrument; placeholder tiles swallow clicks.
+8. Footer kept as the marquee ending (reactive letters verified at 0.160em peak); server-rendered placeholder links became plain text. No SAY HI treatment anywhere.
+9. Added `src/app/icon.svg` (ink field, vermilion diamond) so the favicon resolves.
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-09-04
+
+**Rationale:** Each fix maps to one reported defect; where the repo already implemented the desired behavior (hero exit, timeline geometry, footer marquee), the work was verification plus gap closure rather than rewrites.
+
+**Alternatives Considered:** Rebuilding sections from scratch (rejected: the brief mandates preserving working implementation); installing an icon library (rejected: vendoring three CC0 paths keeps the bundle lean).
+
+**Impact:** First Load JS ~153 kB (budget 150); reclamation options recorded in HANDOFF known issues. Placeholder-link policy recorded in CONTENT.md. Motion patterns recorded in ANIMATION.md v4.3.
