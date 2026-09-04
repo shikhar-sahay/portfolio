@@ -121,14 +121,25 @@ export function Contact() {
 function EmailLink() {
   const href = profile.links.email;
   const placeholder = href === '#';
+  // Server-rendered: placeholders are plain text, never anchors, so they
+  // can neither navigate nor steal keyboard focus.
+  if (placeholder) {
+    return (
+      <span
+        title="Email link coming soon"
+        className="mt-7 inline-flex cursor-default items-baseline gap-3 text-lg font-medium tracking-tight text-muted/60 sm:text-xl"
+      >
+        Email
+        <span aria-hidden="true" className="text-accent">
+          &rarr;
+        </span>
+      </span>
+    );
+  }
   return (
     <a
       href={href}
-      aria-disabled={placeholder || undefined}
-      title={placeholder ? 'Email link coming soon' : undefined}
-      className={`group mt-7 inline-flex items-baseline gap-3 text-lg font-medium tracking-tight sm:text-xl ${
-        placeholder ? 'text-muted/60 cursor-default' : 'text-ink hover:text-accent'
-      } transition-colors duration-300`}
+      className="group mt-7 inline-flex items-baseline gap-3 text-lg font-medium tracking-tight text-ink transition-colors duration-300 hover:text-accent sm:text-xl"
     >
       Email
       <span
@@ -143,15 +154,25 @@ function EmailLink() {
 
 function CompactLink({ label, href }: { label: string; href: string }) {
   const placeholder = href === '#';
+  // Server-rendered: placeholders are plain text, never anchors, so they
+  // can neither navigate nor steal keyboard focus.
+  if (placeholder) {
+    return (
+      <span
+        title={`${label} link coming soon`}
+        className="inline-flex cursor-default items-baseline gap-2 text-sm text-muted/60"
+      >
+        <span className="h-px w-2 bg-accent" />
+        {label}
+      </span>
+    );
+  }
   return (
     <a
       href={href}
-      {...(placeholder ? {} : { target: '_blank', rel: 'noopener noreferrer' })}
-      aria-disabled={placeholder || undefined}
-      title={placeholder ? `${label} link coming soon` : undefined}
-      className={`group inline-flex items-baseline gap-2 text-sm transition-colors duration-300 ${
-        placeholder ? 'text-muted/60 cursor-default' : 'text-muted hover:text-ink'
-      }`}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group inline-flex items-baseline gap-2 text-sm text-muted transition-colors duration-300 hover:text-ink"
     >
       <span className="h-px w-2 bg-accent transition-all duration-500 ease-expo group-hover:w-4" />
       {label}

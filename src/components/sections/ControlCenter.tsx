@@ -217,12 +217,15 @@ function ChannelTile({
 }) {
   // Links the owner has not supplied stay visibly marked instead of
   // pretending to work; the Resume tile points at /resume.pdf.
+  // Placeholders never navigate: href="#" would jump to the top of the
+  // page, so the click is swallowed.
   const placeholder = href === '#';
   return (
     <li>
       <a
         href={href}
         {...(!placeholder && external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+        onClick={placeholder ? e => e.preventDefault() : undefined}
         aria-disabled={placeholder || undefined}
         aria-label={placeholder ? `${label} (link coming soon)` : label}
         title={placeholder ? `${label} link coming soon` : label}
