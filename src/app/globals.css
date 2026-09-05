@@ -315,6 +315,27 @@ html[data-intro='skip'] .opening-overlay {
   animation-play-state: paused;
 }
 
+/* MarkWall stamp entrance: uses the independent `scale` property so it
+   composes with each mark's inline translate/rotate transform. */
+@keyframes mark-pop {
+  0% {
+    opacity: 0;
+    scale: 0.4;
+  }
+  60% {
+    opacity: 1;
+    scale: 1.12;
+  }
+  100% {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+.mark-pop {
+  animation: mark-pop 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .marquee-track {
     animation: none;

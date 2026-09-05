@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { fragments } from '@/content/personality';
+import { MarkWall } from '@/components/sections/MarkWall';
 
 /**
  * 06 / Personality: fragments of a person. Selecting a fragment
@@ -68,6 +69,8 @@ export function Personality() {
             <p className="text-paper/60 mt-4 text-sm">{fragment.caption}</p>
           </div>
         </div>
+
+        <MarkWall />
       </div>
     </section>
   );
