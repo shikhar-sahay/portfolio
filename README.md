@@ -1,98 +1,120 @@
-# Shikhar Sahay - Portfolio
+# Shikhar Sahay, Portfolio
 
-Personal portfolio website for Shikhar Sahay. Built to be immediately professional and functional while remaining genuinely memorable - eliciting "Holy shit." followed by "This person is actually technically impressive."
+Personal portfolio website for Shikhar Sahay: Computer Science student (VIT Vellore, Cybersecurity major), builder across software, security, and the web.
 
-## Philosophy
+A directed long-scroll experience that feels personal, cinematic, and technically crafted. Warm print-editorial identity (cream paper, warm charcoal ink, single vermilion accent), oversized Instrument type, scroll-choreographed scenes. Professional enough for recruiters and placement committees.
 
-- **Cybersecurity is content, not visual identity** - No cyberpunk, neon, fake terminals, or genre tropes
-- **Performance is a hard requirement** - Impressive without being slow
-- **Mobile-first** - First-class experience, not a shrunken desktop layout
-- **Motion with purpose** - No animations for animation's sake
+## Design and art direction
 
-## Tech Stack
+- **Identity:** warm print-editorial. Cream paper `#F3EFE6`, warm charcoal ink `#1D1915`, one vermilion accent (`#BC3F1A` light, `#E0643B` dark). Instrument Sans (workhorse) plus Instrument Serif italic (accent moments). Intentional light and dark colorways with a persisted header toggle.
+- **Signature motifs:** plain editorial section eyebrows, hairline rules with accent ticks, diamond markers, film grain, slow drifting light field, outline display type, arch portrait aperture with vermilion echo.
+- **Security is content, not visual identity.** No cyberpunk, hacker, terminal, or neon aesthetics anywhere.
+- Full system: `docs/DESIGN_SYSTEM.md`.
 
-- **Framework:** Next.js 14 (App Router)
-- **Language:** TypeScript 5 (strict mode)
-- **Styling:** Tailwind CSS 3
-- **Package Manager:** pnpm 9
-- **Deployment:** Vercel (planned)
+## Sections and features (top to bottom)
 
-## Getting Started
+1. **Opening:** minimal signal-line loader on an ink field (~1.6s, once per session, skipped for returning visitors and reduced motion).
+2. **Hero:** arch portrait with pointer parallax plus an oversized two-line name that reacts letter by letter to the pointer (2D spring field, fine pointers only). Scroll exit is a two-beat scene change into an ink veil carrying the opening statement. Never zooms the face.
+3. **Statements bridge:** phased kinetic typography (I / BUILD, BREAK, REBUILD). One thought on stage at a time with masked word reveals, deterministic scroll phases, finale holding into About.
+4. **About:** word-by-word reading reveal plus a small meta row (based in, studying, otherwise).
+5. **Experience:** org-grouped timeline (Cyber Defenders, Recipharm, GDG On Campus, CodeChef-VIT Student Chapter, Skilledity, Team Shade) on a mathematically centered spine with a scroll-drawn accent fill and diamond markers.
+6. **Skills:** three drifting marquee rows of golden emblems with real monochrome technology marks (19 of 23; honest monograms where no genuine mark exists). No proficiency levels. Certifications keep a separate register.
+7. **Projects:** infinite drifting carousel (auto until first touch, then manual forever), drag/swipe/arrows/keyboard, five artifact cards with SVG preview motifs and inert placeholder links.
+8. **Personality:** inverted panel with a fragment word-swap instrument (buttons, keyboard accessible). Captions are voice lines, not factual claims. There is no visitor input, no backend, no persistence here.
+9. **Control center:** framed utility grid (Now, IST clock, Studying, Toolbox, Channels, Navigate) with live status, session uptime, and brand channel tiles.
+10. **Footer:** compact contact grid, slim resume row (`/resume.pdf`), and a closing SHIKHAR SAHAY marquee with subtle reactive letters.
+
+## Interaction highlights
+
+- Pointer-reactive display type (hero and footer marquee) with per-letter springs.
+- Scroll-scrubbed scene choreography with one coherent progress model per scene; every range ends at 1.0 (Motion v13 drops flat terminal segments past the last keyframe).
+- Theme toggle persisted to localStorage; intro flag in sessionStorage. No other browser storage, no network calls, no backend of any kind.
+
+## Tech stack
+
+Next.js 14 (App Router, static export), React 18, TypeScript (strict), Tailwind CSS 3, Motion (the only animation library). No GSAP, Lenis, Three.js, icon libraries, or UI kits. Package manager: pnpm 9.
+
+## Local development
 
 ```bash
-# Install dependencies
 pnpm install
-
-# Start development server
-pnpm dev
-
-# Build for production
-pnpm build
-
-# Run linting
-pnpm lint
-
-# Check formatting
-pnpm format:check
-
-# Format code
-pnpm format
-
-# Type check
+pnpm dev      # start development server
+pnpm build    # production build (static)
+pnpm start    # serve production build
 pnpm typecheck
+pnpm lint
+pnpm format:check
+pnpm format
 ```
 
-## Project Structure
+`pnpm typecheck`, `pnpm lint`, `pnpm format:check`, and `pnpm build` must all pass before committing.
+
+## Project structure
 
 ```
 src/
-├── app/                    # Next.js App Router
-│   ├── layout.tsx         # Root layout with metadata
-│   ├── page.tsx           # Homepage
-│   └── globals.css        # Global styles + CSS variables
+├── app/                    # App Router: layout (metadata, theme script), page (section order), globals.css, icon.svg
+├── assets/                 # Static imports (hero portrait; enables blur placeholders)
 ├── components/
-│   ├── ui/                # Primitive components
-│   ├── sections/          # Page sections
-│   ├── layout/            # Header, Footer, Navigation
-│   └── effects/           # Visual effects (3D, canvas)
-├── lib/                   # Utilities, constants, animations
-├── hooks/                 # Custom React hooks
-├── types/                 # TypeScript types
-└── content/               # Content data (projects, experience)
+│   ├── layout/             # Opening, SiteNav (header + progress + active section), ThemeToggle
+│   ├── sections/           # Hero, TransitionStatements, About, Experience, Skills,
+│   │                       #   Projects, ProjectPanel (lazy chunk), Personality,
+│   │                       #   ControlCenter, Contact (footer), FooterWordmark
+│   └── ui/                 # InteractiveLetters, TechLogo, Reveal, WordReveal,
+│                           #   Counter, InView
+├── content/                # Typed data modules: profile, sections, projects,
+│                           #   experience, systems, personality, techLogos, channelGlyphs
+└── hooks/                  # useMountedReducedMotion (hydration-safe reduced-motion flag)
 public/
-└── images/                # Static images
+└── resume.pdf              # PLACEHOLDER resume (owner must drop in the real file)
+docs/                       # Design system, architecture, animation, content, performance,
+                            #   roadmap, decisions, handoff, agent protocol
 ```
 
-## Documentation
+## Accessibility and reduced motion
 
-Project documentation lives in `docs/`:
+- Semantic landmarks, complete keyboard flow with visible focus rings, aria labels on icon-only controls, `aria-hidden` on duplicated carousel/marquee copies.
+- Every animation has a reduced-motion equivalent via `useMountedReducedMotion` (gated post-mount so SSR and hydration markup match): static hero (never pinned), static statement stack, native-scroll carousel with instant arrows, static footer wordmark, collapsed CSS motion globally.
+- Touch devices get the complete static experience (pointer interactions are fine-pointer only).
 
-- `PROJECT_CONTEXT.md` - Person, purpose, creative direction
-- `DESIGN_SYSTEM.md` - Typography, color, spacing, visual decisions
-- `ARCHITECTURE.md` - Technical architecture decisions
-- `ROADMAP.md` - Milestone plan (M0-M8)
-- `DECISIONS.md` - Decision log with rationale
-- `ANIMATION.md` - Motion philosophy and tokens
-- `CONTENT.md` - Content schemas
-- `PERFORMANCE.md` - Performance budgets and strategies
-- `HANDOFF.md` - Session-to-session state
-- `AGENTS.md` - Multi-agent working guidelines
+## Performance philosophy
 
-## Milestones
+Performance is a hard requirement. Server Components by default, one small lazy chunk (`ProjectPanel`), compositor-only animation (transform/opacity/clip-path), single rAF loops gated by pointer presence or viewport visibility, static-first build. Budget: 150 kB First Load JS; current ~153 kB (see `docs/PERFORMANCE.md` for the measured state and reclaim options).
 
-| #   | Milestone                                                | Status         |
-| --- | -------------------------------------------------------- | -------------- |
-| 0   | Documentation & Project Foundation                       | ✅ Complete    |
-| 1   | Opening + Identity (title sequence, portrait instrument) | 🔄 In Progress |
-| 2   | Navigation + Scroll Architecture                         | 🔄 In Progress |
-| 3   | Projects (artifact treatments)                           | 🔄 In Progress |
-| 4   | Experience (era chronology)                              | 🔄 In Progress |
-| 5   | Personality (fragment instrument)                        | 🔄 In Progress |
-| 6   | Signature Interactive Experience                         | ⏳             |
-| 7   | Final Polish                                             | ⏳             |
-| 8   | Performance, Accessibility & Deployment                  | ⏳             |
+## Persistence and backend status
 
-**Narrative order (v4):** 01 Identity, 02 About, 03 Experience, 04 Skills, 05 Projects, 06 Personality, 07 Contact + Footer. Canonical design direction: `AGENTS.md`.
+There is none. The site is fully static: no API routes, no database, no analytics, no contact form backend. The only browser storage is the theme choice (localStorage) and the intro-played flag (sessionStorage). Any future visitor-input feature (guestbook, marks, comments) would need a backend designed from scratch.
+
+## Known placeholders (owner input needed)
+
+- Contact links: email, GitHub, LinkedIn (`#` in `src/content/profile.ts`)
+- Project Live/GitHub/Case study links (`#` in `src/content/projects.ts`)
+- Resume PDF (`public/resume.pdf` is a placeholder file)
+- Skilledity Social Media Management Intern: no dates or summary supplied
+- Four skills keep monogram emblems (SQL, Nmap, CrowdStrike Falcon, Beelzebub: no genuine CC0 mark found)
+- All copy is provisional until the owner approves it
+
+Placeholders never navigate: client components swallow the click, server components render plain text, every placeholder carries a "coming soon" label.
+
+## Documentation map
+
+- `AGENTS.md` (repo root) is the canonical agent instruction set. `CLAUDE.md` points to it.
+- `docs/HANDOFF.md`: current state, the read-first/write-last sync point.
+- `docs/DESIGN_SYSTEM.md`, `docs/ARCHITECTURE.md`, `docs/ANIMATION.md`: the built system as it exists.
+- `docs/CONTENT.md`: content schemas and placeholder inventory.
+- `docs/PERFORMANCE.md`: budgets and measured state.
+- `docs/ROADMAP.md`: milestone history and what remains (signature experience, launch).
+- `docs/DECISIONS.md`: decision log with rationale.
+- `docs/PROJECT_CONTEXT.md`: person, purpose, direction.
+- `docs/AGENTS.md`: multi-agent session protocol.
+
+## Development rules that matter
+
+- `AGENTS.md` is canonical; `docs/HANDOFF.md` is the sync point. Read both before changing anything.
+- Never silently override a `FINALIZED` decision; propose via `docs/DECISIONS.md`.
+- No em dashes anywhere (copy, docs, comments, UI). No CGPA, no coordinates, no invented facts, no visible section numbering, no ghost numerals, no face zoom.
+- Server Components by default; justify every client component and every new dependency.
+- Validate visual work in a real browser (desktop + mobile, both themes, reduced motion) before claiming completion.
 
 ## License
 

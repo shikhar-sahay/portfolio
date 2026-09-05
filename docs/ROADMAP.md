@@ -6,17 +6,17 @@
 
 ## Milestone Overview
 
-| #   | Milestone                               | Focus                                  | Status                                                                               |
-| --- | --------------------------------------- | -------------------------------------- | ------------------------------------------------------------------------------------ |
-| 0   | Documentation & Project Foundation      | Docs, repo setup, config               | **COMPLETED**                                                                        |
-| 1   | Entrance + Hero                         | Arrival experience, hero section       | **IN_PROGRESS** (v4 opening + portrait instrument implemented, owner review pending) |
-| 2   | Navigation + Scroll Architecture        | Nav, smooth scroll, section structure  | **IN_PROGRESS** (navigation instrument, section anchors, IA registry done)           |
-| 3   | Selected Projects                       | Work showcase, project artifacts       | **IN_PROGRESS** (artifact treatments implemented, links pending)                     |
-| 4   | Experience / Journey                    | Timeline, career/education narrative   | **IN_PROGRESS** (era chronology implemented, copy pending approval)                  |
-| 5   | Personality / Human Layer               | Interests, writing, human touches      | **IN_PROGRESS** (fragment instrument implemented)                                    |
-| 6   | Signature Interactive Experience        | The "holy shit" moment                 | NOT_STARTED                                                                          |
-| 7   | Final Polish                            | Micro-interactions, content refinement | NOT_STARTED                                                                          |
-| 8   | Performance, Accessibility & Deployment | Audits, optimization, launch           | NOT_STARTED                                                                          |
+| #   | Milestone                               | Focus                                  | Status                                                                 |
+| --- | --------------------------------------- | -------------------------------------- | ---------------------------------------------------------------------- |
+| 0   | Documentation & Project Foundation      | Docs, repo setup, config               | **COMPLETED**                                                          |
+| 1   | Entrance + Hero                         | Arrival experience, hero section       | **COMPLETED** (implementation; copy provisional, owner review pending) |
+| 2   | Navigation + Scroll Architecture        | Nav, smooth scroll, section structure  | **COMPLETED** (native scroll, sticky scenes; no Lenis by decision)     |
+| 3   | Selected Projects                       | Work showcase, project artifacts       | **COMPLETED** (5 artifacts; real links pending)                        |
+| 4   | Experience / Journey                    | Timeline, career/education narrative   | **COMPLETED** (org timeline; Skilledity dates pending)                 |
+| 5   | Personality / Human Layer               | Interests, writing, human touches      | **COMPLETED** (fragment instrument; no backend by decision)            |
+| 6   | Signature Interactive Experience        | The "holy shit" moment                 | NOT_STARTED (open ideation)                                            |
+| 7   | Final Polish                            | Micro-interactions, content refinement | **COMPLETED** (passes v4.2-v4.5; copy approval pending)                |
+| 8   | Performance, Accessibility & Deployment | Audits, optimization, launch           | NOT_STARTED                                                            |
 
 > **IA note (2026-08-23, v4):** The narrative order is now 01 Identity, 02 About, 03 Experience, 04 Skills, 05 Projects, 06 Personality, 07 Contact + Footer (Experience before Skills before Projects, owner-directed). The registry in `src/content/sections.ts` is the IA source of truth. The original milestone numbering above is retained for history; implementation now follows the v4 order.
 
@@ -67,14 +67,14 @@
 
 ### Tasks
 
-- [ ] Finalize hero typography and layout (editorial, distinctive)
-- [ ] Finalize hero copy (name, striking statement, role indication, invitation)
-- [ ] Add hero portrait (`public/images/shikhar-hero.jpg`)
-- [ ] Implement hero component (Server Component)
-- [ ] Implement entrance animation (page load → hero reveal)
-- [ ] Ensure hero works on mobile (portrait orientation, touch)
-- [ ] Add scroll indicator / invitation to continue
-- [ ] Test reduced-motion variant
+- [x] Hero typography and layout (editorial arch + oversized two-line name)
+- [x] Hero copy from owner material (statement + lede; provisional until approved)
+- [x] Hero portrait (`src/assets/shikhar-hero.jpg`, static import, blur placeholder)
+- [x] Hero component (client: parallax, letter springs, scene change)
+- [x] Entrance animation (CSS keyframes + session loader; pre-hydration safe)
+- [x] Mobile hero (stacked, art-directed; no horizontal overflow)
+- [x] Scroll invitation cue
+- [x] Reduced-motion variant (static, never pinned)
 
 ### Design Decisions Needed
 
@@ -100,22 +100,21 @@
 
 ### Tasks
 
-- [ ] Design navigation (minimal, contextual, not sticky by default?)
-- [ ] Implement header/nav component
-- [ ] Decide on smooth scroll: native vs Lenis
-- [ ] Implement section structure (semantic HTML, landmarks)
-- [ ] Add scroll progress indicator (if desired)
-- [ ] Implement scroll-driven animations foundation
-- [ ] Ensure keyboard navigation works
-- [ ] Mobile nav pattern (hamburger? bottom bar? none?)
+- [x] Navigation (fixed header: transparent to compact, tuck/reveal, active section, theme toggle)
+- [x] Smooth scroll: native (Lenis rejected, no justification found)
+- [x] Section structure (semantic landmarks, registry-driven order)
+- [x] Scroll progress indicator (accent hairline)
+- [x] Scroll-driven animation foundation (one progress per scene, ranges end at 1.0)
+- [x] Keyboard navigation (focusable controls, carousel arrow keys)
+- [x] Mobile nav pattern (quiet row, no hamburger needed)
 
-### Design Decisions Needed
+### Design Decisions Needed (resolved during implementation)
 
-- Nav position: fixed? absolute? scroll-aware?
-- Nav content: logo/name? links? theme toggle? scroll progress?
-- Scroll behavior: native CSS scroll-snap? Lenis? GSAP ScrollTrigger?
-- Section height: full viewport? content-driven? mix?
-- Scroll progress: visual style? position?
+- Nav: fixed, transparent to compact with tuck/reveal (done)
+- Nav content: wordmark, section links, theme toggle, progress hairline (done)
+- Scroll behavior: native scroll + sticky scenes, no snap, no Lenis (done)
+- Section height: full-viewport pinned scenes for the opening, content-driven elsewhere (done)
+- Scroll progress: accent hairline at the very top (done)
 
 ### Exit Criteria
 
@@ -132,14 +131,13 @@
 
 ### Tasks
 
-- [ ] Finalize project data structure (title, description, role, tech, links, images, featured flag)
-- [ ] Populate `CONTENT.md` / data file with actual projects
-- [ ] Design project card / showcase component
-- [ ] Implement project grid / carousel / list
-- [ ] Add project detail view (modal? separate page? inline expand?)
-- [ ] Implement project images (optimized, lazy, blur placeholder)
-- [ ] Add filter/tag system if multiple categories
-- [ ] Ensure mobile touch/swipe works for carousel
+- [x] Project data structure (`src/content/projects.ts`: kind, name, role, stack, metrics, links, visual key)
+- [x] Populated with 5 artifacts (3 real, honeypot, this site)
+- [x] Infinite drifting carousel (drag/swipe/arrows/keyboard, grid-exact wrap)
+- [ ] Project detail views (decided: details live in the resume; no modals)
+- [x] SVG preview motifs (resolution-independent, no image cost)
+- [ ] No filter/tag system (decided: unnecessary at 5 items)
+- [x] Mobile touch/swipe works for carousel
 
 ### Design Decisions Needed
 
@@ -164,12 +162,11 @@
 
 ### Tasks
 
-- [ ] Finalize experience data structure (role, org, dates, description, highlights, type)
-- [ ] Populate experience data
-- [ ] Design timeline component (vertical? horizontal? interactive?)
-- [ ] Implement timeline with scroll-driven reveal
-- [ ] Add expandable detail for each entry
-- [ ] Consider visual distinction: work vs education vs side projects
+- [x] Experience data structure (org-grouped roles in `src/content/experience.ts`)
+- [x] Populated in owner-mandated order (Skilledity dates still unsupplied)
+- [x] Vertical timeline with centered spine, scroll-drawn accent fill, diamond markers
+- [ ] Expandable detail per entry (decided: full detail lives in the resume)
+- [x] Visual distinction via org grouping and role progression dividers
 
 ### Design Decisions Needed
 
@@ -193,11 +190,9 @@
 
 ### Tasks
 
-- [ ] Curate content: writing links, music, football, theatre, etc.
-- [ ] Design personality section (not a "hobbies list")
-- [ ] Implement component(s) - could be integrated or separate
-- [ ] Ensure it feels editorial, not tacked on
-- [ ] Add micro-interactions (hover, click)
+- [x] Curated content (8 fragments with voice captions in `src/content/personality.ts`)
+- [x] Fragment instrument section (inverted panel, not a hobbies list)
+- [x] Hover, focus, click/tap micro-interactions (keyboard accessible, aria-live)
 
 ### Design Decisions Needed
 
@@ -258,17 +253,15 @@
 
 ### Tasks
 
-- [ ] Audit all micro-interactions (hover, focus, tap, scroll)
-- [ ] Refine copy across all sections
-- [ ] Cross-browser testing (Chrome, Firefox, Safari, Edge)
-- [ ] Mobile device testing (iOS Safari, Chrome Android)
-- [ ] Fix layout shift / CLS issues
-- [ ] Polish loading states (skeletons, blur placeholders)
-- [ ] Verify all links work
-- [ ] SEO metadata complete (Open Graph, Twitter, JSON-LD)
-- [ ] Favicon / app icons
-- [ ] 404 page (if multi-page)
-- [ ] Print stylesheet (optional)
+- [x] Audit micro-interactions across passes v4.2-v4.5 (hover, focus, tap, scroll, drag)
+- [ ] Copy approval (provisional copy throughout; owner decision)
+- [ ] Cross-browser testing (Chromium verified; Firefox, Safari, Edge open)
+- [ ] Real-device testing (open)
+- [x] No layout shift sources found (fixed display sizes, blur placeholder, uniform slots)
+- [x] Loading states (blur placeholder, carousel skeleton, session loader)
+- [ ] Real links (placeholders documented and inert)
+- [x] SEO metadata basic set (title, description, OG/Twitter cards, robots) + favicon
+- [ ] OG image, JSON-LD, custom 404, print stylesheet (open)
 
 ### Exit Criteria
 

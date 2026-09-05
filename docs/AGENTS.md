@@ -44,22 +44,22 @@ Based on current milestone:
 - **M0:** `ARCHITECTURE.md` (tooling, folder structure)
 - **M1:** `DESIGN_SYSTEM.md` (typography, color, hero), `ANIMATION.md` (entrance)
 - **M2:** `ARCHITECTURE.md` (scroll), `ANIMATION.md` (scroll-driven), `DESIGN_SYSTEM.md` (nav)
-- **M3–M6:** Relevant section docs + `CONTENT.md` (data structures)
-- **M7–M8:** `PERFORMANCE.md`, `ANIMATION.md` (reduced motion), `DESIGN_SYSTEM.md` (polish)
-- **Time:** 2–5 minutes
+- **M3 to M6:** Relevant section docs + `CONTENT.md` (data structures)
+- **M7 to M8:** `PERFORMANCE.md`, `ANIMATION.md` (reduced motion), `DESIGN_SYSTEM.md` (polish)
+- **Time:** 2 to 5 minutes
 
 ### 5. Inspect Existing Code Before Making Changes
 
 - Read relevant files in `src/`, `app/`, `components/`, `lib/`
 - Understand current patterns, imports, conventions
 - Check for existing components that should be reused
-- **Time:** 2–10 minutes depending on scope
+- **Time:** 2 to 10 minutes depending on scope
 
 ### 6. Preserve FINALIZED Decisions
 
 - Any decision marked `FINALIZED` in `DESIGN_SYSTEM.md`, `ARCHITECTURE.md`, `ANIMATION.md`, `DECISIONS.md` is **binding**
 - Do not change `FINALIZED` decisions without explicit discussion and documentation update
-- If you believe a `FINALIZED` decision is wrong, document the concern in `DECISIONS.md` and flag in `HANDOFF.md` — do not silently override
+- If you believe a `FINALIZED` decision is wrong, document the concern in `DECISIONS.md` and flag in `HANDOFF.md`: do not silently override
 
 ### 7. Avoid Major Undocumented Design Decisions
 
@@ -67,21 +67,21 @@ Based on current milestone:
 - Mark it `UNDECIDED` in the relevant doc
 - Flag in `HANDOFF.md` as needing decision
 - Escalate to owner if blocking
-- Exception: Trivial implementation details (variable names, internal structure) — use judgment
+- Exception: Trivial implementation details (variable names, internal structure): use judgment
 
 ### 8. Update Documentation After Meaningful Work
 
 At the end of every session with code changes:
 
 - Update `docs/HANDOFF.md`:
-  - `CURRENT STATE` — what exists now
-  - `RECENT CHANGES` — add entry with date, session, changes
-  - `CURRENT MILESTONE` — update progress
-  - `DECISIONS MADE` — any new decisions
-  - `KNOWN ISSUES` — update
-  - `NEXT STEPS` — update
-  - `FILES TO KNOW` — update
-  - `TESTING STATUS` — update
+  - `CURRENT STATE`: what exists now
+  - `RECENT CHANGES`: add entry with date, session, changes
+  - `CURRENT MILESTONE`: update progress
+  - `DECISIONS MADE`: any new decisions
+  - `KNOWN ISSUES`: update
+  - `NEXT STEPS`: update
+  - `FILES TO KNOW`: update
+  - `TESTING STATUS`: update
 - Update relevant design/architecture docs:
   - Mark decisions `FINALIZED` with actual values
   - Add new patterns to `ANIMATION.md`, `DESIGN_SYSTEM.md`
@@ -126,25 +126,25 @@ At the end of every session with code changes:
 ### Other Agents
 
 - Any agent working on this repo follows the same protocol
-- The 9-step protocol is **universal** — not Claude-specific
+- The 9-step protocol is **universal**: not Claude-specific
 
 ---
 
 ## Coordination Mechanisms
 
-### 1. `HANDOFF.md` — Primary Sync Point
+### 1. `HANDOFF.md`: Primary Sync Point
 
 - **Read first, write last** every session
 - Contains all context needed to continue
 - Never skip updating it
 
-### 2. `DECISIONS.md` — Decision Log
+### 2. `DECISIONS.md`: Decision Log
 
 - Every significant decision recorded with rationale
 - Prevents re-litigation
 - Agents check here before proposing alternatives
 
-### 3. Git History — Implementation Truth
+### 3. Git History: Implementation Truth
 
 - Commits are the ground truth for what was built
 - Commit messages should be descriptive
@@ -161,10 +161,10 @@ At the end of every session with code changes:
 
 If two agents make conflicting changes:
 
-1. **Git handles merge conflicts** — standard resolution
-2. **Design conflicts** — check `DECISIONS.md` and `DESIGN_SYSTEM.md` for `FINALIZED` rulings
-3. **Undocumented conflicts** — escalate to owner, document in `HANDOFF.md` as `KNOWN ISSUE`
-4. **Process conflicts** — refer to this `AGENTS.md` protocol
+1. **Git handles merge conflicts**: standard resolution
+2. **Design conflicts**: check `DECISIONS.md` and `DESIGN_SYSTEM.md` for `FINALIZED` rulings
+3. **Undocumented conflicts**: escalate to owner, document in `HANDOFF.md` as `KNOWN ISSUE`
+4. **Process conflicts**: refer to this `AGENTS.md` protocol
 
 ---
 
@@ -201,22 +201,22 @@ Before first contribution, a new agent should:
 
 If you discover a critical issue (security, data loss, major regression):
 
-1. **Stop** — do not continue feature work
+1. **Stop**: do not continue feature work
 2. **Document** in `HANDOFF.md` under `KNOWN ISSUES` with 🚨 CRITICAL
-3. **Fix if possible** — minimal fix to restore stability
+3. **Fix if possible**: minimal fix to restore stability
 4. **Commit** with `fix: critical - <description>`
-5. **Notify** — add note for owner in `HANDOFF.md`
+5. **Notify**: add note for owner in `HANDOFF.md`
 6. **Resume** only after stability restored
 
 ---
 
 ## Version Control Hygiene
 
-- **Commit often** — small, atomic commits
-- **Descriptive messages** — `feat(hero): add entrance animation with stagger`
-- **One logical change per commit** — not "fixes and refactors"
-- **Reference decisions** — `docs: finalize hero typography per DECISIONS.md#12`
-- **No WIP commits on main** — use feature branches if needed (TBD in M0)
+- **Commit often**: small, atomic commits
+- **Descriptive messages**: `feat(hero): add entrance animation with stagger`
+- **One logical change per commit**: not "fixes and refactors"
+- **Reference decisions**: `docs: finalize hero typography per DECISIONS.md#12`
+- **No WIP commits on main**: use feature branches if needed (TBD in M0)
 
 ---
 

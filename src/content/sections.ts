@@ -5,18 +5,17 @@ export interface SectionMeta {
 }
 
 /**
- * Canonical information architecture. Drives the navigation active state,
- * and the editorial index. Order is deliberate: Experience precedes
- * Skills; Skills precedes Projects.
+ * Canonical information architecture. Drives the navigation active state.
+ * Order is deliberate: Experience precedes Skills; Skills precedes Projects.
  */
 export const sections: SectionMeta[] = [
   { id: 'top', name: 'Identity', note: 'opening' },
   { id: 'about', name: 'About', note: 'context' },
   { id: 'experience', name: 'Experience', note: '2020 to now' },
   { id: 'skills', name: 'Skills', note: 'inventory' },
-  { id: 'projects', name: 'Projects', note: 'three artifacts' },
+  { id: 'projects', name: 'Projects', note: 'five artifacts' },
   { id: 'personality', name: 'Personality', note: 'fragments' },
-  { id: 'contact', name: 'Contact', note: 'say hello' },
+  { id: 'contact', name: 'Contact', note: 'outro' },
 ];
 
 export const navLinks = [

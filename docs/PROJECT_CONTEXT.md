@@ -2,7 +2,7 @@
 
 ## The Person
 
-**Shikhar Sahay** — Computer Science student, cybersecurity enthusiast, builder of memorable things.
+**Shikhar Sahay**: Computer Science student, cybersecurity enthusiast, builder of memorable things.
 
 **Traits:** Curious, creative, ambitious, technically focused, strongly motivated by building memorable experiences.
 
@@ -12,8 +12,8 @@
 
 Create a personal portfolio website that is:
 
-1. **Immediately professional and functional** — visitors understand who Shikhar is and what he does within seconds
-2. **Genuinely memorable** — elicits the reaction:
+1. **Immediately professional and functional**: visitors understand who Shikhar is and what he does within seconds
+2. **Genuinely memorable**: elicits the reaction:
    > "Holy shit."
    > "This person is actually technically impressive."
 
@@ -21,8 +21,8 @@ The website is a **portfolio first, an experience second, and a story third**.
 
 ## Desired Visitor Reaction
 
-- **First impression:** "Holy shit." — visual/technical impact
-- **Second impression:** "This person is actually technically impressive." — substance backing the style
+- **First impression:** "Holy shit." (visual/technical impact)
+- **Second impression:** "This person is actually technically impressive." (substance backing the style)
 - **Outcome:** Visitor understands Shikhar's capabilities, sees his work, remembers the experience
 
 ## Creative Direction
@@ -48,7 +48,7 @@ The website is a **portfolio first, an experience second, and a story third**.
 - Visual chaos or loud experimentation
 - Animations for the sake of animations
 
-## References (For Inspiration Only — Do NOT Copy)
+## References (For Inspiration Only: Do NOT Copy)
 
 - https://old.aryanranderiya.com/
 - https://aryanranderiya.com/
@@ -77,16 +77,19 @@ The website is a **portfolio first, an experience second, and a story third**.
 - Visual chaos
 - Animations for the sake of animations
 
-## Conceptual Flow (Placeholders, Not Finalized Section Names)
+## Conceptual Flow (finalized IA; numbers below are order only, never rendered)
 
 ```
-ARRIVAL
-  → INTRODUCTION
-  → SELECTED WORK
-  → EXPERIENCE / JOURNEY
-  → PERSONALITY
-  → INTERACTIVE EXPERIENCE
-  → CONTACT
+OPENING (signal-line loader)
+  → IDENTITY (arch portrait + interactive name + veil exit)
+  → STATEMENTS (phased kinetic typography: BUILD, BREAK, REBUILD)
+  → ABOUT (reading reveal + meta row)
+  → EXPERIENCE (org-grouped timeline)
+  → SKILLS (marquee emblem rows + certifications)
+  → PROJECTS (drifting carousel)
+  → PERSONALITY (fragment instrument, inverted panel)
+  → CONTROL CENTER (utility grid)
+  → CONTACT + FOOTER (contact grid, resume row, marquee wordmark)
 ```
 
 **Constraints on flow:**
@@ -99,24 +102,23 @@ ARRIVAL
 
 The hero should contain:
 
-- Shikhar's name
-- A striking statement (NOT generic copy like "Hi, I'm Shikhar, a passionate Computer Science student...")
-- His portrait (second portrait provided by owner → `public/images/shikhar-hero.jpg`)
-- Clear indication of what he does
-- Clear invitation to continue exploring
+- Shikhar's name (oversized, pointer-reactive, never wrapping)
+- A striking statement ("I build things worth remembering.", provisional copy)
+- His portrait (`src/assets/shikhar-hero.jpg`, arch aperture, static import)
+- What he does (CS @ VIT Vellore; software, security and the web)
+- An invitation to continue (scroll cue)
 
 **Hero should feel:** Editorial and distinctive
 
-## Technical Direction (Likely, Not Finalized)
+## Technical Direction (as built)
 
-- **Framework:** Next.js
-- **Language:** TypeScript
-- **Styling:** Tailwind CSS
-- **Animation:** Motion for React (Framer Motion)
-- **Advanced animation:** GSAP only when genuinely necessary
-- **Smooth scroll:** Lenis only if justified
-- **3D/WebGL:** Three.js / React Three Fiber only for specific high-value experiences
-- **Deployment:** Vercel
+- **Framework:** Next.js 14 (App Router, fully static)
+- **Language:** TypeScript (strict)
+- **Styling:** Tailwind CSS 3 + CSS variables
+- **Animation:** Motion v13 (the only animation library)
+- **Advanced animation / smooth scroll / 3D:** none (GSAP, Lenis, Three.js excluded by rule unless a documented reason emerges)
+- **Backend / persistence:** none (static site; theme in localStorage, intro flag in sessionStorage only)
+- **Deployment:** Vercel (planned, not yet deployed)
 
 ## Performance Requirement
 
@@ -124,7 +126,7 @@ The hero should contain:
 
 ## Mobile Requirement
 
-**First-class experience** — not a shrunken desktop layout.
+**First-class experience**, not a shrunken desktop layout.
 
 ## Documentation Status
 

@@ -6,23 +6,23 @@
 
 ## Framework & Runtime
 
-| Decision            | Status               | Notes                          |
-| ------------------- | -------------------- | ------------------------------ |
-| **Framework**       | Next.js (App Router) | `FINALIZED` — Next.js 14.2.15  |
-| **Language**        | TypeScript           | `FINALIZED` — TypeScript 5.6.3 |
-| **Runtime**         | Node.js (Vercel)     | `FINALIZED` — Node.js 20+      |
-| **Package Manager** | pnpm                 | `FINALIZED` — pnpm 9.12.0      |
+| Decision            | Status               | Notes                         |
+| ------------------- | -------------------- | ----------------------------- |
+| **Framework**       | Next.js (App Router) | `FINALIZED`: Next.js 14.2.15  |
+| **Language**        | TypeScript           | `FINALIZED`: TypeScript 5.6.3 |
+| **Runtime**         | Node.js (Vercel)     | `FINALIZED`: Node.js 20+      |
+| **Package Manager** | pnpm                 | `FINALIZED`: pnpm 9.12.0      |
 
 ---
 
 ## Rendering Strategy
 
-| Aspect                | Status                          | Notes                                          |
-| --------------------- | ------------------------------- | ---------------------------------------------- |
-| **Primary**           | Static Generation (SSG)         | `FINALIZED` — All pages prerendered at build   |
-| **Dynamic**           | ISR / On-demand                 | `UNDECIDED` — For content that may update      |
-| **Client Components** | Minimal, only for interactivity | `FINALIZED` — "Use client" only when necessary |
-| **Streaming**         | `UNDECIDED`                     | For heavy sections (3D, large media)           |
+| Aspect                | Status                          | Notes                                         |
+| --------------------- | ------------------------------- | --------------------------------------------- |
+| **Primary**           | Static Generation (SSG)         | `FINALIZED`: All pages prerendered at build   |
+| **Dynamic**           | ISR / On-demand                 | `UNDECIDED`: For content that may update      |
+| **Client Components** | Minimal, only for interactivity | `FINALIZED`: "Use client" only when necessary |
+| **Streaming**         | `UNDECIDED`                     | For heavy sections (3D, large media)          |
 
 **Principle (FINALIZED):** Default to Server Components. Only use Client Components for genuine interactivity (animation hooks, 3D canvas, forms).
 
@@ -30,53 +30,53 @@
 
 ## Styling Architecture
 
-| Decision          | Status                      | Notes                                          |
-| ----------------- | --------------------------- | ---------------------------------------------- |
-| **CSS Approach**  | Tailwind CSS                | `FINALIZED` — Tailwind 3.4.14                  |
-| **Config**        | `tailwind.config.ts`        | `FINALIZED` — Design tokens as source of truth |
-| **CSS Variables** | For theming (light/dark)    | `FINALIZED` — Defined in `globals.css`         |
-| **Global Styles** | Minimal — reset + variables | `FINALIZED` — In `src/app/globals.css`         |
+| Decision          | Status                     | Notes                                         |
+| ----------------- | -------------------------- | --------------------------------------------- |
+| **CSS Approach**  | Tailwind CSS               | `FINALIZED`: Tailwind 3.4.14                  |
+| **Config**        | `tailwind.config.ts`       | `FINALIZED`: Design tokens as source of truth |
+| **CSS Variables** | For theming (light/dark)   | `FINALIZED`: Defined in `globals.css`         |
+| **Global Styles** | Minimal: reset + variables | `FINALIZED`: In `src/app/globals.css`         |
 
 ---
 
 ## Animation Stack
 
-| Library                              | Purpose                                                   | Status                                               |
-| ------------------------------------ | --------------------------------------------------------- | ---------------------------------------------------- |
-| **Motion for React (Framer Motion)** | Primary animation — layout, transitions, gestures         | `UNDECIDED` — Will add in M1                         |
-| **GSAP**                             | Complex timelines, scroll-triggered, performance-critical | `UNDECIDED` — Only when genuinely necessary          |
-| **Lenis**                            | Smooth scroll                                             | `UNDECIDED` — Only if justified by scroll experience |
-| **Three.js / React Three Fiber**     | 3D / WebGL experiences                                    | `UNDECIDED` — Only for specific high-value moments   |
+| Library                            | Purpose                                                                                                                       | Status                                                           |
+| ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| **Motion** (`motion` package, v13) | Primary and only animation library: scroll scrubbing (`useScroll` + `useTransform`), `whileInView` reveals, springs, gestures | `FINALIZED`: installed, ~15 KB gzipped                           |
+| **GSAP**                           | Not used                                                                                                                      | `FINALIZED`: excluded unless a documented reason emerges         |
+| **Lenis**                          | Not used (native scroll + sticky pinning)                                                                                     | `FINALIZED`: excluded unless a documented reason emerges         |
+| **Three.js / React Three Fiber**   | Not used                                                                                                                      | `FINALIZED`: excluded unless a signature experience justifies it |
 
-**Principle (FINALIZED):** Start with Motion for React. Add GSAP only when Motion cannot achieve the effect performantly. Add Lenis only if native scroll + scroll-driven animations feel insufficient. Add Three.js/R3F only for a specific signature experience that justifies the bundle cost.
+**Principle (FINALIZED):** Motion is the only animation library. Binding Motion v13 rule: every scroll-driven `useTransform` input range MUST end at 1.0 (flat terminal segments whose last input sits below 1.0 collapse once progress passes them; see `ANIMATION.md`).
 
 ---
 
-## Folder Structure (Implemented — FINALIZED)
+## Folder Structure (as built: FINALIZED)
 
 ```
 src/
 ├── app/                    # Next.js App Router
-│   ├── layout.tsx         # Root layout
-│   ├── page.tsx           # Homepage (long scroll)
-│   ├── globals.css        # Global styles + CSS variables
-│   └── ...                # Other routes if needed
+│   ├── layout.tsx         # Root layout: metadata, theme pre-paint script, fonts
+│   ├── page.tsx           # Homepage: section order (Opening, Hero, Statements, About,
+│   │                       #   Experience, Skills, Projects, Personality, ControlCenter, Contact)
+│   ├── globals.css        # Tokens, keyframes, arch/mask/marquee/reduced-motion styles
+│   └── icon.svg           # Favicon (ink field, vermilion diamond)
+├── assets/                # Static imports (shikhar-hero.jpg; enables blur placeholders)
 ├── components/
-│   ├── ui/                # Primitive components (Button, Link, etc.)
-│   ├── sections/          # Page sections (Hero, Work, Experience, etc.)
-│   ├── layout/            # Header, Footer, Navigation
-│   └── effects/           # Visual effects (3D, canvas, scroll effects)
-├── lib/
-│   ├── utils.ts           # Shared utilities (cn, etc.)
-│   ├── animations.ts      # Animation variants, presets (not created yet)
-│   └── constants.ts       # Site config, metadata (not created yet)
-├── hooks/                 # Custom React hooks
-├── styles/                # Additional styles if needed
-├── types/                 # TypeScript types
-└── content/               # Content data (projects, experience, etc.)
+│   ├── ui/                # InteractiveLetters, TechLogo, Reveal, WordReveal, Counter, InView
+│   ├── sections/          # Hero, TransitionStatements, About, Experience, Skills,
+│   │                       #   Projects, ProjectPanel (lazy chunk), Personality,
+│   │                       #   ControlCenter, Contact, FooterWordmark
+│   └── layout/            # Opening, SiteNav, ThemeToggle
+├── hooks/                 # useMountedReducedMotion (hydration-safe reduced-motion flag)
+└── content/               # Typed data: profile, sections, projects, experience,
+                            #   systems, personality, techLogos, channelGlyphs
 public/
-├── images/                # Static images (hero portrait, etc.)
+└── resume.pdf             # PLACEHOLDER (owner must drop in the real file)
 ```
+
+There is no `src/lib/`, `src/types/`, `src/styles/`, `src/components/effects/`, or `public/images/` in the built site. Do not reference them.
 
 ---
 
@@ -84,93 +84,96 @@ public/
 
 ### Component Categories (FINALIZED)
 
-1. **Primitives** — Button, Link, Typography, Image — no business logic
-2. **Sections** — Hero, SelectedWork, Experience, Personality, InteractiveExperience, Contact — compose primitives
-3. **Layout** — Header, Footer, Navigation — global chrome
-4. **Effects** — Canvas, WebGL, scroll-driven visual — isolated, lazy-loaded
+1. **UI primitives**: `InteractiveLetters` (pointer spring field), `TechLogo` (monochrome brand marks), `Reveal` (in-view rise), `WordReveal` (scroll reading reveal), `Counter` (animated metric), `InView` (`data-inview` gate for SVG motifs)
+2. **Sections**: Hero, TransitionStatements, About, Experience, Skills, Projects (+ lazy `ProjectPanel`), Personality, ControlCenter, Contact (footer). Each owns its scroll choreography; no shared timeline.
+3. **Layout**: Opening (session loader), SiteNav (progress hairline, tuck/reveal, active section, theme toggle), ThemeToggle
+4. **Hooks**: `useMountedReducedMotion`: the single hydration-safe reduced-motion flag every client component gates on
 
 ### Component Principles (FINALIZED)
 
-- **Server Components by default** — only `"use client"` when needed
-- **Composition over configuration** — slots/children over props explosion
-- **Design tokens via Tailwind** — no arbitrary values in components
-- **Animation variants in `lib/animations.ts`** — reusable, consistent
-- **Lazy-load heavy components** — `next/dynamic` with `ssr: false` for 3D/heavy effects
+- **Server Components by default**: only `"use client"` when needed (current clients: Opening, SiteNav, ThemeToggle, Hero, About, TransitionStatements, Experience, Projects, ProjectPanel, Personality, ControlCenter, FooterWordmark, plus the interactive primitives InteractiveLetters, Reveal, WordReveal, Counter, InView. Server: Skills, Contact, TechLogo)
+- **Composition over configuration**: slots/children over props explosion
+- **Design tokens via Tailwind**: CSS variables as color source of truth
+- **Lazy-load heavy components**: `ProjectPanel` via `next/dynamic` with `ssr: false` (the only lazy chunk)
 
 ---
 
 ## State Management
 
-| Need                                  | Solution                      | Status      |
-| ------------------------------------- | ----------------------------- | ----------- |
-| **Global UI state** (theme, nav open) | React Context + `useReducer`  | `UNDECIDED` |
-| **Scroll position / progress**        | Custom hook + Lenis (if used) | `UNDECIDED` |
-| **Animation orchestration**           | Motion/GSAP timelines         | `UNDECIDED` |
-| **Form state** (contact)              | React Hook Form + Zod         | `UNDECIDED` |
+| Need                               | Solution                                                         | Status      |
+| ---------------------------------- | ---------------------------------------------------------------- | ----------- |
+| **Theme**                          | `<html>` class + localStorage, pre-paint head script             | `FINALIZED` |
+| **Intro played**                   | sessionStorage flag, read pre-paint                              | `FINALIZED` |
+| **Reduced motion**                 | `useMountedReducedMotion` hook (post-mount flag, hydration-safe) | `FINALIZED` |
+| **Scroll choreography**            | One `useScroll` progress per scene, pure `useTransform` mapping  | `FINALIZED` |
+| **Carousel**                       | Local ref + single rAF loop (no React state on scroll)           | `FINALIZED` |
+| **Personality selection**          | Local `useState` (no persistence)                                | `FINALIZED` |
+| **Global store / forms / backend** | None exist                                                       | `UNDECIDED` |
 
-**Principle (FINALIZED):** No global state library (Redux, Zustand, Jotai) unless genuinely needed. Prefer local state, Context for truly global concerns.
+**Principle (FINALIZED):** No global state library unless genuinely needed. No backend, no API routes, no database, no analytics. The only browser storage is the theme choice and the intro flag.
 
 ---
 
 ## Data & Content
 
-| Content Type            | Source                                       | Status                               |
-| ----------------------- | -------------------------------------------- | ------------------------------------ |
-| **Projects**            | Local JSON/TS/MDX                            | `UNDECIDED`                          |
-| **Experience/Timeline** | Local data file                              | `UNDECIDED`                          |
-| **Personal info**       | Local data file                              | `UNDECIDED`                          |
-| **Images**              | `public/images/` + `next/image` optimization | `FINALIZED`                          |
-| **SEO/Metadata**        | `lib/constants.ts` + page `metadata` export  | `FINALIZED` (metadata in layout.tsx) |
+| Content Type            | Source                                              | Status      |
+| ----------------------- | --------------------------------------------------- | ----------- |
+| **Projects**            | `src/content/projects.ts` (5 artifacts, SVG motifs) | `FINALIZED` |
+| **Experience/Timeline** | `src/content/experience.ts` (org-grouped)           | `FINALIZED` |
+| **Skills / certs**      | `src/content/systems.ts` (+ `techLogos.ts` marks)   | `FINALIZED` |
+| **Personal info**       | `src/content/profile.ts`                            | `FINALIZED` |
+| **Personality**         | `src/content/personality.ts` (fragments + captions) | `FINALIZED` |
+| **Sections/nav**        | `src/content/sections.ts` (order source of truth)   | `FINALIZED` |
+| **Images**              | `src/assets/` static imports + `next/image`         | `FINALIZED` |
+| **SEO/Metadata**        | `metadata` export in `layout.tsx` + `icon.svg`      | `FINALIZED` |
 
-**Principle (FINALIZED):** Content as data — separate from components. Single source of truth in `src/content/` or `lib/constants.ts`.
+**Principle (FINALIZED):** Content as data: separate from components. Single source of truth in `src/content/`.
 
 ---
 
 ## Performance Architecture
 
-| Strategy               | Status                                         |
-| ---------------------- | ---------------------------------------------- | ------------------------------------------- |
-| **Image optimization** | `next/image` with AVIF/WebP, blur placeholders | `FINALIZED` (configured in next.config.mjs) |
-| **Font optimization**  | `next/font` (self-hosted, variable fonts)      | `UNDECIDED` — Will add in M1                |
-| **Script loading**     | `next/script` with `strategy: "lazyOnload"`    | `UNDECIDED`                                 |
-| **Bundle analysis**    | `@next/bundle-analyzer` in CI                  | `UNDECIDED`                                 |
-| **Critical CSS**       | Tailwind JIT + Next.js automatic               | `FINALIZED`                                 |
-| **Lazy loading**       | Heavy sections below fold — `next/dynamic`     | `UNDECIDED`                                 |
+| Strategy               | Status                                                                             |
+| ---------------------- | ---------------------------------------------------------------------------------- |
+| **Image optimization** | `FINALIZED`: `next/image` with AVIF/WebP formats, blur placeholders                |
+| **Font optimization**  | `FINALIZED`: `next/font/google` (Instrument Sans + Serif, latin, swap)             |
+| **Lazy loading**       | `FINALIZED`: `ProjectPanel` via `next/dynamic` (`ssr: false`), the only lazy chunk |
+| **Script loading**     | `FINALIZED`: no third-party scripts exist                                          |
+| **Bundle analysis**    | `UNDECIDED`: no analyzer, no CI gate                                               |
+| **Critical CSS**       | `FINALIZED`: Tailwind JIT + Next.js automatic                                      |
 
 ---
 
 ## Deployment & Infrastructure
 
-| Aspect                  | Decision                     | Status               |
-| ----------------------- | ---------------------------- | -------------------- |
-| **Platform**            | Vercel                       | `FINALIZED` — Likely |
-| **Preview deployments** | Every PR                     | `UNDECIDED`          |
-| **Analytics**           | Vercel Analytics / Plausible | `UNDECIDED`          |
-| **Error tracking**      | Sentry (if needed)           | `UNDECIDED`          |
-| **Edge/ISR**            | For dynamic content          | `UNDECIDED`          |
+| Aspect                  | Decision                           | Status      |
+| ----------------------- | ---------------------------------- | ----------- |
+| **Platform**            | Vercel (planned, not yet deployed) | `FINALIZED` |
+| **Preview deployments** | None configured                    | `UNDECIDED` |
+| **Analytics**           | None installed                     | `UNDECIDED` |
+| **Error tracking**      | None installed                     | `UNDECIDED` |
+| **Edge/ISR**            | Unused (fully static)              | `FINALIZED` |
 
 ---
 
 ## Developer Experience
 
-| Tool              | Status                                 |
-| ----------------- | -------------------------------------- | ------------------------------- |
-| **Linting**       | ESLint (flat config, Next.js)          | `FINALIZED`                     |
-| **Formatting**    | Prettier + prettier-plugin-tailwindcss | `FINALIZED`                     |
-| **Type checking** | `tsc --noEmit` in CI                   | `FINALIZED`                     |
-| **Git hooks**     | Husky + lint-staged                    | `UNDECIDED` — Deferred to later |
-| **Testing**       | Vitest (unit), Playwright (e2e)        | `UNDECIDED`                     |
+| Tool              | Status                                                                                               |
+| ----------------- | ---------------------------------------------------------------------------------------------------- |
+| **Linting**       | `FINALIZED`: ESLint (flat config, Next.js)                                                           |
+| **Formatting**    | `FINALIZED`: Prettier + prettier-plugin-tailwindcss                                                  |
+| **Type checking** | `FINALIZED`: `tsc --noEmit` (`pnpm typecheck`)                                                       |
+| **Git hooks**     | `UNDECIDED`: none configured                                                                         |
+| **Testing**       | `UNDECIDED`: no test runner; browser verification via throwaway Playwright harnesses (not committed) |
 
 ---
 
-## Future Technical Decisions (UNDECIDED)
+## Open Technical Questions (UNDECIDED)
 
-- [ ] Finalize animation stack (Motion, GSAP, Lenis)
-- [ ] Decide on MDX for content vs pure data files
-- [ ] Decide on 3D approach (R3F vs raw Three.js vs none)
-- [ ] Define component testing strategy
-- [ ] Set up CI/CD pipeline
-- [ ] Define performance budgets (LCP, CLS, TBT, bundle size)
+- [ ] M6 signature experience concept (open ideation; must justify any new dependency)
+- [ ] CI/CD pipeline (none exists; typecheck/lint/format/build run locally)
+- [ ] Lighthouse measurement and real-device testing (M8)
+- [ ] Copy approval, real links, real resume PDF, Skilledity dates (owner inputs)
 
 ---
 

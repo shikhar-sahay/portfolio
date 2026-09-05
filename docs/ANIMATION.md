@@ -48,12 +48,11 @@ Remaining candidates remain UNDECIDED until more patterns exist.
 
 ---
 
-## Implemented Patterns (v5 - EXPERIMENTAL)
+## Implemented Patterns (as built)
 
 ### Opening: signal-line loader (`Opening.tsx`)
 
-An ink-field loader, ~1.6s, once per session. Replaces the v4 title
-sequence (owner feedback: it read as a blank title card).
+An ink-field loader, ~1.6s, once per session.
 
 | t       | Beat                                                                                        |
 | ------- | ------------------------------------------------------------------------------------------- |
@@ -67,235 +66,155 @@ No counters, no percentage, no spinner. The hero boots beneath via the
 `--intro-delay`; skipped pre-paint for returning visitors and reduced
 motion).
 
-### Statements bridge (hero to About, `TransitionStatements.tsx`)
+### Hero entrance (time-based CSS, `forwards` fill where needed)
 
-A pinned 300svh ink-field section between hero and About. Three large
-statements reveal in sequence with scroll: "I build." / "I break." /
-"I rebuild.", each with a micro caption, middle line indented. Earlier
-lines dim to 30% as the next arrives; the stage fades into About.
-Reduced motion: a static stacked block.
+Runs on page load; no JS required. Easing `ease-out-expo` unless noted;
+delays stack on `--intro-delay` (0s for returning visitors and reduced
+motion, where everything lands instantly).
+
+| Delay  | Element                       | Motion                                                               |
+| ------ | ----------------------------- | -------------------------------------------------------------------- |
+| +0.2s  | Eyebrow (`Portfolio, 2026`)   | Fade-in                                                              |
+| +0.25s | Name letters (staggered 45ms) | Fade-and-rise per letter (never a mask, never clips)                 |
+| +0.25s | Arch aperture                 | Clip-path wipe bottom-to-top (1.25s); photo settles from 1.14x scale |
+| +0.6s  | Statement lede                | Fade-rise                                                            |
+| +0.8s  | Context row                   | Fade-rise                                                            |
+| +1.4s  | Scroll cue                    | Fade-in, then continuous cue-travel loop (accent segment, 2.2s)      |
+
+### Hero portrait motion (arch aperture)
+
+- Boot: the arch reveals via clip-path wipe bottom-to-top (1.25s) while the photograph settles from 1.14x scale and 20% grayscale (stays desaturated until hovered to full color).
+- Ambient: none. The portrait is calm at rest; the only ambient layers are the site-wide grain and light field.
+- Pointer parallax (fine pointers, reduced-motion-gated): crop drifts up to 10px toward the cursor, echo arch up to 7px against it, spring-smoothed (stiffness 55, damping 18), resets on pointerleave.
+- The face-zoom scroll treatment from v2 is explicitly rejected (owner directive). The replacement is the ink-veil scene change below.
+
+### Hero scene change (scroll-scrubbed, 120svh scene, `Hero.tsx`)
+
+One `useScroll` progress drives every layer; all input ranges end at 1.0 (see the binding rule in v4.5):
+
+- Composition separates while the frame stays full: "SHIKHAR" travels up-left, "SAHAY" (outline) travels down-right, both fading late; the arch exits laterally with a whisper of rotation and fades last.
+- An ink veil rises from the bottom carrying the opening statement ("I build." plus caption) and hands a full ink frame to the statements bridge. Late opacity fades happen behind the veil, never on their own.
+- An ink tail block covers exactly the transparent zone below the sticky frame so the post-release scroll never flashes paper.
+- A handoff hairline draws at the stage bottom; the scroll cue fades almost immediately.
+- Reduced motion: the scene never pins (renders as a normal section); no veil is rendered.
+
+### Statements bridge (phased kinetic typography, `TransitionStatements.tsx`)
+
+The section overlaps the hero by exactly one viewport so its sticky engages the pixel the hero releases. Each thought phase carries its own ink over a transparent stage (the bridge is pointer-transparent so hero hover survives underneath).
+
+- One thought on stage at a time in a shared left-aligned composition: serif "I", then the verb unmasking bottom-up with a rise, then the micro note. BUILD [0, 0.08]/[0.28, 0.36], BREAK [0.28, 0.36]/[0.6, 0.68], REBUILD [0.6, 0.68] holding to release. Crossfade windows are shared, so one thought always leads and two never collide.
+- The finale never exits: it holds its frame while About enters beneath it.
+- Reduced motion: a static stacked block with matching alignment, full ink.
 
 ### Word-by-word reading reveal (`WordReveal.tsx`)
 
-Used in About and Experience ledes. Words start at 18% opacity and
-brighten to full ink in reading order, driven by one scroll progress
-value; each word is a motion.span with a per-word range. Reduced motion
-and no-JS: fully inked plain text.
+Used in About and Experience ledes. Words start at 18% opacity and brighten to full ink in reading order, driven by one scroll progress value; each word is a motion.span with a per-word range (`[i/n, min(1, (i+1.5)/n)]`). Reduced motion and no-JS: fully inked plain text.
 
 ### Experience timeline
 
-The vertical hairline draws downward (scaleY, whileInView once). Entries
-reveal with stagger. Markers are small rotated squares that fill
-vermilion on hover (no dots). One line of summary per role.
+- The vertical hairline draws downward (accent scaleY on a scroll spring, origin top); a base hairline sits beneath it. Both are 1px, centered so the axis passes through every marker center.
+- Org blocks reveal once (rise + fade); roles inside stagger; diamond markers pop in once and fill vermilion plus rotate on hover. One line of summary per role.
 
 ### Skill emblems
 
-Each tool is a gold-ring emblem with a serif italic monogram; the ring
-rotates 90 degrees and a dashed orbit wakes on hover. Gold exists only in
-Skills and Certifications.
+Each tool is a gold-ring emblem: the ring rotates 90 degrees and a dashed orbit wakes on hover; the core holds a real monochrome brand mark (or a serif monogram where no genuine mark exists) that tints to accent at 1.1 scale on hover. Rows drift as infinite CSS marquee loops (alternate directions, pause on hover, edge fade). Gold exists only in Skills and Certifications.
 
-### Project carousel
+### Project carousel (`Projects.tsx`, lazy `ProjectPanel.tsx`)
 
-Looping horizontal carousel: duplicated list, translateX by slide step,
-silent snap after crossing the clone boundary; prev/next buttons, arrow
-keys, touch swipe. Panels are code-split (dynamic, ssr:false) with a
-fixed-height skeleton.
+- Single rAF loop owns a two-copy track: auto-drift 40px/s until the first interaction (drag, swipe, arrows, keys), then manual for the session. Arrow/keyboard targets tween toward the card grid (lerp 0.16); drag writes the offset directly; release settles to the grid; clicks after drags are suppressed. Offset wraps modulo one exactly measured copy width. The loop pauses offscreen via IntersectionObserver.
+- Forward (Next, ArrowRight, drift) is negative offset. Placeholder links are inert so clicks and drag releases never navigate.
+- Cards are uniform (fixed preview surface, clamped description, pinned stack/links rows); preview motifs animate via the `data-inview` gate. Reduced motion: native scroll row with instant arrow scrolls.
 
-### Footer wordmark
+### Footer wordmark (`FooterWordmark.tsx`)
 
-Per-letter spans: hover/touch lifts a letter 8px, rotates 3 degrees, and
-shifts it to the accent. Fitted with viewport-relative sizing; no
-overflow at any width.
+The name as a slow infinite marquee (two identical groups, -50% loop, pauses on hover), each letter running the shared pointer spring field with a quieter wash (lift 0.10, 45% accent). Vertical bleed inside the overflow mask keeps rising letters unclipped. Reduced motion: a single static fitted wordmark.
 
-### Older patterns (v4 and earlier)
+### Header (`SiteNav.tsx`)
 
-The v4 title sequence, circular instrument, and aperture-zoom history are
-documented in git history and DECISIONS.md; they are superseded.
+- Transparent with generous padding at top; compact with a paper backdrop, blur, and hairline edge past 64px; tucks away scrolling down past the hero, returns on scroll up.
+- Active section carries an accent underline (IntersectionObserver); a progress hairline (accent scaleX) runs along the very top. Theme-colored links (no blend modes). All time-based motion uses the shared expo easing.
 
-### Portrait motion (v4.1 arch; the v3 ring instrument is removed)
+### Personality fragment instrument (`Personality.tsx`)
 
-- Boot: the arch reveals via clip-path inset bottom-to-top (1.25s) while the photograph settles from 1.14x scale and 20% grayscale
-- Ambient: none. The portrait is calm at rest; the only ambient layers are the site-wide grain and light field
-- Pointer parallax (fine pointers, reduced-motion-gated): crop drifts up to 10px toward the cursor, echo arch up to 7px against it, spring-smoothed (stiffness 55, damping 18), resets on pointerleave
+- Selecting a fragment (hover, focus, or click/tap) swaps the large serif word and caption instantly (no transition choreography; `aria-live` announces the change). Active button fills vermilion. No backend, no persistence: selection is local state only.
 
-### Scene-change scroll transition (replaces the rejected face zoom)
+### Control center micro-motion
 
-The v2 full-bleed face zoom is **explicitly rejected** (owner directive). The hero pins for 150svh and the scene changes:
+- Modules warm to surface on hover; module diamonds rotate; channel tiles lift for real links; nav links extend their accent tick. IST clock and session uptime tick once per second (the only per-second React state on the page).
 
-- Typography separates into layers: "SHIKHAR" travels up-left, "SAHAY" (outline) travels down-right, both fading by p=0.55
-- The instrument exits laterally: x 0 to 22vw, y to -8svh, scale to 0.72, fading at the end
-- A hairline draws left-to-right (p 0.35 to 0.8) at the stage bottom, becoming the boundary into About
-- Statement/context/cue fade early; the handoff reads as a scene change, never a camera move
+### Theme crossfade
 
-### Reduced Motion (v4 status)
-
-- Opening overlay: never rendered (`data-intro="skip"` set pre-paint)
-- Hero: `--intro-delay` is 0s; entrance animations collapse via the global duration rule; portrait/rings/labels render in final state
-- Ring rotation, atmosphere drift, cue travel: stopped by the global rule (iteration-count 1, duration 0.01ms)
-- Pointer parallax: not attached under reduced motion
-- Verified via Playwright `reducedMotion: 'reduce'`: overlay absent, hero complete
+- 0.7s CSS transition of background-color/color/border-color on body and `.theme-fade` containers; no JS animation. Cinematic ink fields (`.ink-stage`) stay dark in both themes.
 
 ### Motion language: ARRIVE / DISCOVER / TRANSFORM / SETTLE / DEPART
 
-| Verb      | Meaning                              | Patterns                                                              |
-| --------- | ------------------------------------ | --------------------------------------------------------------------- |
-| ARRIVE    | A thing enters with intention        | Opening curtain-lift, masked type rises, clip/curtain reveals         |
-| DISCOVER  | Content reveals itself progressively | Counters count up on view, signal map flows in, manifest rows stagger |
-| TRANSFORM | State changes as you travel          | Aperture expansion, sticky era year/mood swap, fragment word swap     |
-| SETTLE    | The page comes to rest, calm         | Full-bleed photo hold, sticky index, quiet section padding            |
-| DEPART    | The journey closes the loop          | Contact callback to opening indices, "fin."                           |
+| Verb      | Meaning                              | Patterns in this site                                                     |
+| --------- | ------------------------------------ | ------------------------------------------------------------------------- |
+| ARRIVE    | A thing enters with intention        | Loader lift, letter stagger, masked verb reveals, emblem rows drifting in |
+| DISCOVER  | Content reveals itself progressively | Word-by-word reading, counters, signal motifs staggering in on view       |
+| TRANSFORM | State changes as you travel          | Hero scene change, veil handoff, thought crossfades, fragment word swap   |
+| SETTLE    | The page comes to rest, calm         | REBUILD hold, pinned finale frames, quiet section padding                 |
+| DEPART    | The journey closes the loop          | REBUILD resolving into About, marquee wordmark closing the page           |
 
-### Opening Sequence v3 (SUPERSEDED by v4 above; kept for history)
+### Reduced Motion (as built)
 
-- Full-screen paper overlay: name top-left, "A portfolio, in seven parts" top-right, giant ticking index `01` to `07` with serif "/ 07", accent progress hairline, "Establishing / 2026" footer
-- Numbers tick every 115ms (7 ticks, ~900ms), exit at 1150ms via translateY(-100%) 700ms ease-expo, unmount at 1850ms
-- Scroll locked during the sequence
-- Skipped entirely when `prefers-reduced-motion: reduce` or when `sessionStorage.opened` is set (repeat visits in the same session see nothing)
-- Total cost: ~1.6s once per session; no media, no layout shift (overlay is fixed)
-
-### Section patterns (new in v3)
-
-| Pattern               | Section    | Implementation                                                                                                                                                        |
-| --------------------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Editorial index       | Intro      | Sticky list; hover/focus reveals note, name nudges x (CSS only)                                                                                                       |
-| Contextual counters   | Work       | `Counter` counts up on first view (rAF, quartic ease-out, 1400ms); static under reduced motion                                                                        |
-| Signal flow           | Work       | `InView` sets `data-inview`; nodes transition in staggered, dashed edges run `signal-flow` (marching dashes, 1.6s linear infinite)                                    |
-| Manifest stagger      | Work       | HolmesKit rows fade-rise staggered 80ms via the same `data-inview` gate                                                                                               |
-| Sticky era chronology | Experience | IntersectionObserver updates sticky year + serif mood; era indicator lines switch accent                                                                              |
-| Fragment instrument   | Outside    | Hover/focus/click swaps large serif word + caption (aria-live polite)                                                                                                 |
-| Navigation instrument | Global     | Progress hairline (scaleX via scrollYProgress), live `NN / 07 Name` readout (IO), difference-blend white links so the nav survives the inverted panel and both themes |
-| Ending callback       | Contact    | Static `01 02 03 04 05 06 07` row + serif "fin." echoes the opening                                                                                                   |
-
-### Hero scene (revised in v3)
-
-- Scene length history: 240svh (v2) to 180svh (v3) to 150svh (v4); the full-bleed zoom was removed entirely in v4
-- All v2 aperture mechanics unchanged (see decision history); drift constants re-validated after shortening
-
-### Reduced Motion (v3 status, superseded by v4 above)
-
-- Opening overlay: skipped entirely (immediate portfolio)
-- Counters: render final values statically
-- Signal map / manifest: `data-inview` still applied; global duration collapse makes transitions instant; marching-ants loop collapses (iteration-count 1)
-- Era tracking, fragment swap, nav readout: functional without motion (state changes are instant)
-- Verified via Playwright `reducedMotion: 'reduce'` emulation: overlay absent, page fully composed
-
-### Hero/aperture details (v2, retained)
-
-### Animation Library (added this session)
-
-**Motion for React** (package `motion`, ~15 KB gzipped) is now installed and used for:
-
-- Scroll-scrubbed choreography (`useScroll` + `useTransform`) in the hero scene
-- `whileInView` reveals in the introduction
-- Nav fade tied to scroll position
-
-Rationale: the aperture sequence needs multi-phase, scroll-scrubbed interpolation of transform values. Hand-rolled CSS custom-property math was brittle to tune; Motion provides reliable scrubbing with built-in `useReducedMotion`. This matches the architecture principle (Motion is the planned primary animation library). Entrance choreography remains pure CSS (works pre-hydration).
-
-> **IMPORTANT for future agents (Motion v13 quirk):** 2-point `useTransform` ranges did not hold their end value beyond the range in testing (opacity mirrored back toward its start value). Always use explicit 3-point ranges with a terminal stop, e.g. `useTransform(p, [0.16, 0.36, 1], [1, 0, 0])`.
-
-### Entrance Sequence (time-based, CSS-only keyframes, `forwards` fill)
-
-Runs on page load; no JS required. All easing `ease-out-expo` unless noted.
-
-| t (delay) | Element                 | Motion                                                                                   |
-| --------- | ----------------------- | ---------------------------------------------------------------------------------------- |
-| 0.15s     | Portrait aperture       | "Curtain" opens: outer scaleX 0.02 → 1 with counter-scaled inner (no distortion), 1400ms |
-| 0.75s     | Name line 1 ("SHIKHAR") | Mask rise: translateY(115%) → 0 inside overflow-hidden span, 1100ms                      |
-| 0.92s     | Name line 2 ("SAHAY")   | Mask rise (outline stroke treatment), 1100ms                                             |
-| 1.10s     | Statement               | Fade-rise (opacity 0→1, translateY 14px→0), 900ms                                        |
-| 1.25s     | Corner meta             | Fade-rise                                                                                |
-| 1.50s     | Navigation              | Fade-in                                                                                  |
-| 1.90s     | Scroll cue              | Fade-in, then continuous cue-travel loop (accent segment sliding down a hairline, 2.2s)  |
-
-### Scroll Sequence (hero → full-bleed photograph → introduction)
-
-- Scene wrapper was `240svh` in v2, `180svh` in v3, `150svh` in v4 with a `sticky top-0 h-dvh` stage: native pinning, no scroll hijacking
-- `useScroll({ offset: ['start start', 'end end'] })` drives `scrollYProgress` (p)
-- Phases:
-  - p 0 → 0.08: scroll cue fades
-  - p 0 → 0.22: statement and corner meta fade out
-  - p 0.04 → 0.62: aperture scales 1 → 4.35 with compensating x/y drift so the face lands centered at full bleed (desktop drift: -30vw, +56svh; mobile: -34vw, +36svh; chosen via matchMedia)
-  - p 0.16 → 0.36: display title scales to 1.32, rises 30svh, fades out (pushed "past the camera")
-  - p 0.42 → 0.56: photo credit ("Shikhar Sahay · 2026", accent dot) fades in bottom-right
-  - p 0.62 → 1: full-bleed hold with slow inner zoom (1 → 1.09) and upward photo drift; then the stage unpins and the introduction slides over
-- Inner photo has constant counter-parallax (drifts -9% over the scene)
-- Transform/opacity only; compositor-friendly
-
-### Navigation Fade
-
-- Nav fades out (opacity + slight rise) over scrollY 140 → 460px: once the aperture takes the viewport, fixed nav text would sit illegibly on the photograph
-- `pointer-events: none` when hidden; nav behavior is revisited in M2
-
-### Introduction Reveals
-
-- `whileInView` (IntersectionObserver via Motion), once per element, 12% viewport margin
-- Staggered: eyebrow, lede statement, then fragment columns (+0.08s each)
-- ease-out-expo, y 28px → 0
-
-### Theme Crossfade
-
-- 0.7s CSS transition of background-color/color/border-color on body and `.theme-fade` containers; no JS animation
-
-### Reduced Motion Behavior (implemented)
-
-- Global media query collapses all CSS animation/transition durations to 0.01ms → elements jump to final visible state instantly
-- `useReducedMotion()` from Motion: all scroll-driven styles are omitted (scene renders in resting composed state; content complete and coherent)
-- Cue travel loop is disabled by the global duration collapse
-- Theme crossfade collapses to instant switch
+- Opening overlay: never rendered (`data-intro="skip"` set pre-paint).
+- Hero: never pinned; entrance collapses instantly; no parallax; no veil.
+- Statements: static stacked block (no pin, no overlap pull-up).
+- Carousel: native scroll row, instant arrows.
+- Footer: static fitted wordmark, no marquee.
+- Personality, control panel, timeline: instant state changes, ticking clocks render (time itself is not motion).
+- Global CSS collapses all animation/transition durations; `useMountedReducedMotion` gates every client branch post-mount so SSR and hydration markup match.
+- Verified via `reducedMotion: 'reduce'` emulation: no hydration errors, complete static page.
 
 ---
 
-## Transition Patterns (UNDECIDED)
+## Transition Patterns (as built)
 
 ### Entrance / Reveal
 
-| Pattern                | Description                               | Status    |
-| ---------------------- | ----------------------------------------- | --------- |
-| **Fade + Slide Up**    | `opacity: 0 → 1`, `translateY: 20px → 0`  | UNDECIDED |
-| **Fade + Scale**       | `opacity: 0 → 1`, `scale: 0.95 → 1`       | UNDECIDED |
-| **Staggered Children** | Parent triggers children with delay       | UNDECIDED |
-| **Clip Path Reveal**   | `clip-path: inset(100% 0 0 0) → inset(0)` | UNDECIDED |
-| **Line Draw**          | Stroke dash offset for SVG lines          | UNDECIDED |
+| Pattern                | Description                                                     | Where                               |
+| ---------------------- | --------------------------------------------------------------- | ----------------------------------- |
+| **Fade + rise**        | `opacity: 0 → 1`, `translateY: 14-28px → 0`, ease-expo, 0.9s    | Hero boot, `Reveal` everywhere      |
+| **Per-letter stagger** | 45ms stagger, fade-and-rise, no masks                           | Hero name entrance                  |
+| **Clip-path wipe**     | Arch reveals bottom-to-top 1.25s; verb masks travel with scroll | Portrait boot, statement verbs      |
+| **Line draw**          | Hairline scaleX + traveling cue segment                         | Opening loader, handoff, scroll cue |
 
 ### Scroll-Driven
 
-| Pattern             | Description                                      | Status    |
-| ------------------- | ------------------------------------------------ | --------- |
-| **Progress Reveal** | Element animates based on scroll progress        | UNDECIDED |
-| **Parallax**        | Background moves slower than foreground          | UNDECIDED |
-| **Pin & Animate**   | Section pins while internal animation plays      | UNDECIDED |
-| **Scrub**           | Animation timeline directly controlled by scroll | UNDECIDED |
+| Pattern            | Description                                                             |
+| ------------------ | ----------------------------------------------------------------------- |
+| **Pinned scenes**  | `sticky top-0 h-dvh` inside a taller section; native pinning, no hijack |
+| **Scrub**          | One `useScroll` progress per scene, pure `useTransform` mapping         |
+| **Terminal stops** | Every input range ends at 1.0 (binding Motion v13 rule)                 |
 
 ### Interaction
 
-| Pattern         | Description                       | Status    |
-| --------------- | --------------------------------- | --------- |
-| **Hover Lift**  | `translateY: -4px`, subtle shadow | UNDECIDED |
-| **Hover Scale** | `scale: 1.02-1.05`                | UNDECIDED |
-| **Tap Press**   | `scale: 0.97-0.98` on press       | UNDECIDED |
-| **Focus Ring**  | Animated focus outline            | UNDECIDED |
-| **Magnetic**    | Element follows cursor slightly   | UNDECIDED |
+| Pattern          | Description                                                              |
+| ---------------- | ------------------------------------------------------------------------ |
+| **Spring rise**  | Per-letter underdamped springs (170/15) in a 2D pointer field            |
+| **Hover states** | Tint/scale/rotate transitions (300-700ms expo); tiles lift; ticks extend |
+| **Drag**         | Pointer-driven carousel offset with grid settle and click suppression    |
+| **Focus**        | Global accent focus-visible ring; no animated focus traps                |
 
 ---
 
-## Choreography Principles (UNDECIDED)
+## Choreography Principles (as built)
 
 ### Stagger
 
-- **Default stagger:** UNDECIDED (e.g., 50-100ms per item)
-- **Max stagger:** UNDECIDED (e.g., 300ms total for a group)
-- **Direction:** Top-to-bottom, left-to-right, or center-out
+- Hero letters: 45ms per letter. Role rows: 90ms per role. Motif nodes: 40-150ms via inline transition delays. Eyebrow/lede pairs: 80ms `delay`.
 
 ### Sequencing
 
-- **Hero entrance:** Name → Statement → Portrait → Invitation (staggered)
-- **Section entrance:** Title → Content → Media (staggered)
-- **Exit/transition:** Reverse of entrance or crossfade
+- Hero entrance: eyebrow, name, arch, lede, context row, cue (delays stack on `--intro-delay`).
+- Section entrance: eyebrow, lede, content (Reveal `delay` per block).
+- Statement phases: pronoun, verb mask, note; outgoing masks away before the incoming verb completes.
 
 ### Coordination
 
-- **Scroll + Time:** Scroll-triggered animations should feel temporal, not mechanical
-- **Reduced motion:** All choreography collapses to instant or single fade
+- Scroll-driven motion is deterministic: state is always a pure function of scroll progress (identical forward and reverse). No observers gate visibility; no timeouts drive choreography.
+- Reduced motion: all choreography has a complete static equivalent (see below).
 
 ---
 
@@ -313,75 +232,59 @@ Runs on page load; no JS required. All easing `ease-out-expo` unless noted.
 ### Implementation Strategy
 
 ```css
-/* Global reduced motion */
+/* Global reduced motion (globals.css) */
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
   *,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
   }
 }
 ```
 
 ```typescript
-// JS hook for conditional logic
-const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+// JS gate: useMountedReducedMotion (hydration-safe; server and first
+// client render agree, the flag flips after mount). Every client branch
+// (pinned scenes, veils, loops, marquees, parallax) keys off this hook.
 ```
 
 ### Exceptions
 
-- **User-triggered** animations (e.g., click to expand) may still animate but faster
-- **Loading/progress** indicators may pulse (accessibility: indicate activity)
-- **Signature experience** must have a designed static equivalent, not just "turned off"
+- **Ticking clocks** (IST, session uptime) keep ticking: time display is information, not motion.
+- **Instant state changes** (fragment swap, theme switch, carousel arrows) stay functional with zero animation.
 
 ---
 
 ## Performance Guidelines (FINALIZED)
 
-| Rule                           | Description                                                                              |
-| ------------------------------ | ---------------------------------------------------------------------------------------- |
-| **Transform/Opacity only**     | Prefer `transform` and `opacity` - they run on compositor thread                         |
-| **Will-change sparingly**      | Only on elements actively animating; remove after                                        |
-| **Layout thrashing avoidance** | Batch reads/writes; use `requestAnimationFrame`                                          |
-| **GPU layers**                 | Promote animated elements (`transform: translateZ(0)`) but don't overdo                  |
-| **Bundle size**                | Motion for React ~15KB gzipped. GSAP ~35KB. Three.js ~100KB+. Budget in `PERFORMANCE.md` |
-| **Lazy load heavy animation**  | `next/dynamic` with `ssr: false` for GSAP/Three.js components                            |
-| **IntersectionObserver**       | For scroll-triggered reveals (native, performant)                                        |
+| Rule                           | Description                                                                            |
+| ------------------------------ | -------------------------------------------------------------------------------------- |
+| **Transform/Opacity only**     | Prefer `transform`, `opacity`, `clip-path` - they avoid layout work                    |
+| **Will-change sparingly**      | Presentational `will-change-transform` on animated tracks and letters                  |
+| **Layout thrashing avoidance** | Batch reads/writes; centers cached, never read per frame (`InteractiveLetters`)        |
+| **Bundle size**                | Motion v13 is the only animation dependency (~15 KB gzipped); nothing else installed   |
+| **Lazy load heavy animation**  | `next/dynamic` with `ssr: false` for the below-fold `ProjectPanel` chunk               |
+| **IntersectionObserver**       | Carousel offscreen pause, nav active section, Motion `whileInView`/`useInView` reveals |
 
 ---
 
-## Animation Library Usage (UNDECIDED)
+## Animation Library Usage (FINALIZED)
 
-### Motion for React (Primary)
+### Motion (the `motion` package, v13; installed)
 
-- Layout animations (`layout` prop)
-- Presence animations (`AnimatePresence`)
-- Gestures (`whileHover`, `whileTap`, `drag`)
-- Scroll animations (`useScroll`, `useTransform`)
-- Variants for choreography
+- Scroll animations (`useScroll`, `useTransform`) for all scene choreography
+- `whileInView` reveals, springs (`useSpring`), scroll events (`useMotionValueEvent`)
+- Gestures are hand-rolled pointer handlers, not Motion gestures (no `whileHover`/`drag` in the codebase)
 
-### GSAP (When Necessary)
+### Not used (excluded unless a documented reason emerges)
 
-- Complex timelines with multiple coordinated elements
-- ScrollTrigger for pin/scrub patterns Motion can't do performantly
-- Text animation (SplitText)
-- Morphing, FLIP animations
-- **Only import what you use:** `gsap/core`, `gsap/ScrollTrigger`, etc.
-
-### Lenis (If Justified)
-
-- Smooth scroll only if native + `scroll-behavior: smooth` + scroll-driven animations feel insufficient
-- Must integrate with GSAP ScrollTrigger / Motion `useScroll`
-- Lightweight (~3KB) but adds complexity
-
-### Three.js / React Three Fiber (Signature Experience Only)
-
-- Only for M6 signature experience
-- Lazy-loaded, code-split, `ssr: false`
-- Reduced motion: static render or fallback image
+- GSAP, Lenis, Three.js / React Three Fiber: none installed, none needed so far
 
 ---
 
@@ -398,39 +301,39 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
 
 ## Testing Checklist
 
-- [ ] `prefers-reduced-motion: reduce` - all motion disabled/instant
-- [ ] `prefers-reduced-motion: no-preference` - full experience
-- [ ] Low-end device (throttled CPU) - 60fps maintained
-- [ ] Mobile touch - no hover-only interactions
-- [ ] Keyboard navigation - focus visible, no motion traps
-- [ ] Screen reader - no announcements for decorative animation
-- [ ] Cross-browser - Chrome, Firefox, Safari, Edge
+- [x] `prefers-reduced-motion: reduce` - complete static page, no hydration errors (emulation verified)
+- [x] `prefers-reduced-motion: no-preference` - full experience
+- [ ] Low-end device (throttled CPU) - not measured
+- [x] Mobile touch - pointer interactions disabled, full content present
+- [x] Keyboard navigation - focus visible, carousel arrows wired, no motion traps
+- [ ] Screen reader - landmarks and labels in place; no dedicated screen-reader audit yet
+- [x] Chrome desktop/mobile widths (1920/1440/768/375) plus emulation; Firefox/Safari/Edge not tested
 
 ---
 
-## Token Reference (To Be Finalized in DESIGN_SYSTEM.md)
+## Token Reference (as built)
 
 ```typescript
-// lib/animations.ts (proposed)
-export const easing = {
-  // UNDECIDED
-};
-
-export const duration = {
-  // UNDECIDED
-};
-
-export const variants = {
-  // Reusable variant objects for Motion
-  // UNDECIDED
-};
+// Easing: ease-out-expo everywhere motion eases.
+export const expo = [0.19, 1, 0.22, 1] as const; // CSS cubic-bezier(0.19, 1, 0.22, 1)
 ```
+
+| Use                        | Duration                  | Notes                                 |
+| -------------------------- | ------------------------- | ------------------------------------- |
+| CSS entrance (fade/rise)   | 0.9-1.05s                 | `anim-fade-rise`, letter stagger 45ms |
+| Arch reveal / photo settle | 1.25-1.9s                 | Clip wipe + scale settle              |
+| Opening lift               | 850ms                     | Field translateY(-100%)               |
+| Hover transitions          | 300-700ms                 | Tint, scale, rotate, tick extension   |
+| Carousel arrow tween       | lerp 0.16/frame           | Settles in ~0.5s                      |
+| Letter springs             | stiffness 170, damping 15 | Slightly underdamped                  |
+| Nav tuck                   | 450ms                     | Header translate                      |
+| Theme crossfade            | 700ms                     | CSS only                              |
 
 ---
 
 ## Notes
 
-This file will be populated with concrete values as milestones progress. M1 (Hero) will finalize entrance choreography. M2 (Scroll) will finalize scroll-driven patterns. M6 (Signature Experience) may introduce new patterns.
+Motion values are now concrete (see Implemented Patterns and Token Reference above). Open motion work: M6 signature experience concept (must justify any new dependency), low-end device profiling, screen-reader audit.
 
 **Key rule:** If you add a new animation pattern, document it here with its easing, duration, and reduced-motion behavior.
 
@@ -468,12 +371,9 @@ This file will be populated with concrete values as milestones progress. M1 (Her
 - Two beats over a 120svh scene: the composition separates (name lines sweep apart, portrait exits laterally) while the frame stays full, then an ink veil rises from the bottom carrying the opening statement and hands a full ink frame to the statements bridge. Late opacity fades happen behind the veil, never on their own.
 - Reduced motion: the scene never pins (static section scrolls away normally); no veil is rendered.
 
-### Statements bridge (shared-stage emphasis)
+### Statements bridge (SUPERSEDED by the v4.5 phased composition above)
 
-- All three statements render on one sticky stage from progress 0 (inactive at opacity 0.16); scroll crossfades emphasis in 0.14-wide windows at 1/3 boundaries; 36px rise on activation (later lines only); receding lines shrink to 0.94 scale.
-- Full-width registers: BUILD flush left, BREAK flush right at a larger size, REBUILD indented as the finale; rows interlock with negative top margins (later lines paint above earlier ones). Continuous lateral drift over the whole section.
-- Stage is opaque to the end: no background fade-out, the sticky releases into About.
-- Reduced motion: static stack with matching alignment, full ink.
+- v4.2/v4.3: all three statements shared one sticky stage with scroll-driven emphasis (inactive at 0.16 opacity); v4.3 arranged them in interlocked full-width registers. Replaced in v4.5 by one-thought-at-a-time phases with masked reveals. History in git and DECISIONS.md.
 
 ### Experience spine
 

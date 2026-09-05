@@ -1,41 +1,47 @@
 # CONTENT.md
 
-> **Status:** Implemented (2026-08-23). Content lives in typed modules under `src/content/` and is consumed by section components. This file documents the model.
+> **Status:** Implemented. Content lives in typed modules under `src/content/` and is consumed by section components. This file documents the model.
 > **Format:** Structured TypeScript data modules, single source of truth per topic.
 
 ---
 
-## Implemented Content Modules (v2)
+## Implemented Content Modules
 
 ```
 src/content/
-├── profile.ts       # Name, location, statement, education, links
-├── sections.ts      # Section registry: id, number, name, note (drives nav + opening + index)
-├── projects.ts      # Three artifacts with visual treatment keys and metrics
-├── experience.ts    # Era-grouped chronology (year, mood, entries)
-├── systems.ts       # Skill groups + certifications
-└── personality.ts   # Fragment words + voice captions (tonal, not factual claims)
+├── profile.ts       # Name, location, statement, lede, education, links
+├── sections.ts      # Section registry: id, name, note (nav order source of truth)
+├── projects.ts      # Five artifacts with visual treatment keys, metrics, role lines
+├── experience.ts    # Org-grouped roles (role, period, summary)
+├── systems.ts       # Skill groups (name + monogram) + certifications
+├── personality.ts   # Fragment words + voice captions (tonal, not factual claims)
+├── techLogos.ts     # Vendored CC0 brand paths for tools
+└── channelGlyphs.ts # Vendored CC0 brand paths + original glyphs for contact channels
 ```
 
 ### Rules encoded in the model
 
-- Metrics and claims come only from owner-supplied source material (55K+ users, 1.2M+ views, top 1% of 4,000+, top 3% of 2,000+, 1.8L+ rupees, CGPA 9.31, tens of thousands of followers, 4 to 7 member team).
+- Metrics and claims come only from owner-supplied source material (55K+ users, 1.2M+ views, top 1% of 4,000+, top 3% of 2,000+, 1.8L+ rupees, tens of thousands of followers, 4 to 7 member team). Academic scores in source material are never displayed anywhere on the site.
 - `profile.links` values are placeholders (`#`, `/resume.pdf`) until the owner supplies real destinations.
 - Placeholder links never navigate: client components swallow the click, server components render plain text instead of anchors, and every placeholder carries a "coming soon" label. Nothing pretends to work.
 - Personality captions are voice lines, deliberately not factual claims.
 - No em dashes anywhere in content.
 
-### Section registry (drives navigation instrument, opening sequence, editorial index)
+### Section registry (drives navigation active state)
 
-v4 information architecture (owner-directed reorder: Experience precedes Skills, Skills precedes Projects):
+Order is deliberate (Experience precedes Skills; Skills precedes Projects):
 
-01 Identity (opening + hero), 02 About, 03 Experience, 04 Skills, 05 Projects, 06 Personality, 07 Contact + Footer.
+Identity (opening + hero), About, Experience, Skills, Projects, Personality, Contact + Footer.
 
-The resume artifact moment lives inside 07 (Contact + Footer) rather than as its own section.
+The resume moment lives inside Contact + Footer rather than as its own section.
 
 ---
 
 ## Legacy planning sections (pre-implementation, kept for reference)
+
+The planning sketch below predates implementation and does not match the
+built modules above. It is kept so future agents can see what was
+considered and rejected. Do not implement from it.
 
 ```
 content/
@@ -47,33 +53,28 @@ content/
 └── meta.ts              # SEO, Open Graph, site metadata
 ```
 
----
+## Hero Content
 
-## Hero Content (M1)
+> Hero statement and intro lede come from `src/content/profile.ts`
+> (`statementPre`/`statementEm`, `introLedePre`/`Em`/`Post`, plus
+> `education`, `location`, `links`). They remain owner-provided
+> provisional copy. Rule: no em dashes in any website copy.
 
-> **Note (2026-08-23, v2):** Hero statement and intro lede now come from
-> `src/content/profile.ts` (statementPre/statementEm, introLedePre/Em/Post).
-> They remain owner-provided provisional copy. Rule: no em dashes in any
-> website copy.
-
-### Data Structure (UNDECIDED)
+Actual hero content model:
 
 ```typescript
-// content/hero.ts
-export const heroContent = {
+// src/content/profile.ts
+export const profile = {
   name: 'Shikhar Sahay',
-  // Striking statement  -  NOT "Hi, I'm Shikhar, a passionate Computer Science student..."
-  statement: 'UNDECIDED',
-  // Role indication  -  what he does
-  role: 'UNDECIDED',
-  // Invitation to continue
-  cta: 'UNDECIDED',
-  // Portrait
-  portrait: '/images/shikhar-hero.jpg',
-  // Alt text for accessibility
-  portraitAlt: 'UNDECIDED',
+  statementPre: 'I build things worth ',
+  statementEm: 'remembering.',
+  introLedePre: "I'm Shikhar. I study computer science ...",
+  introLedeEm: 'inevitable',
+  // ... education { school, degree, period }, location, links
 };
 ```
+
+Portrait: `src/assets/shikhar-hero.jpg` with alt "Portrait of Shikhar Sahay".
 
 ### Copy Guidelines (FINALIZED)
 
@@ -84,43 +85,26 @@ export const heroContent = {
 
 ---
 
-## Projects Content (M3)
+## Projects Content
 
-### Data Structure (UNDECIDED)
+Actual model (`src/content/projects.ts`):
 
 ```typescript
-// content/projects.ts
 export interface Project {
   id: string;
-  title: string;
-  shortDescription: string; // Card preview
-  longDescription: string; // Detail view
-  role: string; // "Full-stack developer", "Security researcher", etc.
-  tech: string[]; // Tech stack tags
-  category: 'featured' | 'selected' | 'other';
-  // Links
-  liveUrl?: string;
-  repoUrl?: string;
-  caseStudyUrl?: string;
-  // Media
-  heroImage: string; // Optimized, multiple formats
-  heroImageAlt: string;
-  galleryImages?: string[]; // Additional screenshots
-  // Metadata
-  startDate: string; // ISO date
-  endDate?: string; // ISO date or "Present"
-  isOngoing: boolean;
-  // Highlights
-  highlights: string[]; // Key achievements, metrics, challenges
+  name: string;
+  kind: string; // e.g. "Public platform", "Security experiment"
+  description: string;
+  role?: string; // provenance line, rendered muted under the name
+  stack: string[]; // rendered with breakable separators
+  metric?: { value: number; decimals?: number; suffix: string; label: string };
+  secondMetric?: { value: number; decimals?: number; suffix: string; label: string };
+  links: { live: string; github: string; caseStudy: string }; // '#' placeholders
+  visual: 'utility' | 'signal' | 'manifest' | 'honeypot' | 'site';
 }
 ```
 
-### Projects To Populate (UNDECIDED)
-
-- [ ] Project 1
-- [ ] Project 2
-- [ ] Project 3
-- [ ] ... (owner to provide)
+Current items (5): Papers (utility), HawkEye (signal), HolmesKit (manifest), SSH Honeypot (honeypot), This Site (site). All links are `#` placeholders rendered inert until the owner supplies destinations. No project detail pages, no filters, no galleries exist.
 
 ### Content Guidelines (FINALIZED)
 
@@ -157,15 +141,11 @@ export interface OrgEntry {
 // Skilledity (Team Lead, Intern), Team Shade.
 ```
 
-Note: the Skilledity "Social Media Management Intern" entry intentionally has no period or summary until the owner supplies dates and facts. Do not invent them.
+Note: the Skilledity "Social Media Management Intern" entry intentionally has no period or summary until the owner supplies dates and facts. Do not invent them. The timeline renders a muted "Details coming soon" line for it.
 
-### Entries To Populate (UNDECIDED)
+### Entries To Populate
 
-- [ ] Education (CS degree)
-- [ ] Internships / Work experience
-- [ ] Research / Publications
-- [ ] Leadership / Community
-- [ ] Notable side projects
+Education is covered (degree, school, period in `profile.education`, rendered in About meta and the control panel). Research and publications do not exist. Leadership and community work lives inside the Experience timeline and Personality fragments, not as separate entries.
 
 ### Content Guidelines (FINALIZED)
 
@@ -176,28 +156,23 @@ Note: the Skilledity "Social Media Management Intern" entry intentionally has no
 
 ---
 
-## Personality Content (M5)
+## Personality Content
 
-### Data Structure (UNDECIDED)
+Actual model (`src/content/personality.ts`):
 
 ```typescript
-// content/personality.ts
-export const personalityContent = {
-  // Writing / Blog
-  writing: [{ title: '', url: '', date: '', description: '' }],
-  // Interests (curated, not exhaustive)
-  interests: [
-    { category: 'Music', items: [] },
-    { category: 'Football', items: [] },
-    { category: 'Theatre', items: [] },
-    { category: 'Reading', items: [] },
-  ],
-  // Values / Philosophy (optional)
-  values: [],
-  // Fun fact / Easter egg (optional)
-  easterEgg: '',
-};
+export interface Fragment {
+  word: string;
+  caption: string;
+}
+export const fragments: Fragment[] = [
+  { word: 'Writing', caption: 'notes, drafts, and sentences that almost work' },
+  { word: 'Music', caption: 'the one background process that never exits' },
+  // ... Football, Theatre, Rabbit Holes, Building, Communities, Teaching
+];
 ```
+
+Eight fragments, each a tonal word plus a voice caption. There are no writing links, no external profiles, no visitor input, and no persistence: selection is local component state only.
 
 ### Content Guidelines (FINALIZED)
 
@@ -208,50 +183,15 @@ export const personalityContent = {
 
 ---
 
-## Contact Content (M1/M7)
+## Contact Content
 
-### Data Structure (UNDECIDED)
-
-```typescript
-// content/contact.ts
-export const contactContent = {
-  email: 'UNDECIDED',
-  // Social / Professional
-  links: [
-    { label: 'GitHub', url: 'UNDECIDED', icon: 'github' },
-    { label: 'LinkedIn', url: 'UNDECIDED', icon: 'linkedin' },
-    { label: 'Twitter/X', url: 'UNDECIDED', icon: 'twitter' },
-    { label: 'Email', url: 'mailto:UNDECIDED', icon: 'mail' },
-  ],
-  // Optional: Form endpoint
-  formEndpoint: 'UNDECIDED',
-  // CTA copy
-  cta: 'UNDECIDED',
-};
-```
+Actual model: `profile.links` (`email`, `github`, `linkedin` are `#`; `resume` is `/resume.pdf`) plus `navLinks` in `sections.ts` (About, Experience, Projects, Contact anchors). Placeholders render inert with "coming soon" labels. There is no contact form, no form endpoint, and no social URL beyond the three placeholder channels.
 
 ---
 
-## Site Metadata (M0/M7)
+## Site Metadata
 
-### Data Structure (UNDECIDED)
-
-```typescript
-// content/meta.ts
-export const siteMeta = {
-  title: 'Shikhar Sahay  -  Portfolio',
-  description: 'UNDECIDED  -  ~160 chars for SEO',
-  url: 'UNDECIDED', // Production URL
-  ogImage: '/images/og-portrait.jpg', // 1200x630
-  twitterHandle: 'UNDECIDED',
-  // JSON-LD structured data
-  person: {
-    name: 'Shikhar Sahay',
-    url: 'UNDECIDED',
-    sameAs: ['UNDECIDED'], // Social profiles
-  },
-};
-```
+Actual model: the `metadata` export in `src/app/layout.tsx` (title "Shikhar Sahay - Portfolio", description, authors, OpenGraph, Twitter card, robots) plus `src/app/icon.svg` (ink field, vermilion diamond). There is no custom OG image, no Twitter handle, no production URL, and no JSON-LD structured data yet.
 
 ---
 
@@ -270,13 +210,13 @@ When populating:
 
 The following need owner input before milestones can proceed:
 
-| Milestone | Needed From Owner                                                                        |
-| --------- | ---------------------------------------------------------------------------------------- |
-| M1        | Hero statement, role description, CTA copy, portrait file, portrait alt text             |
-| M3        | Project list with all fields (title, description, role, tech, links, images, highlights) |
-| M4        | Experience entries (work, education, research) with highlights                           |
-| M5        | Curated interests, writing links, values/easter egg (optional)                           |
-| M7        | Contact email, social URLs, form endpoint (if any), SEO description, OG image            |
+| Milestone | Needed From Owner                                                                                             |
+| --------- | ------------------------------------------------------------------------------------------------------------- |
+| M1        | Copy approval (hero statement, lede wording); portrait alt text review (current: "Portrait of Shikhar Sahay") |
+| M3        | Real project links (live, GitHub, case study per project); case studies if written                            |
+| M4        | Skilledity intern dates and facts                                                                             |
+| M5        | Nothing open (fragments and captions are in place)                                                            |
+| M7        | Contact email, social URLs, real resume PDF, production URL, OG image                                         |
 
 ---
 

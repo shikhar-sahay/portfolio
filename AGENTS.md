@@ -15,10 +15,10 @@ The goal is a directed digital experience that feels personal, cinematic, and te
 ## 2. Current Visual Direction
 
 - **Identity system:** warm print-editorial. Cream paper / warm charcoal ink / vermilion accent (single accent, semantic uses only). Instrument Sans (workhorse) + Instrument Serif italic (accent moments). Themeable: intentional light and dark colorways, system default, persisted toggle in the header.
-- **Signature motifs** (recurring, keep consistent): section eyebrows as plain editorial labels (e.g. `Experience`), hairline rules with accent ticks, ghost serif numerals (decorative only), numbered artifact tags (e.g. `P.01`), film grain, drifting light field, outline display type.
+- **Signature motifs** (recurring, keep consistent): section eyebrows as plain editorial labels (e.g. `Experience`), hairline rules with accent ticks, diamond markers, film grain, drifting light field, outline display type.
 - **Portrait treatment:** an editorial arch aperture (rounded crown, straight base) with an offset vermilion echo arch behind it, overlapping the display type. Subtle pointer parallax. Never a rectangle beside text, never a circular avatar, never a zoom-on-scroll.
 - **Opening:** a minimal signal-line loader on an ink field (a hairline draws while a vermilion marker rides its tip), then the field lifts into the hero. ~1.6s, once per session, skipped pre-paint for returning visitors and reduced motion. No counters, no "loading" text.
-- **Hero to About bridge:** a pinned section of large statements ("I build. / I break. / I rebuild.") that reveal with scroll, so the space where the portrait exits is never blank.
+- **Hero to About bridge:** a pinned ink stage with phased kinetic typography (I / BUILD, then BREAK, then REBUILD): one thought on stage at a time with masked word reveals, overlapping the hero exit by exactly one viewport so the handoff never goes blank. The finale holds its frame into About.
 - **Atmosphere:** static film grain plus a very slow drifting light field. Nothing space-like, nothing neon.
 - Full status and values: `docs/DESIGN_SYSTEM.md`.
 
@@ -42,7 +42,7 @@ The goal is a directed digital experience that feels personal, cinematic, and te
 - No GSAP, Lenis, or Three.js unless a compelling technical reason is documented first.
 - Every animation has a reduced-motion equivalent (instant or single short fade). The page must be complete with animations disabled.
 - Full rules and implemented patterns: `docs/ANIMATION.md`.
-- Known Motion v13 quirk: always use explicit 3-point `useTransform` ranges (2-point ranges do not hold their end value).
+- Known Motion v13 behavior (binding): every scroll-driven `useTransform` input range MUST end at 1.0. Flat terminal segments whose last input sits below 1.0 collapse once progress passes them.
 
 ## 5. Information Architecture
 
@@ -50,14 +50,14 @@ Long-scroll narrative, in this order:
 
 ```
 01 / OPENING + IDENTITY   (signal-line loader, then hero with arch portrait)
-02 / STATEMENTS BRIDGE    (large scroll-revealed statements: build, break, rebuild)
+02 / STATEMENTS BRIDGE    (phased kinetic typography: I / BUILD, BREAK, REBUILD)
 03 / ABOUT                (word-by-word reading reveal, meta row, no index)
-04 / EXPERIENCE           (unified timeline, latest first, one line per role)
-05 / SKILLS               (golden emblem per tool; certifications sub-block)
-06 / PROJECTS             (looping horizontal carousel, 5 artifact panels)
+04 / EXPERIENCE           (org-grouped timeline, centered spine, diamond markers)
+05 / SKILLS               (golden emblems with real technology marks; certifications sub-block)
+06 / PROJECTS             (infinite drifting carousel, 5 artifact panels)
 07 / PERSONALITY          (fragment instrument, inverted panel)
 08 / CONTROL CENTER       (framed utility grid: now, IST clock, toolbox, links)
-09 / CONTACT + FOOTER     (resume moment, say hello, per-letter wordmark)
+09 / CONTACT + FOOTER     (resume moment, compact contact grid, marquee wordmark)
 ```
 
 Experience precedes Skills; Skills precedes Projects. The section registry in `src/content/sections.ts` drives navigation. Numbers are internal only: the visitor never sees section counters (see section 3).
@@ -70,7 +70,7 @@ Experience precedes Skills; Skills precedes Projects. The section registry in `s
 
 ## 7. Performance Constraints
 
-- Budget: **150 kB First Load JS**. Current: ~151 kB (v4.2 pass; baseline was already 150 before it). Audit before adding any client JS; reclaim options in `docs/HANDOFF.md` known issues.
+- Budget: **150 kB First Load JS**. Current: ~153 kB (measured `next build`). Audit before adding any client JS; reclaim options in `docs/HANDOFF.md` known issues.
 - Stack is fixed: Next.js 14, React 18, TypeScript, Tailwind, Motion. Do not migrate frameworks or add animation/UI libraries without documented justification.
 - Server Components by default; every client component needs a reason (listed in `docs/HANDOFF.md`).
 - Animate only transform/opacity/clip-path. No layout-triggering animation, no continuous React state on scroll, no expensive scroll listeners.

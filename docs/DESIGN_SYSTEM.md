@@ -8,27 +8,29 @@
 
 ### Font System (EXPERIMENTAL)
 
-| Font             | Role                                    | Status       |
-| ---------------- | --------------------------------------- | ------------ |
-| Instrument Sans  | Primary: display, body, metadata        | EXPERIMENTAL |
-| Instrument Serif | Accent: italic emphasis, ghost numerals | EXPERIMENTAL |
+| Font             | Role                                      | Status       |
+| ---------------- | ----------------------------------------- | ------------ |
+| Instrument Sans  | Primary: display, body, metadata          | EXPERIMENTAL |
+| Instrument Serif | Accent: italic emphasis words and moments | EXPERIMENTAL |
 
 - Loaded via `next/font/google` as `--font-sans` and `--font-serif` (serif: weight 400, normal + italic)
-- Rationale: the two faces were designed as a pair; the high-contrast serif italic creates typographic moments (emphasized words, the ghost 01 numeral) without adding a third family
+- Rationale: the two faces were designed as a pair; the high-contrast serif italic creates typographic moments (lede emphasis, statement pronoun, personality word, resume line) without adding a third family
 - Rejected earlier candidates: Geist (reads as Vercel template), Space Grotesk (weak at small sizes), Manrope (less distinctive), Satoshi (needs Fontshare self-hosting)
 
 ### Type Scale (EXPERIMENTAL)
 
 Fluid, clamp-based (defined in `tailwind.config.ts`):
 
-| Token     | Value                                                  | Use Case              |
-| --------- | ------------------------------------------------------ | --------------------- |
-| `display` | clamp(4.25rem, 16vw, 14rem), lh 0.88, ls -0.03em, w600 | Hero name             |
-| `lede`    | clamp(1.5rem, 3.4vw, 2.75rem), lh 1.22, ls -0.02em     | Statements/intros     |
-| `micro`   | 0.6875rem, ls +0.16em uppercase                        | Metadata, nav, labels |
-| body      | text-sm / text-base defaults                           | Fragments, support    |
+| Token     | Value                                                    | Use Case                   |
+| --------- | -------------------------------------------------------- | -------------------------- |
+| `display` | clamp(4.25rem, 16vw, 12.5rem), lh 0.88, ls -0.03em, w600 | Hero name (never wraps)    |
+| `lede`    | clamp(1.5rem, 3.4vw, 2.75rem), lh 1.22, ls -0.02em       | Section intros             |
+| `micro`   | 0.6875rem, lh 1.2, ls +0.16em uppercase                  | Metadata, nav, labels      |
+| statement | clamp(3.5rem, 13vw, 15rem), lh 0.95, ls -0.03em, w600    | Bridge verbs (single line) |
+| wordmark  | 9.5vw (footer), 10.2vw static reduced-motion             | Closing marquee            |
+| body      | text-sm / text-base defaults                             | Fragments, support         |
 
-Name treatment: line 1 solid ink; line 2 outline only (`-webkit-text-stroke: 1.5px`, transparent fill), indented 9vw so it intersects the portrait window edge.
+Name treatment: line 1 solid ink; line 2 outline only (`-webkit-text-stroke: 1.5px`, transparent fill), indented 8vw (4vw on lg). Both lines are `whitespace-nowrap` and bleed right over the arch edge by grid construction (identity column `min-w-0`); the overlap is curtain-only and face-safe at every width (see Imagery).
 
 ### Typography Principles (FINALIZED)
 
@@ -85,29 +87,25 @@ Warm print-inspired identity: cream paper, warm ink, vermilion accent. Dark is a
 
 ### Direction (EXPERIMENTAL)
 
-- Tailwind default 4px-based scale; no custom spacing tokens yet
-- Generous negative space: hero is full-viewport (`100dvh`); section padding `py-[16vh]`-`py-[22vh]`
-- Consistent page gutter: `px-5` mobile → `px-10` sm+
+- Tailwind default 4px-based scale; no custom spacing tokens
+- Section rhythm: `py-[14vh]` standard (About `pt-[12vh]`, Control Center `py-[16vh]`, footer `pt-[14vh]`); content container `max-w-6xl`
+- Consistent page gutter: `px-5` mobile, `px-10` from sm up
+- Hero scene `h-[120svh]` with `h-dvh` sticky; statements `h-[240svh]` pulled up `-mt-[100dvh]` so its sticky engages the pixel the hero releases
 - Formal token scale remains UNDECIDED
 
 ---
 
 ## Borders & Radius
 
-### Border Width (UNDECIDED)
+### Hairlines (FINALIZED)
 
-- Hairline (1px) - UNDECIDED
-- Standard (2px) - UNDECIDED
+- 1px divisions in `border-ink/15` (section tops, module grids via `gap-px`, certification rows, footer rules); accent 40px ticks before eyebrow labels; diamond bullets (rotated squares) for timeline markers, module labels, and cert rows.
 
-### Border Radius (UNDECIDED)
+### Border Radius (EXPERIMENTAL)
 
-| Token       | Value     | Use Case                      |
-| ----------- | --------- | ----------------------------- |
-| radius-none | 0         | Sharp corners                 |
-| radius-sm   | UNDECIDED | Small elements (badges, tags) |
-| radius-md   | UNDECIDED | Buttons, inputs, cards        |
-| radius-lg   | UNDECIDED | Larger containers             |
-| radius-full | 9999px    | Pills, avatars, full round    |
+- Sharp (0) by default: cards, panels, buttons, tiles.
+- `rounded-full`: skill emblem rings, status dots.
+- Arch aperture (portrait only): `999px 999px 18px 18px`.
 
 ---
 
@@ -115,20 +113,20 @@ Warm print-inspired identity: cream paper, warm ink, vermilion accent. Dark is a
 
 ### Hero Portrait (FINALIZED - location amended, see DECISIONS.md #19)
 
-- **Source file:** `src/assets/shikhar-hero.jpg` (3024×4032, owner-provided)
-- Amended from `public/images/shikhar-hero.jpg` so it can be statically imported (enables automatic blur placeholder). Served URL is unchanged in spirit; next/image optimizes on demand.
+- **Source file:** `src/assets/shikhar-hero.jpg` (4032x3024 landscape, owner-provided; static import enables automatic blur placeholder)
+- Amended from `public/images/shikhar-hero.jpg` so it can be statically imported (see DECISIONS.md #19).
 
-### Image Treatment v4.1: the Arch Aperture (EXPERIMENTAL; supersedes the v3 circular instrument)
+### Image Treatment: the Arch Aperture (EXPERIMENTAL)
 
 The portrait is never a rectangle beside text and never an avatar. It is an **editorial arch aperture**:
 
-- Arch aperture: `border-radius: 999px 999px 18px 18px`, aspect 3/3.9, image oversized 4% inside for crop latitude, `object-position: center 22%` so the face stays composed at every viewport
-- Offset echo arch behind the photograph: 1px vermilion line at 55% strength, translated 20px down-right, countering the photo on pointer parallax
+- Arch aperture: `border-radius: 999px 999px 18px 18px`, aspect 3/3.9, image oversized 4% inside for crop latitude, `object-position: 28% 22%` so the face sits right of center (eyeline into the type) at every viewport
+- Placement: two-column grid on lg (`1.1fr 0.9fr`), arch max 460px centered with a small rightward nudge on small desktop (`lg:ml-[3vw]`, cleared at xl); the name bleeds over the arch edge by construction. Face-safe overlap verified 1024 to 1920.
+- Offset echo arch behind the photograph: 1px vermilion line at 55% strength, translated down-right, countering the photo on pointer parallax
 - Photograph sits slightly desaturated (20% grayscale) and resolves to full color on hover
-- Pointer parallax (fine pointers only, disabled under reduced motion): the crop drifts toward the cursor (max 10px), the echo arch drifts against it (max 7px), spring-smoothed
-- The name's display type overlaps the arch edge: image and typography share the composition
+- Pointer parallax (fine pointers only, disabled under reduced motion): the crop drifts toward the cursor (max 10px), the echo arch drifts against it (max 7px), spring-smoothed (stiffness 55, damping 18), resets on pointerleave
 - Loading: static import, `priority`, `placeholder="blur"`, AVIF/WebP via next/image
-- The face-zoom scroll treatment from v2 is **rejected** (owner directive); see ANIMATION.md for the replacement scene-change transition
+- The face-zoom scroll treatment from v2 is **rejected** (owner directive); the replacement is the ink-veil scene change (see ANIMATION.md)
 
 ---
 
@@ -136,20 +134,20 @@ The portrait is never a rectangle beside text and never an avatar. It is an **ed
 
 ### Breakpoints (EXPERIMENTAL - Tailwind defaults, mobile-first)
 
-| Name | Width  | Status                                  |
-| ---- | ------ | --------------------------------------- |
-| sm   | 640px  | EXPERIMENTAL - primary hero breakpoint  |
-| md   | 768px  | UNDECIDED                               |
-| lg   | 1024px | EXPERIMENTAL - portrait narrows to 31vw |
-| xl   | 1280px | UNDECIDED                               |
-| 2xl  | 1536px | UNDECIDED                               |
+| Name | Width  | Use in this site                                                       |
+| ---- | ------ | ---------------------------------------------------------------------- |
+| sm   | 640px  | Gutters `px-10`, arch grows, scroll cue appears, cert grid splits      |
+| md   | 768px  | Footer contact grid splits two-column                                  |
+| lg   | 1024px | Hero two-column grid; timeline alternates sides; control grid 3-column |
+| xl   | 1280px | Hero arch nudge cleared                                                |
+| 2xl  | 1536px | No special rules                                                       |
 
 ### Hero Responsive Behavior (EXPERIMENTAL)
 
-- Mobile: portrait bleeds off right edge in upper area; statement sits mid; display name anchored bottom with staggered second line; scroll cue hidden on smallest widths
-- sm+: portrait grows to right-anchored column (~36vw); cue visible
+- Below lg: single column, portrait (capped 300-380px) above the name, both centered; name never wraps (`whitespace-nowrap`); sticky frame clips horizontally, body clips globally, so the bleed never scrolls
+- lg and up: two-column composition with type/arch interlock; face-safe at every width
 - Nav stays a quiet horizontal row at all widths (labels are short enough not to require a hamburger)
-- No horizontal overflow (`overflow-x: clip` on body)
+- No horizontal overflow (`overflow-x: clip` on body; verified 0px at 1920/1440/768/375)
 
 ### Mobile-First Principles (FINALIZED)
 
@@ -161,31 +159,32 @@ The portrait is never a rectangle beside text and never an avatar. It is an **ed
 
 ---
 
-## Recurring Motifs (EXPERIMENTAL, v2)
+## Recurring Motifs (EXPERIMENTAL)
 
-The identity system beyond type and color. Used consistently so sections read as one document:
+The identity system beyond type and color. Used consistently so sections read as one document. Removed motifs (section index numerals, ghost numerals, `P.01` artifact tags, magnetic pull) are gone everywhere and must not return.
 
-| Motif                  | Implementation                                                               | Where                                           |
-| ---------------------- | ---------------------------------------------------------------------------- | ----------------------------------------------- |
-| Section indices        | `01` to `07` micro numerals, tabular-nums, accent tick prefix                | Eyebrows, nav, opening, index, contact callback |
-| Hairline rules         | 1px `border-ink/15` row separators; accent 40px tick before labels           | Every section                                   |
-| Ghost numerals         | Oversized serif italic section number at ~5% opacity                         | About (02), Personality (06)                    |
-| Measurement/flow lines | Dashed SVG edges with slow marching-ants animation                           | HawkEye signal map                              |
-| Numbered tags          | Bordered micro tags with running index numbers                               | Stack labels, skill items                       |
-| Film grain             | Static SVG turbulence overlay, ~5% opacity, fixed                            | Whole site                                      |
-| Serif interventions    | Instrument Serif italic for emphasis words, era moods, roles, ghost numerals | Statements, timeline, resume                    |
-| Inverted panel         | Single full-tone shift: Personality section uses `bg-ink` + `text-paper`     | Section 06 (inverts per theme)                  |
-| Drifting light field   | Two fixed radial gradients (~5% opacity), 80s transform drift                | Whole site (`.atmosphere`)                      |
-| Arch aperture portrait | Arch mask + offset vermilion echo arch (see Imagery)                         | Hero (01)                                       |
-| Outline display type   | `-webkit-text-stroke` transparent fill for second name line                  | Hero                                            |
+| Motif                  | Implementation                                                             | Where                                      |
+| ---------------------- | -------------------------------------------------------------------------- | ------------------------------------------ |
+| Eyebrow labels         | Plain editorial word with 40px accent tick prefix, micro uppercase         | Every section                              |
+| Hairline rules         | 1px `border-ink/15` separators and `gap-px` module grids                   | Every section                              |
+| Diamond markers        | Small rotated squares; fill vermilion on hover                             | Timeline, module labels, cert rows         |
+| Marching dashes        | Dashed SVG edges with slow dash animation, gated by `data-inview`          | Project preview motifs (signal, honeypot)  |
+| Serif interventions    | Instrument Serif italic for emphasis words and moments                     | Ledes, statement pronoun, personality word |
+| Outline display type   | `-webkit-text-stroke` transparent fill for second name line                | Hero                                       |
+| Arch aperture portrait | Arch mask + offset vermilion echo arch (see Imagery)                       | Hero                                       |
+| Inverted panel         | Single full-tone shift: `bg-ink` + `text-paper`                            | Personality                                |
+| Film grain             | Static SVG turbulence overlay, ~5% opacity, fixed                          | Whole site (`.grain`)                      |
+| Drifting light field   | Two fixed radial gradients (~5% opacity), 80s transform drift              | Whole site (`.atmosphere`)                 |
+| Ink stages             | Cinematic ink fields (`#1d1915` on paper text) staying dark in both themes | Opening, statements, Personality panel     |
 
-## Component Inventory (implemented v2)
+## Component Inventory (as built)
 
-- Opening sequence overlay (client, session-gated)
-- SiteNav: progress hairline, live section readout, difference-blend links
-- ThemeToggle (quiet text control, lives in Contact)
-- Reveal / Counter / InView primitives (ui)
-- Sections: Hero (aperture), Intro (+ editorial index), Work (3 artifact treatments), Experience (sticky era chronology), Systems (inventory + education + credentials), Outside (fragment instrument), Resume (sheet + PDF actions), Contact (ending with opening callback)
+- Opening sequence overlay (client, session-gated, ink-stage)
+- SiteNav: progress hairline, tuck/reveal, active-section underline, theme toggle (theme-colored links, paper backdrop when compact)
+- ThemeToggle (quiet text control in the nav)
+- Reveal / WordReveal / Counter / InView primitives (ui)
+- InteractiveLetters (pointer spring field, hero + footer wordmark), TechLogo (monochrome brand marks)
+- Sections: Hero (arch + interactive name + veil exit), TransitionStatements (phased kinetic typography), About (reading reveal + meta row), Experience (org timeline + spine), Skills (marquee emblem rows + certifications), Projects (drifting carousel) + ProjectPanel (lazy chunk with SVG motifs), Personality (fragment instrument), ControlCenter (framed utility grid), Contact (footer: contact grid + resume row + marquee wordmark)
 
 ## Shadows & Elevation (UNDECIDED)
 
@@ -207,11 +206,11 @@ The identity system beyond type and color. Used consistently so sections read as
 
 ---
 
-## Component Inventory (remaining, UNDECIDED)
+## Component Inventory (remaining)
 
-- Button variants (primary exists in Resume; ghost/link styles informal)
-- Footer exists as Contact section; formal footer deferred
-- Form elements (contact): UNDECIDED until contact method is real
+- Buttons: sharp-cornered filled and outline variants as used in the resume row; no separate button system.
+- Footer is the Contact section (formal, not deferred).
+- No form elements exist (no contact form, no backend).
 
 ---
 
@@ -227,19 +226,19 @@ The identity system beyond type and color. Used consistently so sections read as
 
 ---
 
-## Icon System (UNDECIDED)
+## Icon System (FINALIZED)
 
-- Library: UNDECIDED (Lucide, Phosphor, custom SVG, etc.)
-- Sizing: UNDECIDED
-- Stroke weight: UNDECIDED
+- No icon library. Brand marks are vendored CC0 path data (`src/content/techLogos.ts` for tools, `src/content/channelGlyphs.ts` for contact channels), rendered monochrome via `currentColor` by `TechLogo`.
+- Solid full-bleed marks (JavaScript, TypeScript, HTML, CSS, Next.js, C++) render one step smaller for matching optical weight; uniform emblem slots; serif-italic monogram fallback only where no genuine mark exists.
+- Sizing: mark lives in a fixed emblem core; labels reserve two balanced lines.
 
 ---
 
-## Content Width / Layout (UNDECIDED)
+## Content Width / Layout (FINALIZED)
 
-- Max content width: UNDECIDED
-- Container padding: UNDECIDED
-- Grid system: UNDECIDED (likely CSS Grid + Flexbox, no heavy framework)
+- Max content width: `max-w-6xl`, centered.
+- Container padding: `px-5` mobile, `px-10` from sm up.
+- Grid system: Tailwind CSS Grid + Flexbox. Hero uses a `1.1fr 0.9fr` two-column grid on lg.
 
 ---
 
@@ -249,10 +248,21 @@ This file will evolve as design decisions are finalized. Each section should be 
 
 ---
 
+## v4.5 Additions (EXPERIMENTAL, 2026-09-05)
+
+- **Hero composition:** display cap 12.5rem; identity column `min-w-0` so the name bleeds over the arch by construction; arch max 460px with small-desktop rightward nudge; portrait crop `28% 22%` (face right of center).
+- **Statements composition:** shared left-aligned stage; serif "I" (`clamp(2.5rem,6vw,6rem)` italic) over the verb (`clamp(3.5rem,13vw,15rem)`); micro notes; each phase carries its own ink.
+
+## v4.4 Additions (EXPERIMENTAL, 2026-09-04)
+
+- **Skills emblems:** solid full-bleed marks render one step smaller; labels reserve two balanced lines so every slot is uniform.
+- **Project cards:** the existing `role` field renders as a muted micro line; stack naming unified.
+- **Footer contact:** Elsewhere items are real list items; placeholders are plain text, never anchors.
+
 ## v4.3 Additions (EXPERIMENTAL, 2026-09-04)
 
 - **Hero name interaction:** 2D gaussian field (sigma X 130px, sigma Y 85px), lift 0.12em, per-letter springs; rows carry overflow-visible boundaries plus a 0.05em airspace gap; footer marquee carries 0.18em vertical bleed inside its mask. Reduced motion never pins the hero scene.
-- **Statements bridge type:** per-line sizes (BUILD 11vw, BREAK 12vw, REBUILD 11vw, same clamp ends), flush-left / flush-right / indented registers, controlled row overlap, activation scale 0.94 to 1.
+- **Statements bridge type (v4.3, superseded by v4.5 phases above):** per-line sizes (BUILD 11vw, BREAK 12vw, REBUILD 11vw, same clamp ends), flush-left / flush-right / indented registers, controlled row overlap, activation scale 0.94 to 1.
 - **Skills emblems:** real CC0 brand marks rendered monochrome via currentColor (19 of 23 tools); monogram fallback only where no genuine mark exists; hover tints the mark to accent at 1.1 scale.
 - **Placeholder links:** client components swallow the click; server components render plain text; every placeholder carries a "coming soon" label.
 - **Favicon:** `src/app/icon.svg`, ink field with vermilion diamond.
