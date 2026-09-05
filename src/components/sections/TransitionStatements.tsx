@@ -21,24 +21,24 @@ const phases: Phase[] = [
   {
     verb: 'Build.',
     note: 'tools, experiments, platforms',
-    enter: [0.03, 0.11],
-    exit: [0.26, 0.34],
-    noteWindow: [0.09, 0.14],
+    enter: [0.0, 0.08],
+    exit: [0.28, 0.36],
+    noteWindow: [0.06, 0.11],
     drift: [-1.5, 0.5],
   },
   {
     verb: 'Break.',
     note: 'systems, to understand them: the ethical kind',
-    enter: [0.39, 0.47],
+    enter: [0.28, 0.36],
     exit: [0.6, 0.68],
-    noteWindow: [0.45, 0.5],
+    noteWindow: [0.36, 0.41],
     drift: [1, -1],
   },
   {
     verb: 'Rebuild.',
     note: 'better than before',
-    enter: [0.73, 0.81],
-    noteWindow: [0.79, 0.84],
+    enter: [0.6, 0.68],
+    noteWindow: [0.66, 0.71],
     drift: [0.5, 0],
   },
 ];
@@ -99,7 +99,10 @@ function WordPhase({ phase, progress }: { phase: Phase; progress: MotionValue<nu
   );
 
   return (
-    <motion.div style={{ opacity: containerO, x }} className="absolute inset-0 will-change-transform">
+    <motion.div
+      style={{ opacity: containerO, x }}
+      className="ink-stage absolute inset-0 will-change-transform"
+    >
       <div className="flex h-full flex-col justify-center px-5 sm:px-10">
         <motion.p
           style={{ opacity: iO, y: iY }}
@@ -128,8 +131,12 @@ function WordPhase({ phase, progress }: { phase: Phase; progress: MotionValue<nu
 /**
  * The bridge between the hero and About: one thought on stage at a time
  * (I / BUILD, then BREAK, then REBUILD), each arriving word by word and
- * yielding before the next arrives. The finale holds its frame and hands
- * directly into About. The sticky simply releases; the stage stays opaque.
+ * yielding before the next arrives. The section is pulled up by exactly
+ * one viewport so its sticky engages the moment the hero releases: the
+ * wipe is veil against incoming thought, never an empty tail. Each phase
+ * carries its own ink (the stage itself is transparent), so the hero stays
+ * pristine underneath until the first thought arrives. The finale holds
+ * its frame and hands directly into About.
  */
 export function TransitionStatements() {
   const ref = useRef<HTMLDivElement>(null);
@@ -163,8 +170,12 @@ export function TransitionStatements() {
   }
 
   return (
-    <section ref={ref} aria-label="Introduction statements" className="relative h-[240svh]">
-      <div className="ink-stage sticky top-0 h-dvh overflow-hidden">
+    <section
+      ref={ref}
+      aria-label="Introduction statements"
+      className="relative -mt-[100dvh] h-[240svh]"
+    >
+      <div className="sticky top-0 h-dvh overflow-hidden">
         {phases.map(phase => (
           <WordPhase key={phase.verb} phase={phase} progress={scrollYProgress} />
         ))}
