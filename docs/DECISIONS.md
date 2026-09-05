@@ -626,3 +626,24 @@ Do not make significant design/architecture decisions without documenting them h
 **Rationale:** Each change fixes an observed defect (mid-word wrap, orange wash, uneven emblems, dropped content, horizontal links) without altering any working system.
 
 **Impact:** First Load JS unchanged at ~153 kB. No new dependencies.
+
+---
+
+### 34. v4.5 Opening Scroll Architecture (EXPERIMENTAL polish)
+
+**Decision:** Audit-first rework of the opening sequence (hero, exit, statements, About handoff), keeping every visual system but changing the choreography architecture where it caused defects.
+
+1. Root-caused the blank post-hero frame: the exit-veil text opacity used a range ending at 0.9, and Motion v13 drops flat terminal segments past the last keyframe, so the veil rose empty. Binding rule going forward: every scroll-driven input range ends at 1.0.
+2. Pristine hero at 100% zoom: the name stays on one line and interlocks with the arch by grid construction; display cap 12.5rem; portrait crop holds the face right of center (eyeline into the type); small-desktop nudge keeps the name off the face. Verified no face contact at 1024/1280/1366/1440/1536/1920.
+3. The statements section overlaps the hero by exactly one viewport (`-mt-[100dvh]`) so its sticky engages the pixel the hero releases; each thought phase carries its own ink over a transparent stage; the bridge ignores pointer events so hero hover survives underneath. Phase windows share boundaries (crossfade morphs, never two strong thoughts, never zero).
+4. Statements rebuilt as phased in-place kinetic typography: serif "I" arrives, then the verb unmasks bottom-up with a rise, then the note; the previous thought masks away upward. REBUILD holds into the About handoff (verified present as About enters).
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-09-05
+
+**Rationale:** Fine-grained scroll tracing showed the defects were architectural (range overrun, scene tail, late bridge entry, simultaneous competing phrases), not value tweaks. The reference pattern (sequential single-word focus) was translated into the existing ink/vermilion editorial language, not cloned.
+
+**Alternatives Considered:** Value-only tweaks (rejected: tracing proved structural gaps); merging hero and statements into one sticky scene (rejected: the overlap achieves the same continuity while preserving landmarks and the reduced-motion branches).
+
+**Impact:** No new dependencies. Reduced-motion branches unchanged (static hero, static statement stack, no overlap). All prior verifications re-run green.

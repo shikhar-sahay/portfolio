@@ -90,7 +90,8 @@ export function Hero() {
     <div ref={sceneRef} id="top" className={`relative ${reduceMotion ? '' : 'h-[120svh]'}`}>
       <div
         className={`${reduceMotion ? '' : 'sticky top-0'} flex ${reduceMotion ? 'min-h-dvh' : 'h-dvh'} items-center overflow-hidden`}
-      >        <div className="grid w-full grid-cols-1 items-center gap-10 px-5 pb-16 pt-24 sm:px-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-4 lg:pb-0 lg:pt-0">
+      >
+        <div className="grid w-full grid-cols-1 items-center gap-10 px-5 pb-16 pt-24 sm:px-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-4 lg:pb-0 lg:pt-0">
           {/* Identity column: min-w-0 so the oversized name can bleed over
               the portrait instead of squeezing the grid. */}
           <div className="relative z-10 order-2 min-w-0 lg:order-1">
@@ -196,14 +197,12 @@ export function Hero() {
             </motion.div>
           </motion.div>
         </div>
-
         {/* Handoff hairline: becomes the boundary into the statements bridge */}
         <motion.div
           aria-hidden="true"
           className="bg-ink/20 absolute inset-x-5 bottom-0 h-px origin-left sm:inset-x-10"
           {...scroll({ scaleX: handoffLine })}
         />
-
         {/* Scroll invitation */}
         <motion.div
           className="absolute bottom-6 right-5 z-10 sm:right-10"
@@ -216,7 +215,6 @@ export function Hero() {
             <span className="cue-line" aria-hidden="true" />
           </div>
         </motion.div>
-
         {/* Exit veil: ink rises from the bottom carrying the opening
             statement, handing a full frame to the statements bridge. */}
         {!reduceMotion && (
@@ -244,7 +242,10 @@ export function Hero() {
           flashes paper between the veil and the bridge. It sits precisely
           below the fold while pinned, and only rendered when pinned. */}
       {!reduceMotion && (
-        <div aria-hidden="true" className="ink-stage absolute inset-x-0 bottom-0 h-[calc(120svh-100dvh)]" />
+        <div
+          aria-hidden="true"
+          className="ink-stage absolute inset-x-0 bottom-0 h-[calc(120svh-100dvh)]"
+        />
       )}
     </div>
   );

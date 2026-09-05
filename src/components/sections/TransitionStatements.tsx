@@ -88,15 +88,13 @@ function WordPhase({ phase, progress }: { phase: Phase; progress: MotionValue<nu
   );
   const noteO = useTransform(
     progress,
-    finale ? [phase.noteWindow[0], phase.noteWindow[1], 1] : [phase.noteWindow[0], phase.noteWindow[1], x0 - 0.02, x0 + 0.03, 1],
+    finale
+      ? [phase.noteWindow[0], phase.noteWindow[1], 1]
+      : [phase.noteWindow[0], phase.noteWindow[1], x0 - 0.02, x0 + 0.03, 1],
     finale ? [0, 1, 1] : [0, 1, 1, 0, 0]
   );
   const scale = useTransform(progress, [e0, e1, 1], [0.96, 1, 1]);
-  const x = useTransform(
-    progress,
-    [0, 1],
-    [`${phase.drift[0]}vw`, `${phase.drift[1]}vw`]
-  );
+  const x = useTransform(progress, [0, 1], [`${phase.drift[0]}vw`, `${phase.drift[1]}vw`]);
 
   return (
     <motion.div

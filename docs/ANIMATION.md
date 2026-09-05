@@ -436,6 +436,22 @@ This file will be populated with concrete values as milestones progress. M1 (Her
 
 ---
 
+## v4.5 Opening Choreography (EXPERIMENTAL, 2026-09-05)
+
+### Motion range rule (binding)
+
+- Every scroll-driven `useTransform` input range MUST end at 1.0. Verified empirically: a flat terminal segment whose last input sits below 1.0 (e.g. `[0.5, 0.72, 0.9]` to `[0, 1, 1]`) collapses once progress passes the last keyframe (the exit-veil text read opacity 0 at progress 1 and caused the blank post-hero frame). Rising terminal segments tolerate overrun; flat ones do not. When in doubt, append a terminal stop (`[0.5, 0.72, 0.9, 1]` to `[0, 1, 1, 1]`).
+
+### Hero exit plus bridge overlap
+
+- The hero scene keeps its 120svh pin; an ink tail block (`h-[calc(120svh-100dvh)]`, pinned only) covers exactly the transparent zone below the sticky frame so the post-release scroll never flashes paper.
+- The statements section is pulled up `-mt-[100dvh]` so its sticky engages the exact pixel the hero releases: the wipe is veil against incoming thought, with no tail and no gap. Each thought phase carries its own ink (the stage is transparent), so the hero stays pristine underneath until the first thought arrives; the bridge is pointer-transparent so hero hover survives the overlap.
+- Phase crossfades share windows (outgoing exit equals incoming enter) so some thought is always present; verb masks travel bottom-up on entry and top-down on exit.
+
+### Statements phases
+
+- One thought on stage at a time in a shared left-aligned composition: serif "I", then the verb unmasking from below, then the note. BUILD [0, 0.08]/[0.28, 0.36], BREAK [0.28, 0.36]/[0.6, 0.68], REBUILD [0.6, 0.68] holding to release. The finale never exits: it holds its frame while About enters beneath it.
+
 ## v4.3 Patterns (EXPERIMENTAL, 2026-09-04)
 
 ### InteractiveLetters (per-letter pointer reactivity)
