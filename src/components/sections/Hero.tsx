@@ -71,18 +71,18 @@ export function Hero() {
   const nameBX = useTransform(scrollYProgress, [0, 0.6, 1], ['0vw', '3vw', '10vw']);
   const nameBO = useTransform(scrollYProgress, [0.42, 0.82, 1], [1, 1, 0]);
   const nameScale = useTransform(scrollYProgress, [0, 0.55, 1], [1, 1, 1.1]);
-  const metaO = useTransform(scrollYProgress, [0, 0.35, 0.7], [1, 1, 0]);
-  const ledeO = useTransform(scrollYProgress, [0, 0.4, 0.72], [1, 1, 0]);
+  const metaO = useTransform(scrollYProgress, [0, 0.35, 0.7, 1], [1, 1, 0, 0]);
+  const ledeO = useTransform(scrollYProgress, [0, 0.4, 0.72, 1], [1, 1, 0, 0]);
   const archX = useTransform(scrollYProgress, [0, 0.55, 1], ['0vw', '10vw', '34vw']);
   const archY = useTransform(scrollYProgress, [0, 0.55, 1], ['0svh', '5svh', '-6svh']);
   const archR = useTransform(scrollYProgress, [0, 1], [0, 3]);
   const archO = useTransform(scrollYProgress, [0.6, 0.9, 1], [1, 1, 0]);
-  const handoffLine = useTransform(scrollYProgress, [0.45, 0.9], [0, 1]);
+  const handoffLine = useTransform(scrollYProgress, [0.45, 0.9, 1], [0, 1, 1]);
   const cueO = useTransform(scrollYProgress, [0, 0.12, 1], [1, 0, 0]);
   // The exit veil: ink rises from the bottom with the opening statement.
   const veilY = useTransform(scrollYProgress, [0.5, 0.85, 1], ['100%', '0%', '0%']);
   const veilTextY = useTransform(scrollYProgress, [0.5, 0.88, 1], ['24svh', '0svh', '0svh']);
-  const veilTextO = useTransform(scrollYProgress, [0.5, 0.72, 0.9], [0, 1, 1]);
+  const veilTextO = useTransform(scrollYProgress, [0.5, 0.72, 0.9, 1], [0, 1, 1, 1]);
 
   const scroll = (style: Record<string, unknown>) => (reduceMotion ? undefined : { style });
 
