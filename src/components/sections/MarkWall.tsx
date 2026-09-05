@@ -149,7 +149,7 @@ export function MarkWall() {
       setMarks(prev => {
         if (prev.length >= MAX_MARKS) return prev;
         idRef.current += 1;
-        const n = idRef.current + Date.now() % 100000;
+        const n = idRef.current + (Date.now() % 100000);
         const mark: Mark = {
           id: `v-${Date.now().toString(36)}-${idRef.current}`,
           glyph,
@@ -213,12 +213,16 @@ export function MarkWall() {
   return (
     <div className="border-paper/15 mt-[8vh] border-t pt-6">
       <p className="text-micro uppercase tracking-[0.16em] text-accent">Leave your mark</p>
-      <p className="mt-3 max-w-[52ch] text-sm leading-relaxed text-paper/60">
-        You were here. Pick a glyph, stamp it on the wall, and it joins the composition. Marks
-        keep in this browser.
+      <p className="text-paper/60 mt-3 max-w-[52ch] text-sm leading-relaxed">
+        You were here. Pick a glyph, stamp it on the wall, and it joins the composition. Marks keep
+        in this browser.
       </p>
 
-      <div className="mt-5 flex flex-wrap items-center gap-2.5" role="group" aria-label="Pick a mark">
+      <div
+        className="mt-5 flex flex-wrap items-center gap-2.5"
+        role="group"
+        aria-label="Pick a mark"
+      >
         {GLYPHS.map(g => (
           <button
             key={g}
@@ -239,7 +243,7 @@ export function MarkWall() {
           type="button"
           onClick={stampFreeSpot}
           disabled={full}
-          className="border-paper/25 text-paper/70 hover:border-paper/60 hover:text-paper ml-2 border px-4 py-2 text-sm tracking-tight transition-all duration-300 ease-expo disabled:cursor-default disabled:opacity-40"
+          className="border-paper/25 text-paper/70 hover:border-paper/60 ml-2 border px-4 py-2 text-sm tracking-tight transition-all duration-300 ease-expo hover:text-paper disabled:cursor-default disabled:opacity-40"
         >
           Stamp it
         </button>
@@ -263,8 +267,7 @@ export function MarkWall() {
           full ? 'border-paper/15 cursor-default' : 'border-paper/25'
         }`}
         style={{
-          backgroundImage:
-            'radial-gradient(circle, rgba(236,228,212,0.10) 1px, transparent 1.5px)',
+          backgroundImage: 'radial-gradient(circle, rgba(236,228,212,0.10) 1px, transparent 1.5px)',
           backgroundSize: '28px 28px',
         }}
       >
@@ -290,7 +293,9 @@ export function MarkWall() {
             aria-hidden="true"
             className="text-paper/30 pointer-events-none absolute inset-x-0 bottom-3 text-center text-micro uppercase tracking-[0.16em]"
           >
-            {marks.length <= SEEDS.length ? 'Pick a glyph, stamp the wall' : `${marks.length} marks and counting`}
+            {marks.length <= SEEDS.length
+              ? 'Pick a glyph, stamp the wall'
+              : `${marks.length} marks and counting`}
           </span>
         )}
         {full && (
@@ -304,7 +309,8 @@ export function MarkWall() {
       </div>
 
       <p className="text-paper/40 mt-3 text-micro uppercase tracking-[0.14em]" aria-live="polite">
-        {flash ?? (localOnly ? 'Marks keep for this visit only' : `${marks.length} of ${MAX_MARKS} marks`)}
+        {flash ??
+          (localOnly ? 'Marks keep for this visit only' : `${marks.length} of ${MAX_MARKS} marks`)}
       </p>
     </div>
   );

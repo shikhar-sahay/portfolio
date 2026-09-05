@@ -248,6 +248,13 @@ This file will evolve as design decisions are finalized. Each section should be 
 
 ---
 
+## v4.6 Additions (EXPERIMENTAL, 2026-09-05)
+
+- **Statements scene:** full-viewport sliding panels (travel plus 60vw to minus 60vw, scale 1.06 to 1 to 0.94, rotation plus/minus 1.5 degrees, opacity fades at travel end); oversized per-panel ink fields (8% bleed) so transformed corners never uncover; verbs at `clamp(4rem, 17vw, 20rem)` with explicit paper color.
+- **Skills emblems:** monogram cores render in ink like the marks (uniform beige family); solid full-bleed marks render one step smaller; labels reserve two balanced lines.
+- **Footer contact:** Elsewhere channels carry meaning glyphs (code, diamond, document) plus a mail glyph on Email; Pages and control Navigate links use arrow markers; all decorative symbols are aria-hidden.
+- **Mark wall (Personality):** hairline-framed dotted field; geometric glyph picker; stamps pop via independent `scale`; localStorage persistence with memory fallback; 150-mark cap.
+
 ## v4.5 Additions (EXPERIMENTAL, 2026-09-05)
 
 - **Hero composition:** display cap 12.5rem; identity column `min-w-0` so the name bleeds over the arch by construction; arch max 460px with small-desktop rightward nudge; portrait crop `28% 22%` (face right of center).
@@ -274,5 +281,5 @@ This file will evolve as design decisions are finalized. Each section should be 
 - **Skills marquee rows:** serif italic group headings (existing), gold emblems enlarged to 80px with a logo-ready core slot; rows drift with edge fade masks; certifications keep the hairline register with diamond bullets. (v4.3: the slot now holds real CC0 brand marks for 19 of 23 tools; see v4.3 Additions.)
 - **Experience timeline:** central spine (g-ink/15 hairline + accent fill), 45deg-square diamond markers, org blocks at ext-xl/2xl, role periods in accent micro tabular numerals, one-line summaries in muted.
 - **Control panel:** outer frame with 6px accent corner ticks, title strip (shikharsahay / control + live status), modules divided by gap-px hairlines with underlined accent labels, footer strip (Vellore, India · UTC +05:30).
-- **Footer:** compact contact grid (serif italic Let's talk + structured Elsewhere/Pages columns), slim resume row, closing marquee wordmark at 9.5vw with accent diamond separators and edge fades.
+- **Footer:** compact contact grid (serif italic Let's talk + structured Elsewhere/Pages columns with meaning glyphs on channels and arrows on page links), slim resume row, closing velocity-wave marquee at 9.5vw with accent diamond separators and edge fades.
 - **Removed from the system:** Magnetic component (deleted), P.0x artifact tags, the large Say hello block and footer link rows.

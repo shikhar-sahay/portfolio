@@ -174,6 +174,10 @@ export const fragments: Fragment[] = [
 
 Eight fragments, each a tonal word plus a voice caption. There are no writing links, no external profiles, no visitor input, and no persistence: selection is local component state only.
 
+### Leave-your-mark wall (lives in `MarkWall.tsx`, not in content)
+
+Visitor marks are not owner content and never sync anywhere. The wall offers eight fixed geometric glyphs (no free text, nothing to sanitize); each stamp stores glyph, color key, position, size, rotation, and timestamp in the visitor's own localStorage (memory fallback in private modes), capped at 150 marks. Seeds are twelve fixed owner marks in code. A future shared wall would need: an API route plus a tiny KV store implementing the same load/save shape, server-side glyph and color allow-listing, and rate limiting. None of that exists today.
+
 ### Content Guidelines (FINALIZED)
 
 - **Curated, not comprehensive** - a few meaningful items per category

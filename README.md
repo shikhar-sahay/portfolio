@@ -15,14 +15,14 @@ A directed long-scroll experience that feels personal, cinematic, and technicall
 
 1. **Opening:** minimal signal-line loader on an ink field (~1.6s, once per session, skipped for returning visitors and reduced motion).
 2. **Hero:** arch portrait with pointer parallax plus an oversized two-line name that reacts letter by letter to the pointer (2D spring field, fine pointers only). Scroll exit is a two-beat scene change into an ink veil carrying the opening statement. Never zooms the face.
-3. **Statements bridge:** phased kinetic typography (I / BUILD, BREAK, REBUILD). One thought on stage at a time with masked word reveals, deterministic scroll phases, finale holding into About.
+3. **Statements bridge:** sliding kinetic typography (I / BUILD, BREAK, REBUILD). Full-viewport panels travel leftward with shared crossfade windows and directional momentum; verbs at 17vw; finale holding into About.
 4. **About:** word-by-word reading reveal plus a small meta row (based in, studying, otherwise).
 5. **Experience:** org-grouped timeline (Cyber Defenders, Recipharm, GDG On Campus, CodeChef-VIT Student Chapter, Skilledity, Team Shade) on a mathematically centered spine with a scroll-drawn accent fill and diamond markers.
-6. **Skills:** three drifting marquee rows of golden emblems with real monochrome technology marks (19 of 23; honest monograms where no genuine mark exists). No proficiency levels. Certifications keep a separate register.
+6. **Skills:** three drifting marquee rows of golden emblems with real monochrome technology marks (19 of 23; ink monograms where no genuine mark exists). No proficiency levels. Certifications keep a separate register.
 7. **Projects:** infinite drifting carousel (auto until first touch, then manual forever), drag/swipe/arrows/keyboard, five artifact cards with SVG preview motifs and inert placeholder links.
-8. **Personality:** inverted panel with a fragment word-swap instrument (buttons, keyboard accessible). Captions are voice lines, not factual claims. There is no visitor input, no backend, no persistence here.
+8. **Personality:** inverted panel with a fragment word-swap instrument (buttons, keyboard accessible) plus a leave-your-mark wall (glyph picker, stamp field, local-only persistence, 150 cap). Captions are voice lines, not factual claims.
 9. **Control center:** framed utility grid (Now, IST clock, Studying, Toolbox, Channels, Navigate) with live status, session uptime, and brand channel tiles.
-10. **Footer:** compact contact grid, slim resume row (`/resume.pdf`), and a closing SHIKHAR SAHAY marquee with subtle reactive letters.
+10. **Footer:** compact contact grid with meaning glyphs, slim resume row (`/resume.pdf`), and a closing SHIKHAR SAHAY marquee with a velocity-wave pointer response (rise plus directional lean, zero cost at idle).
 
 ## Interaction highlights
 
@@ -59,7 +59,7 @@ src/
 │   ├── layout/             # Opening, SiteNav (header + progress + active section), ThemeToggle
 │   ├── sections/           # Hero, TransitionStatements, About, Experience, Skills,
 │   │                       #   Projects, ProjectPanel (lazy chunk), Personality,
-│   │                       #   ControlCenter, Contact (footer), FooterWordmark
+│   │                       #   MarkWall (stamp wall), ControlCenter, Contact (footer), FooterWordmark
 │   └── ui/                 # InteractiveLetters, TechLogo, Reveal, WordReveal,
 │                           #   Counter, InView
 ├── content/                # Typed data modules: profile, sections, projects,
@@ -79,11 +79,11 @@ docs/                       # Design system, architecture, animation, content, p
 
 ## Performance philosophy
 
-Performance is a hard requirement. Server Components by default, one small lazy chunk (`ProjectPanel`), compositor-only animation (transform/opacity/clip-path), single rAF loops gated by pointer presence or viewport visibility, static-first build. Budget: 150 kB First Load JS; current ~153 kB (see `docs/PERFORMANCE.md` for the measured state and reclaim options).
+Performance is a hard requirement. Server Components by default, one small lazy chunk (`ProjectPanel`), compositor-only animation (transform/opacity/clip-path), single rAF loops gated by pointer presence or viewport visibility, static-first build. Budget: 150 kB First Load JS; current ~156 kB (see `docs/PERFORMANCE.md` for the measured state and reclaim options).
 
 ## Persistence and backend status
 
-There is none. The site is fully static: no API routes, no database, no analytics, no contact form backend. The only browser storage is the theme choice (localStorage) and the intro-played flag (sessionStorage). Any future visitor-input feature (guestbook, marks, comments) would need a backend designed from scratch.
+There is no backend: no API routes, no database, no analytics, no contact form backend. Browser storage holds the theme choice (localStorage), the intro-played flag (sessionStorage), and visitor wall marks (localStorage, this browser only). Any future shared persistence (e.g. a global mark wall) would need an API route plus a tiny store with server allow-listing and rate limiting; the wall's storage interface is shaped for exactly that swap.
 
 ## Known placeholders (owner input needed)
 

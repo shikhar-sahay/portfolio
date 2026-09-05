@@ -195,10 +195,7 @@ export function FooterWordmark() {
   );
 
   return (
-    <div
-      className="marquee marquee-fade -my-[0.5em] overflow-hidden py-[0.5em]"
-      aria-hidden="true"
-    >
+    <div className="marquee marquee-fade -my-[0.5em] overflow-hidden py-[0.5em]" aria-hidden="true">
       <div className="marquee-track" style={{ ['--marquee-duration' as string]: '38s' }}>
         {group('a')}
         {group('b')}

@@ -18,7 +18,7 @@ The goal is a directed digital experience that feels personal, cinematic, and te
 - **Signature motifs** (recurring, keep consistent): section eyebrows as plain editorial labels (e.g. `Experience`), hairline rules with accent ticks, diamond markers, film grain, drifting light field, outline display type.
 - **Portrait treatment:** an editorial arch aperture (rounded crown, straight base) with an offset vermilion echo arch behind it, overlapping the display type. Subtle pointer parallax. Never a rectangle beside text, never a circular avatar, never a zoom-on-scroll.
 - **Opening:** a minimal signal-line loader on an ink field (a hairline draws while a vermilion marker rides its tip), then the field lifts into the hero. ~1.6s, once per session, skipped pre-paint for returning visitors and reduced motion. No counters, no "loading" text.
-- **Hero to About bridge:** a pinned ink stage with phased kinetic typography (I / BUILD, then BREAK, then REBUILD): one thought on stage at a time with masked word reveals, overlapping the hero exit by exactly one viewport so the handoff never goes blank. The finale holds its frame into About.
+- **Hero to About bridge:** a pinned ink stage with phased kinetic typography that slides leftward through I / BUILD, BREAK, and REBUILD (shared crossfade windows, one thought always leading), overlapping the hero exit by exactly one viewport so the handoff never goes blank. The finale holds its frame into About.
 - **Atmosphere:** static film grain plus a very slow drifting light field. Nothing space-like, nothing neon.
 - Full status and values: `docs/DESIGN_SYSTEM.md`.
 
@@ -70,7 +70,7 @@ Experience precedes Skills; Skills precedes Projects. The section registry in `s
 
 ## 7. Performance Constraints
 
-- Budget: **150 kB First Load JS**. Current: ~153 kB (measured `next build`). Audit before adding any client JS; reclaim options in `docs/HANDOFF.md` known issues.
+- Budget: **150 kB First Load JS**. Current: ~156 kB (measured `next build`). Audit before adding any client JS; reclaim options in `docs/HANDOFF.md` known issues.
 - Stack is fixed: Next.js 14, React 18, TypeScript, Tailwind, Motion. Do not migrate frameworks or add animation/UI libraries without documented justification.
 - Server Components by default; every client component needs a reason (listed in `docs/HANDOFF.md`).
 - Animate only transform/opacity/clip-path. No layout-triggering animation, no continuous React state on scroll, no expensive scroll listeners.

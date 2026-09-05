@@ -647,3 +647,26 @@ Do not make significant design/architecture decisions without documenting them h
 **Alternatives Considered:** Value-only tweaks (rejected: tracing proved structural gaps); merging hero and statements into one sticky scene (rejected: the overlap achieves the same continuity while preserving landmarks and the reduced-motion branches).
 
 **Impact:** No new dependencies. Reduced-motion branches unchanged (static hero, static statement stack, no overlap). All prior verifications re-run green.
+
+---
+
+### 35. v4.6 Footer Life, Sliding Statements, Mark Wall (EXPERIMENTAL polish)
+
+**Decision:** Interaction-depth pass without touching working choreography foundations.
+
+1. Skills emblem cores all resolve to one beige family: the four monograms moved from gold to ink (rings stay gold). Verified per emblem in both themes.
+2. Footer Elsewhere channels carry meaning glyphs (code, diamond, document) plus a mail glyph on Email; control Navigate and footer Pages links use arrow markers. All decorative symbols are aria-hidden text glyphs (no icon dependency).
+3. Footer marquee rebuilt around pointer velocity instead of the hero spring field: proximity rise plus direction-signed lean and swell, decay settle, zero cost at idle. Reduced-motion and touch unchanged (static).
+4. Personality hover feedback loop root-caused: the auto-sized word column resized on every word swap, reflowing buttons under the cursor so the active state chased itself. Fixed with a constant 28rem word column (reflow now impossible by construction).
+5. Statements upgraded from in-place replacement to a continuous leftward slide: full-viewport panels travel plus 60vw to minus 60vw with shared crossfade windows, scale 1.06/1/0.94, rotation plus/minus 1.5 degrees, verbs at 17vw capped for viewport fit. Opacity fades sit at travel end (fading ink over transparency reads gray) and each panel carries an oversized ink bleed (transformed corners never uncover).
+6. Mark wall: glyph picker plus stamp field inside Personality. Geometric text glyphs only (nothing to sanitize); deterministic size/rotation from stored attrs; localStorage persistence with memory fallback through a `MarkStore` interface (a shared backend would implement the same interface with server allow-listing and rate limiting); 150-mark cap; keyboard stamping via free-spot search plus a Stamp button; instant under reduced motion. Honestly local-only: the UI states marks keep in this browser.
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-09-05
+
+**Rationale:** Each item answers a concrete brief point (uniform icons, expressive footer, livelier marquee, glitch cause, smooth sliding statements, meaningful markers, memorable visitor feature) with the smallest mechanism that satisfies it.
+
+**Alternatives Considered:** Icon library for markers (rejected: Unicode text glyphs suffice); backend for marks (rejected: no infrastructure exists; faking shared persistence would be dishonest); mask-plus-slide combined transitions (rejected after a gray-band frame proved translucency over transparency fails; travel-first fade-last instead).
+
+**Impact:** First Load JS ~156 kB (plus ~3 kB for the wall, wave, and larger type). No new dependencies.

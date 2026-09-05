@@ -117,7 +117,7 @@ Used in About and Experience ledes. Words start at 18% opacity and brighten to f
 
 ### Skill emblems
 
-Each tool is a gold-ring emblem: the ring rotates 90 degrees and a dashed orbit wakes on hover; the core holds a real monochrome brand mark (or a serif monogram where no genuine mark exists) that tints to accent at 1.1 scale on hover. Rows drift as infinite CSS marquee loops (alternate directions, pause on hover, edge fade). Gold exists only in Skills and Certifications.
+Each tool is a gold-ring emblem with a monochrome core (real brand mark, or a serif monogram in the same ink where no genuine mark exists); the core tints to accent at 1.1 scale on hover. The ring rotates 90 degrees and a dashed orbit wakes on hover. Emblem rows drift as infinite CSS marquee loops (alternate directions, pause on hover, edge fade). Gold exists only in rings and the Certifications register.
 
 ### Project carousel (`Projects.tsx`, lazy `ProjectPanel.tsx`)
 
@@ -136,7 +136,11 @@ The name as a slow infinite marquee (two identical groups, -50% loop, pauses on 
 
 ### Personality fragment instrument (`Personality.tsx`)
 
-- Selecting a fragment (hover, focus, or click/tap) swaps the large serif word and caption instantly (no transition choreography; `aria-live` announces the change). Active button fills vermilion. No backend, no persistence: selection is local state only.
+- Selecting a fragment (hover, focus, or click/tap) swaps the large serif word and caption instantly (no transition choreography; `aria-live` announces the change). Active button fills vermilion. No backend, no persistence: selection is local state only. The word column has a fixed width so swaps never reflow the buttons (a past hover feedback loop).
+
+### Mark wall (`MarkWall.tsx`)
+
+- Stamping a glyph pops it in via the independent CSS `scale` property (composes with each mark's translate/rotate; 0.5s expo). Instant under reduced motion. No loops, no scroll effects; at most 150 absolutely positioned spans.
 
 ### Control center micro-motion
 
@@ -351,17 +355,27 @@ Motion values are now concrete (see Implemented Patterns and Token Reference abo
 - The statements section is pulled up `-mt-[100dvh]` so its sticky engages the exact pixel the hero releases: the wipe is veil against incoming thought, with no tail and no gap. Each thought phase carries its own ink (the stage is transparent), so the hero stays pristine underneath until the first thought arrives; the bridge is pointer-transparent so hero hover survives the overlap.
 - Phase crossfades share windows (outgoing exit equals incoming enter) so some thought is always present; verb masks travel bottom-up on entry and top-down on exit.
 
-### Statements phases
+### Statements phases (v4.6 sliding scene; supersedes the masked in-place version)
 
-- One thought on stage at a time in a shared left-aligned composition: serif "I", then the verb unmasking from below, then the note. BUILD [0, 0.08]/[0.28, 0.36], BREAK [0.28, 0.36]/[0.6, 0.68], REBUILD [0.6, 0.68] holding to release. The finale never exits: it holds its frame while About enters beneath it.
+- One continuous leftward slide: each thought is a full-viewport panel traveling from +60vw through center to -60vw. Incoming arrives while outgoing is still present (shared crossfade windows), with matching directional momentum. Scale settles 1.06 to 1 on entry and relaxes to 0.94 on exit; a whisper of rotation (plus 1.5 to minus 1.5 degrees) follows travel direction.
+- Panels travel first and fade last: opacity fades sit at the very end of travel so fading ink never exposes the page behind. Each panel carries an oversized ink field (8% bleed) so rotation and scale never uncover viewport corners.
+- Verbs at `clamp(4rem, 17vw, 20rem)` with explicit paper color; serif "I" then verb then note stagger per phase. BUILD [0, 0.08]/[0.28, 0.36], BREAK [0.28, 0.36]/[0.6, 0.68], REBUILD [0.6, 0.68] holding to release into About.
 
 ## v4.3 Patterns (EXPERIMENTAL, 2026-09-04)
 
-### InteractiveLetters (per-letter pointer reactivity)
+### InteractiveLetters (per-letter pointer reactivity, hero)
 
 - Each letter owns an independent spring (stiffness 170, damping 15) driven by a two-dimensional gaussian proximity field around the pointer (sigma X 130px, sigma Y 85px; lift default 0.12em). The tight vertical falloff keeps stacked rows independent: hovering one row leaves the other at rest.
 - Containers never wrap (`whitespace-nowrap`) so display type stays on one line at any width.
-- Accent wash strength is tunable per use (`tintStrength`, default 85; the footer marquee uses 45 with lift 0.10 to stay subtle).
+- Accent wash strength is tunable per use (`tintStrength`, default 85).
+- One rAF loop per instance; letter centers cached in viewport coordinates on pointerenter and refreshed on scroll while the pointer is inside (scroll-driven transforms move the letters), so the loop never reads layout per frame.
+- Clip-free by construction: overflow visible through the whole ancestor chain except the viewport-sized sticky frame; hero rows separated by a small top margin.
+- Fine pointers only; static under reduced motion and on touch. Used by the hero name (and the static reduced-motion footer wordmark with tint off).
+
+### Footer wordmark (`FooterWordmark.tsx`, velocity wave)
+
+- The name drifts as a slow infinite marquee (two identical groups, -50% loop, pauses on hover). Pointer response is velocity-driven and deliberately unlike the hero: letters near the cursor rise with proximity, lean with movement direction (rotation follows velocity sign), and swell slightly, then settle as velocity decays. One rAF loop runs only while the pointer is inside or settling; idle costs nothing beyond the marquee drift.
+- Fine pointers only; static under reduced motion and on touch. Vertical bleed inside the overflow mask keeps rising letters unclipped.
 - One rAF loop per instance; letter centers cached in viewport coordinates on pointerenter and refreshed on scroll while the pointer is inside (scroll-driven transforms move the letters), so the loop never reads layout per frame.
 - Clip-free by construction: overflow visible through the whole ancestor chain except the viewport-sized sticky frame; hero rows separated by a small top margin; the footer marquee carries vertical bleed inside its overflow mask.
 - Fine pointers only; static under reduced motion and on touch. Used by the hero name and the footer wordmark.
