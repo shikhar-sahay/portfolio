@@ -173,7 +173,7 @@ export function TransitionStatements() {
     <section
       ref={ref}
       aria-label="Introduction statements"
-      className="relative -mt-[100dvh] h-[240svh]"
+      className="pointer-events-none relative -mt-[100dvh] h-[240svh]"
     >
       <div className="sticky top-0 h-dvh overflow-hidden">
         {phases.map(phase => (
