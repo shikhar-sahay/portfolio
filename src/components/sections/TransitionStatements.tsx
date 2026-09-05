@@ -7,14 +7,12 @@ import { useMountedReducedMotion } from '@/hooks/useMountedReducedMotion';
 interface Phase {
   verb: string;
   note: string;
-  /** Verb enter window: mask travels with scroll. */
+  /** Panel enter window: slides in from the right. */
   enter: [number, number];
-  /** Verb exit window (absent for the finale, which holds into About). */
+  /** Panel exit window (absent for the finale, which holds into About). */
   exit?: [number, number];
   /** Note reveal window. */
   noteWindow: [number, number];
-  /** Lateral drift across the whole scene. */
-  drift: [number, number];
 }
 
 const phases: Phase[] = [
@@ -24,7 +22,6 @@ const phases: Phase[] = [
     enter: [0.0, 0.08],
     exit: [0.28, 0.36],
     noteWindow: [0.06, 0.11],
-    drift: [-1.5, 0.5],
   },
   {
     verb: 'Break.',
@@ -32,89 +29,91 @@ const phases: Phase[] = [
     enter: [0.28, 0.36],
     exit: [0.6, 0.68],
     noteWindow: [0.36, 0.41],
-    drift: [1, -1],
   },
   {
     verb: 'Rebuild.',
     note: 'better than before',
     enter: [0.6, 0.68],
     noteWindow: [0.66, 0.71],
-    drift: [0.5, 0],
   },
 ];
 
 /**
- * One thought on stage at a time. The pronoun arrives first, then the
- * verb unmasks from below; the previous thought masks away upward before
- * the next arrives, so words never collide. Every transform below is a
- * pure function of the single shared scroll progress, which makes the
- * choreography deterministic in both scroll directions, and every input
- * range ends at 1.0 (Motion v13 drops flat terminal segments past the
- * last keyframe, so ranges must never end early).
+ * One continuous sliding scene. Each thought is a full-viewport panel
+ * traveling leftward: the incoming panel slides in from the right while
+ * the outgoing one is still present, so phrases transition THROUGH each
+ * other with shared directional momentum instead of swapping states.
+ * Scale settles on entry and relaxes on exit; a whisper of rotation
+ * follows the travel direction. Every transform below is a pure function
+ * of the single shared scroll progress, which makes the choreography
+ * deterministic in both scroll directions, and every input range ends at
+ * 1.0 (Motion v13 drops flat terminal segments past the last keyframe,
+ * so ranges must never end early).
  */
 function WordPhase({ phase, progress }: { phase: Phase; progress: MotionValue<number> }) {
   const [e0, e1] = phase.enter;
   const [x0, x1] = phase.exit ?? [2, 2];
   const finale = phase.exit === undefined;
+  // Panels travel first and fade last: the fade window sits at the very
+  // end of travel, so fading ink never exposes the page behind it.
+  // (A fading full-frame panel over transparent stage reads as gray.)
+  const [f0, f1] = finale ? [2, 2] : [x1 - 0.02, x1 + 0.02];
 
   const containerO = useTransform(
     progress,
-    finale ? [e0, e0 + 0.03, 1] : [e0, e0 + 0.03, x0, x1, 1],
+    finale ? [e0, e0 + 0.03, 1] : [e0, e0 + 0.03, f0, f1, 1],
     finale ? [0, 1, 1] : [0, 1, 1, 0, 0]
+  );
+  // The whole composition slides as one camera: in from +60vw, out to -60vw.
+  const x = useTransform(
+    progress,
+    finale ? [e0, e1, 1] : [e0, e1, x0, x1, 1],
+    finale ? ['60vw', '0vw', '0vw'] : ['60vw', '0vw', '0vw', '-60vw', '-60vw']
+  );
+  const scale = useTransform(
+    progress,
+    finale ? [e0, e1, 1] : [e0, e1, x0, x1, 1],
+    finale ? [1.06, 1, 1] : [1.06, 1, 1, 0.94, 0.94]
+  );
+  const rotate = useTransform(
+    progress,
+    finale ? [e0, e1, 1] : [e0, e1, x0, x1, 1],
+    finale ? [1.5, 0, 0] : [1.5, 0, 0, -1.5, -1.5]
   );
   const iO = useTransform(
     progress,
-    finale ? [e0, e0 + 0.05, 1] : [e0, e0 + 0.05, x0, x1, 1],
+    finale ? [e0, e0 + 0.05, 1] : [e0, e0 + 0.05, f0, f1, 1],
     finale ? [0, 1, 1] : [0, 1, 1, 0, 0]
   );
   const iY = useTransform(progress, [e0, e0 + 0.05, 1], [16, 0, 0]);
-  const verbClip = useTransform(
-    progress,
-    finale ? [e0 + 0.02, e1, 1] : [e0 + 0.02, e1, x0, x1, 1],
-    finale
-      ? ['inset(100% 0% 0% 0%)', 'inset(0% 0% 0% 0%)', 'inset(0% 0% 0% 0%)']
-      : [
-          'inset(100% 0% 0% 0%)',
-          'inset(0% 0% 0% 0%)',
-          'inset(0% 0% 0% 0%)',
-          'inset(100% 0% 0% 0%)',
-          'inset(100% 0% 0% 0%)',
-        ]
-  );
-  const verbY = useTransform(
-    progress,
-    finale ? [e0 + 0.02, e1, 1] : [e0 + 0.02, e1, x0, x1, 1],
-    finale ? ['6vh', '0vh', '0vh'] : ['6vh', '0vh', '0vh', '-6vh', '-6vh']
-  );
   const noteO = useTransform(
     progress,
     finale
       ? [phase.noteWindow[0], phase.noteWindow[1], 1]
-      : [phase.noteWindow[0], phase.noteWindow[1], x0 - 0.02, x0 + 0.03, 1],
+      : [phase.noteWindow[0], phase.noteWindow[1], f0, f1, 1],
     finale ? [0, 1, 1] : [0, 1, 1, 0, 0]
   );
-  const scale = useTransform(progress, [e0, e1, 1], [0.96, 1, 1]);
-  const x = useTransform(progress, [0, 1], [`${phase.drift[0]}vw`, `${phase.drift[1]}vw`]);
 
   return (
     <motion.div
-      style={{ opacity: containerO, x }}
-      className="ink-stage absolute inset-0 will-change-transform"
+      style={{ opacity: containerO, x, scale, rotate }}
+      className="absolute inset-0 will-change-transform"
     >
-      <div className="flex h-full flex-col justify-center px-5 sm:px-10">
+      {/* Oversized ink field: the panel rotates and scales while traveling,
+          so a viewport-exact background would uncover the corners. The 8%
+          bleed keeps every frame fully inked; the sticky clips the excess. */}
+      <div aria-hidden="true" className="ink-stage absolute -inset-[8%]" />
+      <div className="relative flex h-full flex-col justify-center px-5 text-[#f3efe6] sm:px-10">
         <motion.p
           style={{ opacity: iO, y: iY }}
           className="font-serif text-[clamp(2.5rem,6vw,6rem)] italic leading-none tracking-tight text-[#f3efe6]/80"
         >
           I
         </motion.p>
-        <motion.p
-          style={{ clipPath: verbClip, y: verbY, scale }}
-          className="whitespace-nowrap text-[clamp(3.5rem,13vw,15rem)] font-semibold uppercase leading-[0.95] tracking-[-0.03em] will-change-transform"
-        >
+        <p className="whitespace-nowrap text-[clamp(4rem,17vw,20rem)] font-semibold uppercase leading-[0.95] tracking-[-0.03em]">
           {phase.verb.slice(0, -1)}
           <span className="text-accent">{phase.verb.slice(-1)}</span>
-        </motion.p>
+        </p>
         <motion.p
           style={{ opacity: noteO }}
           className="mt-3 text-micro uppercase tracking-[0.16em] text-[#f3efe6]/60 sm:mt-4"
