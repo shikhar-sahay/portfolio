@@ -62,7 +62,12 @@ export function Contact() {
                         href={link.href}
                         className="group inline-flex items-baseline gap-2 text-sm text-muted transition-colors duration-300 hover:text-ink"
                       >
-                        <span className="h-px w-2 bg-accent transition-all duration-500 ease-expo group-hover:w-4" />
+                        <span
+                          aria-hidden="true"
+                          className="inline-block text-accent transition-transform duration-500 ease-expo group-hover:translate-x-0.5"
+                        >
+                          →
+                        </span>
                         {link.label}
                       </a>
                     </li>

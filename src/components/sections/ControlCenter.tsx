@@ -83,7 +83,9 @@ export function ControlCenter() {
                   Ongoing: senior core member at GDG On Campus, VIT Vellore.
                 </p>
                 <span className="mt-4 inline-flex items-center gap-2 text-micro uppercase tracking-[0.14em] text-muted">
-                  <span className="h-px w-3 bg-accent" aria-hidden="true" />
+                  <span className="text-accent" aria-hidden="true">
+                    ●
+                  </span>
                   Active on campus
                 </span>
               </Module>
@@ -166,7 +168,12 @@ export function ControlCenter() {
                         href={link.href}
                         className="group inline-flex items-baseline gap-2 text-sm text-muted transition-colors duration-300 hover:text-ink"
                       >
-                        <span className="h-px w-2 bg-accent transition-all duration-500 ease-expo group-hover:w-4" />
+                        <span
+                          aria-hidden="true"
+                          className="inline-block text-accent transition-transform duration-500 ease-expo group-hover:translate-x-0.5"
+                        >
+                          →
+                        </span>
                         {link.label}
                       </a>
                     </li>
