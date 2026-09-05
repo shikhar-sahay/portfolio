@@ -23,7 +23,7 @@ const config: Config = {
       },
       fontSize: {
         display: [
-          'clamp(4.25rem, 16vw, 14rem)',
+          'clamp(4.25rem, 16vw, 12.5rem)',
           {
             lineHeight: '0.88',
             letterSpacing: '-0.03em',

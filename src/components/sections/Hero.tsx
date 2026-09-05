@@ -155,9 +155,11 @@ export function Hero() {
             </motion.div>
           </div>
 
-          {/* Portrait arch */}
+          {/* Portrait arch: the crop holds the face right of center so it
+              looks into the type, and the column nudges right on small
+              desktop widths so the name never reaches the face. */}
           <motion.div
-            className="group/arch relative z-0 order-1 mx-auto w-[64vw] max-w-[300px] sm:w-[42vw] sm:max-w-[380px] lg:order-2 lg:w-full lg:max-w-[460px] lg:justify-self-center"
+            className="group/arch relative z-0 order-1 mx-auto w-[64vw] max-w-[300px] sm:w-[42vw] sm:max-w-[380px] lg:order-2 lg:mx-0 lg:ml-[3vw] lg:w-full lg:max-w-[460px] lg:justify-self-center xl:ml-0"
             {...scroll({
               x: archX,
               y: archY,
@@ -187,7 +189,7 @@ export function Hero() {
                       priority
                       placeholder="blur"
                       sizes="(max-width: 640px) 70vw, 40vw"
-                      className="arch-photo object-cover object-[center_22%]"
+                      className="arch-photo object-cover object-[28%_22%]"
                     />
                   </motion.div>
                 </div>
