@@ -72,9 +72,9 @@ function WordPhase({ phase, progress }: { phase: Phase; progress: MotionValue<nu
     progress,
     finale ? [e0 + 0.02, e1, 1] : [e0 + 0.02, e1, x0, x1, 1],
     finale
-      ? ['inset(0% 0% 100% 0%)', 'inset(0% 0% 0% 0%)', 'inset(0% 0% 0% 0%)']
+      ? ['inset(100% 0% 0% 0%)', 'inset(0% 0% 0% 0%)', 'inset(0% 0% 0% 0%)']
       : [
-          'inset(0% 0% 100% 0%)',
+          'inset(100% 0% 0% 0%)',
           'inset(0% 0% 0% 0%)',
           'inset(0% 0% 0% 0%)',
           'inset(100% 0% 0% 0%)',
