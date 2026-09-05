@@ -130,7 +130,7 @@ function SkillEmblem({ skill }: { skill: Skill }) {
             className="text-ink transition-all duration-500 ease-expo group-hover:scale-110 group-hover:text-accent"
           />
         ) : (
-          <span className="relative font-serif text-xl italic tracking-tight text-gold">
+          <span className="relative font-serif text-xl italic tracking-tight text-ink transition-colors duration-500 group-hover:text-accent">
             {skill.abbr}
           </span>
         )}
