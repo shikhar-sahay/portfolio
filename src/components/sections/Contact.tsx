@@ -135,6 +135,9 @@ function EmailLink() {
         title="Email link coming soon"
         className="text-muted/60 mt-7 inline-flex cursor-default items-baseline gap-3 text-lg font-medium tracking-tight sm:text-xl"
       >
+        <span aria-hidden="true" className="text-accent">
+          &#9993;
+        </span>
         Email
         <span aria-hidden="true" className="text-accent">
           &rarr;
@@ -147,6 +150,9 @@ function EmailLink() {
       href={href}
       className="group mt-7 inline-flex items-baseline gap-3 text-lg font-medium tracking-tight text-ink transition-colors duration-300 hover:text-accent sm:text-xl"
     >
+      <span aria-hidden="true" className="text-accent">
+        &#9993;
+      </span>
       Email
       <span
         aria-hidden="true"
@@ -158,8 +164,16 @@ function EmailLink() {
   );
 }
 
+/** Tiny personality markers for the Elsewhere channels (decorative). */
+const channelGlyphs: Record<string, string> = {
+  GitHub: '</>',
+  LinkedIn: '◈',
+  Resume: '▤',
+};
+
 function CompactLink({ label, href }: { label: string; href: string }) {
   const placeholder = href === '#';
+  const glyph = channelGlyphs[label] ?? '→';
   // Server-rendered: placeholders are plain text, never anchors, so they
   // can neither navigate nor steal keyboard focus.
   if (placeholder) {
@@ -168,7 +182,9 @@ function CompactLink({ label, href }: { label: string; href: string }) {
         title={`${label} link coming soon`}
         className="text-muted/60 inline-flex cursor-default items-baseline gap-2 text-sm"
       >
-        <span className="h-px w-2 bg-accent" />
+        <span aria-hidden="true" className="text-accent">
+          {glyph}
+        </span>
         {label}
       </span>
     );
@@ -180,7 +196,12 @@ function CompactLink({ label, href }: { label: string; href: string }) {
       rel="noopener noreferrer"
       className="group inline-flex items-baseline gap-2 text-sm text-muted transition-colors duration-300 hover:text-ink"
     >
-      <span className="h-px w-2 bg-accent transition-all duration-500 ease-expo group-hover:w-4" />
+      <span
+        aria-hidden="true"
+        className="inline-block text-accent transition-transform duration-500 ease-expo group-hover:translate-x-0.5"
+      >
+        {glyph}
+      </span>
       {label}
     </a>
   );
