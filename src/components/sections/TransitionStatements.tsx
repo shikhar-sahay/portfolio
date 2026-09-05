@@ -4,147 +4,132 @@ import { useRef } from 'react';
 import { motion, useScroll, useTransform, type MotionValue } from 'motion/react';
 import { useMountedReducedMotion } from '@/hooks/useMountedReducedMotion';
 
-const lines = [
+interface Phase {
+  verb: string;
+  note: string;
+  /** Verb enter window: mask travels with scroll. */
+  enter: [number, number];
+  /** Verb exit window (absent for the finale, which holds into About). */
+  exit?: [number, number];
+  /** Note reveal window. */
+  noteWindow: [number, number];
+  /** Lateral drift across the whole scene. */
+  drift: [number, number];
+}
+
+const phases: Phase[] = [
   {
-    text: 'I build.',
+    verb: 'Build.',
     note: 'tools, experiments, platforms',
-    align: 'left' as const,
-    edge: '0vw',
-    drift: [-4, -1],
-    // Controlled overlap with the next line (negative top margin pulls the
-    // stack into one interlocked composition instead of spaced rows).
-    overlap: '0vh',
-    size: 'clamp(3.2rem,11vw,14rem)',
+    enter: [0.03, 0.11],
+    exit: [0.26, 0.34],
+    noteWindow: [0.09, 0.14],
+    drift: [-1.5, 0.5],
   },
   {
-    text: 'I break.',
+    verb: 'Break.',
     note: 'systems, to understand them: the ethical kind',
-    align: 'right' as const,
-    edge: '0vw',
-    drift: [5, 1.5],
-    overlap: '-3vh',
-    size: 'clamp(3.2rem,12vw,15rem)',
+    enter: [0.39, 0.47],
+    exit: [0.6, 0.68],
+    noteWindow: [0.45, 0.5],
+    drift: [1, -1],
   },
   {
-    text: 'I rebuild.',
+    verb: 'Rebuild.',
     note: 'better than before',
-    align: 'left' as const,
-    edge: '6vw',
-    drift: [3, -2],
-    overlap: '-3vh',
-    size: 'clamp(3.2rem,11vw,14rem)',
+    enter: [0.73, 0.81],
+    noteWindow: [0.79, 0.84],
+    drift: [0.5, 0],
   },
-] as const;
+];
 
-/** Scroll share of the bridge owned by each statement. */
-const SHARE = 1 / lines.length;
-/** Width of the emphasis crossfade, in progress units. */
-const FADE = 0.07;
+/**
+ * One thought on stage at a time. The pronoun arrives first, then the
+ * verb unmasks from below; the previous thought masks away upward before
+ * the next arrives, so words never collide. Every transform below is a
+ * pure function of the single shared scroll progress, which makes the
+ * choreography deterministic in both scroll directions, and every input
+ * range ends at 1.0 (Motion v13 drops flat terminal segments past the
+ * last keyframe, so ranges must never end early).
+ */
+function WordPhase({ phase, progress }: { phase: Phase; progress: MotionValue<number> }) {
+  const [e0, e1] = phase.enter;
+  const [x0, x1] = phase.exit ?? [2, 2];
+  const finale = phase.exit === undefined;
 
-function StatementLine({
-  line,
-  index,
-  progress,
-}: {
-  line: (typeof lines)[number];
-  index: number;
-  progress: MotionValue<number>;
-}) {
-  // All three statements share the stage from the first pixel: the inactive
-  // ones sit back at low opacity, scrolling moves the emphasis down the
-  // stack. The stage is never empty. The choreography owns the full width:
-  // BUILD holds the left edge, BREAK answers flush from the right at a
-  // larger size, REBUILD lands indented as the finale; negative margins
-  // interlock the rows into one overlapping composition (DOM order paints
-  // later lines above earlier ones, so the finale settles on top). Each
-  // line drifts laterally and settles from a slight scale and a whisper of
-  // rotation, so every scroll step lands somewhere visible. Everything
-  // stays readable: motion is small, type never distorts, and the active
-  // line is always full opacity at full scale.
-  // Motion v13 quirk: ranges must be explicit, strictly increasing, and
-  // three or more points, so every case below spells out its keyframes.
-  const activate = index * SHARE;
-  const deactivate = (index + 1) * SHARE;
-  const isLast = index === lines.length - 1;
-  const isFirst = index === 0;
-  const on = 0.16;
-
-  const opacity = useTransform(
+  const containerO = useTransform(
     progress,
-    isFirst
-      ? [0, deactivate - FADE, deactivate + FADE, 1]
-      : isLast
-        ? [activate - FADE, activate + FADE, 1]
-        : [activate - FADE, activate + FADE, deactivate - FADE, deactivate + FADE],
-    isFirst ? [1, 1, on, on] : isLast ? [on, 1, 1] : [on, 1, 1, on]
+    finale ? [e0, e0 + 0.03, 1] : [e0, e0 + 0.03, x0, x1, 1],
+    finale ? [0, 1, 1] : [0, 1, 1, 0, 0]
   );
-  const y = useTransform(
+  const iO = useTransform(
     progress,
-    isFirst ? [0, 0.5, 1] : [activate - FADE, activate + FADE, 1],
-    isFirst ? [0, 0, 0] : [36, 0, 0]
+    finale ? [e0, e0 + 0.05, 1] : [e0, e0 + 0.05, x0, x1, 1],
+    finale ? [0, 1, 1] : [0, 1, 1, 0, 0]
   );
+  const iY = useTransform(progress, [e0, e0 + 0.05, 1], [16, 0, 0]);
+  const verbClip = useTransform(
+    progress,
+    finale ? [e0 + 0.02, e1, 1] : [e0 + 0.02, e1, x0, x1, 1],
+    finale
+      ? ['inset(0% 0% 100% 0%)', 'inset(0% 0% 0% 0%)', 'inset(0% 0% 0% 0%)']
+      : [
+          'inset(0% 0% 100% 0%)',
+          'inset(0% 0% 0% 0%)',
+          'inset(0% 0% 0% 0%)',
+          'inset(100% 0% 0% 0%)',
+          'inset(100% 0% 0% 0%)',
+        ]
+  );
+  const verbY = useTransform(
+    progress,
+    finale ? [e0 + 0.02, e1, 1] : [e0 + 0.02, e1, x0, x1, 1],
+    finale ? ['6vh', '0vh', '0vh'] : ['6vh', '0vh', '0vh', '-6vh', '-6vh']
+  );
+  const noteO = useTransform(
+    progress,
+    finale ? [phase.noteWindow[0], phase.noteWindow[1], 1] : [phase.noteWindow[0], phase.noteWindow[1], x0 - 0.02, x0 + 0.03, 1],
+    finale ? [0, 1, 1] : [0, 1, 1, 0, 0]
+  );
+  const scale = useTransform(progress, [e0, e1, 1], [0.96, 1, 1]);
   const x = useTransform(
     progress,
-    [0, 0.5, 1],
-    [`${line.drift[0]}vw`, `${(line.drift[0] + line.drift[1]) / 2}vw`, `${line.drift[1]}vw`]
+    [0, 1],
+    [`${phase.drift[0]}vw`, `${phase.drift[1]}vw`]
   );
-  const scale = useTransform(
-    progress,
-    isFirst
-      ? [0, deactivate - FADE, deactivate + FADE, 1]
-      : isLast
-        ? [activate - FADE, activate + FADE, 1]
-        : [activate - FADE, activate + FADE, deactivate - FADE, deactivate + FADE],
-    isFirst ? [1, 1, 0.94, 0.94] : isLast ? [0.94, 1, 1] : [0.94, 1, 1, 0.94]
-  );
-  const rotate = useTransform(
-    progress,
-    isFirst ? [0, 0.5, 1] : [activate - FADE, activate + FADE, 1],
-    isFirst ? [0, 0, 0] : [index === 1 ? -1.2 : 1, 0, 0]
-  );
-
-  const words = line.text.split(' ');
-  const last = words[words.length - 1];
-  const head = [...words.slice(0, -1), last.slice(0, -1)].join(' ');
-  const period = last.slice(-1);
-  const right = line.align === 'right';
 
   return (
-    <motion.div
-      style={{
-        opacity,
-        y,
-        x,
-        scale,
-        rotate,
-        paddingLeft: right ? undefined : line.edge,
-        paddingRight: right ? line.edge : undefined,
-        marginTop: line.overlap,
-        textAlign: right ? 'right' : 'left',
-      }}
-      className="w-full will-change-transform"
-    >
-      <p
-        className="font-semibold uppercase leading-[0.95] tracking-[-0.03em]"
-        style={{ fontSize: line.size }}
-      >
-        {head}
-        <span className="text-accent">{period}</span>
-      </p>
-      <p className="mt-2 text-micro uppercase tracking-[0.16em] text-[#f3efe6]/60 sm:mt-3">
-        {line.note}
-      </p>
+    <motion.div style={{ opacity: containerO, x }} className="absolute inset-0 will-change-transform">
+      <div className="flex h-full flex-col justify-center px-5 sm:px-10">
+        <motion.p
+          style={{ opacity: iO, y: iY }}
+          className="font-serif text-[clamp(2.5rem,6vw,6rem)] italic leading-none tracking-tight text-[#f3efe6]/80"
+        >
+          I
+        </motion.p>
+        <motion.p
+          style={{ clipPath: verbClip, y: verbY, scale }}
+          className="whitespace-nowrap text-[clamp(3.5rem,13vw,15rem)] font-semibold uppercase leading-[0.95] tracking-[-0.03em] will-change-transform"
+        >
+          {phase.verb.slice(0, -1)}
+          <span className="text-accent">{phase.verb.slice(-1)}</span>
+        </motion.p>
+        <motion.p
+          style={{ opacity: noteO }}
+          className="mt-3 text-micro uppercase tracking-[0.16em] text-[#f3efe6]/60 sm:mt-4"
+        >
+          {phase.note}
+        </motion.p>
+      </div>
     </motion.div>
   );
 }
 
 /**
- * The bridge between the hero and About: three oversized statements that
- * own the viewport together in a left, right, center-left choreography.
- * Emphasis moves down the stack with scroll (the inactive lines stay
- * visible but receded), so there is no dead stage time, and every line
- * drifts, scales, and settles with scroll so the frame keeps moving.
- * The sticky simply releases into About; the stage stays opaque.
+ * The bridge between the hero and About: one thought on stage at a time
+ * (I / BUILD, then BREAK, then REBUILD), each arriving word by word and
+ * yielding before the next arrives. The finale holds its frame and hands
+ * directly into About. The sticky simply releases; the stage stays opaque.
  */
 export function TransitionStatements() {
   const ref = useRef<HTMLDivElement>(null);
@@ -158,22 +143,17 @@ export function TransitionStatements() {
     return (
       <section aria-label="Introduction statements" className="ink-stage px-5 py-[14vh] sm:px-10">
         <div className="mx-auto max-w-6xl space-y-[6vh]">
-          {lines.map(line => (
-            <div
-              key={line.text}
-              style={{
-                textAlign: line.align === 'right' ? 'right' : 'left',
-              }}
-            >
-              <p
-                className="font-semibold uppercase leading-[0.95] tracking-[-0.03em]"
-                style={{ fontSize: line.size }}
-              >
-                {line.text.slice(0, -1)}
-                <span className="text-accent">{line.text.slice(-1)}</span>
+          {phases.map(phase => (
+            <div key={phase.verb}>
+              <p className="font-serif text-[clamp(2rem,5vw,4rem)] italic leading-none tracking-tight text-[#f3efe6]/80">
+                I
+              </p>
+              <p className="whitespace-nowrap text-[clamp(3.2rem,10.5vw,13rem)] font-semibold uppercase leading-[0.95] tracking-[-0.03em]">
+                {phase.verb.slice(0, -1)}
+                <span className="text-accent">{phase.verb.slice(-1)}</span>
               </p>
               <p className="mt-2 text-micro uppercase tracking-[0.16em] text-[#f3efe6]/60">
-                {line.note}
+                {phase.note}
               </p>
             </div>
           ))}
@@ -183,13 +163,11 @@ export function TransitionStatements() {
   }
 
   return (
-    <section ref={ref} aria-label="Introduction statements" className="relative h-[200svh]">
-      <div className="ink-stage sticky top-0 flex h-dvh flex-col justify-center overflow-hidden px-5 sm:px-10">
-        <div className="flex w-full flex-col">
-          {lines.map((line, i) => (
-            <StatementLine key={line.text} line={line} index={i} progress={scrollYProgress} />
-          ))}
-        </div>
+    <section ref={ref} aria-label="Introduction statements" className="relative h-[240svh]">
+      <div className="ink-stage sticky top-0 h-dvh overflow-hidden">
+        {phases.map(phase => (
+          <WordPhase key={phase.verb} phase={phase} progress={scrollYProgress} />
+        ))}
       </div>
     </section>
   );
