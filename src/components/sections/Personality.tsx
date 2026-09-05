@@ -30,7 +30,11 @@ export function Personality() {
           Pick a fragment.
         </h2>
 
-        <div className="mt-[10vh] grid items-end gap-12 lg:grid-cols-[1fr_auto]">
+        {/* Fixed word column: the longest word ("Communities", 424px at
+            desktop) must never resize the button column, or hovering
+            between fragments reflows the buttons under the cursor and the
+            active state chases itself. Width depends on viewport only. */}
+        <div className="mt-[10vh] grid items-end gap-12 lg:grid-cols-[minmax(0,1fr)_28rem]">
           {/* Fragment selector */}
           <ul className="flex flex-wrap gap-2.5" role="list">
             {fragments.map((f, i) => (
