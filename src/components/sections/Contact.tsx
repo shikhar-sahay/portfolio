@@ -1,4 +1,5 @@
 import { Reveal } from '@/components/ui/Reveal';
+import { CopyText } from '@/components/ui/CopyText';
 import { profile } from '@/content/profile';
 import { navLinks } from '@/content/sections';
 import { FooterWordmark } from '@/components/sections/FooterWordmark';
@@ -42,14 +43,16 @@ export function Contact() {
               <div>
                 <p className="text-micro uppercase tracking-[0.16em] text-accent">Elsewhere</p>
                 <ul className="mt-4 space-y-3">
-                  <li>
-                    <CompactLink label="GitHub" href={profile.links.github} />
-                  </li>
-                  <li>
-                    <CompactLink label="LinkedIn" href={profile.links.linkedin} />
-                  </li>
+                  {profile.socials.map(social => (
+                    <li key={social.label}>
+                      <CompactLink label={social.label} href={social.href} handle={social.handle} />
+                    </li>
+                  ))}
                   <li>
                     <CompactLink label="Resume" href={profile.links.resume} />
+                  </li>
+                  <li>
+                    <CopyText text={profile.discord.username} label="Discord" />
                   </li>
                 </ul>
               </div>
@@ -100,7 +103,7 @@ export function Contact() {
                 </span>
               </a>
               <a
-                href={profile.links.resume}
+                href={profile.links.resumeFile}
                 download
                 className="border-ink/25 inline-flex items-center gap-2.5 border px-5 py-2.5 text-micro font-semibold uppercase tracking-[0.16em] text-ink transition-colors duration-300 hover:border-accent hover:text-accent"
               >
@@ -173,10 +176,14 @@ function EmailLink() {
 const channelGlyphs: Record<string, string> = {
   GitHub: '</>',
   LinkedIn: '◈',
+  Instagram: '◉',
+  Medium: 'M',
+  X: '✕',
+  Spotify: '♪',
   Resume: '▤',
 };
 
-function CompactLink({ label, href }: { label: string; href: string }) {
+function CompactLink({ label, href, handle }: { label: string; href: string; handle?: string }) {
   const placeholder = href === '#';
   const glyph = channelGlyphs[label] ?? '→';
   // Server-rendered: placeholders are plain text, never anchors, so they
@@ -191,6 +198,11 @@ function CompactLink({ label, href }: { label: string; href: string }) {
           {glyph}
         </span>
         {label}
+        {handle && (
+          <span aria-hidden="true" className="text-muted/50 text-micro uppercase tracking-[0.1em]">
+            {handle}
+          </span>
+        )}
       </span>
     );
   }
@@ -208,6 +220,14 @@ function CompactLink({ label, href }: { label: string; href: string }) {
         {glyph}
       </span>
       {label}
+      {handle && (
+        <span
+          aria-hidden="true"
+          className="text-muted/60 group-hover:text-muted text-micro uppercase tracking-[0.1em] transition-colors duration-300"
+        >
+          {handle}
+        </span>
+      )}
     </a>
   );
 }

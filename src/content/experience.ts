@@ -26,7 +26,7 @@ export const orgTimeline: OrgEntry[] = [
         role: 'Cybersecurity Intern',
         period: 'Jun 2026 - Aug 2026',
         summary:
-          'Built an AWS SSH honeypot with an LLM-driven shell and a Python telemetry pipeline for attack reporting.',
+          'Engineered an AWS SSH honeypot with an LLM-driven shell and a Python telemetry pipeline with Geo-IP enrichment for attack reporting.',
       },
     ],
   },
@@ -35,10 +35,10 @@ export const orgTimeline: OrgEntry[] = [
     location: 'Bengaluru',
     roles: [
       {
-        role: 'IT & Security Intern',
+        role: 'IT Intern',
         period: 'Jun 2026 - Jul 2026',
         summary:
-          'Assessed endpoint security with CrowdStrike Falcon and validated IT systems in GMP-regulated infrastructure.',
+          'Assessed endpoint security with CrowdStrike Falcon, evaluated backup redundancy with Veritas, and performed system validation in GMP-regulated infrastructure.',
       },
     ],
   },
@@ -47,15 +47,9 @@ export const orgTimeline: OrgEntry[] = [
     roles: [
       {
         role: 'Senior Core Member',
-        period: 'Mar 2026 - Present',
+        period: 'Apr 2025 - Present',
         summary:
-          "Ran Women Techies'26 and Hexathon'26, mentored junior core members, and reviewed hackathon submissions.",
-      },
-      {
-        role: 'Inner Core Member',
-        period: 'Apr 2025 - Mar 2026',
-        summary:
-          "Top 1% of 4,000+ applicants. Raised 1.8L+ rupees in sponsorships and helped organize DevJams'25.",
+          "Top 1% of 4,000+ applicants. Raised 1.8L+ rupees in sponsorships and ran DevJams'25 with 750+ participants.",
       },
     ],
   },
@@ -64,14 +58,9 @@ export const orgTimeline: OrgEntry[] = [
     roles: [
       {
         role: 'Senior Core Member',
-        period: 'Jan 2026 - Jul 2026',
-        summary: 'Led cybersecurity workshops, technical interviews, and recruitment task design.',
-      },
-      {
-        role: 'Junior Core Member',
-        period: 'Feb 2025 - Jan 2026',
+        period: 'Feb 2025 - Jul 2026',
         summary:
-          'Top 3% of 2,000+ applicants. Built Papers by CodeChef, serving 55K+ active users.',
+          'Top 3% of 2,000+ applicants. Led cybersecurity workshops, technical interviews, and recruitment task design.',
       },
     ],
   },

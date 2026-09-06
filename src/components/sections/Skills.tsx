@@ -60,9 +60,22 @@ export function Skills() {
                     />
                     {cert.name}
                   </span>
-                  <span className="shrink-0 text-micro uppercase tracking-[0.14em] text-muted transition-colors duration-300 group-hover/cert:text-ink">
+                  <a
+                    href={cert.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${cert.name}, verified by ${cert.issuer}`}
+                    title={`Verify ${cert.name} on ${new URL(cert.url).hostname}`}
+                    className="group/link inline-flex shrink-0 items-baseline gap-1.5 text-micro uppercase tracking-[0.14em] text-muted transition-colors duration-300 hover:text-accent focus-visible:text-accent"
+                  >
                     {cert.issuer}
-                  </span>
+                    <span
+                      aria-hidden="true"
+                      className="inline-block transition-transform duration-500 ease-expo group-hover/link:-translate-y-px group-hover/link:translate-x-px"
+                    >
+                      ↗
+                    </span>
+                  </a>
                 </li>
               ))}
             </ul>
