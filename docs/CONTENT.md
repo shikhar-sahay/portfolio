@@ -21,9 +21,10 @@ src/content/
 
 ### Rules encoded in the model
 
-- Metrics and claims come only from owner-supplied source material (55K+ users, 1.2M+ views, top 1% of 4,000+, top 3% of 2,000+, 1.8L+ rupees, tens of thousands of followers, 4 to 7 member team). Academic scores in source material are never displayed anywhere on the site.
-- `profile.links` values are placeholders (`#`, `/resume.pdf`) until the owner supplies real destinations.
-- Placeholder links never navigate: client components swallow the click, server components render plain text instead of anchors, and every placeholder carries a "coming soon" label. Nothing pretends to work.
+- Metrics and claims come only from owner-supplied source material (55K+ users, 1.2M+ views, top 1% of 4,000+, top 3% of 2,000+, 1.8L+ rupees, DevJams 750+ participants, tens of thousands of followers, 4 to 7 member team). Academic scores in source material are never displayed anywhere on the site.
+- `profile.links` holds real destinations (mailto email, GitHub, LinkedIn, Drive resume, local resume file); `profile.socials` holds the broader set (Instagram, Medium, X, Spotify) with handles; `profile.discord` holds a username only (no public URL exists, rendered as a copy action).
+- Certifications link to owner-supplied verification URLs (Credly, Coursera).
+- Placeholder links that remain (`#` project URLs) never navigate: client components swallow the click, server components render plain text instead of anchors, and every placeholder carries a "coming soon" label. Nothing pretends to work.
 - Personality captions are voice lines, deliberately not factual claims.
 - No em dashes anywhere in content.
 
@@ -135,10 +136,13 @@ export interface OrgEntry {
   roles: RoleEntry[];
 }
 
-// Canonical order (owner-mandated, v4.2; full chapter name since v4.3):
-// Cyber Defenders, Recipharm, GDG On Campus (Senior Core, Inner Core),
-// CodeChef-VIT Student Chapter (Senior Core, Junior Core),
+// Canonical order (owner-mandated; roles follow the current resume):
+// Cyber Defenders, Recipharm, GDG On Campus (Senior Core),
+// CodeChef-VIT Student Chapter (Senior Core),
 // Skilledity (Team Lead, Intern), Team Shade.
+// GDG and CodeChef list the single senior roles the resume establishes;
+// the earlier Inner/Junior splits and their event lines were removed
+// rather than carry dates the resume contradicts.
 ```
 
 Note: the Skilledity "Social Media Management Intern" entry intentionally has no period or summary until the owner supplies dates and facts. Do not invent them. The timeline renders a muted "Details coming soon" line for it.
@@ -174,7 +178,11 @@ export const fragments: Fragment[] = [
 
 Eight fragments, each a tonal word plus a voice caption. There are no writing links, no external profiles, no visitor input, and no persistence: selection is local component state only.
 
-### Leave-your-mark wall (lives in `MarkWall.tsx`, not in content)
+### Notes wall model (`src/content/wall.ts`, API under `src/app/api/notes/`)
+
+Visitor marks are not owner content and never sync anywhere except through the wall API. Notes carry id, world coordinates, display name, message, timestamp, style variant, owner flag, and replies; replies carry id, note id, name, message, timestamp. Limits: names 24 chars, messages 140, replies 100, 10 notes and 20 replies per IP per hour, 4 KB payloads. Rendering is plain text nodes only. Seeds are two labeled Shikhar notes using site copy. The default store is in-memory (per process); production needs the documented KV swap.
+
+### Notes wall model (`src/content/wall.ts`, API under `src/app/api/notes/`)
 
 Visitor marks are not owner content and never sync anywhere. The wall offers eight fixed geometric glyphs (no free text, nothing to sanitize); each stamp stores glyph, color key, position, size, rotation, and timestamp in the visitor's own localStorage (memory fallback in private modes), capped at 150 marks. Seeds are twelve fixed owner marks in code. A future shared wall would need: an API route plus a tiny KV store implementing the same load/save shape, server-side glyph and color allow-listing, and rate limiting. None of that exists today.
 
@@ -189,7 +197,7 @@ Visitor marks are not owner content and never sync anywhere. The wall offers eig
 
 ## Contact Content
 
-Actual model: `profile.links` (`email`, `github`, `linkedin` are `#`; `resume` is `/resume.pdf`) plus `navLinks` in `sections.ts` (About, Experience, Projects, Contact anchors). Placeholders render inert with "coming soon" labels. There is no contact form, no form endpoint, and no social URL beyond the three placeholder channels.
+Actual model: `profile.links` (mailto email, GitHub, LinkedIn, Drive resume, local resume file), `profile.socials` (Instagram, Medium, X, Spotify with handles), `profile.discord` (username, copy action), plus `navLinks` in `sections.ts` (About, Experience, Projects, Contact anchors). Placeholders that remain (project URLs) render inert with "coming soon" labels. There is no contact form, no form endpoint, and no phone number on the site.
 
 ---
 
@@ -219,8 +227,8 @@ The following need owner input before milestones can proceed:
 | M1        | Copy approval (hero statement, lede wording); portrait alt text review (current: "Portrait of Shikhar Sahay") |
 | M3        | Real project links (live, GitHub, case study per project); case studies if written                            |
 | M4        | Skilledity intern dates and facts                                                                             |
-| M5        | Nothing open (fragments and captions are in place)                                                            |
-| M7        | Contact email, social URLs, real resume PDF, production URL, OG image                                         |
+| M5        | Nothing open (fragments and captions are in place; wall backend is an infrastructure task, not content)       |
+| M7        | Real resume PDF file (Drive link wired; placeholder file remains), production URL, OG image                   |
 
 ---
 

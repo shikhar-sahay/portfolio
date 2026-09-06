@@ -166,6 +166,14 @@ There is no `.github/` directory and no Lighthouse CI, bundle gate, or deploy pi
 
 ---
 
+## v4.7 Status (2026-09-06)
+
+- First Load JS: ~158 kB against the 150 kB budget (was ~156 kB at v4.6). The delta covers the NotesWall client UI, the CopyText island, and the larger statement type. API routes add zero client JS.
+- The wall renders at most 150 note cards (viewport-filtered, recomputed on pan end and data change, never per frame); pan writes one transform per frame; no loops run idle.
+- Reclamation options (unchanged): cheapen the InteractiveLetters tint, trim carousel hint state, or move Counter out of the lazy chunk. Track in HANDOFF known issues.
+
+---
+
 ## v4.6 Status (2026-09-05)
 
 - First Load JS: ~156 kB against the 150 kB budget (was ~153 kB at v4.5). The delta covers the MarkWall feature, the marquee velocity wave, and the larger statement type.

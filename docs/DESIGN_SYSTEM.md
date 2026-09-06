@@ -248,9 +248,13 @@ This file will evolve as design decisions are finalized. Each section should be 
 
 ---
 
-## v4.6 Additions (EXPERIMENTAL, 2026-09-05)
+## v4.7 Additions (EXPERIMENTAL, 2026-09-06)
 
-- **Statements scene:** full-viewport sliding panels (travel plus 60vw to minus 60vw, scale 1.06 to 1 to 0.94, rotation plus/minus 1.5 degrees, opacity fades at travel end); oversized per-panel ink fields (8% bleed) so transformed corners never uncover; verbs at `clamp(4rem, 17vw, 20rem)` with explicit paper color.
+- **Statements scene:** one vertical composition traveling upward with scroll; three thoughts share the ride with emphasis following distance from center while inactive thoughts persist as dimmed history; verbs at `clamp(3.5rem, 10vw, 11rem)` with explicit paper color; serif pronoun leads each line.
+- **Footer contact:** Elsewhere channels carry meaning glyphs with dim handles; Discord is a copy action; Pages and control Navigate links use arrow markers.
+- **Notes wall (Personality):** hairline-framed dotted canvas (2400 by 1600 world); paper/ink/accent note variants; composer, reply dialog, and micro-typographic metadata; local-first with shared API.
+
+- **Statements scene (v4.6, superseded by v4.7 vertical accumulation above):** full-viewport sliding panels with shared crossfade windows and oversized ink bleed; verbs at 17vw with explicit paper color.
 - **Skills emblems:** monogram cores render in ink like the marks (uniform beige family); solid full-bleed marks render one step smaller; labels reserve two balanced lines.
 - **Footer contact:** Elsewhere channels carry meaning glyphs (code, diamond, document) plus a mail glyph on Email; Pages and control Navigate links use arrow markers; all decorative symbols are aria-hidden.
 - **Mark wall (Personality):** hairline-framed dotted field; geometric glyph picker; stamps pop via independent `scale`; localStorage persistence with memory fallback; 150-mark cap.

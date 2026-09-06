@@ -138,13 +138,17 @@ The name as a slow infinite marquee (two identical groups, -50% loop, pauses on 
 
 - Selecting a fragment (hover, focus, or click/tap) swaps the large serif word and caption instantly (no transition choreography; `aria-live` announces the change). Active button fills vermilion. No backend, no persistence: selection is local state only. The word column has a fixed width so swaps never reflow the buttons (a past hover feedback loop).
 
-### Mark wall (`MarkWall.tsx`)
+### Mark wall (SUPERSEDED by the notes wall below; `MarkWall.tsx` deleted)
 
-- Stamping a glyph pops it in via the independent CSS `scale` property (composes with each mark's translate/rotate; 0.5s expo). Instant under reduced motion. No loops, no scroll effects; at most 150 absolutely positioned spans.
+### Notes wall (`NotesWall.tsx`)
+
+- Pan is direct manipulation: pointer drag writes a clamped canvas transform through rAF (no React state during pan); wheel always scrolls the page, never the wall; touch keeps vertical page scroll (`touch-pan-y`) with horizontal drag panning; arrow keys pan when focused; a Recenter button restores origin.
+- Restrained arrival (fade-rise under 0.5s) for placed notes and hover lift on cards; calm and instant under reduced motion. No continuous animation anywhere.
+- Virtualized: only notes near the viewport render (capped at 150); visibility recomputes on pan end and data change, never per frame.
 
 ### Control center micro-motion
 
-- Modules warm to surface on hover; module diamonds rotate; channel tiles lift for real links; nav links extend their accent tick. IST clock and session uptime tick once per second (the only per-second React state on the page).
+- Modules warm to surface on hover; module diamonds rotate; channel tiles lift for real links; navigation arrows nudge on hover. IST clock and session uptime tick once per second (the only per-second React state on the page).
 
 ### Theme crossfade
 
@@ -355,11 +359,11 @@ Motion values are now concrete (see Implemented Patterns and Token Reference abo
 - The statements section is pulled up `-mt-[100dvh]` so its sticky engages the exact pixel the hero releases: the wipe is veil against incoming thought, with no tail and no gap. Each thought phase carries its own ink (the stage is transparent), so the hero stays pristine underneath until the first thought arrives; the bridge is pointer-transparent so hero hover survives the overlap.
 - Phase crossfades share windows (outgoing exit equals incoming enter) so some thought is always present; verb masks travel bottom-up on entry and top-down on exit.
 
-### Statements phases (v4.6 sliding scene; supersedes the masked in-place version)
+### Statements scene (v4.7 vertical accumulation; supersedes sliding panels)
 
-- One continuous leftward slide: each thought is a full-viewport panel traveling from +60vw through center to -60vw. Incoming arrives while outgoing is still present (shared crossfade windows), with matching directional momentum. Scale settles 1.06 to 1 on entry and relaxes to 0.94 on exit; a whisper of rotation (plus 1.5 to minus 1.5 degrees) follows travel direction.
-- Panels travel first and fade last: opacity fades sit at the very end of travel so fading ink never exposes the page behind. Each panel carries an oversized ink field (8% bleed) so rotation and scale never uncover viewport corners.
-- Verbs at `clamp(4rem, 17vw, 20rem)` with explicit paper color; serif "I" then verb then note stagger per phase. BUILD [0, 0.08]/[0.28, 0.36], BREAK [0.28, 0.36]/[0.6, 0.68], REBUILD [0.6, 0.68] holding to release into About.
+- One typographic composition travels upward with scroll (stack offset 42vh to minus 50vh over the section): three thoughts share the ride, and emphasis follows distance from center while inactive thoughts persist as dimmed, slightly smaller history above and below. Serif "I" leads each line slightly, the note trails; verbs at `clamp(3.5rem, 10vw, 11rem)` with explicit paper color.
+- Travel matches scroll direction, so motion always feels caused. The finale holds strong through release while About enters beneath it. All ranges end at 1.0; every state is a pure function of progress (identical forward and reverse).
+- Reduced motion: static stacked block with matching alignment, full ink.
 
 ## v4.3 Patterns (EXPERIMENTAL, 2026-09-04)
 
@@ -380,9 +384,9 @@ Motion values are now concrete (see Implemented Patterns and Token Reference abo
 - Clip-free by construction: overflow visible through the whole ancestor chain except the viewport-sized sticky frame; hero rows separated by a small top margin; the footer marquee carries vertical bleed inside its overflow mask.
 - Fine pointers only; static under reduced motion and on touch. Used by the hero name and the footer wordmark.
 
-### Hero exit (ink veil handoff)
+### Hero exit (pure ink veil handoff)
 
-- Two beats over a 120svh scene: the composition separates (name lines sweep apart, portrait exits laterally) while the frame stays full, then an ink veil rises from the bottom carrying the opening statement and hands a full ink frame to the statements bridge. Late opacity fades happen behind the veil, never on their own.
+- Two beats over a 120svh scene: the composition separates (name lines sweep apart, portrait exits laterally) while the frame stays full, then a pure ink veil rises from the bottom and hands a full ink frame to the statements bridge. The veil carries no text: the bridge owns every word, so nothing can duplicate across the handoff. Late opacity fades happen behind the veil, never on their own.
 - Reduced motion: the scene never pins (static section scrolls away normally); no veil is rendered.
 
 ### Statements bridge (SUPERSEDED by the v4.5 phased composition above)

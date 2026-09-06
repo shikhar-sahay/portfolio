@@ -253,13 +253,13 @@
 
 ### Tasks
 
-- [x] Audit micro-interactions across passes v4.2-v4.5 (hover, focus, tap, scroll, drag)
+- [x] Audit micro-interactions across passes v4.2-v4.7 (hover, focus, tap, scroll, drag)
 - [ ] Copy approval (provisional copy throughout; owner decision)
 - [ ] Cross-browser testing (Chromium verified; Firefox, Safari, Edge open)
 - [ ] Real-device testing (open)
 - [x] No layout shift sources found (fixed display sizes, blur placeholder, uniform slots)
 - [x] Loading states (blur placeholder, carousel skeleton, session loader)
-- [ ] Real links (placeholders documented and inert)
+- [x] Real owner links wired (email, socials, Drive resume, cert verifications; project URLs and resume PDF file still pending)
 - [x] SEO metadata basic set (title, description, OG/Twitter cards, robots) + favicon
 - [ ] OG image, JSON-LD, custom 404, print stylesheet (open)
 

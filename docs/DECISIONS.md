@@ -650,6 +650,26 @@ Do not make significant design/architecture decisions without documenting them h
 
 ---
 
+### 36. v4.7 Owner Data, Vertical Statements, Notes Wall (EXPERIMENTAL polish)
+
+**Decision:** Three-track pass on owner-supplied material.
+
+1. Owner data: real email/GitHub/LinkedIn/Instagram/Medium/X/Spotify links wired with per-channel hierarchy (primary four in control tiles, broader set plus handles in footer Elsewhere, Discord as a copy action since no public URL exists). Resume viewed via the canonical Drive link, downloaded from the local file (still a placeholder until the real PDF lands). Certifications link to verification URLs with issuer plus external affordance. Resume adopted as the factual authority: Recipharm title corrected to IT Intern with DR/BCP, Veritas, and CSV detail; GDG and CodeChef collapsed to the single senior roles the resume establishes (prior Inner/Junior splits and the unsourced event lines removed); Cyber Defenders enriched with LLM backend and Geo-IP detail; Docker added to skills with a vendored mark; Papers stack matches the resume spelling. Phone number and CGPA deliberately not displayed.
+2. Statements rebuilt as a vertical accumulative composition sharing one upward travel: emphasis follows distance from center while inactive thoughts persist as dimmed history, so phrases transition through each other instead of replacing. The hero veil carries no text (it duplicated the bridge thought); the bridge owns every word.
+3. MarkWall replaced by an infinite notes wall: pan-able world canvas (2400 by 1600) with transform panning, viewport-filtered rendering capped at 150, composer with strict limits, one-level replies, keyboard parity, calm reduced motion. Persistence is an in-memory store behind an interface (works on dev and long-running servers; serverless needs the documented KV swap); seeds are labeled owner notes; wall text renders as plain nodes only.
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-09-06
+
+**Rationale:** Owner material outranks earlier provisional content where they conflict. Vertical travel matches scroll direction and lets history persist, which the horizontal slideshow could not do. Shared persistence is honest about what exists today with an explicit upgrade path instead of a faked backend.
+
+**Alternatives Considered:** Keeping both wall systems (rejected: clutter and duplicated purpose); auto-linking URLs in notes (rejected: plain text is safer); zoom on the canvas (rejected: fixed scale keeps layout and a11y predictable); merging GDG/CodeChef sub-roles with resume dates (rejected: overlapping periods would misrepresent progression).
+
+**Impact:** First Load JS ~158 kB (wall UI plus larger statement type). No new dependencies. API routes add zero client JS.
+
+---
+
 ### 35. v4.6 Footer Life, Sliding Statements, Mark Wall (EXPERIMENTAL polish)
 
 **Decision:** Interaction-depth pass without touching working choreography foundations.

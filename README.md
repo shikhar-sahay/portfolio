@@ -15,12 +15,12 @@ A directed long-scroll experience that feels personal, cinematic, and technicall
 
 1. **Opening:** minimal signal-line loader on an ink field (~1.6s, once per session, skipped for returning visitors and reduced motion).
 2. **Hero:** arch portrait with pointer parallax plus an oversized two-line name that reacts letter by letter to the pointer (2D spring field, fine pointers only). Scroll exit is a two-beat scene change into an ink veil carrying the opening statement. Never zooms the face.
-3. **Statements bridge:** sliding kinetic typography (I / BUILD, BREAK, REBUILD). Full-viewport panels travel leftward with shared crossfade windows and directional momentum; verbs at 17vw; finale holding into About.
+3. **Statements bridge:** one vertical composition traveling upward with scroll. Three thoughts share the ride with emphasis following distance from center while inactive thoughts persist as dimmed history; the finale holds its frame into About.
 4. **About:** word-by-word reading reveal plus a small meta row (based in, studying, otherwise).
 5. **Experience:** org-grouped timeline (Cyber Defenders, Recipharm, GDG On Campus, CodeChef-VIT Student Chapter, Skilledity, Team Shade) on a mathematically centered spine with a scroll-drawn accent fill and diamond markers.
 6. **Skills:** three drifting marquee rows of golden emblems with real monochrome technology marks (19 of 23; ink monograms where no genuine mark exists). No proficiency levels. Certifications keep a separate register.
 7. **Projects:** infinite drifting carousel (auto until first touch, then manual forever), drag/swipe/arrows/keyboard, five artifact cards with SVG preview motifs and inert placeholder links.
-8. **Personality:** inverted panel with a fragment word-swap instrument (buttons, keyboard accessible) plus a leave-your-mark wall (glyph picker, stamp field, local-only persistence, 150 cap). Captions are voice lines, not factual claims.
+8. **Personality:** inverted panel with a fragment word-swap instrument (buttons, keyboard accessible) plus an infinite notes wall (pan-able canvas, composer, one-level replies, keyboard parity, calm reduced motion). Captions are voice lines, not factual claims.
 9. **Control center:** framed utility grid (Now, IST clock, Studying, Toolbox, Channels, Navigate) with live status, session uptime, and brand channel tiles.
 10. **Footer:** compact contact grid with meaning glyphs, slim resume row (`/resume.pdf`), and a closing SHIKHAR SAHAY marquee with a velocity-wave pointer response (rise plus directional lean, zero cost at idle).
 
@@ -83,13 +83,13 @@ Performance is a hard requirement. Server Components by default, one small lazy 
 
 ## Persistence and backend status
 
-There is no backend: no API routes, no database, no analytics, no contact form backend. Browser storage holds the theme choice (localStorage), the intro-played flag (sessionStorage), and visitor wall marks (localStorage, this browser only). Any future shared persistence (e.g. a global mark wall) would need an API route plus a tiny store with server allow-listing and rate limiting; the wall's storage interface is shaped for exactly that swap.
+There is no traditional backend: no database, no analytics, no contact form backend. The notes wall exposes API routes (`/api/notes`) backed by an in-memory store with validation and rate limiting; on serverless hosts each instance sees its own wall until the documented KV swap is configured. Browser storage holds the theme choice (localStorage), the intro-played flag (sessionStorage), and a wall cache. Any future shared persistence needs an API route plus a tiny store with server allow-listing and rate limiting; the wall's storage interface is shaped for exactly that swap.
 
 ## Known placeholders (owner input needed)
 
-- Contact links: email, GitHub, LinkedIn (`#` in `src/content/profile.ts`)
+- Contact links: email, GitHub, LinkedIn, Instagram, Medium, X, Spotify, and Drive resume are real and wired; Discord is a copy action (no public URL exists)
+- Resume PDF (`public/resume.pdf` is still a placeholder file; Drive link is canonical for viewing)
 - Project Live/GitHub/Case study links (`#` in `src/content/projects.ts`)
-- Resume PDF (`public/resume.pdf` is a placeholder file)
 - Skilledity Social Media Management Intern: no dates or summary supplied
 - Four skills keep monogram emblems (SQL, Nmap, CrowdStrike Falcon, Beelzebub: no genuine CC0 mark found)
 - All copy is provisional until the owner approves it
