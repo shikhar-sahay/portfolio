@@ -60,13 +60,15 @@ const variantClass = [
 ];
 
 /**
- * The notes wall: a living collaborative surface inside Personality. Notes
- * rest tilted at varied sizes with pin-diamond metadata and tactile
- * shadows; hover straightens and lifts a card. Drag to pan (the page keeps
- * vertical scroll), click a note to open its thread slip, or leave one via
- * the docked instrument. Notes persist through the wall API with a local
- * cache fallback; seeds are clearly labeled owner notes. Reduced motion
- * gets instant, calm behavior; keyboard users get full parity.
+ * The notes wall: Personality opens into a full-bleed living surface, no
+ * containing box. Notes rest tilted at varied sizes with pin-diamond
+ * metadata and tactile shadows; hover straightens and lifts a card. Drag
+ * to pan (the page keeps vertical scroll), click a note to open its
+ * thread slip, leave one via the docked instrument (a ghost previews the
+ * landing spot), or jump to the newest note on the whole wall with
+ * Latest. Notes persist through the wall API with a local cache
+ * fallback; seeds are clearly labeled owner notes. Reduced motion gets
+ * instant, calm behavior; keyboard users get full parity.
  */
 export function NotesWall() {
   const reduce = useMountedReducedMotion();
@@ -99,6 +101,8 @@ export function NotesWall() {
   } | null>(null);
   const threadRef = useRef<HTMLDivElement>(null);
   const messageRef = useRef<HTMLTextAreaElement>(null);
+  const previewRef = useRef<HTMLSpanElement>(null);
+  const fly = useRef(0);
 
   // Keep keyboard context: opening the thread or composer moves focus
   // inside it (without scrolling), so Escape and Tab continue from the
@@ -201,12 +205,90 @@ export function NotesWall() {
     refreshVisible();
   }, [notes, refreshVisible]);
 
-  const recenter = useCallback(() => {
-    pan.current.x = 700;
-    pan.current.y = 500;
-    applyPan();
-    refreshVisible();
-  }, [applyPan, refreshVisible]);
+  // Smooth camera flight to a world point (centers it). Reduced motion
+  // jumps instead of animating. Cancels any in-flight tween.
+  const flyTo = useCallback(
+    (tx: number, ty: number) => {
+      cancelAnimationFrame(fly.current);
+      const viewport = viewportRef.current;
+      if (!viewport || reduce) {
+        if (viewport) {
+          const vw = viewport.clientWidth;
+          const vh = viewport.clientHeight;
+          pan.current.x = Math.min(Math.max(0, WORLD.w - vw), Math.max(0, tx));
+          pan.current.y = Math.min(Math.max(0, WORLD.h - vh), Math.max(0, ty));
+        } else {
+          pan.current.x = tx;
+          pan.current.y = ty;
+        }
+        applyPan();
+        refreshVisible();
+        return;
+      }
+      const vw = viewport.clientWidth;
+      const vh = viewport.clientHeight;
+      tx = Math.min(Math.max(0, WORLD.w - vw), Math.max(0, tx));
+      ty = Math.min(Math.max(0, WORLD.h - vh), Math.max(0, ty));
+      const sx = pan.current.x;
+      const sy = pan.current.y;
+      const t0 = performance.now();
+      const dur = 650;
+      const step = (now: number) => {
+        const t = Math.min(1, (now - t0) / dur);
+        const e = 1 - Math.pow(1 - t, 3);
+        pan.current.x = sx + (tx - sx) * e;
+        pan.current.y = sy + (ty - sy) * e;
+        applyPan();
+        if (t < 1) fly.current = requestAnimationFrame(step);
+        else refreshVisible();
+      };
+      fly.current = requestAnimationFrame(step);
+    },
+    [applyPan, refreshVisible, reduce]
+  );
+
+  // Latest-note navigation: asks the store for the newest note across
+  // the WHOLE wall (never the newest loaded one), ensures it renders,
+  // flies the camera to it, and opens its thread.
+  const goLatest = useCallback(async () => {
+    setError(null);
+    try {
+      const r = await fetch('/api/notes?order=latest', {
+        headers: { accept: 'application/json' },
+      });
+      const data = (await r.json()) as { note?: WallNote | null; error?: string };
+      if (!r.ok || !data.note) {
+        setError(data.error ?? 'Could not find the latest note.');
+        return;
+      }
+      const note = data.note;
+      setNotes(prev => (prev.some(n => n.id === note.id) ? prev : [...prev, note]));
+      setVisibleIds(prev => new Set(prev).add(note.id));
+      const viewport = viewportRef.current;
+      const vw = viewport?.clientWidth ?? 800;
+      const vh = viewport?.clientHeight ?? 600;
+      flyTo(note.x + 112 - vw / 2, note.y + 80 - vh / 2);
+      const arriveIn = reduce ? 0 : 700;
+      window.setTimeout(() => {
+        setFlashId(note.id);
+        setOpenId(note.id);
+        window.setTimeout(() => setFlashId(null), 1600);
+      }, arriveIn);
+    } catch {
+      setError('The wall is unreachable right now.');
+    }
+  }, [flyTo, reduce]);
+
+  // Placement preview ghost: follows the cursor while composing, written
+  // straight to the DOM so pointermove never re-renders React.
+  const onPreviewMove = (e: React.PointerEvent) => {
+    if (!composing) return;
+    const el = previewRef.current;
+    if (!el) return;
+    const p = toWorld({ clientX: e.clientX, clientY: e.clientY }, canvasRef.current);
+    el.style.opacity = '1';
+    el.style.transform = `translate(${Math.round(p.x - 112)}px, ${Math.round(p.y - 70)}px)`;
+  };
 
   const onPointerDown = (e: React.PointerEvent) => {
     if (e.button !== 0 && e.pointerType === 'mouse') return;
@@ -346,13 +428,10 @@ export function NotesWall() {
   const rendered = notes.filter(n => visibleIds.has(n.id));
 
   return (
-    <div className="border-paper/15 mt-[8vh] border-t pt-6">
-      <p className="text-micro uppercase tracking-[0.16em] text-accent">The wall</p>
-      <p className="text-paper/60 mt-3 max-w-[52ch] text-sm leading-relaxed">
-        A shared canvas. Drag to look around, open a note to reply, or pin one of your own. Be kind:
-        everything here is public.
-      </p>
-
+    <div className="mt-[6vh]">
+      {/* The wall is the section now: a full-bleed spatial surface with no
+          containing box. The mosaic statement above is its reason; the
+          dock floats inside the environment. */}
       <div
         ref={viewportRef}
         role="region"
@@ -360,12 +439,15 @@ export function NotesWall() {
         tabIndex={0}
         onKeyDown={onKeyPan}
         onPointerDown={onPointerDown}
+        onPointerMove={onPreviewMove}
         onClick={e => {
           if (drag.current?.moved) return;
           if (!composing) return;
           placeDraft(e.clientX, e.clientY);
         }}
-        className="border-paper/25 relative mt-5 h-[480px] cursor-grab touch-pan-y select-none overflow-hidden border active:cursor-grabbing sm:h-[560px]"
+        className={`relative ml-[calc(50%-50vw)] h-[78vh] min-h-[560px] w-screen touch-pan-y select-none overflow-hidden ${
+          composing ? 'cursor-crosshair' : 'cursor-grab active:cursor-grabbing'
+        }`}
         style={{
           backgroundImage: 'radial-gradient(circle, rgba(236,228,212,0.12) 1px, transparent 1.5px)',
           backgroundSize: '32px 32px',
@@ -381,18 +463,18 @@ export function NotesWall() {
           className="absolute left-0 top-0 will-change-transform"
           style={{ width: WORLD.w, height: WORLD.h }}
         >
-          {/* World boundary: a dashed edge with accent corner ticks, so the
-              canvas reads as a place with limits instead of a void */}
-          <div
-            aria-hidden="true"
-            className="border-paper/20 pointer-events-none absolute left-0 top-0 border border-dashed"
-            style={{ width: WORLD.w, height: WORLD.h }}
-          >
-            <span className="absolute -left-px -top-px h-3 w-3 border-l-2 border-t-2 border-accent" />
-            <span className="absolute -right-px -top-px h-3 w-3 border-r-2 border-t-2 border-accent" />
-            <span className="absolute -bottom-px -left-px h-3 w-3 border-b-2 border-l-2 border-accent" />
-            <span className="absolute -bottom-px -right-px h-3 w-3 border-b-2 border-r-2 border-accent" />
-          </div>
+          {/* Placement preview: while composing, a ghost of the note
+              follows the cursor so landing it feels deliberate. Written
+              straight to the DOM (no React state per pointermove). */}
+          {composing && (
+            <span
+              ref={previewRef}
+              aria-hidden="true"
+              className="border-accent/80 pointer-events-none absolute left-0 top-0 flex h-[140px] w-56 items-center justify-center border border-dashed text-accent opacity-0"
+            >
+              +
+            </span>
+          )}
           {rendered.map(n => (
             <button
               key={n.id}
@@ -456,10 +538,10 @@ export function NotesWall() {
           </button>
           <button
             type="button"
-            onClick={recenter}
+            onClick={goLatest}
             className="border-paper/30 text-paper/70 hover:border-paper/60 border bg-ink px-4 py-2 text-micro font-semibold uppercase tracking-[0.16em] transition-all duration-300 ease-expo hover:text-paper"
           >
-            Recenter
+            Latest
           </button>
           <p
             className="text-paper/50 bg-ink px-3 py-2 text-micro uppercase tracking-[0.14em]"
