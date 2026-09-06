@@ -4,6 +4,12 @@ import { checkRateLimit, clientIp, noteStore } from './_store';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
+  // Latest-note navigation: answer from the whole store so the client
+  // never mistakes the newest loaded note for the newest global note.
+  if (searchParams.get('order') === 'latest') {
+    const note = noteStore.latest();
+    return NextResponse.json({ note: note ?? null });
+  }
   const limit = Math.min(
     LIMITS.initialFetchLimit,
     Math.max(

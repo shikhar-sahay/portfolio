@@ -17,6 +17,11 @@ export interface NoteStore {
   list(limit: number, before?: number): { notes: WallNote[]; total: number };
   add(note: Omit<WallNote, 'id' | 'createdAt' | 'replies' | 'owner'>): WallNote;
   get(id: string): WallNote | undefined;
+  /** Newest note across the WHOLE store, not just the loaded subset:
+      powers Latest-note navigation honestly. KV implementations must
+      answer from the full dataset (e.g. a sorted set), never from a
+      cached page. */
+  latest(): WallNote | undefined;
   remove(id: string): boolean;
   addReply(noteId: string, reply: Omit<WallReply, 'id' | 'noteId' | 'createdAt'>): WallReply | null;
 }
@@ -54,6 +59,14 @@ class MemoryNoteStore implements NoteStore {
     return this.notes.get(id);
   }
 
+  latest() {
+    let newest: WallNote | undefined;
+    this.notes.forEach(note => {
+      if (!newest || note.createdAt > newest.createdAt) newest = note;
+    });
+    return newest;
+  }
+
   remove(id: string) {
     return this.notes.delete(id);
   }
@@ -72,12 +85,14 @@ class MemoryNoteStore implements NoteStore {
 
 // Module singleton: shared across route handlers in one process.
 // Seeded with the owner notes so seeds accept replies like any note.
-const globalStore = globalThis as unknown as { __wallStore?: MemoryNoteStore };
-if (!globalStore.__wallStore) {
-  globalStore.__wallStore = new MemoryNoteStore();
-  globalStore.__wallStore.seed(SEED_NOTES);
+// Key is versioned: dev HMR preserves globalThis across edits, so a new
+// key guarantees the running instance implements the current interface.
+const globalStore = globalThis as unknown as { __wallStoreV2?: MemoryNoteStore };
+if (!globalStore.__wallStoreV2) {
+  globalStore.__wallStoreV2 = new MemoryNoteStore();
+  globalStore.__wallStoreV2.seed(SEED_NOTES);
 }
-export const noteStore: NoteStore = globalStore.__wallStore;
+export const noteStore: NoteStore = globalStore.__wallStoreV2;
 
 /** Sliding-window rate limiter (per process; pair with edge limits in prod). */
 const buckets = new Map<string, { notes: number[]; replies: number[] }>();
