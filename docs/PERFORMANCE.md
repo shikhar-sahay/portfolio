@@ -14,9 +14,9 @@
 
 ## Performance Budgets (FINALIZED: Targets) and Measured State
 
-| Metric                              | Target         | Measured (2026-09-06, `next build`)                                                                                           |
+| Metric                              | Target         | Measured (2026-09-07, `next build`)                                                                                           |
 | ----------------------------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| **Initial JS (First Load)**         | < 150KB        | ~159 kB (9 kB over; see reclaim below)                                                                                        |
+| **Initial JS (First Load)**         | < 150KB        | ~160 kB (10 kB over; see reclaim below)                                                                                       |
 | **LCP (Largest Contentful Paint)**  | < 2.5s         | Not measured (no Lighthouse run yet)                                                                                          |
 | **CLS (Cumulative Layout Shift)**   | < 0.1          | Not measured                                                                                                                  |
 | **INP (Interaction to Next Paint)** | < 200ms        | Not measured                                                                                                                  |
@@ -119,7 +119,7 @@
 
 - [ ] Lighthouse audit (target 90+ performance, 95+ accessibility)
 - [ ] Core Web Vitals measurement (LCP, CLS, INP)
-- [ ] Bundle size back under 150 kB initial JS (currently ~159 kB)
+- [ ] Bundle size back under 150 kB initial JS (currently ~160 kB)
 - [ ] Vercel deployment + custom domain + production measurement
 - [ ] Real-device checks (iOS Safari, Chrome Android)
 - [ ] Cross-browser checks (Firefox, Safari, Edge; only Chromium verified so far)
@@ -165,6 +165,12 @@ There is no `.github/` directory and no Lighthouse CI, bundle gate, or deploy pi
 - Leave-your-mark style features do not exist, so there is no associated network or runtime cost. The only recurring main-thread work is the carousel rAF (offscreen-paused), pointer letter fields (pointer-inside only), and two 1-second clocks.
 
 ---
+
+## v4.9 Status (2026-09-07)
+
+- First Load JS: ~160 kB against the 150 kB budget (was ~159 kB at v4.8). The delta covers the Certifications client section, the wall Latest flight, and the footer rewrite (the velocity-wave deletion offsets part of it).
+- New runtime costs are event-gated only: tagline springs, footer lean loop (pointer-inside plus settle, zero layout reads), Latest flight rAF (650ms, then stops), placement ghost (direct DOM writes). No new idle loops.
+- Reclamation options (unchanged): cheapen the InteractiveLetters tint, trim carousel hint state, or move Counter out of the lazy chunk. Track in HANDOFF known issues.
 
 ## v4.8 Status (2026-09-06)
 

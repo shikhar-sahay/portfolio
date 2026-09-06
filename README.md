@@ -14,21 +14,22 @@ A directed long-scroll experience that feels personal, cinematic, and technicall
 ## Sections and features (top to bottom)
 
 1. **Opening:** minimal signal-line loader on an ink field (~1.6s, once per session, skipped for returning visitors and reduced motion).
-2. **Hero:** arch portrait with pointer parallax plus an oversized two-line name that reacts letter by letter to the pointer (2D spring field, fine pointers only). The tagline keeps a memory: its serif word carries a vermilion afterimage that stirs toward the pointer and fades slowly. Scroll exit is a two-beat scene change into a pure ink veil (the bridge owns every word, so nothing duplicates). Never zooms the face.
-3. **Statements bridge:** one vertical composition traveling upward with scroll. Three thoughts share the ride with emphasis following distance from center while inactive thoughts persist as dimmed history; each row carries a giant cropped echo of its neighbor and the rows cascade diagonally, so the full viewport reads as composition; the finale holds its frame into About.
+2. **Hero:** arch portrait with pointer parallax plus an oversized two-line name that reacts letter by letter to the pointer (2D spring field, fine pointers only). The tagline keeps an accent rule: a vermilion hairline draws beneath the serif word with a diamond riding to the cursor. Scroll exit is a two-beat scene change into a surface-matched veil (the bridge owns every word, so nothing duplicates). Never zooms the face.
+3. **Statements bridge:** one vertical composition traveling upward with scroll, deliberately themed (paper plus ink in light, warm charcoal plus cream in dark). Three thoughts share the ride with emphasis following distance from center while inactive thoughts persist as dimmed history; each row carries a cropped same-word residue and the rows cascade diagonally, so the full viewport reads as composition; the finale holds its frame into About.
 4. **About:** word-by-word reading reveal plus a small meta row (based in, studying, otherwise).
 5. **Experience:** org-grouped timeline (Cyber Defenders, Recipharm, GDG On Campus, CodeChef-VIT Student Chapter, Skilledity, Team Shade) on a mathematically centered spine with a scroll-drawn accent fill and diamond markers.
-6. **Skills:** three drifting marquee rows of golden emblems with real monochrome technology marks (19 of 23; ink monograms where no genuine mark exists). No proficiency levels. Certifications keep a separate register.
-7. **Projects:** infinite drifting carousel (auto until first touch, then manual forever), drag/swipe/arrows/keyboard, five artifact cards with SVG preview motifs and inert placeholder links.
-8. **Personality:** inverted panel with a fragment word-swap instrument (buttons, keyboard accessible) plus an infinite notes wall (tilted tactile cards, docked instrument, serif composer, thread slip with one-level replies, keyboard parity, calm reduced motion). Captions are voice lines, not factual claims.
-9. **Control center:** framed utility grid (Now, IST clock, Studying, Toolbox, Channels, Navigate) with live status, session uptime, and brand channel tiles.
-10. **Footer:** compact contact grid (icon plus name social rows with real brand marks, Discord copy row, arrow-marked page links), slim resume row (Drive view plus local download), and a closing SHIKHAR SAHAY marquee with a velocity-wave pointer response (rise plus directional lean, zero cost at idle).
+6. **Skills:** three drifting marquee rows of golden emblems with real monochrome technology marks (19 of 23; ink monograms where no genuine mark exists). No proficiency levels.
+7. **Certifications:** their own ledger chapter (eyebrow, serif lede, hairline rows, featured first credential, boxed Verify links), rows arriving with a scroll mask wipe.
+8. **Projects:** infinite drifting carousel (auto until first touch, then manual forever), drag/swipe/arrows/keyboard, five artifact cards with SVG preview motifs and inert placeholder links.
+9. **Personality:** fixed dark panel with a fragment word-swap instrument (buttons, keyboard accessible), a mosaic statement, plus a full-bleed notes wall (tilted tactile cards, docked instrument with Latest flight, placement preview, serif composer, thread slip with one-level replies, keyboard parity, calm reduced motion). Captions are voice lines, not factual claims.
+10. **Control center:** framed utility grid (Now, IST clock, Studying, Toolbox, Channels, Navigate) with live status, session uptime, and brand channel tiles.
+11. **Footer:** compact contact grid (icon plus name social rows with real brand marks, Discord copy row, arrow-marked page links), slim resume row (Drive view plus local download), and a closing SHIKHAR SAHAY marquee that leans as one object with a cursor-following vermilion sheen (zero cost at idle).
 
 ## Interaction highlights
 
-- Pointer-reactive display type (hero and footer marquee) with per-letter springs.
+- Pointer-reactive display type (hero letter springs; footer wordmark leans as one object with a sheen sweep).
 - Scroll-scrubbed scene choreography with one coherent progress model per scene; every range ends at 1.0 (Motion v13 drops flat terminal segments past the last keyframe).
-- Theme toggle persisted to localStorage; intro flag in sessionStorage. No other browser storage, no network calls, no backend of any kind.
+- Theme toggle persisted to localStorage; intro flag in sessionStorage; wall cache in localStorage. The only backend is the notes wall API (validation plus rate limits, in-memory store with a documented KV path).
 
 ## Tech stack
 
@@ -58,12 +59,13 @@ src/
 ├── components/
 │   ├── layout/             # Opening, SiteNav (header + progress + active section), ThemeToggle
 │   ├── sections/           # Hero, TransitionStatements, About, Experience, Skills,
-│   │                       #   Projects, ProjectPanel (lazy chunk), Personality,
-│   │                       #   NotesWall (notes canvas), ControlCenter, Contact (footer), FooterWordmark
+│   │                       #   Certifications (ledger), Projects, ProjectPanel (lazy chunk),
+│   │                       #   Personality, NotesWall (open surface), ControlCenter,
+│   │                       #   Contact (footer), FooterWordmark
 │   └── ui/                 # InteractiveLetters, TechLogo, Reveal, WordReveal,
-│                           #   Counter, InView
+│                           #   Counter, InView, CopyText
 ├── content/                # Typed data modules: profile, sections, projects,
-│                           #   experience, systems, personality, techLogos, channelGlyphs
+│                           #   experience, systems, personality, wall, techLogos, channelGlyphs
 └── hooks/                  # useMountedReducedMotion (hydration-safe reduced-motion flag)
 public/
 └── resume.pdf              # Real owner-supplied resume
@@ -74,7 +76,7 @@ docs/                       # Design system, architecture, animation, content, p
 ## Accessibility and reduced motion
 
 - Semantic landmarks, complete keyboard flow with visible focus rings, aria labels on icon-only controls, `aria-hidden` on duplicated carousel/marquee copies.
-- Every animation has a reduced-motion equivalent via `useMountedReducedMotion` (gated post-mount so SSR and hydration markup match): static hero (never pinned), static statement stack, native-scroll carousel with instant arrows, static footer wordmark, collapsed CSS motion globally.
+- Every animation has a reduced-motion equivalent via `useMountedReducedMotion` (gated post-mount so SSR and hydration markup match): static hero (never pinned), static statement stack with residues, native-scroll carousel with instant arrows, static cert ledger, static footer wordmark, Latest jumps instead of flying, collapsed CSS motion globally.
 - Touch devices get the complete static experience (pointer interactions are fine-pointer only).
 
 ## Performance philosophy
@@ -83,7 +85,7 @@ Performance is a hard requirement. Server Components by default, one small lazy 
 
 ## Persistence and backend status
 
-There is no traditional backend: no database, no analytics, no contact form backend. The notes wall exposes API routes (`/api/notes`) backed by an in-memory store with validation and rate limiting; on serverless hosts each instance sees its own wall until the documented KV swap is configured. Browser storage holds the theme choice (localStorage), the intro-played flag (sessionStorage), and a wall cache. Any future shared persistence needs an API route plus a tiny store with server allow-listing and rate limiting; the wall's storage interface is shaped for exactly that swap.
+There is no traditional backend: no database, no analytics, no contact form backend. The notes wall exposes API routes (`/api/notes`: list/create, replies, secret-gated moderation, global-latest lookup) backed by an in-memory store with validation and rate limiting; on serverless hosts each instance sees its own wall until the documented KV swap is configured. Browser storage holds the theme choice (localStorage), the intro-played flag (sessionStorage), and a wall cache. Any future shared persistence needs an API route plus a tiny store with server allow-listing and rate limiting; the wall's storage interface is shaped for exactly that swap.
 
 ## Known placeholders (owner input needed)
 

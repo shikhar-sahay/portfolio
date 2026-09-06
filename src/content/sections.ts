@@ -13,6 +13,7 @@ export const sections: SectionMeta[] = [
   { id: 'about', name: 'About', note: 'context' },
   { id: 'experience', name: 'Experience', note: '2020 to now' },
   { id: 'skills', name: 'Skills', note: 'inventory' },
+  { id: 'certifications', name: 'Certifications', note: 'credentials' },
   { id: 'projects', name: 'Projects', note: 'five artifacts' },
   { id: 'personality', name: 'Personality', note: 'fragments' },
   { id: 'contact', name: 'Contact', note: 'outro' },

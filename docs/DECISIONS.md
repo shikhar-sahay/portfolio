@@ -692,6 +692,29 @@ Do not make significant design/architecture decisions without documenting them h
 
 ---
 
+### 38. v4.9 Correction Pass: Tagline Rule, Residue Echoes, Cert Ledger, Wordmark Object, Panel Scope, Open Wall (EXPERIMENTAL polish)
+
+**Decision:** Six-track visual/interaction correction pass on owner screenshot evidence.
+
+1. Tagline: the vermilion afterimage is removed (it read as misregistration). Replacement is an accent rule that draws beneath the serif word with a diamond riding to the cursor; movement glides the marker, leave retracts. No loop, no layout, aria-hidden, absent under reduced motion.
+2. Statements: echoes now map same-word as trailing two-letter residues (LD/AK/LD), offset low-right so they can never stack behind their own letterforms; full-word echoes were judged muddy in light mode. The scene is theme-deliberate: paper surface with ink type in light, deep warm charcoal with cream type in dark (theme tokens, no fixed colors); hero veil and tail match the surface per theme so both handoffs stay seamless.
+3. Certifications leave Skills for their own ledger chapter (eyebrow, serif lede, generous break, hairline rows, featured first row larger, boxed Verify links): one credential per row arriving with a scroll-driven mask wipe, full set static under reduced motion. No invented issuer marks.
+4. Footer wordmark rebuilt as one object: uniform velocity lean plus stretch, tracking breath, and a narrow vermilion sheen band following the cursor (an early fill-to-cursor version was judged too loud). Separators grow to 0.16em diamonds with 0.7em air after finding the old ones rendered 4px (em resolved against body type, fixed with an explicit text size). Seamless -50% loop verified.
+5. Theme system: Personality plus wall render inside a `.panel-ink` token scope (light values pinned), fixing the light-island-in-dark-mode bug at the system level; full section audit in both themes; toggle gains a state-driven icon rotation.
+6. Wall opens up: mosaic statement (owner-supplied meaning, lightly polished, EXPERIMENTAL copy), full-bleed section-width surface with the box border and world boundary removed, cursor-following placement ghost (direct DOM writes, no re-renders), Recenter replaced by Latest (store `latest()` plus `?order=latest`, honest global lookup, smooth camera flight, thread opens on arrival, reduced motion jumps). All safety architecture preserved.
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-09-07
+
+**Rationale:** Every change answers screenshot evidence: misregistration, accidental mapping, appendix hierarchy, childish motion, theme island, app-in-a-box. Where a first attempt failed visual judgment (full-word same echoes, fill sweep), it was redesigned, not tuned.
+
+**Alternatives Considered:** Leaving the tagline static (rejected: the rule earns its place); neighbor-word echoes (rejected: accidental by construction); brand-color social icons (unchanged); names-only wall cards (rejected: hides messages); merging Security Tools, Experience imagery, opening interaction, Personality stories (still backlog, not implemented).
+
+**Impact:** First Load JS measured at final build (see PERFORMANCE.md). No new dependencies. One new client component (Certifications, justified by scroll choreography).
+
+---
+
 ### 35. v4.6 Footer Life, Sliding Statements, Mark Wall (EXPERIMENTAL polish)
 
 **Decision:** Interaction-depth pass without touching working choreography foundations.

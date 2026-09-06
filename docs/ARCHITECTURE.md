@@ -86,13 +86,13 @@ There is no `src/lib/`, `src/types/`, `src/styles/`, `src/components/effects/`, 
 ### Component Categories (FINALIZED)
 
 1. **UI primitives**: `InteractiveLetters` (pointer spring field), `TechLogo` (monochrome brand marks), `Reveal` (in-view rise), `WordReveal` (scroll reading reveal), `Counter` (animated metric), `InView` (`data-inview` gate for SVG motifs)
-2. **Sections**: Hero, TransitionStatements, About, Experience, Skills, Projects (+ lazy `ProjectPanel`), Personality, ControlCenter, Contact (footer). Each owns its scroll choreography; no shared timeline.
+2. **Sections**: Hero, TransitionStatements, About, Experience, Skills, Certifications (ledger with mask-wipe rows), Projects (+ lazy `ProjectPanel`), Personality, ControlCenter, Contact (footer). Each owns its scroll choreography; no shared timeline.
 3. **Layout**: Opening (session loader), SiteNav (progress hairline, tuck/reveal, active section, theme toggle), ThemeToggle
 4. **Hooks**: `useMountedReducedMotion`: the single hydration-safe reduced-motion flag every client component gates on
 
 ### Component Principles (FINALIZED)
 
-- **Server Components by default**: only `"use client"` when needed (current clients: Opening, SiteNav, ThemeToggle, Hero, About, TransitionStatements, Experience, Projects, ProjectPanel, Personality, NotesWall, ControlCenter, FooterWordmark, plus the interactive primitives InteractiveLetters, Reveal, WordReveal, Counter, InView, CopyText. Server: Skills, Contact, TechLogo)
+- **Server Components by default**: only `"use client"` when needed (current clients: Opening, SiteNav, ThemeToggle, Hero, About, TransitionStatements, Experience, Projects, ProjectPanel, Personality, NotesWall, ControlCenter, FooterWordmark, Certifications (scroll mask choreography), plus the interactive primitives InteractiveLetters, Reveal, WordReveal, Counter, InView, CopyText. Server: Skills, Contact, TechLogo)
 - **Composition over configuration**: slots/children over props explosion
 - **Design tokens via Tailwind**: CSS variables as color source of truth
 - **Lazy-load heavy components**: `ProjectPanel` via `next/dynamic` with `ssr: false` (the only lazy chunk)
@@ -101,16 +101,16 @@ There is no `src/lib/`, `src/types/`, `src/styles/`, `src/components/effects/`, 
 
 ## State Management
 
-| Need                      | Solution                                                                                             | Status         |
-| ------------------------- | ---------------------------------------------------------------------------------------------------- | -------------- |
-| **Theme**                 | `<html>` class + localStorage, pre-paint head script                                                 | `FINALIZED`    |
-| **Intro played**          | sessionStorage flag, read pre-paint                                                                  | `FINALIZED`    |
-| **Reduced motion**        | `useMountedReducedMotion` hook (post-mount flag, hydration-safe)                                     | `FINALIZED`    |
-| **Scroll choreography**   | One `useScroll` progress per scene, pure `useTransform` mapping                                      | `FINALIZED`    |
-| **Carousel**              | Local ref + single rAF loop (no React state on scroll)                                               | `FINALIZED`    |
-| **Personality selection** | Local `useState` (no persistence)                                                                    | `FINALIZED`    |
-| **Wall persistence**      | `/api/notes` routes plus in-memory store behind a KV-swappable interface; wall cache in localStorage | `EXPERIMENTAL` |
-| **Global store / forms**  | None exist                                                                                           | `UNDECIDED`    |
+| Need                      | Solution                                                                                                                                                                       | Status         |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------- |
+| **Theme**                 | `<html>` class + localStorage, pre-paint head script                                                                                                                           | `FINALIZED`    |
+| **Intro played**          | sessionStorage flag, read pre-paint                                                                                                                                            | `FINALIZED`    |
+| **Reduced motion**        | `useMountedReducedMotion` hook (post-mount flag, hydration-safe)                                                                                                               | `FINALIZED`    |
+| **Scroll choreography**   | One `useScroll` progress per scene, pure `useTransform` mapping                                                                                                                | `FINALIZED`    |
+| **Carousel**              | Local ref + single rAF loop (no React state on scroll)                                                                                                                         | `FINALIZED`    |
+| **Personality selection** | Local `useState` (no persistence)                                                                                                                                              | `FINALIZED`    |
+| **Wall persistence**      | `/api/notes` routes (list/create, replies, moderation, `?order=latest`) plus in-memory store behind a KV-swappable interface (`latest()` required); wall cache in localStorage | `EXPERIMENTAL` |
+| **Global store / forms**  | None exist                                                                                                                                                                     | `UNDECIDED`    |
 
 **Principle (FINALIZED):** No global state library unless genuinely needed. No database, no analytics, no contact backend. The only wall backend is the notes API (validation plus rate limits, in-memory until the documented KV swap). Browser storage holds the theme choice, the intro flag, and the wall cache.
 
@@ -118,16 +118,16 @@ There is no `src/lib/`, `src/types/`, `src/styles/`, `src/components/effects/`, 
 
 ## Data & Content
 
-| Content Type            | Source                                              | Status      |
-| ----------------------- | --------------------------------------------------- | ----------- |
-| **Projects**            | `src/content/projects.ts` (5 artifacts, SVG motifs) | `FINALIZED` |
-| **Experience/Timeline** | `src/content/experience.ts` (org-grouped)           | `FINALIZED` |
-| **Skills / certs**      | `src/content/systems.ts` (+ `techLogos.ts` marks)   | `FINALIZED` |
-| **Personal info**       | `src/content/profile.ts`                            | `FINALIZED` |
-| **Personality**         | `src/content/personality.ts` (fragments + captions) | `FINALIZED` |
-| **Sections/nav**        | `src/content/sections.ts` (order source of truth)   | `FINALIZED` |
-| **Images**              | `src/assets/` static imports + `next/image`         | `FINALIZED` |
-| **SEO/Metadata**        | `metadata` export in `layout.tsx` + `icon.svg`      | `FINALIZED` |
+| Content Type            | Source                                                                                                 | Status      |
+| ----------------------- | ------------------------------------------------------------------------------------------------------ | ----------- |
+| **Projects**            | `src/content/projects.ts` (5 artifacts, SVG motifs)                                                    | `FINALIZED` |
+| **Experience/Timeline** | `src/content/experience.ts` (org-grouped)                                                              | `FINALIZED` |
+| **Skills / certs**      | `src/content/systems.ts` (+ `techLogos.ts` marks)                                                      | `FINALIZED` |
+| **Personal info**       | `src/content/profile.ts`                                                                               | `FINALIZED` |
+| **Personality**         | `src/content/personality.ts` (fragments + captions)                                                    | `FINALIZED` |
+| **Sections/nav**        | `src/content/sections.ts` (order source of truth; visible nav stays About/Experience/Projects/Contact) | `FINALIZED` |
+| **Images**              | `src/assets/` static imports + `next/image`                                                            | `FINALIZED` |
+| **SEO/Metadata**        | `metadata` export in `layout.tsx` + `icon.svg`                                                         | `FINALIZED` |
 
 **Principle (FINALIZED):** Content as data: separate from components. Single source of truth in `src/content/`.
 

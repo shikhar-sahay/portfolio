@@ -253,7 +253,7 @@
 
 ### Tasks
 
-- [x] Audit micro-interactions across passes v4.2-v4.8 (hover, focus, tap, scroll, drag)
+- [x] Audit micro-interactions across passes v4.2-v4.9 (hover, focus, tap, scroll, drag)
 - [ ] Copy approval (provisional copy throughout; owner decision)
 - [ ] Cross-browser testing (Chromium verified; Firefox, Safari, Edge open)
 - [ ] Real-device testing (open)
@@ -318,7 +318,7 @@ Studied 2026-09-06 against the current build. No code, no copy, no assets commit
 
 - [ ] **Experience imagery:** one image per org on the timeline side opposite its text (image or org name hyperlinked). Needs art direction: photo vs logo vs contextual image, size/crop, alternation discipline, mobile stacking, busyness risk. Recommendation pending owner review of options.
 - [ ] **Merge Security Tools into Frameworks:** the Security Tooling row is thin; merging would improve density and rhythm but weakens taxonomy and the security-credibility signal. Category labels could survive as micro tags. Recommendation pending owner review of options.
-- [ ] **Certification prominence:** current hairline register underplays earned credentials. Directions: credential ledger, oversized verified rows, featured-plus-secondary, editorial document treatment. Must feel scarce and verified, never a badge wall. Recommendation pending owner review of options.
+- [x] **Certification prominence:** IMPLEMENTED v4.9 as the credential-ledger direction (own chapter, hairline rows, featured first credential, boxed Verify links, mask-wipe progression).
 - [ ] **Opening interaction:** something interactive during the ~1.6s initialization that is not a fake loader (must stay session-aware, reduced-motion-safe, and hand into the hero). Recommendation pending owner review of options.
 - [ ] **Personality detail stories:** clicking a fragment reveals an owner-supplied story below the chooser and above the wall (replace vs accumulate, transition, height, keyboard, deep-linking open). Owner supplies all text; nothing invented. Recommendation pending owner review of options.
 

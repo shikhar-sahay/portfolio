@@ -125,9 +125,9 @@ Each tool is a gold-ring emblem with a monochrome core (real brand mark, or a se
 - Forward (Next, ArrowRight, drift) is negative offset. Placeholder links are inert so clicks and drag releases never navigate.
 - Cards are uniform (fixed preview surface, clamped description, pinned stack/links rows); preview motifs animate via the `data-inview` gate. Reduced motion: native scroll row with instant arrow scrolls.
 
-### Footer wordmark (`FooterWordmark.tsx`)
+### Footer wordmark (`FooterWordmark.tsx`, rebuilt v4.9 as one object)
 
-The name as a slow infinite marquee (two identical groups, -50% loop, pauses on hover), each letter running the shared pointer spring field with a quieter wash (lift 0.10, 45% accent). Vertical bleed inside the overflow mask keeps rising letters unclipped. Reduced motion: a single static fitted wordmark.
+The name as a slow infinite marquee (two identical groups, -50% loop, pauses on hover). Pointer velocity leans every copy identically (uniform skew plus a breath of stretch), tracking widens slightly inside, and a narrow vermilion sheen band follows the cursor across per-copy accent overlays. No letter moves alone. One rAF loop runs only while the pointer is inside or settling, with zero per-frame layout reads. Separators are 0.16em diamonds with 0.7em air. Reduced motion: a single static fitted wordmark.
 
 ### Header (`SiteNav.tsx`)
 
@@ -140,10 +140,10 @@ The name as a slow infinite marquee (two identical groups, -50% loop, pauses on 
 
 ### Mark wall (SUPERSEDED by the notes wall below; `MarkWall.tsx` deleted)
 
-### Notes wall (`NotesWall.tsx`, reworked v4.8)
+### Notes wall (`NotesWall.tsx`, opened up v4.9)
 
-- Pan is direct manipulation: pointer drag writes a clamped canvas transform through rAF (no React state during pan); wheel always scrolls the page, never the wall; touch keeps vertical page scroll (`touch-pan-y`) with horizontal drag panning; arrow keys pan when focused; a docked Recenter button restores origin.
-- Cards rest tilted (deterministic per id) and straighten plus lift on hover and keyboard focus (500ms expo; instant under reduced motion); placed notes arrive with a short fade-rise settle. No continuous animation anywhere.
+- Full-bleed section-width surface (no box, no boundary): dotted field plus vignette only. Pan is direct manipulation: pointer drag writes a clamped canvas transform through rAF (no React state during pan); wheel always scrolls the page, never the wall; touch keeps vertical page scroll (`touch-pan-y`) with horizontal drag panning; arrow keys pan when focused; a docked Latest button flies the camera to the newest global note (650ms expo flight, jump under reduced motion) and opens its thread.
+- Cards rest tilted (deterministic per id) and straighten plus lift on hover and keyboard focus (500ms expo; instant under reduced motion); placed notes arrive with a short fade-rise settle. Composing shows a cursor-following placement ghost written straight to the DOM (no re-renders). No continuous animation anywhere.
 - Opening the thread slip or composer moves focus inside it (no scroll), so Escape and Tab continue from the wall.
 - Virtualized: only notes near the viewport render (capped at 150); visibility recomputes on pan end and data change, never per frame.
 
@@ -360,17 +360,18 @@ Motion values are now concrete (see Implemented Patterns and Token Reference abo
 - The statements section is pulled up `-mt-[100dvh]` so its sticky engages the exact pixel the hero releases: the wipe is veil against incoming thought, with no tail and no gap. Each thought phase carries its own ink (the stage is transparent), so the hero stays pristine underneath until the first thought arrives; the bridge is pointer-transparent so hero hover survives the overlap.
 - Phase crossfades share windows (outgoing exit equals incoming enter) so some thought is always present; verb masks travel bottom-up on entry and top-down on exit.
 
-### Statements scene (v4.7 vertical accumulation, widened v4.8; supersedes sliding panels)
+### Statements scene (v4.7 vertical accumulation, corrected v4.9; supersedes sliding panels)
 
-- One typographic composition travels upward with scroll (stack offset 42vh to minus 50vh over the section): three thoughts share the ride, and emphasis follows distance from center while inactive thoughts persist as dimmed, slightly smaller history above and below. Serif "I" leads each line slightly, the note trails; verbs at `clamp(4rem, 12.5vw, 14rem)` with explicit paper color.
-- Each row carries a static residual echo (neighboring verb, 21vw, 7% paper, cropped off-canvas right) and a progressive left offset (diagonal cascade, flush on mobile): no extra motion state, so determinism is unchanged.
+- One typographic composition travels upward with scroll (stack offset 42vh to minus 50vh over the section): three thoughts share the ride, and emphasis follows distance from center while inactive thoughts persist as dimmed, slightly smaller history above and below. Serif "I" leads each line slightly, the note trails; verbs at `clamp(4rem, 12.5vw, 14rem)` in theme ink.
+- Each row carries a static same-word residue (trailing two letters, 21vw, low-right, cropped by the frame edge) and a progressive left offset (diagonal cascade, flush on mobile): no extra motion state, so determinism is unchanged. Full-word echoes were tried and rejected after they stacked behind their own letterforms in light mode.
+- Theme-deliberate surfaces: paper in light, deep warm charcoal in dark; hero veil and tail match per theme so both handoffs stay seamless.
 - Travel matches scroll direction, so motion always feels caused. The finale holds strong through release while About enters beneath it. All ranges end at 1.0; every state is a pure function of progress (identical forward and reverse).
-- Reduced motion: static stacked block with matching alignment and echoes, full ink.
+- Reduced motion: static stacked block with matching alignment and residues.
 
-### Hero tagline afterimage (`TaglineMemory` in `Hero.tsx`, v4.8)
+### Hero tagline rule (`TaglineRule` in `Hero.tsx`, v4.9; supersedes the v4.8 afterimage)
 
-- The serif word owns a vermilion ghost (same text, absolute inset-0, aria-hidden): pointer proximity stirs it through soft springs (stiffness 120, damping 16, max 7px/5px); opacity 0.6 in 200ms on enter, 0 over 1000ms on leave, so the memory lingers; touch taps hold 650ms before release (enter/leave batch in one frame otherwise).
-- No loop runs: springs settle on leave, every value returns to rest. No layout (absolute), no tab stop, single AT reading. Absent entirely under reduced motion and on the server first paint (opacity-0 matches hydration).
+- A 2px vermilion rule draws beneath the serif word on enter (scaleX spring) while a 7px diamond rides to the cursor (position spring); movement glides the marker, leave retracts the rule and fades the marker. Touch taps hold 900ms before release (enter/leave batch in one frame otherwise).
+- No loop runs: springs settle on leave, every value returns to rest. No layout (absolute), no tab stop, single AT reading. Absent entirely under reduced motion.
 
 ## v4.3 Patterns (EXPERIMENTAL, 2026-09-04)
 
@@ -383,18 +384,14 @@ Motion values are now concrete (see Implemented Patterns and Token Reference abo
 - Clip-free by construction: overflow visible through the whole ancestor chain except the viewport-sized sticky frame; hero rows separated by a small top margin.
 - Fine pointers only; static under reduced motion and on touch. Used by the hero name (and the static reduced-motion footer wordmark with tint off).
 
-### Footer wordmark (`FooterWordmark.tsx`, velocity wave)
+### Footer wordmark (SUPERSEDED in v4.9 by the one-object response above)
 
-- The name drifts as a slow infinite marquee (two identical groups, -50% loop, pauses on hover). Pointer response is velocity-driven and deliberately unlike the hero: letters near the cursor rise with proximity, lean with movement direction (rotation follows velocity sign), and swell slightly, then settle as velocity decays. One rAF loop runs only while the pointer is inside or settling; idle costs nothing beyond the marquee drift.
-- Fine pointers only; static under reduced motion and on touch. Vertical bleed inside the overflow mask keeps rising letters unclipped.
-- One rAF loop per instance; letter centers cached in viewport coordinates on pointerenter and refreshed on scroll while the pointer is inside (scroll-driven transforms move the letters), so the loop never reads layout per frame.
-- Clip-free by construction: overflow visible through the whole ancestor chain except the viewport-sized sticky frame; hero rows separated by a small top margin; the footer marquee carries vertical bleed inside its overflow mask.
-- Fine pointers only; static under reduced motion and on touch. Used by the hero name and the footer wordmark.
+- v4.6/v4.8: velocity wave with per-letter rise, lean, and swell. Removed after it read as childish; the whole-word lean plus sheen replaces it. History in git and DECISIONS.md.
 
-### Hero exit (pure ink veil handoff)
+### Hero exit (surface-matched veil handoff, themed v4.9)
 
-- Two beats over a 120svh scene: the composition separates (name lines sweep apart, portrait exits laterally) while the frame stays full, then a pure ink veil rises from the bottom and hands a full ink frame to the statements bridge. The veil carries no text: the bridge owns every word, so nothing can duplicate across the handoff. Late opacity fades happen behind the veil, never on their own.
-- Reduced motion: the scene never pins (static section scrolls away normally); no veil is rendered.
+- Two beats over a 120svh scene: the composition separates (name lines sweep apart, portrait exits laterally) while the frame stays full, then a veil in the statements surface rises from the bottom (paper in light, deep warm charcoal in dark) and hands a full frame to the bridge. The veil carries no text: the bridge owns every word, so nothing can duplicate across the handoff. Late opacity fades happen behind the veil, never on their own.
+- Reduced motion: the scene never pins (static section scrolls normally); no veil is rendered.
 
 ### Statements bridge (SUPERSEDED by the v4.5 phased composition above)
 

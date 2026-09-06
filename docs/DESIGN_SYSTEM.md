@@ -184,7 +184,7 @@ The identity system beyond type and color. Used consistently so sections read as
 - ThemeToggle (quiet text control in the nav)
 - Reveal / WordReveal / Counter / InView primitives (ui)
 - InteractiveLetters (pointer spring field, hero + footer wordmark), TechLogo (monochrome brand marks)
-- Sections: Hero (arch + interactive name + tagline afterimage + veil exit), TransitionStatements (vertical accumulation with residual echoes), About (reading reveal + meta row), Experience (org timeline + spine), Skills (marquee emblem rows + certifications), Projects (drifting carousel) + ProjectPanel (lazy chunk with SVG motifs), Personality (fragment instrument + notes wall), ControlCenter (framed utility grid), Contact (footer: contact grid + icon-name social rows + resume row + marquee wordmark)
+- Sections: Hero (arch + interactive name + tagline rule + veil exit), TransitionStatements (vertical accumulation with same-word residue echoes, themed surfaces), About (reading reveal + meta row), Experience (org timeline + spine), Skills (marquee emblem rows), Certifications (credential ledger with mask-wipe rows), Projects (drifting carousel) + ProjectPanel (lazy chunk with SVG motifs), Personality (fragment instrument + mosaic + full-bleed notes wall), ControlCenter (framed utility grid), Contact (footer: contact grid + icon-name social rows + resume row + whole-word marquee wordmark)
 
 ## Shadows & Elevation (UNDECIDED)
 
@@ -248,9 +248,19 @@ This file will evolve as design decisions are finalized. Each section should be 
 
 ---
 
+## v4.9 Additions (EXPERIMENTAL, 2026-09-07)
+
+- **Hero tagline (replaces the v4.8 afterimage):** a 2px vermilion rule draws beneath the serif word with a 7px diamond riding to the cursor; movement glides the marker, leave retracts. Springs only, aria-hidden, absent under reduced motion.
+- **Statements scene:** echoes are same-word trailing residues (LD/AK/LD), low-right, cropped by the frame; verbs at `clamp(4rem, 12.5vw, 14rem)`. Theme-deliberate: paper plus ink in light, deep warm charcoal plus cream in dark; veil and tail match per theme.
+- **Certifications chapter:** own section after Skills (eyebrow, serif lede, 20vh break, hairline ledger, featured first row, boxed Verify links); rows arrive with a scroll mask wipe.
+- **Footer wordmark:** whole-word velocity lean plus stretch, tracking breath, narrow vermilion sheen band at the cursor; 0.16em diamond separators with 0.7em air; seamless -50% loop.
+- **Panel scope:** `.panel-ink` pins light token values for the Personality subtree, so the inverted panel never becomes a light island in dark mode.
+- **Notes wall:** full-bleed section-width surface (no box, no world boundary); mosaic statement plus hint microcopy; cursor-following placement ghost; Recenter replaced by Latest (global lookup, camera flight, thread on arrival).
+- **Theme toggle:** state-driven 180-degree icon rotation.
+
 ## v4.8 Additions (EXPERIMENTAL, 2026-09-06)
 
-- **Hero tagline:** the serif word keeps a vermilion afterimage (absolute ghost over its word, pointer-stirred springs, fast-in slow-out fade, touch hold, aria-hidden, absent under reduced motion).
+- **Hero tagline (v4.8 afterimage, superseded by the v4.9 rule above):** the serif word kept a vermilion afterimage, removed after it read as misregistration.
 - **Statements scene:** verbs at `clamp(4rem, 12.5vw, 14rem)`; each row carries a giant cropped echo of the neighboring verb (21vw, 7% paper, off-canvas right, static CSS on the shared stack); rows cascade diagonally (flush mobile, progressive offsets from sm up); reduced-motion stack keeps echoes.
 - **Notes wall:** deterministic tilt (minus 2.2 to 2.2 degrees from id hash) plus restrained widths (standard, narrow, wide, occasional large); pin-diamond metadata; tactile shadows that deepen on hover/focus while the card straightens; dotted field plus vignette plus dashed world boundary with accent corner ticks; docked instrument cluster (leave a note, recenter, count); serif composer card; narrow thread slip with vermilion reply rail; focus moves into thread/composer on open.
 - **Footer Elsewhere:** icon plus name rows with real monochrome brand marks (whole row links, no handles); hover lifts the mark, shifts the row, reveals an arrow; Discord is a visually identical copy row (copy icon, "copy"/"copied" micro).

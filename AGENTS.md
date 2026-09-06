@@ -18,7 +18,9 @@ The goal is a directed digital experience that feels personal, cinematic, and te
 - **Signature motifs** (recurring, keep consistent): section eyebrows as plain editorial labels (e.g. `Experience`), hairline rules with accent ticks, diamond markers, film grain, drifting light field, outline display type.
 - **Portrait treatment:** an editorial arch aperture (rounded crown, straight base) with an offset vermilion echo arch behind it, overlapping the display type. Subtle pointer parallax. Never a rectangle beside text, never a circular avatar, never a zoom-on-scroll.
 - **Opening:** a minimal signal-line loader on an ink field (a hairline draws while a vermilion marker rides its tip), then the field lifts into the hero. ~1.6s, once per session, skipped pre-paint for returning visitors and reduced motion. No counters, no "loading" text.
-- **Hero to About bridge:** a pinned ink stage with a vertical accumulative composition traveling upward through I / BUILD, BREAK, and REBUILD (emphasis follows distance from center, inactive thoughts persist as dimmed history), overlapping the hero exit by exactly one viewport so the handoff never goes blank. The finale holds its frame into About.
+- **Hero to About bridge:** a pinned stage with a vertical accumulative composition traveling upward through I / BUILD, BREAK, and REBUILD (emphasis follows distance from center, inactive thoughts persist as dimmed history, same-word residues trail low-right), themed per colorway and overlapping the hero exit by exactly one viewport so the handoff never goes blank. The finale holds its frame into About.
+- **Certifications ledger:** its own chapter after Skills (hairline rows, featured first credential, boxed Verify links, scroll mask-wipe rows).
+- **Personality panel:** a fixed dark field in both themes (token scope, never a light island) holding the fragment instrument, the mosaic statement, and the full-bleed notes wall.
 - **Atmosphere:** static film grain plus a very slow drifting light field. Nothing space-like, nothing neon.
 - Full status and values: `docs/DESIGN_SYSTEM.md`.
 
@@ -53,11 +55,12 @@ Long-scroll narrative, in this order:
 02 / STATEMENTS BRIDGE    (vertical accumulative composition: I / BUILD, BREAK, REBUILD)
 03 / ABOUT                (word-by-word reading reveal, meta row, no index)
 04 / EXPERIENCE           (org-grouped timeline, centered spine, diamond markers)
-05 / SKILLS               (golden emblems with real technology marks; certifications sub-block)
-06 / PROJECTS             (infinite drifting carousel, 5 artifact panels)
-07 / PERSONALITY          (fragment instrument + notes wall, inverted panel)
-08 / CONTROL CENTER       (framed utility grid: now, IST clock, toolbox, links)
-09 / CONTACT + FOOTER     (resume moment, compact contact grid, marquee wordmark)
+05 / SKILLS               (golden emblems with real technology marks)
+06 / CERTIFICATIONS       (credential ledger with mask-wipe rows; no nav entry)
+07 / PROJECTS             (infinite drifting carousel, 5 artifact panels)
+08 / PERSONALITY          (fragment instrument + mosaic + full-bleed wall, fixed panel)
+09 / CONTROL CENTER       (framed utility grid: now, IST clock, toolbox, links)
+10 / CONTACT + FOOTER     (resume moment, compact contact grid, whole-word marquee wordmark)
 ```
 
 Experience precedes Skills; Skills precedes Projects. The section registry in `src/content/sections.ts` drives navigation. Numbers are internal only: the visitor never sees section counters (see section 3).

@@ -81,13 +81,14 @@ The website is a **portfolio first, an experience second, and a story third**.
 
 ```
 OPENING (signal-line loader)
-  → IDENTITY (arch portrait + interactive name + tagline afterimage + veil exit)
-  → STATEMENTS (vertical accumulation with residual echoes: BUILD, BREAK, REBUILD)
+  → IDENTITY (arch portrait + interactive name + tagline rule + veil exit)
+  → STATEMENTS (themed accumulation with same-word residues: BUILD, BREAK, REBUILD)
   → ABOUT (reading reveal + meta row)
   → EXPERIENCE (org-grouped timeline)
-  → SKILLS (marquee emblem rows + certifications)
+  → SKILLS (marquee emblem rows)
+  → CERTIFICATIONS (credential ledger)
   → PROJECTS (drifting carousel)
-  → PERSONALITY (fragment instrument, inverted panel)
+  → PERSONALITY (fragment instrument, mosaic, full-bleed wall, fixed panel)
   → CONTROL CENTER (utility grid)
   → CONTACT + FOOTER (contact grid, resume row, marquee wordmark)
 ```
