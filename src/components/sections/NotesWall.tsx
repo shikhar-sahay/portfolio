@@ -36,19 +36,37 @@ function formatDate(at: number): string {
   }
 }
 
+/** Deterministic tilt from the note id: stable across renders and SSR. */
+function tiltFor(id: string): number {
+  let h = 0;
+  for (let i = 0; i < id.length; i++) h = (h * 31 + id.charCodeAt(i)) % 997;
+  return ((h % 45) - 22) / 10;
+}
+
+/** Restrained width scale: mostly standard, occasional wide or large. */
+function widthFor(id: string): string {
+  let h = 0;
+  for (let i = 0; i < id.length; i++) h = (h * 17 + id.charCodeAt(i)) % 101;
+  if (h % 11 === 0) return 'w-64 sm:w-72';
+  if (h % 5 === 0) return 'w-56 sm:w-64';
+  if (h % 3 === 0) return 'w-44 sm:w-48';
+  return 'w-52 sm:w-56';
+}
+
 const variantClass = [
-  'border-ink/20 bg-paper text-ink',
-  'border-paper/30 bg-ink text-paper',
-  'border-accent/60 bg-paper text-ink',
+  'border-ink/25 bg-paper text-ink shadow-[0_24px_50px_-20px_rgba(0,0,0,0.55)]',
+  'border-paper/35 bg-ink text-paper shadow-[0_24px_50px_-20px_rgba(0,0,0,0.65)]',
+  'border-accent/70 bg-paper text-ink shadow-[0_24px_50px_-20px_rgba(0,0,0,0.55)]',
 ];
 
 /**
- * The notes wall: an infinite-feeling spatial canvas of visitor notes
- * inside Personality. Drag to pan (the page keeps vertical scroll;
- * horizontal drags pan the wall), click a note to open it with replies,
- * or add your own. Notes persist through the wall API with a local cache
- * fallback; seeds are clearly labeled owner notes. Reduced motion gets
- * instant, calm behavior; keyboard users get full parity.
+ * The notes wall: a living collaborative surface inside Personality. Notes
+ * rest tilted at varied sizes with pin-diamond metadata and tactile
+ * shadows; hover straightens and lifts a card. Drag to pan (the page keeps
+ * vertical scroll), click a note to open its thread slip, or leave one via
+ * the docked instrument. Notes persist through the wall API with a local
+ * cache fallback; seeds are clearly labeled owner notes. Reduced motion
+ * gets instant, calm behavior; keyboard users get full parity.
  */
 export function NotesWall() {
   const reduce = useMountedReducedMotion();
@@ -79,6 +97,18 @@ export function NotesWall() {
     moved: boolean;
     raf: number;
   } | null>(null);
+  const threadRef = useRef<HTMLDivElement>(null);
+  const messageRef = useRef<HTMLTextAreaElement>(null);
+
+  // Keep keyboard context: opening the thread or composer moves focus
+  // inside it (without scrolling), so Escape and Tab continue from the
+  // wall instead of dropping to the top of the page.
+  useEffect(() => {
+    if (openId) threadRef.current?.focus({ preventScroll: true });
+  }, [openId]);
+  useEffect(() => {
+    if (composing) messageRef.current?.focus({ preventScroll: true });
+  }, [composing]);
   const notesRef = useRef(notes);
   notesRef.current = notes;
   const openNote = openId ? (notesRef.current.find(n => n.id === openId) ?? null) : null;
@@ -323,34 +353,6 @@ export function NotesWall() {
         everything here is public.
       </p>
 
-      <div className="mt-5 flex flex-wrap items-center gap-3">
-        <button
-          type="button"
-          onClick={() => {
-            setComposing(v => !v);
-            setError(null);
-          }}
-          aria-expanded={composing}
-          className={`border px-5 py-2.5 text-micro font-semibold uppercase tracking-[0.16em] transition-all duration-300 ease-expo ${
-            composing
-              ? 'border-accent bg-accent text-paper'
-              : 'border-paper/25 hover:border-paper/60 text-paper hover:text-paper'
-          }`}
-        >
-          {composing ? 'Cancel' : 'Add a note'}
-        </button>
-        <button
-          type="button"
-          onClick={recenter}
-          className="border-paper/25 text-paper/70 hover:border-paper/60 border px-5 py-2.5 text-micro font-semibold uppercase tracking-[0.16em] transition-all duration-300 ease-expo hover:text-paper"
-        >
-          Recenter
-        </button>
-        <p className="text-paper/40 text-micro uppercase tracking-[0.14em]" aria-live="polite">
-          {total} notes{live ? '' : ' · offline'}
-        </p>
-      </div>
-
       <div
         ref={viewportRef}
         role="region"
@@ -363,17 +365,34 @@ export function NotesWall() {
           if (!composing) return;
           placeDraft(e.clientX, e.clientY);
         }}
-        className="border-paper/25 relative mt-5 h-[440px] cursor-grab touch-pan-y select-none overflow-hidden border active:cursor-grabbing sm:h-[520px]"
+        className="border-paper/25 relative mt-5 h-[480px] cursor-grab touch-pan-y select-none overflow-hidden border active:cursor-grabbing sm:h-[560px]"
         style={{
           backgroundImage: 'radial-gradient(circle, rgba(236,228,212,0.12) 1px, transparent 1.5px)',
           backgroundSize: '32px 32px',
         }}
       >
+        {/* Depth: a soft vignette over the dotted field */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 z-[5] bg-[radial-gradient(120%_100%_at_50%_40%,transparent_55%,rgba(0,0,0,0.32)_100%)]"
+        />
         <div
           ref={canvasRef}
           className="absolute left-0 top-0 will-change-transform"
           style={{ width: WORLD.w, height: WORLD.h }}
         >
+          {/* World boundary: a dashed edge with accent corner ticks, so the
+              canvas reads as a place with limits instead of a void */}
+          <div
+            aria-hidden="true"
+            className="border-paper/20 pointer-events-none absolute left-0 top-0 border border-dashed"
+            style={{ width: WORLD.w, height: WORLD.h }}
+          >
+            <span className="absolute -left-px -top-px h-3 w-3 border-l-2 border-t-2 border-accent" />
+            <span className="absolute -right-px -top-px h-3 w-3 border-r-2 border-t-2 border-accent" />
+            <span className="absolute -bottom-px -left-px h-3 w-3 border-b-2 border-l-2 border-accent" />
+            <span className="absolute -bottom-px -right-px h-3 w-3 border-b-2 border-r-2 border-accent" />
+          </div>
           {rendered.map(n => (
             <button
               key={n.id}
@@ -384,20 +403,26 @@ export function NotesWall() {
                 setError(null);
               }}
               aria-label={`Note by ${n.name}: ${n.message.slice(0, 60)}${n.replies.length > 0 ? `, ${n.replies.length} replies` : ''}`}
-              className={`group absolute w-56 border p-4 text-left transition-all duration-300 ease-expo hover:-translate-y-1 ${variantClass[n.variant] ?? variantClass[0]} ${
-                flashId === n.id && !reduce ? 'note-arrive' : ''
-              }`}
-              style={{ left: n.x, top: n.y }}
+              style={{ left: n.x, top: n.y, ['--tilt' as string]: `${tiltFor(n.id)}deg` }}
+              className={`group absolute ${widthFor(n.id)} border p-4 text-left transition-all duration-300 ease-expo hover:-translate-y-1 hover:shadow-[0_32px_60px_-20px_rgba(0,0,0,0.65)] focus-visible:-translate-y-1 ${variantClass[n.variant] ?? variantClass[0]} ${
+                openId === n.id ? 'ring-1 ring-accent' : ''
+              } ${flashId === n.id && !reduce ? 'note-arrive' : ''}`}
             >
-              <span className="block text-micro uppercase tracking-[0.14em] opacity-70">
-                {n.name}
-                {n.owner && ' · owner'}
-              </span>
-              <span className="mt-2 line-clamp-4 block text-sm leading-relaxed">{n.message}</span>
-              <span className="mt-3 block text-micro uppercase tracking-[0.14em] opacity-60">
-                {formatDate(n.createdAt)}
-                {n.replies.length > 0 &&
-                  ` · ${n.replies.length} ${n.replies.length === 1 ? 'reply' : 'replies'}`}
+              <span className="block transition-transform duration-500 ease-expo [transform:rotate(var(--tilt))] group-hover:[transform:rotate(0deg)] group-focus-visible:[transform:rotate(0deg)]">
+                <span
+                  aria-hidden="true"
+                  className="absolute -top-[21px] left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-accent"
+                />
+                <span className="block text-micro uppercase tracking-[0.14em] opacity-70">
+                  {n.name}
+                  {n.owner && ' · owner'}
+                </span>
+                <span className="mt-2 line-clamp-4 block text-sm leading-relaxed">{n.message}</span>
+                <span className="mt-3 block text-micro uppercase tracking-[0.14em] opacity-60">
+                  {formatDate(n.createdAt)}
+                  {n.replies.length > 0 &&
+                    ` · ${n.replies.length} ${n.replies.length === 1 ? 'reply' : 'replies'}`}
+                </span>
               </span>
             </button>
           ))}
@@ -412,17 +437,53 @@ export function NotesWall() {
           )}
         </div>
 
+        {/* Instrument dock: the wall controls live on the wall itself */}
+        <div className="absolute bottom-3 left-3 z-10 flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={() => {
+              setComposing(v => !v);
+              setError(null);
+            }}
+            aria-expanded={composing}
+            className={`border px-4 py-2 text-micro font-semibold uppercase tracking-[0.16em] transition-all duration-300 ease-expo ${
+              composing
+                ? 'border-accent bg-accent text-paper'
+                : 'border-paper/30 hover:border-paper/60 bg-ink text-paper'
+            }`}
+          >
+            {composing ? 'Cancel' : 'Leave a note'}
+          </button>
+          <button
+            type="button"
+            onClick={recenter}
+            className="border-paper/30 text-paper/70 hover:border-paper/60 border bg-ink px-4 py-2 text-micro font-semibold uppercase tracking-[0.16em] transition-all duration-300 ease-expo hover:text-paper"
+          >
+            Recenter
+          </button>
+          <p
+            className="text-paper/50 bg-ink px-3 py-2 text-micro uppercase tracking-[0.14em]"
+            aria-live="polite"
+          >
+            {total} notes{live ? '' : ' · offline'}
+          </p>
+        </div>
+
         {openNote && (
           <div
+            ref={threadRef}
+            tabIndex={-1}
             role="dialog"
             aria-modal="false"
             aria-label={`Note by ${openNote.name}`}
-            className="border-ink/20 absolute bottom-4 left-4 right-4 border bg-paper p-5 text-ink sm:bottom-4 sm:left-auto sm:right-4 sm:top-4 sm:w-80"
+            className="border-ink/20 absolute bottom-4 left-4 right-4 z-10 border bg-paper p-5 text-ink shadow-[0_24px_50px_-20px_rgba(0,0,0,0.55)] sm:bottom-4 sm:left-auto sm:right-4 sm:top-4 sm:w-72"
           >
-            <div className="flex items-start justify-between gap-4">
+            <p className="text-micro uppercase tracking-[0.14em] text-accent">Thread</p>
+            <div className="mt-2 flex items-start justify-between gap-4">
               <p className="text-micro uppercase tracking-[0.14em] text-muted">
                 {openNote.name}
-                {openNote.owner && ' · owner'} · {formatDate(openNote.createdAt)}
+                {openNote.owner && ' · owner'}
+                {openNote.createdAt ? ` · ${formatDate(openNote.createdAt)}` : ''}
               </p>
               <button
                 type="button"
@@ -435,7 +496,7 @@ export function NotesWall() {
             </div>
             <p className="mt-3 text-sm leading-relaxed">{openNote.message}</p>
             {openNote.replies.length > 0 && (
-              <ul className="border-ink/10 mt-4 max-h-36 space-y-3 overflow-y-auto border-t pt-3">
+              <ul className="border-accent/50 mt-4 max-h-36 space-y-3 overflow-y-auto border-l-2 pl-3">
                 {openNote.replies.map(r => (
                   <li key={r.id}>
                     <p className="text-micro uppercase tracking-[0.14em] text-muted">{r.name}</p>
@@ -476,9 +537,14 @@ export function NotesWall() {
         )}
 
         {composing && (
-          <div className="border-ink/20 absolute bottom-4 left-4 right-4 border bg-paper p-5 text-ink sm:bottom-4 sm:left-auto sm:right-4 sm:top-4 sm:w-80">
-            <p className="text-micro uppercase tracking-[0.14em] text-muted">
-              New note, placed where you clicked
+          <div className="border-ink/20 absolute bottom-4 left-4 right-4 z-20 border bg-paper p-5 text-ink shadow-[0_24px_50px_-20px_rgba(0,0,0,0.55)] sm:bottom-4 sm:left-auto sm:right-4 sm:top-4 sm:w-80">
+            <span
+              aria-hidden="true"
+              className="absolute -top-[7px] left-8 h-3 w-3 rotate-45 bg-accent"
+            />
+            <p className="font-serif text-xl italic tracking-tight">Pin a note.</p>
+            <p className="mt-1 text-micro uppercase tracking-[0.14em] text-muted">
+              Click the canvas to choose its spot
             </p>
             <div className="mt-3 space-y-2">
               <input
@@ -491,6 +557,7 @@ export function NotesWall() {
                 className="border-ink/20 placeholder:text-muted/60 w-full border bg-transparent px-3 py-2 text-sm outline-none focus:border-accent"
               />
               <textarea
+                ref={messageRef}
                 value={draft.message}
                 onChange={e =>
                   setDraft(d => ({ ...d, message: e.target.value.slice(0, LIMITS.messageMax) }))
