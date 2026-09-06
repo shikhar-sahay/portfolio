@@ -61,9 +61,10 @@ export function Hero() {
   });
 
   // Scene change, two beats. Beat one: the composition separates while
-  // the frame stays full. Beat two: the identity sweeps aside and an ink
-  // veil rises from the bottom carrying the opening statement, handing a
-  // full frame to the statements bridge. Nothing fades on its own.
+  // the frame stays full. Beat two: the identity sweeps aside and a pure
+  // ink veil rises from the bottom, handing a full frame to the statements
+  // bridge (the bridge owns all statement typography, so the veil carries
+  // no text and can never duplicate it). Nothing fades on its own.
   const nameAY = useTransform(scrollYProgress, [0, 0.6, 1], ['0svh', '-7svh', '-22svh']);
   const nameAX = useTransform(scrollYProgress, [0, 0.6, 1], ['0vw', '-3.5vw', '-12vw']);
   const nameAO = useTransform(scrollYProgress, [0.4, 0.82, 1], [1, 1, 0]);
@@ -79,10 +80,9 @@ export function Hero() {
   const archO = useTransform(scrollYProgress, [0.6, 0.9, 1], [1, 1, 0]);
   const handoffLine = useTransform(scrollYProgress, [0.45, 0.9, 1], [0, 1, 1]);
   const cueO = useTransform(scrollYProgress, [0, 0.12, 1], [1, 0, 0]);
-  // The exit veil: ink rises from the bottom with the opening statement.
+  // The exit veil: pure ink rises from the bottom. It carries no text:
+  // the statements bridge owns every word, so nothing can duplicate.
   const veilY = useTransform(scrollYProgress, [0.5, 0.85, 1], ['100%', '0%', '0%']);
-  const veilTextY = useTransform(scrollYProgress, [0.5, 0.88, 1], ['24svh', '0svh', '0svh']);
-  const veilTextO = useTransform(scrollYProgress, [0.5, 0.72, 0.9, 1], [0, 1, 1, 1]);
 
   const scroll = (style: Record<string, unknown>) => (reduceMotion ? undefined : { style });
 
@@ -215,24 +215,11 @@ export function Hero() {
             <span className="cue-line" aria-hidden="true" />
           </div>
         </motion.div>
-        {/* Exit veil: ink rises from the bottom carrying the opening
-            statement, handing a full frame to the statements bridge. */}
+        {/* Exit veil: pure ink rises from the bottom, handing a full frame
+            to the statements bridge. */}
         {!reduceMotion && (
           <motion.div aria-hidden="true" className="absolute inset-0 z-20" style={{ y: veilY }}>
-            <div className="ink-stage flex h-full flex-col justify-center px-5 sm:px-10">
-              <motion.p
-                style={{ y: veilTextY, opacity: veilTextO }}
-                className="-mt-[12svh] text-[clamp(3.2rem,10.5vw,13rem)] font-semibold uppercase leading-[0.95] tracking-[-0.03em]"
-              >
-                I build<span className="text-accent">.</span>
-              </motion.p>
-              <motion.p
-                style={{ opacity: veilTextO }}
-                className="mt-2 text-micro uppercase tracking-[0.16em] text-[#f3efe6]/60 sm:mt-3"
-              >
-                tools, experiments, platforms
-              </motion.p>
-            </div>
+            <div className="ink-stage flex h-full flex-col justify-center px-5 sm:px-10" />
           </motion.div>
         )}
       </div>
