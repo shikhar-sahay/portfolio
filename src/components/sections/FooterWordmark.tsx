@@ -1,89 +1,90 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { useReducedMotion } from 'motion/react';
 import { useMountedReducedMotion } from '@/hooks/useMountedReducedMotion';
 import { InteractiveLetters } from '@/components/ui/InteractiveLetters';
 import { profile } from '@/content/profile';
 
 /**
- * Velocity-wave letters for the closing marquee. Unlike the hero spring
- * field, this reacts to pointer VELOCITY: letters near the cursor rise
- * with proximity, lean with movement direction, and swell slightly, then
- * settle as the velocity decays. One rAF loop runs only while the pointer
- * is inside (or settling); idle costs nothing beyond the marquee drift.
- * Fine pointers only; touch and reduced motion render static letters.
+ * The closing frame: the name as a slow infinite marquee that responds as
+ * ONE typographic object. Pointer velocity leans every copy identically
+ * (uniform skew plus a breath of horizontal stretch), tracking widens
+ * slightly while the pointer is inside, and a vermilion sweep follows the
+ * cursor across accent overlays clipped per copy. No letter ever moves on
+ * its own. One rAF loop runs only while the pointer is inside (or
+ * settling); per frame it performs zero layout reads, only velocity math
+ * and style writes (copy rects refresh on pointer events, never per
+ * frame). Fine pointers only; touch and reduced motion render the drift
+ * statically.
  */
-function MarqueeWave({ text, className }: { text: string; className?: string }) {
-  const containerRef = useRef<HTMLSpanElement>(null);
-  const letterRefs = useRef<(HTMLSpanElement | null)[]>([]);
-  const reduce = useReducedMotion();
+export function FooterWordmark() {
+  const reduce = useMountedReducedMotion();
+  const marqueeRef = useRef<HTMLDivElement>(null);
+  const name = profile.name.toUpperCase();
 
   useEffect(() => {
     if (reduce) return;
     if (!window.matchMedia('(pointer: fine)').matches) return;
-    const container = containerRef.current;
-    if (!container) return;
-    const track = container.closest('.marquee-track') as HTMLElement | null;
-    if (!track) return;
-    const marquee = container.closest('.marquee') as HTMLElement | null;
+    const marquee = marqueeRef.current;
     if (!marquee) return;
 
-    const letters = letterRefs.current;
-    const count = letters.length;
-    const rel: number[] = new Array(count).fill(0);
-    let trackBase = 0;
-    let pointerX = 0;
+    let copies: HTMLElement[] = [];
+    let sweeps: HTMLElement[] = [];
+    let fractions: number[] = [];
+    let inside = false;
+    let presence = 0;
+    let vel = 0;
+    let skew = 0;
+    let stretch = 1;
     let lastX = 0;
     let lastMove = 0;
-    let vel = 0;
-    let presence = 0;
-    let inside = false;
     let running = false;
     let raf = 0;
     let lastT = 0;
 
-    const SIGMA = 130;
-    const clampRot = (v: number) => Math.max(-0.12, Math.min(0.12, v * 0.06));
-
-    const cache = () => {
-      const t = track.getBoundingClientRect();
-      trackBase = t.left;
-      for (let i = 0; i < count; i++) {
-        const el = letters[i];
-        if (!el) continue;
+    const refresh = (clientX: number) => {
+      copies = Array.from(marquee.querySelectorAll<HTMLElement>('.wordmark-copy'));
+      sweeps = Array.from(marquee.querySelectorAll<HTMLElement>('.wordmark-sweep'));
+      fractions = copies.map(el => {
         const r = el.getBoundingClientRect();
-        rel[i] = r.left - t.left + r.width / 2;
-      }
+        return r.width > 0 ? Math.min(1, Math.max(0, (clientX - r.left) / r.width)) : 0.5;
+      });
     };
 
     const tick = (now: number) => {
       const dt = Math.min(64, now - (lastT || now));
       lastT = now;
-      vel *= Math.pow(0.94, dt / 16.7);
-      presence += ((inside ? 1 : 0) - presence) * Math.min(1, dt / 160);
-      // One layout read per frame: the track drifts under a CSS animation.
-      const shift = track.getBoundingClientRect().left - trackBase;
-      const liftBoost = Math.min(Math.abs(vel) * 0.25, 0.3);
-      const rot = clampRot(vel) * presence;
-      const alive = inside || presence > 0.02 || Math.abs(vel) > 0.02;
-      for (let i = 0; i < count; i++) {
-        const el = letters[i];
-        if (!el) continue;
-        const dx = pointerX - (trackBase + shift + rel[i]);
-        const prox = Math.exp(-(dx * dx) / (2 * SIGMA * SIGMA));
-        const rise = prox * (0.14 + liftBoost) * presence;
-        const s = 1 + prox * 0.07 * presence;
-        if (rise < 0.002 && Math.abs(rot) < 0.002 && Math.abs(s - 1) < 0.002) {
-          if (el.style.transform !== '') el.style.transform = '';
-          continue;
+      const k = Math.min(1, dt / 16.7);
+      vel *= Math.pow(0.93, k);
+      presence += ((inside ? 1 : 0) - presence) * Math.min(1, dt / 220);
+      const targetSkew = Math.max(-0.06, Math.min(0.06, vel * 0.05)) * presence;
+      const targetStretch = 1 + Math.min(Math.abs(vel) * 0.008, 0.012) * presence;
+      skew += (targetSkew - skew) * Math.min(1, dt / 140);
+      stretch += (targetStretch - stretch) * Math.min(1, dt / 140);
+      const track = -0.02 + 0.03 * presence;
+      const transform =
+        Math.abs(skew) < 0.0005 && Math.abs(stretch - 1) < 0.0005
+          ? ''
+          : `skewX(${skew.toFixed(4)}rad) scaleX(${stretch.toFixed(4)})`;
+      for (let i = 0; i < copies.length; i++) {
+        copies[i].style.transform = transform;
+        copies[i].style.letterSpacing = `${track.toFixed(4)}em`;
+        const sweep = sweeps[i];
+        if (sweep) {
+          // A narrow sheen band around the cursor, never a fill.
+          const center = fractions[i] * 100;
+          const left = Math.max(0, center - 9);
+          const right = Math.max(0, 100 - (center + 9));
+          sweep.style.opacity = presence.toFixed(3);
+          sweep.style.clipPath = `inset(0 ${right.toFixed(2)}% 0 ${left.toFixed(2)}%)`;
         }
-        el.style.transform = `translateY(${-rise.toFixed(3)}em) rotate(${rot.toFixed(3)}rad) scale(${s.toFixed(3)})`;
       }
+      const alive = inside || presence > 0.02 || Math.abs(vel) > 0.02 || Math.abs(skew) > 0.0005;
       if (!alive) {
-        for (let i = 0; i < count; i++) {
-          const el = letters[i];
-          if (el && el.style.transform !== '') el.style.transform = '';
+        for (let i = 0; i < copies.length; i++) {
+          copies[i].style.transform = '';
+          copies[i].style.letterSpacing = '';
+          if (sweeps[i]) sweeps[i].style.opacity = '0';
         }
         running = false;
         lastT = 0;
@@ -102,19 +103,18 @@ function MarqueeWave({ text, className }: { text: string; className?: string }) 
 
     const onEnter = (e: PointerEvent) => {
       inside = true;
-      pointerX = e.clientX;
       lastX = e.clientX;
       lastMove = performance.now();
-      cache();
+      refresh(e.clientX);
       wake();
     };
     const onMove = (e: PointerEvent) => {
       const now = performance.now();
       const dt = Math.max(8, now - lastMove);
-      vel = vel * 0.75 + ((e.clientX - lastX) / dt) * 0.25;
+      vel = vel * 0.7 + ((e.clientX - lastX) / dt) * 0.3;
       lastX = e.clientX;
       lastMove = now;
-      pointerX = e.clientX;
+      refresh(e.clientX);
       wake();
     };
     const onLeave = () => {
@@ -131,41 +131,7 @@ function MarqueeWave({ text, className }: { text: string; className?: string }) 
       marquee.removeEventListener('pointerleave', onLeave);
       cancelAnimationFrame(raf);
     };
-  }, [text, reduce]);
-
-  return (
-    <span
-      ref={containerRef}
-      className={`overflow-visible whitespace-nowrap ${className ?? ''}`}
-      aria-label={text}
-      role="text"
-    >
-      {Array.from(text).map((letter, i) => (
-        <span
-          key={`${letter}-${i}`}
-          ref={el => {
-            letterRefs.current[i] = el;
-          }}
-          aria-hidden="true"
-          className="inline-block will-change-transform"
-        >
-          {letter}
-        </span>
-      ))}
-    </span>
-  );
-}
-
-/**
- * The closing frame: the name as a slow infinite marquee with a
- * velocity-wave pointer response (rise plus directional lean, settling as
- * velocity decays; idle costs nothing). The track is two identical groups
- * so the -50% translate loops seamlessly. Reduced motion gets a single
- * fitted, static wordmark instead.
- */
-export function FooterWordmark() {
-  const reduce = useMountedReducedMotion();
-  const name = profile.name.toUpperCase();
+  }, [reduce]);
 
   if (reduce) {
     return (
@@ -180,14 +146,19 @@ export function FooterWordmark() {
   const group = (key: string) => (
     <div key={key} className="flex shrink-0 items-baseline">
       {[0, 1].map(copy => (
-        <span key={copy} className="flex items-baseline">
-          <MarqueeWave
-            text={name}
-            className="whitespace-nowrap text-[9.5vw] font-semibold uppercase leading-none tracking-[-0.02em] text-ink"
-          />
+        <span key={copy} className="flex items-baseline text-[9.5vw] leading-none">
+          <span className="wordmark-copy relative whitespace-nowrap text-[9.5vw] font-semibold uppercase leading-none tracking-[-0.02em] text-ink will-change-transform">
+            {name}
+            <span
+              aria-hidden="true"
+              className="wordmark-sweep pointer-events-none absolute inset-0 whitespace-nowrap text-accent opacity-0"
+            >
+              {name}
+            </span>
+          </span>
           <span
             aria-hidden="true"
-            className="mx-[0.45em] inline-block h-[0.09em] w-[0.09em] shrink-0 rotate-45 self-center bg-accent"
+            className="mx-[0.7em] inline-block h-[0.16em] w-[0.16em] shrink-0 rotate-45 self-center bg-accent"
           />
         </span>
       ))}
@@ -195,7 +166,11 @@ export function FooterWordmark() {
   );
 
   return (
-    <div className="marquee marquee-fade -my-[0.5em] overflow-hidden py-[0.5em]" aria-hidden="true">
+    <div
+      ref={marqueeRef}
+      className="marquee marquee-fade -my-[0.5em] overflow-hidden py-[0.5em]"
+      aria-hidden="true"
+    >
       <div className="marquee-track" style={{ ['--marquee-duration' as string]: '38s' }}>
         {group('a')}
         {group('b')}
