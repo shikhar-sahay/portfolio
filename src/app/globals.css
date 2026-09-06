@@ -173,6 +173,21 @@ html[data-intro='skip'] .opening-overlay {
   color: #f3efe6;
 }
 
+/* Fixed editorial panel (Personality + notes wall): the subtree renders
+   the light colorway values in both themes, so the inverted panel never
+   becomes a light island in dark mode. Every utility referencing the
+   tokens (including opacity modifiers via color-mix) resolves locally. */
+.panel-ink {
+  --paper: #f3efe6;
+  --surface: #e9e2d3;
+  --ink: #1d1915;
+  --muted: #7c7568;
+  --accent: #bc3f1a;
+  --gold: #b08d2f;
+  background-color: #1d1915;
+  color: #f3efe6;
+}
+
 .arch-echo {
   border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
   border-radius: 999px 999px 18px 18px;

@@ -17,7 +17,7 @@ export function Personality() {
     <section
       id="personality"
       aria-label="Personality"
-      className="theme-fade border-ink/10 relative overflow-hidden border-t bg-ink px-5 py-[18vh] text-paper sm:px-10"
+      className="panel-ink theme-fade border-ink/10 relative overflow-hidden border-t px-5 py-[18vh] sm:px-10"
     >
       {/* Inverted panel: the site's one full-tone shift */}
       <div className="relative mx-auto max-w-6xl">

@@ -25,7 +25,11 @@ export function ThemeToggle() {
       aria-label={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
       className="text-micro uppercase text-muted transition-colors duration-300 hover:text-ink"
     >
-      <span aria-hidden="true" className="mr-1.5 inline-block">
+      <span
+        aria-hidden="true"
+        className="mr-1.5 inline-block transition-transform duration-500 ease-expo"
+        style={{ transform: isDark ? 'rotate(180deg)' : 'rotate(0deg)' }}
+      >
         ◐
       </span>
       {isDark === null ? '' : isDark ? 'Light' : 'Dark'}
