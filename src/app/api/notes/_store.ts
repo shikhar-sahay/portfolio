@@ -1,4 +1,4 @@
-import { LIMITS, type WallNote, type WallReply } from '@/content/wall';
+import { LIMITS, SEED_NOTES, type WallNote, type WallReply } from '@/content/wall';
 
 /**
  * Storage abstraction for the notes wall.
@@ -27,6 +27,14 @@ function uid(): string {
 
 class MemoryNoteStore implements NoteStore {
   private notes = new Map<string, WallNote>();
+
+  seed(seeds: WallNote[]) {
+    for (const seed of seeds) {
+      if (!this.notes.has(seed.id)) {
+        this.notes.set(seed.id, { ...seed, replies: [...seed.replies] });
+      }
+    }
+  }
 
   list(limit: number, before?: number) {
     const all = Array.from(this.notes.values())
@@ -60,8 +68,12 @@ class MemoryNoteStore implements NoteStore {
 }
 
 // Module singleton: shared across route handlers in one process.
+// Seeded with the owner notes so seeds accept replies like any note.
 const globalStore = globalThis as unknown as { __wallStore?: MemoryNoteStore };
-if (!globalStore.__wallStore) globalStore.__wallStore = new MemoryNoteStore();
+if (!globalStore.__wallStore) {
+  globalStore.__wallStore = new MemoryNoteStore();
+  globalStore.__wallStore.seed(SEED_NOTES);
+}
 export const noteStore: NoteStore = globalStore.__wallStore;
 
 /** Sliding-window rate limiter (per process; pair with edge limits in prod). */

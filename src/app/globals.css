@@ -315,25 +315,20 @@ html[data-intro='skip'] .opening-overlay {
   animation-play-state: paused;
 }
 
-/* MarkWall stamp entrance: uses the independent `scale` property so it
-   composes with each mark's inline translate/rotate transform. */
-@keyframes mark-pop {
-  0% {
+/* Notes wall arrival: restrained settle for a newly placed note. */
+@keyframes note-arrive {
+  from {
     opacity: 0;
-    scale: 0.4;
+    transform: translateY(10px) scale(0.96);
   }
-  60% {
+  to {
     opacity: 1;
-    scale: 1.12;
-  }
-  100% {
-    opacity: 1;
-    scale: 1;
+    transform: translateY(0) scale(1);
   }
 }
 
-.mark-pop {
-  animation: mark-pop 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+.note-arrive {
+  animation: note-arrive 0.45s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 @media (prefers-reduced-motion: reduce) {

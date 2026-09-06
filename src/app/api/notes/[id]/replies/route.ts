@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { LIMITS, validateReply } from '@/content/wall';
-import { checkRateLimit, clientIp, noteStore } from '../_store';
+import { checkRateLimit, clientIp, noteStore } from '../../_store';
 
 export async function GET(_request: Request, { params }: { params: { id: string } }) {
   const note = noteStore.get(params.id);
