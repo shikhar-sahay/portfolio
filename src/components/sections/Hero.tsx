@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { motion, useMotionValue, useScroll, useSpring, useTransform } from 'motion/react';
 import { useMountedReducedMotion } from '@/hooks/useMountedReducedMotion';
@@ -19,62 +19,77 @@ import { InteractiveLetters } from '@/components/ui/InteractiveLetters';
  * never pins: the scene is a normal section that scrolls away cleanly.
  */
 /**
- * The hero tagline keeps a memory. The serif word carries a vermilion
- * afterimage that stirs a few pixels toward the pointer while it is near
- * and lingers briefly after it leaves, then settles back to nothing. The
- * ghost is absolutely positioned over its word (never layout), aria-hidden
- * (readers hear the line once), and absent entirely under reduced motion
- * or before hydration state exists. No loop runs: springs move only while
- * the pointer is inside, and every value returns to rest on leave.
+ * The hero tagline keeps an accent rule. A vermilion hairline draws
+ * beneath the serif word on enter while a small diamond rides to the
+ * cursor; movement glides the diamond, leave retracts the rule and fades
+ * the marker. Everything is absolutely positioned (never layout),
+ * aria-hidden, and absent under reduced motion. Springs move only on
+ * pointer events and settle to rest; no loop ever runs.
  */
-function TaglineMemory({ reduceMotion }: { reduceMotion: boolean }) {
-  const [haunted, setHaunted] = useState(false);
+function TaglineRule({ reduceMotion }: { reduceMotion: boolean }) {
+  const wordRef = useRef<HTMLSpanElement>(null);
   const session = useRef(0);
-  const gx = useMotionValue(0);
-  const gy = useMotionValue(0);
-  const sx = useSpring(gx, { stiffness: 120, damping: 16 });
-  const sy = useSpring(gy, { stiffness: 120, damping: 16 });
+  const draw = useMotionValue(0);
+  const markX = useMotionValue(0);
+  const markO = useMotionValue(0);
+  const ruleX = useSpring(draw, { stiffness: 170, damping: 24 });
+  const diaX = useSpring(markX, { stiffness: 260, damping: 26 });
+  const diaO = useSpring(markO, { stiffness: 200, damping: 26 });
+
+  const place = (clientX: number) => {
+    const el = wordRef.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    markX.set(Math.min(r.width - 3, Math.max(3, clientX - r.left)));
+  };
+
+  const release = (hold: number) => {
+    const s = session.current;
+    window.setTimeout(() => {
+      if (session.current !== s) return;
+      draw.set(0);
+      markO.set(0);
+    }, hold);
+  };
 
   return (
     <p
-      onPointerEnter={() => {
+      onPointerEnter={e => {
         if (reduceMotion) return;
         session.current += 1;
-        setHaunted(true);
+        draw.set(1);
+        markO.set(1);
+        place(e.clientX);
       }}
       onPointerMove={e => {
-        if (reduceMotion || !haunted) return;
-        const r = e.currentTarget.getBoundingClientRect();
-        gx.set((((e.clientX - r.left) / r.width) * 2 - 1) * 7);
-        gy.set((((e.clientY - r.top) / r.height) * 2 - 1) * 5);
+        if (reduceMotion) return;
+        place(e.clientX);
       }}
       onPointerLeave={e => {
-        gx.set(0);
-        gy.set(0);
-        // Touch taps fire enter and leave in the same instant (React
-        // batches them, so the ghost would never paint). Hold the memory
-        // briefly for touch; mouse releases immediately into the slow fade.
-        const s = session.current;
-        const hold = e.pointerType === 'touch' ? 650 : 0;
-        window.setTimeout(() => {
-          if (session.current === s) setHaunted(false);
-        }, hold);
+        if (reduceMotion) return;
+        // Touch taps fire enter and leave in the same instant: hold the
+        // rule briefly so the gesture reads, then retract.
+        release(e.pointerType === 'touch' ? 900 : 0);
       }}
       className="anim-fade-rise mt-6 max-w-[26ch] text-lede font-medium tracking-tight text-ink [animation-delay:calc(var(--intro-delay)+0.6s)] sm:mt-8"
     >
       {profile.statementPre}
-      <span className="relative inline-block">
+      <span ref={wordRef} className="relative inline-block">
         <em className="font-serif font-normal italic">{profile.statementEm}</em>
         {!reduceMotion && (
-          <motion.em
+          <span
             aria-hidden="true"
-            style={{ x: sx, y: sy }}
-            className={`pointer-events-none absolute inset-0 font-serif font-normal italic text-accent transition-opacity ${
-              haunted ? 'opacity-60 duration-200' : 'opacity-0 duration-1000'
-            }`}
+            className="pointer-events-none absolute inset-x-0 -bottom-1.5 top-full"
           >
-            {profile.statementEm}
-          </motion.em>
+            <motion.span
+              style={{ scaleX: ruleX }}
+              className="absolute inset-x-0 top-0 h-[2px] origin-left bg-accent"
+            />
+            <motion.span
+              style={{ x: diaX, opacity: diaO }}
+              className="absolute -top-[2px] left-0 h-[7px] w-[7px] -translate-x-1/2 rotate-45 bg-accent"
+            />
+          </span>
         )}
       </span>
     </p>
@@ -197,7 +212,7 @@ export function Hero() {
             </motion.h1>
 
             <motion.div {...scroll({ opacity: ledeO })}>
-              <TaglineMemory reduceMotion={reduceMotion} />
+              <TaglineRule reduceMotion={reduceMotion} />
 
               {/* Compact personal context: part of the composition, not cards */}
               <motion.div
