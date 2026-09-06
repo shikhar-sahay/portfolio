@@ -27,11 +27,23 @@ export const profile = {
   /** Broader social set for the footer Elsewhere column. */
   socials: [
     { label: 'GitHub', handle: 'shikhar-sahay', href: 'https://github.com/shikhar-sahay' },
-    { label: 'LinkedIn', handle: 'Shikhar Sahay', href: 'https://www.linkedin.com/in/shikharsahay/' },
-    { label: 'Instagram', handle: 'shikhar.sahay', href: 'https://www.instagram.com/shikhar.sahay/' },
+    {
+      label: 'LinkedIn',
+      handle: 'Shikhar Sahay',
+      href: 'https://www.linkedin.com/in/shikharsahay/',
+    },
+    {
+      label: 'Instagram',
+      handle: 'shikhar.sahay',
+      href: 'https://www.instagram.com/shikhar.sahay/',
+    },
     { label: 'Medium', handle: 'sahay.shikhar', href: 'https://medium.com/@sahay.shikhar' },
     { label: 'X', handle: 'Noscope999', href: 'https://x.com/Noscope999' },
-    { label: 'Spotify', handle: 'shikhar', href: 'https://open.spotify.com/user/e903cr9l76oafo6tt5oyi4gdh?si=ab8c9e51a25d446c' },
+    {
+      label: 'Spotify',
+      handle: 'shikhar',
+      href: 'https://open.spotify.com/user/e903cr9l76oafo6tt5oyi4gdh?si=ab8c9e51a25d446c',
+    },
   ],
   /** No public profile URL supplied: render as copy action, never a link. */
   discord: { username: 'noscope5573' },

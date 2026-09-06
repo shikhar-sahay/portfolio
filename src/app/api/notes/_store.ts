@@ -58,7 +58,10 @@ class MemoryNoteStore implements NoteStore {
     return this.notes.delete(id);
   }
 
-  addReply(noteId: string, reply: Omit<WallReply, 'id' | 'noteId' | 'createdAt'>): WallReply | null {
+  addReply(
+    noteId: string,
+    reply: Omit<WallReply, 'id' | 'noteId' | 'createdAt'>
+  ): WallReply | null {
     const note = this.notes.get(noteId);
     if (!note) return null;
     const full: WallReply = { ...reply, id: uid(), noteId, createdAt: Date.now() };
@@ -78,7 +81,10 @@ export const noteStore: NoteStore = globalStore.__wallStore;
 
 /** Sliding-window rate limiter (per process; pair with edge limits in prod). */
 const buckets = new Map<string, { notes: number[]; replies: number[] }>();
-export function checkRateLimit(ip: string, kind: 'notes' | 'replies'): { ok: boolean; retryAfter: number } {
+export function checkRateLimit(
+  ip: string,
+  kind: 'notes' | 'replies'
+): { ok: boolean; retryAfter: number } {
   const now = Date.now();
   const windowMs = 60 * 60 * 1000;
   let bucket = buckets.get(ip);

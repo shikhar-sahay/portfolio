@@ -223,7 +223,7 @@ function CompactLink({ label, href, handle }: { label: string; href: string; han
       {handle && (
         <span
           aria-hidden="true"
-          className="text-muted/60 group-hover:text-muted text-micro uppercase tracking-[0.1em] transition-colors duration-300"
+          className="text-muted/60 text-micro uppercase tracking-[0.1em] transition-colors duration-300 group-hover:text-muted"
         >
           {handle}
         </span>

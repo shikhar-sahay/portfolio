@@ -57,21 +57,31 @@ function cleanCoord(value: unknown, max: number): number | null {
   return Math.round(value);
 }
 
-export function validateNote(input: unknown): { ok: true; note: { name: string; message: string; x: number; y: number; variant: number } } | { ok: false; error: string } {
+export function validateNote(
+  input: unknown
+):
+  | { ok: true; note: { name: string; message: string; x: number; y: number; variant: number } }
+  | { ok: false; error: string } {
   if (!input || typeof input !== 'object') return { ok: false, error: 'Bad payload.' };
   const body = input as Record<string, unknown>;
   const name = cleanText(body.name ?? 'anonymous', LIMITS.nameMax);
   const message = cleanText(body.message, LIMITS.messageMax);
   const x = cleanCoord(body.x, WORLD.w);
   const y = cleanCoord(body.y, WORLD.h);
-  const variant = typeof body.variant === 'number' && body.variant >= 0 && body.variant < VARIANTS.length ? body.variant : 0;
+  const variant =
+    typeof body.variant === 'number' && body.variant >= 0 && body.variant < VARIANTS.length
+      ? body.variant
+      : 0;
   if (!name) return { ok: false, error: `Name must be 1 to ${LIMITS.nameMax} characters.` };
-  if (!message) return { ok: false, error: `Message must be 1 to ${LIMITS.messageMax} characters.` };
+  if (!message)
+    return { ok: false, error: `Message must be 1 to ${LIMITS.messageMax} characters.` };
   if (x === null || y === null) return { ok: false, error: 'Placement is off the wall.' };
   return { ok: true, note: { name, message, x, y, variant } };
 }
 
-export function validateReply(input: unknown): { ok: true; reply: { name: string; message: string } } | { ok: false; error: string } {
+export function validateReply(
+  input: unknown
+): { ok: true; reply: { name: string; message: string } } | { ok: false; error: string } {
   if (!input || typeof input !== 'object') return { ok: false, error: 'Bad payload.' };
   const body = input as Record<string, unknown>;
   const name = cleanText(body.name ?? 'anonymous', LIMITS.nameMax);

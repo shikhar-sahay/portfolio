@@ -33,7 +33,15 @@ const lines: Line[] = [
  * at 1.0 (Motion v13 drops flat terminal segments past the last
  * keyframe, so ranges must never end early).
  */
-function ThoughtLine({ line, index, progress }: { line: Line; index: number; progress: MotionValue<number> }) {
+function ThoughtLine({
+  line,
+  index,
+  progress,
+}: {
+  line: Line;
+  index: number;
+  progress: MotionValue<number>;
+}) {
   const c = line.center;
   const isFirst = index === 0;
   const isLast = index === lines.length - 1;
@@ -67,7 +75,10 @@ function ThoughtLine({ line, index, progress }: { line: Line; index: number; pro
   );
 
   return (
-    <motion.div style={{ opacity, scale }} className="flex h-[32vh] flex-col justify-center will-change-transform">
+    <motion.div
+      style={{ opacity, scale }}
+      className="flex h-[32vh] flex-col justify-center will-change-transform"
+    >
       <motion.p
         style={{ opacity: iO }}
         className="font-serif text-[clamp(2rem,4.5vw,4.5rem)] italic leading-none tracking-tight text-[#f3efe6]/80"
@@ -141,7 +152,11 @@ export function TransitionStatements() {
       className="pointer-events-none relative -mt-[100dvh] h-[240svh]"
     >
       <div className="sticky top-0 h-dvh overflow-hidden">
-        <motion.div style={{ opacity: panelO }} className="ink-stage absolute inset-0" aria-hidden="true" />
+        <motion.div
+          style={{ opacity: panelO }}
+          className="ink-stage absolute inset-0"
+          aria-hidden="true"
+        />
         <motion.div style={{ y: stackY }} className="absolute inset-0 will-change-transform">
           <div className="flex h-full flex-col justify-center px-5 sm:px-10">
             {lines.map((line, i) => (

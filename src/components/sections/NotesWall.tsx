@@ -2,12 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useMountedReducedMotion } from '@/hooks/useMountedReducedMotion';
-import {
-  LIMITS,
-  SEED_NOTES,
-  WORLD,
-  type WallNote,
-} from '@/content/wall';
+import { LIMITS, SEED_NOTES, WORLD, type WallNote } from '@/content/wall';
 
 const CACHE_KEY = 'shikhar-wall-cache-v1';
 const PAN_MARGIN = 400;
@@ -31,7 +26,11 @@ function toWorld(e: { clientX: number; clientY: number }, canvas: HTMLElement | 
 function formatDate(at: number): string {
   if (!at) return 'owner note';
   try {
-    return new Date(at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+    return new Date(at).toLocaleDateString('en-IN', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+    });
   } catch {
     return '';
   }
@@ -62,15 +61,27 @@ export function NotesWall() {
   const [visibleIds, setVisibleIds] = useState<Set<string>>(new Set(SEED_NOTES.map(n => n.id)));
   const [openId, setOpenId] = useState<string | null>(null);
   const [composing, setComposing] = useState(false);
-  const [draft, setDraft] = useState<Draft>({ name: '', message: '', x: WORLD.w / 2, y: WORLD.h / 2 });
+  const [draft, setDraft] = useState<Draft>({
+    name: '',
+    message: '',
+    x: WORLD.w / 2,
+    y: WORLD.h / 2,
+  });
   const [replyName, setReplyName] = useState('');
   const [replyText, setReplyText] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [flashId, setFlashId] = useState<string | null>(null);
-  const drag = useRef<{ sx: number; sy: number; ox: number; oy: number; moved: boolean; raf: number } | null>(null);
+  const drag = useRef<{
+    sx: number;
+    sy: number;
+    ox: number;
+    oy: number;
+    moved: boolean;
+    raf: number;
+  } | null>(null);
   const notesRef = useRef(notes);
   notesRef.current = notes;
-  const openNote = openId ? notesRef.current.find(n => n.id === openId) ?? null : null;
+  const openNote = openId ? (notesRef.current.find(n => n.id === openId) ?? null) : null;
 
   const applyPan = useCallback(() => {
     const canvas = canvasRef.current;
@@ -92,7 +103,12 @@ export function NotesWall() {
     const next = new Set<string>();
     for (const n of notesRef.current) {
       if (next.size >= LIMITS.renderCap) break;
-      if (n.x > x - PAN_MARGIN && n.x < x + vw + PAN_MARGIN && n.y > y - PAN_MARGIN && n.y < y + vh + PAN_MARGIN) {
+      if (
+        n.x > x - PAN_MARGIN &&
+        n.x < x + vw + PAN_MARGIN &&
+        n.y > y - PAN_MARGIN &&
+        n.y < y + vh + PAN_MARGIN
+      ) {
         next.add(n.id);
       }
     }
@@ -124,7 +140,9 @@ export function NotesWall() {
     } catch {
       /* cache is best-effort */
     }
-    fetch(`/api/notes?limit=${LIMITS.initialFetchLimit}`, { headers: { accept: 'application/json' } })
+    fetch(`/api/notes?limit=${LIMITS.initialFetchLimit}`, {
+      headers: { accept: 'application/json' },
+    })
       .then(r => {
         if (!r.ok) throw new Error(`HTTP ${r.status}`);
         return r.json() as Promise<{ notes: WallNote[]; total: number }>;
@@ -210,7 +228,13 @@ export function NotesWall() {
       const r = await fetch('/api/notes', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ name, message: draft.message, x: Math.round(draft.x), y: Math.round(draft.y), variant: notes.length % 3 }),
+        body: JSON.stringify({
+          name,
+          message: draft.message,
+          x: Math.round(draft.x),
+          y: Math.round(draft.y),
+          variant: notes.length % 3,
+        }),
       });
       const data = (await r.json()) as { note?: WallNote; error?: string };
       if (!r.ok || !data.note) {
@@ -248,7 +272,13 @@ export function NotesWall() {
         setError(data.error ?? 'Could not post the reply.');
         return;
       }
-      setNotes(prev => prev.map(n => (n.id === openNote.id ? { ...n, replies: [...n.replies, data.reply as WallNote['replies'][number]] } : n)));
+      setNotes(prev =>
+        prev.map(n =>
+          n.id === openNote.id
+            ? { ...n, replies: [...n.replies, data.reply as WallNote['replies'][number]] }
+            : n
+        )
+      );
       setReplyText('');
     } catch {
       setError('The wall is unreachable right now. Your reply is kept.');
@@ -288,9 +318,9 @@ export function NotesWall() {
   return (
     <div className="border-paper/15 mt-[8vh] border-t pt-6">
       <p className="text-micro uppercase tracking-[0.16em] text-accent">The wall</p>
-      <p className="mt-3 max-w-[52ch] text-sm leading-relaxed text-paper/60">
-        A shared canvas. Drag to look around, open a note to reply, or pin one of your own. Be
-        kind: everything here is public.
+      <p className="text-paper/60 mt-3 max-w-[52ch] text-sm leading-relaxed">
+        A shared canvas. Drag to look around, open a note to reply, or pin one of your own. Be kind:
+        everything here is public.
       </p>
 
       <div className="mt-5 flex flex-wrap items-center gap-3">
@@ -304,7 +334,7 @@ export function NotesWall() {
           className={`border px-5 py-2.5 text-micro font-semibold uppercase tracking-[0.16em] transition-all duration-300 ease-expo ${
             composing
               ? 'border-accent bg-accent text-paper'
-              : 'border-paper/25 text-paper hover:border-paper/60 hover:text-paper'
+              : 'border-paper/25 hover:border-paper/60 text-paper hover:text-paper'
           }`}
         >
           {composing ? 'Cancel' : 'Add a note'}
@@ -312,7 +342,7 @@ export function NotesWall() {
         <button
           type="button"
           onClick={recenter}
-          className="border-paper/25 text-paper/70 hover:border-paper/60 hover:text-paper border px-5 py-2.5 text-micro font-semibold uppercase tracking-[0.16em] transition-all duration-300 ease-expo"
+          className="border-paper/25 text-paper/70 hover:border-paper/60 border px-5 py-2.5 text-micro font-semibold uppercase tracking-[0.16em] transition-all duration-300 ease-expo hover:text-paper"
         >
           Recenter
         </button>
@@ -359,21 +389,22 @@ export function NotesWall() {
               }`}
               style={{ left: n.x, top: n.y }}
             >
-              <span className="text-micro block uppercase tracking-[0.14em] opacity-70">
+              <span className="block text-micro uppercase tracking-[0.14em] opacity-70">
                 {n.name}
                 {n.owner && ' · owner'}
               </span>
               <span className="mt-2 line-clamp-4 block text-sm leading-relaxed">{n.message}</span>
-              <span className="text-micro mt-3 block uppercase tracking-[0.14em] opacity-60">
+              <span className="mt-3 block text-micro uppercase tracking-[0.14em] opacity-60">
                 {formatDate(n.createdAt)}
-                {n.replies.length > 0 && ` · ${n.replies.length} ${n.replies.length === 1 ? 'reply' : 'replies'}`}
+                {n.replies.length > 0 &&
+                  ` · ${n.replies.length} ${n.replies.length === 1 ? 'reply' : 'replies'}`}
               </span>
             </button>
           ))}
           {composing && (
             <span
               aria-hidden="true"
-              className="border-accent absolute flex h-10 w-10 items-center justify-center border border-dashed text-accent"
+              className="absolute flex h-10 w-10 items-center justify-center border border-dashed border-accent text-accent"
               style={{ left: draft.x - 20, top: draft.y - 20 }}
             >
               +
@@ -386,7 +417,7 @@ export function NotesWall() {
             role="dialog"
             aria-modal="false"
             aria-label={`Note by ${openNote.name}`}
-            className="border-ink/20 bg-paper text-ink absolute bottom-4 left-4 right-4 border p-5 sm:left-auto sm:right-4 sm:top-4 sm:w-80 sm:bottom-4"
+            className="border-ink/20 absolute bottom-4 left-4 right-4 border bg-paper p-5 text-ink sm:bottom-4 sm:left-auto sm:right-4 sm:top-4 sm:w-80"
           >
             <div className="flex items-start justify-between gap-4">
               <p className="text-micro uppercase tracking-[0.14em] text-muted">
@@ -397,7 +428,7 @@ export function NotesWall() {
                 type="button"
                 onClick={() => setOpenId(null)}
                 aria-label="Close note"
-                className="text-muted hover:text-ink text-lg leading-none transition-colors"
+                className="text-lg leading-none text-muted transition-colors hover:text-ink"
               >
                 ×
               </button>
@@ -419,7 +450,7 @@ export function NotesWall() {
                 onChange={e => setReplyName(e.target.value.slice(0, LIMITS.nameMax))}
                 placeholder="Name (optional)"
                 aria-label="Your name"
-                className="border-ink/20 bg-transparent w-full border px-3 py-2 text-sm outline-none placeholder:text-muted/60 focus:border-accent"
+                className="border-ink/20 placeholder:text-muted/60 w-full border bg-transparent px-3 py-2 text-sm outline-none focus:border-accent"
               />
               <div className="flex gap-2">
                 <input
@@ -430,12 +461,12 @@ export function NotesWall() {
                   }}
                   placeholder={`Reply, up to ${LIMITS.replyMax} chars`}
                   aria-label="Your reply"
-                  className="border-ink/20 bg-transparent w-full border px-3 py-2 text-sm outline-none placeholder:text-muted/60 focus:border-accent"
+                  className="border-ink/20 placeholder:text-muted/60 w-full border bg-transparent px-3 py-2 text-sm outline-none focus:border-accent"
                 />
                 <button
                   type="button"
                   onClick={submitReply}
-                  className="bg-ink text-paper shrink-0 px-4 py-2 text-micro font-semibold uppercase tracking-[0.14em] transition-opacity hover:opacity-85"
+                  className="shrink-0 bg-ink px-4 py-2 text-micro font-semibold uppercase tracking-[0.14em] text-paper transition-opacity hover:opacity-85"
                 >
                   Post
                 </button>
@@ -445,32 +476,38 @@ export function NotesWall() {
         )}
 
         {composing && (
-          <div className="border-ink/20 bg-paper text-ink absolute bottom-4 left-4 right-4 border p-5 sm:left-auto sm:right-4 sm:top-4 sm:w-80 sm:bottom-4">
-            <p className="text-micro uppercase tracking-[0.14em] text-muted">New note, placed where you clicked</p>
+          <div className="border-ink/20 absolute bottom-4 left-4 right-4 border bg-paper p-5 text-ink sm:bottom-4 sm:left-auto sm:right-4 sm:top-4 sm:w-80">
+            <p className="text-micro uppercase tracking-[0.14em] text-muted">
+              New note, placed where you clicked
+            </p>
             <div className="mt-3 space-y-2">
               <input
                 value={draft.name}
-                onChange={e => setDraft(d => ({ ...d, name: e.target.value.slice(0, LIMITS.nameMax) }))}
+                onChange={e =>
+                  setDraft(d => ({ ...d, name: e.target.value.slice(0, LIMITS.nameMax) }))
+                }
                 placeholder="Name (optional)"
                 aria-label="Your name"
-                className="border-ink/20 bg-transparent w-full border px-3 py-2 text-sm outline-none placeholder:text-muted/60 focus:border-accent"
+                className="border-ink/20 placeholder:text-muted/60 w-full border bg-transparent px-3 py-2 text-sm outline-none focus:border-accent"
               />
               <textarea
                 value={draft.message}
-                onChange={e => setDraft(d => ({ ...d, message: e.target.value.slice(0, LIMITS.messageMax) }))}
+                onChange={e =>
+                  setDraft(d => ({ ...d, message: e.target.value.slice(0, LIMITS.messageMax) }))
+                }
                 placeholder={`Message, up to ${LIMITS.messageMax} characters`}
                 aria-label="Your message"
                 rows={3}
-                className="border-ink/20 bg-transparent w-full resize-none border px-3 py-2 text-sm outline-none placeholder:text-muted/60 focus:border-accent"
+                className="border-ink/20 placeholder:text-muted/60 w-full resize-none border bg-transparent px-3 py-2 text-sm outline-none focus:border-accent"
               />
               <div className="flex items-center justify-between gap-2">
-                <span className="text-muted text-micro uppercase tracking-[0.12em]">
+                <span className="text-micro uppercase tracking-[0.12em] text-muted">
                   {draft.message.length}/{LIMITS.messageMax}
                 </span>
                 <button
                   type="button"
                   onClick={submitNote}
-                  className="bg-ink text-paper px-4 py-2 text-micro font-semibold uppercase tracking-[0.14em] transition-opacity hover:opacity-85"
+                  className="bg-ink px-4 py-2 text-micro font-semibold uppercase tracking-[0.14em] text-paper transition-opacity hover:opacity-85"
                 >
                   Pin it
                 </button>
@@ -486,8 +523,8 @@ export function NotesWall() {
         </p>
       )}
       <p className="text-paper/40 mt-3 text-micro uppercase tracking-[0.14em]">
-        {live ? 'Shared wall: notes appear for every visitor.' : 'Offline: showing saved notes.'} Plain
-        text only, nothing private.
+        {live ? 'Shared wall: notes appear for every visitor.' : 'Offline: showing saved notes.'}{' '}
+        Plain text only, nothing private.
       </p>
     </div>
   );

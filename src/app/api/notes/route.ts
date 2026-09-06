@@ -6,7 +6,11 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const limit = Math.min(
     LIMITS.initialFetchLimit,
-    Math.max(1, Number.parseInt(searchParams.get('limit') ?? `${LIMITS.initialFetchLimit}`, 10) || LIMITS.initialFetchLimit)
+    Math.max(
+      1,
+      Number.parseInt(searchParams.get('limit') ?? `${LIMITS.initialFetchLimit}`, 10) ||
+        LIMITS.initialFetchLimit
+    )
   );
   const beforeRaw = searchParams.get('before');
   const before = beforeRaw ? Number.parseInt(beforeRaw, 10) : undefined;
