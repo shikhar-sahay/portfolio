@@ -13,9 +13,9 @@ import { InteractiveLetters } from '@/components/ui/InteractiveLetters';
  * rounded crown and an offset vermilion echo behind it, overlapping the
  * display type. The name reacts letter by letter under the pointer.
  * Scrolling never zooms the face: the scene changes in two beats. First
- * the composition separates while the frame stays full; then an ink veil
- * rises from the bottom carrying the opening statement, so the hero hands
- * a full, moving frame directly to the statements bridge. Reduced motion
+ * the composition separates while the frame stays full; then a veil in
+ * the statements surface rises from the bottom, so the hero hands a full,
+ * moving frame directly to the statements bridge. Reduced motion
  * never pins: the scene is a normal section that scrolls away cleanly.
  */
 /**
@@ -290,23 +290,26 @@ export function Hero() {
             <span className="cue-line" aria-hidden="true" />
           </div>
         </motion.div>
-        {/* Exit veil: pure ink rises from the bottom, handing a full frame
-            to the statements bridge. */}
+        {/* Exit veil: rises from the bottom in the statements surface,
+            handing a full frame to the bridge (paper in light, deep warm
+            charcoal in dark). It carries no text: the bridge owns every
+            word, so nothing can duplicate. */}
         {!reduceMotion && (
           <motion.div aria-hidden="true" className="absolute inset-0 z-20" style={{ y: veilY }}>
-            <div className="ink-stage flex h-full flex-col justify-center px-5 sm:px-10" />
+            <div className="theme-fade flex h-full flex-col justify-center bg-paper px-5 sm:px-10" />
           </motion.div>
         )}
       </div>
 
-      {/* Tail ink: covers exactly the transparent zone below the sticky
-          frame (scene minus viewport), so the post-release scroll never
-          flashes paper between the veil and the bridge. It sits precisely
-          below the fold while pinned, and only rendered when pinned. */}
+      {/* Tail block: covers exactly the transparent zone below the sticky
+          frame (scene minus viewport) in the statements surface, so the
+          post-release scroll never flashes between the veil and the
+          bridge. It sits precisely below the fold while pinned, and only
+          rendered when pinned. */}
       {!reduceMotion && (
         <div
           aria-hidden="true"
-          className="ink-stage absolute inset-x-0 bottom-0 h-[calc(120svh-100dvh)]"
+          className="theme-fade absolute inset-x-0 bottom-0 h-[calc(120svh-100dvh)] bg-paper"
         />
       )}
     </div>

@@ -7,9 +7,6 @@ import { useMountedReducedMotion } from '@/hooks/useMountedReducedMotion';
 interface Line {
   verb: string;
   note: string;
-  /** Giant cropped echo on the right: the thought being left (previous)
-      for rows two and three, the thought arriving (next) for row one. */
-  echo: string;
   /** Progressive left offset: the stack cascades diagonally downward. */
   offsetClass: string;
   /** Progress where this thought centers. */
@@ -22,7 +19,6 @@ const lines: Line[] = [
   {
     verb: 'Build.',
     note: 'tools, experiments, platforms',
-    echo: 'Break',
     offsetClass: '',
     center: 0.15,
     noteWindow: [0.07, 0.15],
@@ -30,7 +26,6 @@ const lines: Line[] = [
   {
     verb: 'Break.',
     note: 'systems, to understand them: the ethical kind',
-    echo: 'Build',
     offsetClass: 'sm:pl-[4vw] lg:pl-[7vw]',
     center: 0.5,
     noteWindow: [0.42, 0.5],
@@ -38,7 +33,6 @@ const lines: Line[] = [
   {
     verb: 'Rebuild.',
     note: 'better than before',
-    echo: 'Break',
     offsetClass: 'sm:pl-[8vw] lg:pl-[14vw]',
     center: 0.85,
     noteWindow: [0.77, 0.85],
@@ -100,29 +94,32 @@ function ThoughtLine({
       style={{ opacity, scale }}
       className={`relative flex h-[32vh] flex-col justify-center will-change-transform ${line.offsetClass}`}
     >
-      {/* Residual echo: the neighboring verb, oversized and cropped by the
-          sticky frame, so the full viewport width reads as composition.
-          Static CSS riding the shared stack travel: no extra motion state,
-          deterministic in both directions. */}
+      {/* Residual echo: the thought's trailing fragment, oversized and
+          cropped by the frame edge, so the full viewport reads as
+          composition. Same word behind same word is the only honest
+          mapping, and a two-letter residue can never stack behind its own
+          letterforms the way a full word does. Static CSS riding the
+          shared stack travel: no extra motion state, deterministic in both
+          directions. */}
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute -right-[6vw] top-1/2 -translate-y-1/2 select-none whitespace-nowrap text-[21vw] font-semibold uppercase leading-none tracking-[-0.03em] text-[#f3efe6]/[0.07]"
+        className="text-ink/[0.06] dark:text-ink/[0.09] pointer-events-none absolute -right-[6vw] top-1/2 -translate-y-[30%] select-none whitespace-nowrap text-[21vw] font-semibold uppercase leading-none tracking-[-0.03em]"
       >
-        {line.echo}
+        {line.verb.slice(-3, -1)}
       </span>
       <motion.p
         style={{ opacity: iO }}
-        className="relative font-serif text-[clamp(2.25rem,5vw,5rem)] italic leading-none tracking-tight text-[#f3efe6]/80"
+        className="text-ink/80 relative font-serif text-[clamp(2.25rem,5vw,5rem)] italic leading-none tracking-tight"
       >
         I
       </motion.p>
-      <p className="relative whitespace-nowrap text-[clamp(4rem,12.5vw,14rem)] font-semibold uppercase leading-[0.95] tracking-[-0.03em] text-[#f3efe6]">
+      <p className="relative whitespace-nowrap text-[clamp(4rem,12.5vw,14rem)] font-semibold uppercase leading-[0.95] tracking-[-0.03em] text-ink">
         {line.verb.slice(0, -1)}
         <span className="text-accent">{line.verb.slice(-1)}</span>
       </p>
       <motion.p
         style={{ opacity: noteO }}
-        className="mt-3 text-micro uppercase tracking-[0.16em] text-[#f3efe6]/60 sm:mt-4"
+        className="mt-3 text-micro uppercase tracking-[0.16em] text-muted sm:mt-4"
       >
         {line.note}
       </motion.p>
@@ -157,27 +154,25 @@ export function TransitionStatements() {
     return (
       <section
         aria-label="Introduction statements"
-        className="ink-stage overflow-hidden px-5 py-[14vh] sm:px-10"
+        className="theme-fade overflow-hidden bg-paper px-5 py-[14vh] text-ink sm:px-10"
       >
         <div className="mx-auto max-w-6xl space-y-[6vh]">
           {lines.map(line => (
             <div key={line.verb} className={`relative ${line.offsetClass}`}>
               <span
                 aria-hidden="true"
-                className="pointer-events-none absolute -right-[6vw] top-1/2 -translate-y-1/2 select-none whitespace-nowrap text-[21vw] font-semibold uppercase leading-none tracking-[-0.03em] text-[#f3efe6]/[0.07]"
+                className="text-ink/[0.07] pointer-events-none absolute -right-[6vw] top-1/2 -translate-y-1/2 select-none whitespace-nowrap text-[21vw] font-semibold uppercase leading-none tracking-[-0.03em]"
               >
-                {line.echo}
+                {line.verb.slice(0, -1)}
               </span>
-              <p className="relative font-serif text-[clamp(2rem,5vw,4rem)] italic leading-none tracking-tight text-[#f3efe6]/80">
+              <p className="text-ink/80 relative font-serif text-[clamp(2rem,5vw,4rem)] italic leading-none tracking-tight">
                 I
               </p>
-              <p className="relative whitespace-nowrap text-[clamp(4rem,12.5vw,14rem)] font-semibold uppercase leading-[0.95] tracking-[-0.03em]">
+              <p className="relative whitespace-nowrap text-[clamp(4rem,12.5vw,14rem)] font-semibold uppercase leading-[0.95] tracking-[-0.03em] text-ink">
                 {line.verb.slice(0, -1)}
                 <span className="text-accent">{line.verb.slice(-1)}</span>
               </p>
-              <p className="mt-2 text-micro uppercase tracking-[0.16em] text-[#f3efe6]/60">
-                {line.note}
-              </p>
+              <p className="mt-2 text-micro uppercase tracking-[0.16em] text-muted">{line.note}</p>
             </div>
           ))}
         </div>
@@ -194,7 +189,7 @@ export function TransitionStatements() {
       <div className="sticky top-0 h-dvh overflow-hidden">
         <motion.div
           style={{ opacity: panelO }}
-          className="ink-stage absolute inset-0"
+          className="theme-fade absolute inset-0 bg-paper"
           aria-hidden="true"
         />
         <motion.div style={{ y: stackY }} className="absolute inset-0 will-change-transform">
