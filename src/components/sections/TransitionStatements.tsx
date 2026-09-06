@@ -7,6 +7,11 @@ import { useMountedReducedMotion } from '@/hooks/useMountedReducedMotion';
 interface Line {
   verb: string;
   note: string;
+  /** Giant cropped echo on the right: the thought being left (previous)
+      for rows two and three, the thought arriving (next) for row one. */
+  echo: string;
+  /** Progressive left offset: the stack cascades diagonally downward. */
+  offsetClass: string;
   /** Progress where this thought centers. */
   center: number;
   /** Note reveal window. */
@@ -14,14 +19,30 @@ interface Line {
 }
 
 const lines: Line[] = [
-  { verb: 'Build.', note: 'tools, experiments, platforms', center: 0.15, noteWindow: [0.07, 0.15] },
+  {
+    verb: 'Build.',
+    note: 'tools, experiments, platforms',
+    echo: 'Break',
+    offsetClass: '',
+    center: 0.15,
+    noteWindow: [0.07, 0.15],
+  },
   {
     verb: 'Break.',
     note: 'systems, to understand them: the ethical kind',
+    echo: 'Build',
+    offsetClass: 'sm:pl-[4vw] lg:pl-[7vw]',
     center: 0.5,
     noteWindow: [0.42, 0.5],
   },
-  { verb: 'Rebuild.', note: 'better than before', center: 0.85, noteWindow: [0.77, 0.85] },
+  {
+    verb: 'Rebuild.',
+    note: 'better than before',
+    echo: 'Break',
+    offsetClass: 'sm:pl-[8vw] lg:pl-[14vw]',
+    center: 0.85,
+    noteWindow: [0.77, 0.85],
+  },
 ];
 
 /**
@@ -77,15 +98,25 @@ function ThoughtLine({
   return (
     <motion.div
       style={{ opacity, scale }}
-      className="flex h-[32vh] flex-col justify-center will-change-transform"
+      className={`relative flex h-[32vh] flex-col justify-center will-change-transform ${line.offsetClass}`}
     >
+      {/* Residual echo: the neighboring verb, oversized and cropped by the
+          sticky frame, so the full viewport width reads as composition.
+          Static CSS riding the shared stack travel: no extra motion state,
+          deterministic in both directions. */}
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute -right-[6vw] top-1/2 -translate-y-1/2 select-none whitespace-nowrap text-[21vw] font-semibold uppercase leading-none tracking-[-0.03em] text-[#f3efe6]/[0.07]"
+      >
+        {line.echo}
+      </span>
       <motion.p
         style={{ opacity: iO }}
-        className="font-serif text-[clamp(2rem,4.5vw,4.5rem)] italic leading-none tracking-tight text-[#f3efe6]/80"
+        className="relative font-serif text-[clamp(2.25rem,5vw,5rem)] italic leading-none tracking-tight text-[#f3efe6]/80"
       >
         I
       </motion.p>
-      <p className="whitespace-nowrap text-[clamp(3.5rem,10vw,11rem)] font-semibold uppercase leading-[0.95] tracking-[-0.03em] text-[#f3efe6]">
+      <p className="relative whitespace-nowrap text-[clamp(4rem,12.5vw,14rem)] font-semibold uppercase leading-[0.95] tracking-[-0.03em] text-[#f3efe6]">
         {line.verb.slice(0, -1)}
         <span className="text-accent">{line.verb.slice(-1)}</span>
       </p>
@@ -124,14 +155,23 @@ export function TransitionStatements() {
 
   if (reduce) {
     return (
-      <section aria-label="Introduction statements" className="ink-stage px-5 py-[14vh] sm:px-10">
+      <section
+        aria-label="Introduction statements"
+        className="ink-stage overflow-hidden px-5 py-[14vh] sm:px-10"
+      >
         <div className="mx-auto max-w-6xl space-y-[6vh]">
           {lines.map(line => (
-            <div key={line.verb}>
-              <p className="font-serif text-[clamp(2rem,5vw,4rem)] italic leading-none tracking-tight text-[#f3efe6]/80">
+            <div key={line.verb} className={`relative ${line.offsetClass}`}>
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute -right-[6vw] top-1/2 -translate-y-1/2 select-none whitespace-nowrap text-[21vw] font-semibold uppercase leading-none tracking-[-0.03em] text-[#f3efe6]/[0.07]"
+              >
+                {line.echo}
+              </span>
+              <p className="relative font-serif text-[clamp(2rem,5vw,4rem)] italic leading-none tracking-tight text-[#f3efe6]/80">
                 I
               </p>
-              <p className="whitespace-nowrap text-[clamp(3rem,9vw,10rem)] font-semibold uppercase leading-[0.95] tracking-[-0.03em]">
+              <p className="relative whitespace-nowrap text-[clamp(4rem,12.5vw,14rem)] font-semibold uppercase leading-[0.95] tracking-[-0.03em]">
                 {line.verb.slice(0, -1)}
                 <span className="text-accent">{line.verb.slice(-1)}</span>
               </p>
