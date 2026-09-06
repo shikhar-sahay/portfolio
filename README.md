@@ -14,15 +14,15 @@ A directed long-scroll experience that feels personal, cinematic, and technicall
 ## Sections and features (top to bottom)
 
 1. **Opening:** minimal signal-line loader on an ink field (~1.6s, once per session, skipped for returning visitors and reduced motion).
-2. **Hero:** arch portrait with pointer parallax plus an oversized two-line name that reacts letter by letter to the pointer (2D spring field, fine pointers only). Scroll exit is a two-beat scene change into an ink veil carrying the opening statement. Never zooms the face.
-3. **Statements bridge:** one vertical composition traveling upward with scroll. Three thoughts share the ride with emphasis following distance from center while inactive thoughts persist as dimmed history; the finale holds its frame into About.
+2. **Hero:** arch portrait with pointer parallax plus an oversized two-line name that reacts letter by letter to the pointer (2D spring field, fine pointers only). The tagline keeps a memory: its serif word carries a vermilion afterimage that stirs toward the pointer and fades slowly. Scroll exit is a two-beat scene change into a pure ink veil (the bridge owns every word, so nothing duplicates). Never zooms the face.
+3. **Statements bridge:** one vertical composition traveling upward with scroll. Three thoughts share the ride with emphasis following distance from center while inactive thoughts persist as dimmed history; each row carries a giant cropped echo of its neighbor and the rows cascade diagonally, so the full viewport reads as composition; the finale holds its frame into About.
 4. **About:** word-by-word reading reveal plus a small meta row (based in, studying, otherwise).
 5. **Experience:** org-grouped timeline (Cyber Defenders, Recipharm, GDG On Campus, CodeChef-VIT Student Chapter, Skilledity, Team Shade) on a mathematically centered spine with a scroll-drawn accent fill and diamond markers.
 6. **Skills:** three drifting marquee rows of golden emblems with real monochrome technology marks (19 of 23; ink monograms where no genuine mark exists). No proficiency levels. Certifications keep a separate register.
 7. **Projects:** infinite drifting carousel (auto until first touch, then manual forever), drag/swipe/arrows/keyboard, five artifact cards with SVG preview motifs and inert placeholder links.
-8. **Personality:** inverted panel with a fragment word-swap instrument (buttons, keyboard accessible) plus an infinite notes wall (pan-able canvas, composer, one-level replies, keyboard parity, calm reduced motion). Captions are voice lines, not factual claims.
+8. **Personality:** inverted panel with a fragment word-swap instrument (buttons, keyboard accessible) plus an infinite notes wall (tilted tactile cards, docked instrument, serif composer, thread slip with one-level replies, keyboard parity, calm reduced motion). Captions are voice lines, not factual claims.
 9. **Control center:** framed utility grid (Now, IST clock, Studying, Toolbox, Channels, Navigate) with live status, session uptime, and brand channel tiles.
-10. **Footer:** compact contact grid with meaning glyphs, slim resume row (`/resume.pdf`), and a closing SHIKHAR SAHAY marquee with a velocity-wave pointer response (rise plus directional lean, zero cost at idle).
+10. **Footer:** compact contact grid (icon plus name social rows with real brand marks, Discord copy row, arrow-marked page links), slim resume row (Drive view plus local download), and a closing SHIKHAR SAHAY marquee with a velocity-wave pointer response (rise plus directional lean, zero cost at idle).
 
 ## Interaction highlights
 
@@ -59,14 +59,14 @@ src/
 │   ├── layout/             # Opening, SiteNav (header + progress + active section), ThemeToggle
 │   ├── sections/           # Hero, TransitionStatements, About, Experience, Skills,
 │   │                       #   Projects, ProjectPanel (lazy chunk), Personality,
-│   │                       #   MarkWall (stamp wall), ControlCenter, Contact (footer), FooterWordmark
+│   │                       #   NotesWall (notes canvas), ControlCenter, Contact (footer), FooterWordmark
 │   └── ui/                 # InteractiveLetters, TechLogo, Reveal, WordReveal,
 │                           #   Counter, InView
 ├── content/                # Typed data modules: profile, sections, projects,
 │                           #   experience, systems, personality, techLogos, channelGlyphs
 └── hooks/                  # useMountedReducedMotion (hydration-safe reduced-motion flag)
 public/
-└── resume.pdf              # PLACEHOLDER resume (owner must drop in the real file)
+└── resume.pdf              # Real owner-supplied resume
 docs/                       # Design system, architecture, animation, content, performance,
                             #   roadmap, decisions, handoff, agent protocol
 ```
@@ -79,7 +79,7 @@ docs/                       # Design system, architecture, animation, content, p
 
 ## Performance philosophy
 
-Performance is a hard requirement. Server Components by default, one small lazy chunk (`ProjectPanel`), compositor-only animation (transform/opacity/clip-path), single rAF loops gated by pointer presence or viewport visibility, static-first build. Budget: 150 kB First Load JS; current ~156 kB (see `docs/PERFORMANCE.md` for the measured state and reclaim options).
+Performance is a hard requirement. Server Components by default, one small lazy chunk (`ProjectPanel`), compositor-only animation (transform/opacity/clip-path), single rAF loops gated by pointer presence or viewport visibility, static-first build. Budget: 150 kB First Load JS; current ~159 kB (see `docs/PERFORMANCE.md` for the measured state and reclaim options).
 
 ## Persistence and backend status
 
@@ -88,7 +88,7 @@ There is no traditional backend: no database, no analytics, no contact form back
 ## Known placeholders (owner input needed)
 
 - Contact links: email, GitHub, LinkedIn, Instagram, Medium, X, Spotify, and Drive resume are real and wired; Discord is a copy action (no public URL exists)
-- Resume PDF (`public/resume.pdf` is still a placeholder file; Drive link is canonical for viewing)
+- Resume PDF is the real owner-supplied file (Drive link remains canonical for viewing)
 - Project Live/GitHub/Case study links (`#` in `src/content/projects.ts`)
 - Skilledity Social Media Management Intern: no dates or summary supplied
 - Four skills keep monogram emblems (SQL, Nmap, CrowdStrike Falcon, Beelzebub: no genuine CC0 mark found)

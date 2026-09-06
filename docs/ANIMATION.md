@@ -98,7 +98,7 @@ One `useScroll` progress drives every layer; all input ranges end at 1.0 (see th
 - A handoff hairline draws at the stage bottom; the scroll cue fades almost immediately.
 - Reduced motion: the scene never pins (renders as a normal section); no veil is rendered.
 
-### Statements bridge (phased kinetic typography, `TransitionStatements.tsx`)
+### Statements bridge (vertical accumulation with residual echoes, `TransitionStatements.tsx`)
 
 The section overlaps the hero by exactly one viewport so its sticky engages the pixel the hero releases. Each thought phase carries its own ink over a transparent stage (the bridge is pointer-transparent so hero hover survives underneath).
 
@@ -140,10 +140,11 @@ The name as a slow infinite marquee (two identical groups, -50% loop, pauses on 
 
 ### Mark wall (SUPERSEDED by the notes wall below; `MarkWall.tsx` deleted)
 
-### Notes wall (`NotesWall.tsx`)
+### Notes wall (`NotesWall.tsx`, reworked v4.8)
 
-- Pan is direct manipulation: pointer drag writes a clamped canvas transform through rAF (no React state during pan); wheel always scrolls the page, never the wall; touch keeps vertical page scroll (`touch-pan-y`) with horizontal drag panning; arrow keys pan when focused; a Recenter button restores origin.
-- Restrained arrival (fade-rise under 0.5s) for placed notes and hover lift on cards; calm and instant under reduced motion. No continuous animation anywhere.
+- Pan is direct manipulation: pointer drag writes a clamped canvas transform through rAF (no React state during pan); wheel always scrolls the page, never the wall; touch keeps vertical page scroll (`touch-pan-y`) with horizontal drag panning; arrow keys pan when focused; a docked Recenter button restores origin.
+- Cards rest tilted (deterministic per id) and straighten plus lift on hover and keyboard focus (500ms expo; instant under reduced motion); placed notes arrive with a short fade-rise settle. No continuous animation anywhere.
+- Opening the thread slip or composer moves focus inside it (no scroll), so Escape and Tab continue from the wall.
 - Virtualized: only notes near the viewport render (capped at 150); visibility recomputes on pan end and data change, never per frame.
 
 ### Control center micro-motion
@@ -359,11 +360,17 @@ Motion values are now concrete (see Implemented Patterns and Token Reference abo
 - The statements section is pulled up `-mt-[100dvh]` so its sticky engages the exact pixel the hero releases: the wipe is veil against incoming thought, with no tail and no gap. Each thought phase carries its own ink (the stage is transparent), so the hero stays pristine underneath until the first thought arrives; the bridge is pointer-transparent so hero hover survives the overlap.
 - Phase crossfades share windows (outgoing exit equals incoming enter) so some thought is always present; verb masks travel bottom-up on entry and top-down on exit.
 
-### Statements scene (v4.7 vertical accumulation; supersedes sliding panels)
+### Statements scene (v4.7 vertical accumulation, widened v4.8; supersedes sliding panels)
 
-- One typographic composition travels upward with scroll (stack offset 42vh to minus 50vh over the section): three thoughts share the ride, and emphasis follows distance from center while inactive thoughts persist as dimmed, slightly smaller history above and below. Serif "I" leads each line slightly, the note trails; verbs at `clamp(3.5rem, 10vw, 11rem)` with explicit paper color.
+- One typographic composition travels upward with scroll (stack offset 42vh to minus 50vh over the section): three thoughts share the ride, and emphasis follows distance from center while inactive thoughts persist as dimmed, slightly smaller history above and below. Serif "I" leads each line slightly, the note trails; verbs at `clamp(4rem, 12.5vw, 14rem)` with explicit paper color.
+- Each row carries a static residual echo (neighboring verb, 21vw, 7% paper, cropped off-canvas right) and a progressive left offset (diagonal cascade, flush on mobile): no extra motion state, so determinism is unchanged.
 - Travel matches scroll direction, so motion always feels caused. The finale holds strong through release while About enters beneath it. All ranges end at 1.0; every state is a pure function of progress (identical forward and reverse).
-- Reduced motion: static stacked block with matching alignment, full ink.
+- Reduced motion: static stacked block with matching alignment and echoes, full ink.
+
+### Hero tagline afterimage (`TaglineMemory` in `Hero.tsx`, v4.8)
+
+- The serif word owns a vermilion ghost (same text, absolute inset-0, aria-hidden): pointer proximity stirs it through soft springs (stiffness 120, damping 16, max 7px/5px); opacity 0.6 in 200ms on enter, 0 over 1000ms on leave, so the memory lingers; touch taps hold 650ms before release (enter/leave batch in one frame otherwise).
+- No loop runs: springs settle on leave, every value returns to rest. No layout (absolute), no tab stop, single AT reading. Absent entirely under reduced motion and on the server first paint (opacity-0 matches hydration).
 
 ## v4.3 Patterns (EXPERIMENTAL, 2026-09-04)
 

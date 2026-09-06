@@ -182,9 +182,7 @@ Eight fragments, each a tonal word plus a voice caption. There are no writing li
 
 Visitor marks are not owner content and never sync anywhere except through the wall API. Notes carry id, world coordinates, display name, message, timestamp, style variant, owner flag, and replies; replies carry id, note id, name, message, timestamp. Limits: names 24 chars, messages 140, replies 100, 10 notes and 20 replies per IP per hour, 4 KB payloads. Rendering is plain text nodes only. Seeds are two labeled Shikhar notes using site copy. The default store is in-memory (per process); production needs the documented KV swap.
 
-### Notes wall model (`src/content/wall.ts`, API under `src/app/api/notes/`)
-
-Visitor marks are not owner content and never sync anywhere. The wall offers eight fixed geometric glyphs (no free text, nothing to sanitize); each stamp stores glyph, color key, position, size, rotation, and timestamp in the visitor's own localStorage (memory fallback in private modes), capped at 150 marks. Seeds are twelve fixed owner marks in code. A future shared wall would need: an API route plus a tiny KV store implementing the same load/save shape, server-side glyph and color allow-listing, and rate limiting. None of that exists today.
+Presentation (not content, lives in `NotesWall.tsx`): deterministic tilt and restrained widths derive from note ids; tilt, width, and variant are display-only. (The older geometric-glyph stamp wall, `MarkWall.tsx`, was deleted in v4.7; no glyph system exists.)
 
 ### Content Guidelines (FINALIZED)
 
@@ -197,7 +195,7 @@ Visitor marks are not owner content and never sync anywhere. The wall offers eig
 
 ## Contact Content
 
-Actual model: `profile.links` (mailto email, GitHub, LinkedIn, Drive resume, local resume file), `profile.socials` (Instagram, Medium, X, Spotify with handles), `profile.discord` (username, copy action), plus `navLinks` in `sections.ts` (About, Experience, Projects, Contact anchors). Placeholders that remain (project URLs) render inert with "coming soon" labels. There is no contact form, no form endpoint, and no phone number on the site.
+Actual model: `profile.links` (mailto email, GitHub, LinkedIn, Drive resume, local resume file), `profile.socials` (GitHub, LinkedIn, Instagram, Medium, X, Spotify with hrefs; handles are stored but the footer Elsewhere column renders icon plus name only), `profile.discord` (username, copy action), plus `navLinks` in `sections.ts` (About, Experience, Projects, Contact anchors). Placeholders that remain (project URLs) render inert with "coming soon" labels. There is no contact form, no form endpoint, and no phone number on the site.
 
 ---
 
@@ -228,7 +226,7 @@ The following need owner input before milestones can proceed:
 | M3        | Real project links (live, GitHub, case study per project); case studies if written                            |
 | M4        | Skilledity intern dates and facts                                                                             |
 | M5        | Nothing open (fragments and captions are in place; wall backend is an infrastructure task, not content)       |
-| M7        | Real resume PDF file (Drive link wired; placeholder file remains), production URL, OG image                   |
+| M7        | Production URL, OG image (real resume PDF committed 2026-09-06; Drive link still canonical for viewing)       |
 
 ---
 

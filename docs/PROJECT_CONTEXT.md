@@ -81,8 +81,8 @@ The website is a **portfolio first, an experience second, and a story third**.
 
 ```
 OPENING (signal-line loader)
-  → IDENTITY (arch portrait + interactive name + veil exit)
-  → STATEMENTS (phased kinetic typography: BUILD, BREAK, REBUILD)
+  → IDENTITY (arch portrait + interactive name + tagline afterimage + veil exit)
+  → STATEMENTS (vertical accumulation with residual echoes: BUILD, BREAK, REBUILD)
   → ABOUT (reading reveal + meta row)
   → EXPERIENCE (org-grouped timeline)
   → SKILLS (marquee emblem rows + certifications)
@@ -117,7 +117,7 @@ The hero should contain:
 - **Styling:** Tailwind CSS 3 + CSS variables
 - **Animation:** Motion v13 (the only animation library)
 - **Advanced animation / smooth scroll / 3D:** none (GSAP, Lenis, Three.js excluded by rule unless a documented reason emerges)
-- **Backend / persistence:** none (static site; theme in localStorage, intro flag in sessionStorage only)
+- **Backend / persistence:** notes wall API (`/api/notes`, validation plus rate limits, in-memory store with a documented KV path); otherwise static (theme in localStorage, intro flag in sessionStorage, wall cache in localStorage)
 - **Deployment:** Vercel (planned, not yet deployed)
 
 ## Performance Requirement

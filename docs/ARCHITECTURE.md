@@ -61,19 +61,20 @@ src/
 │   ├── page.tsx           # Homepage: section order (Opening, Hero, Statements, About,
 │   │                       #   Experience, Skills, Projects, Personality, ControlCenter, Contact)
 │   ├── globals.css        # Tokens, keyframes, arch/mask/marquee/reduced-motion styles
-│   └── icon.svg           # Favicon (ink field, vermilion diamond)
+│   ├── icon.svg           # Favicon (ink field, vermilion diamond)
+│   └── api/notes/         # Wall API: list/create, replies, secret-gated moderation
 ├── assets/                # Static imports (shikhar-hero.jpg; enables blur placeholders)
 ├── components/
-│   ├── ui/                # InteractiveLetters, TechLogo, Reveal, WordReveal, Counter, InView
+│   ├── ui/                # InteractiveLetters, TechLogo, Reveal, WordReveal, Counter, InView, CopyText
 │   ├── sections/          # Hero, TransitionStatements, About, Experience, Skills,
-│   │                       #   Projects, ProjectPanel (lazy chunk), Personality,
+│   │                       #   Projects, ProjectPanel (lazy chunk), Personality, NotesWall,
 │   │                       #   ControlCenter, Contact, FooterWordmark
 │   └── layout/            # Opening, SiteNav, ThemeToggle
 ├── hooks/                 # useMountedReducedMotion (hydration-safe reduced-motion flag)
 └── content/               # Typed data: profile, sections, projects, experience,
-                            #   systems, personality, techLogos, channelGlyphs
+                             #   systems, personality, wall, techLogos, channelGlyphs
 public/
-└── resume.pdf             # PLACEHOLDER (owner must drop in the real file)
+└── resume.pdf             # Real owner-supplied resume (committed 2026-09-06)
 ```
 
 There is no `src/lib/`, `src/types/`, `src/styles/`, `src/components/effects/`, or `public/images/` in the built site. Do not reference them.
@@ -91,7 +92,7 @@ There is no `src/lib/`, `src/types/`, `src/styles/`, `src/components/effects/`, 
 
 ### Component Principles (FINALIZED)
 
-- **Server Components by default**: only `"use client"` when needed (current clients: Opening, SiteNav, ThemeToggle, Hero, About, TransitionStatements, Experience, Projects, ProjectPanel, Personality, ControlCenter, FooterWordmark, plus the interactive primitives InteractiveLetters, Reveal, WordReveal, Counter, InView. Server: Skills, Contact, TechLogo)
+- **Server Components by default**: only `"use client"` when needed (current clients: Opening, SiteNav, ThemeToggle, Hero, About, TransitionStatements, Experience, Projects, ProjectPanel, Personality, NotesWall, ControlCenter, FooterWordmark, plus the interactive primitives InteractiveLetters, Reveal, WordReveal, Counter, InView, CopyText. Server: Skills, Contact, TechLogo)
 - **Composition over configuration**: slots/children over props explosion
 - **Design tokens via Tailwind**: CSS variables as color source of truth
 - **Lazy-load heavy components**: `ProjectPanel` via `next/dynamic` with `ssr: false` (the only lazy chunk)
@@ -100,17 +101,18 @@ There is no `src/lib/`, `src/types/`, `src/styles/`, `src/components/effects/`, 
 
 ## State Management
 
-| Need                               | Solution                                                         | Status      |
-| ---------------------------------- | ---------------------------------------------------------------- | ----------- |
-| **Theme**                          | `<html>` class + localStorage, pre-paint head script             | `FINALIZED` |
-| **Intro played**                   | sessionStorage flag, read pre-paint                              | `FINALIZED` |
-| **Reduced motion**                 | `useMountedReducedMotion` hook (post-mount flag, hydration-safe) | `FINALIZED` |
-| **Scroll choreography**            | One `useScroll` progress per scene, pure `useTransform` mapping  | `FINALIZED` |
-| **Carousel**                       | Local ref + single rAF loop (no React state on scroll)           | `FINALIZED` |
-| **Personality selection**          | Local `useState` (no persistence)                                | `FINALIZED` |
-| **Global store / forms / backend** | None exist                                                       | `UNDECIDED` |
+| Need                      | Solution                                                                                             | Status         |
+| ------------------------- | ---------------------------------------------------------------------------------------------------- | -------------- |
+| **Theme**                 | `<html>` class + localStorage, pre-paint head script                                                 | `FINALIZED`    |
+| **Intro played**          | sessionStorage flag, read pre-paint                                                                  | `FINALIZED`    |
+| **Reduced motion**        | `useMountedReducedMotion` hook (post-mount flag, hydration-safe)                                     | `FINALIZED`    |
+| **Scroll choreography**   | One `useScroll` progress per scene, pure `useTransform` mapping                                      | `FINALIZED`    |
+| **Carousel**              | Local ref + single rAF loop (no React state on scroll)                                               | `FINALIZED`    |
+| **Personality selection** | Local `useState` (no persistence)                                                                    | `FINALIZED`    |
+| **Wall persistence**      | `/api/notes` routes plus in-memory store behind a KV-swappable interface; wall cache in localStorage | `EXPERIMENTAL` |
+| **Global store / forms**  | None exist                                                                                           | `UNDECIDED`    |
 
-**Principle (FINALIZED):** No global state library unless genuinely needed. No backend, no API routes, no database, no analytics. The only browser storage is the theme choice and the intro flag.
+**Principle (FINALIZED):** No global state library unless genuinely needed. No database, no analytics, no contact backend. The only wall backend is the notes API (validation plus rate limits, in-memory until the documented KV swap). Browser storage holds the theme choice, the intro flag, and the wall cache.
 
 ---
 
@@ -173,7 +175,7 @@ There is no `src/lib/`, `src/types/`, `src/styles/`, `src/components/effects/`, 
 - [ ] M6 signature experience concept (open ideation; must justify any new dependency)
 - [ ] CI/CD pipeline (none exists; typecheck/lint/format/build run locally)
 - [ ] Lighthouse measurement and real-device testing (M8)
-- [ ] Copy approval, real links, real resume PDF, Skilledity dates (owner inputs)
+- [ ] Copy approval, project links, Skilledity dates (owner inputs; social links, cert verifications, and resume PDF are real)
 
 ---
 

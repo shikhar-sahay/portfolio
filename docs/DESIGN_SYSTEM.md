@@ -184,7 +184,7 @@ The identity system beyond type and color. Used consistently so sections read as
 - ThemeToggle (quiet text control in the nav)
 - Reveal / WordReveal / Counter / InView primitives (ui)
 - InteractiveLetters (pointer spring field, hero + footer wordmark), TechLogo (monochrome brand marks)
-- Sections: Hero (arch + interactive name + veil exit), TransitionStatements (phased kinetic typography), About (reading reveal + meta row), Experience (org timeline + spine), Skills (marquee emblem rows + certifications), Projects (drifting carousel) + ProjectPanel (lazy chunk with SVG motifs), Personality (fragment instrument), ControlCenter (framed utility grid), Contact (footer: contact grid + resume row + marquee wordmark)
+- Sections: Hero (arch + interactive name + tagline afterimage + veil exit), TransitionStatements (vertical accumulation with residual echoes), About (reading reveal + meta row), Experience (org timeline + spine), Skills (marquee emblem rows + certifications), Projects (drifting carousel) + ProjectPanel (lazy chunk with SVG motifs), Personality (fragment instrument + notes wall), ControlCenter (framed utility grid), Contact (footer: contact grid + icon-name social rows + resume row + marquee wordmark)
 
 ## Shadows & Elevation (UNDECIDED)
 
@@ -248,11 +248,19 @@ This file will evolve as design decisions are finalized. Each section should be 
 
 ---
 
+## v4.8 Additions (EXPERIMENTAL, 2026-09-06)
+
+- **Hero tagline:** the serif word keeps a vermilion afterimage (absolute ghost over its word, pointer-stirred springs, fast-in slow-out fade, touch hold, aria-hidden, absent under reduced motion).
+- **Statements scene:** verbs at `clamp(4rem, 12.5vw, 14rem)`; each row carries a giant cropped echo of the neighboring verb (21vw, 7% paper, off-canvas right, static CSS on the shared stack); rows cascade diagonally (flush mobile, progressive offsets from sm up); reduced-motion stack keeps echoes.
+- **Notes wall:** deterministic tilt (minus 2.2 to 2.2 degrees from id hash) plus restrained widths (standard, narrow, wide, occasional large); pin-diamond metadata; tactile shadows that deepen on hover/focus while the card straightens; dotted field plus vignette plus dashed world boundary with accent corner ticks; docked instrument cluster (leave a note, recenter, count); serif composer card; narrow thread slip with vermilion reply rail; focus moves into thread/composer on open.
+- **Footer Elsewhere:** icon plus name rows with real monochrome brand marks (whole row links, no handles); hover lifts the mark, shifts the row, reveals an arrow; Discord is a visually identical copy row (copy icon, "copy"/"copied" micro).
+- **Resume:** `public/resume.pdf` is the real owner-supplied file (placeholder retired).
+
 ## v4.7 Additions (EXPERIMENTAL, 2026-09-06)
 
-- **Statements scene:** one vertical composition traveling upward with scroll; three thoughts share the ride with emphasis following distance from center while inactive thoughts persist as dimmed history; verbs at `clamp(3.5rem, 10vw, 11rem)` with explicit paper color; serif pronoun leads each line.
-- **Footer contact:** Elsewhere channels carry meaning glyphs with dim handles; Discord is a copy action; Pages and control Navigate links use arrow markers.
-- **Notes wall (Personality):** hairline-framed dotted canvas (2400 by 1600 world); paper/ink/accent note variants; composer, reply dialog, and micro-typographic metadata; local-first with shared API.
+- **Statements scene (v4.7 base, widened in v4.8 above):** one vertical composition traveling upward with scroll; three thoughts share the ride with emphasis following distance from center while inactive thoughts persist as dimmed history; serif pronoun leads each line.
+- **Footer contact (v4.7, superseded by v4.8 rows above):** Elsewhere channels carried meaning glyphs with dim handles; Discord was a copy action; Pages and control Navigate links use arrow markers.
+- **Notes wall (Personality, reworked v4.8, see v4.8 Additions):** hairline-framed dotted canvas (2400 by 1600 world); paper/ink/accent note variants; composer, thread slip, and micro-typographic metadata; local-first with shared API.
 
 - **Statements scene (v4.6, superseded by v4.7 vertical accumulation above):** full-viewport sliding panels with shared crossfade windows and oversized ink bleed; verbs at 17vw with explicit paper color.
 - **Skills emblems:** monogram cores render in ink like the marks (uniform beige family); solid full-bleed marks render one step smaller; labels reserve two balanced lines.

@@ -670,6 +670,28 @@ Do not make significant design/architecture decisions without documenting them h
 
 ---
 
+### 37. v4.8 Tagline Afterimage, Statement Echoes, Wall Rework, Footer Rows (EXPERIMENTAL polish)
+
+**Decision:** Four implementation tracks plus five feedback-only studies.
+
+1. Hero tagline owns a memory interaction: the serif word carries a vermilion afterimage that stirs a few pixels toward the pointer and fades slowly on leave (fast in, 1000ms out), with a 650ms hold for touch taps (whose enter/leave batch in one frame). Ghost is absolute over its word (never layout), aria-hidden, absent under reduced motion. Verified 15/15 including repeated-interaction settle.
+2. Statements use the full viewport: verbs grow to 12.5vw (cap 14rem, fit-verified 375 to 1920), each row carries a giant cropped echo of the neighboring verb at 7% paper on the right (static CSS riding the shared stack, zero extra motion state), rows cascade diagonally (flush mobile, progressive offsets sm+). Reduced-motion stack keeps echoes. Verified no-blank/no-pop/determinism/veil-textless/refresh across four widths.
+3. Notes wall reworked from utility canvas to tactile surface (translated from the friend reference, not cloned): deterministic tilt plus restrained width scale from id hashes, pin-diamond metadata, tactile shadows, hover/focus straighten, dotted field plus vignette plus dashed world boundary with accent corner ticks, controls docked on the wall itself, serif composer card, narrow thread slip with vermilion reply rail, focus moved into thread/composer on open (Escape keeps working after pin). All data safety preserved (validation, limits, 150 cap, store abstraction, moderation, plain text). Verified 30+ checks plus XSS probe.
+4. Footer Elsewhere simplified to icon plus name rows with real monochrome brand marks, whole row linking, no handles; hover lifts the mark, shifts the row, reveals an arrow. Resume row removed from Elsewhere (the resume moment below covers it). Discord stays a copy row with identical layout (copy icon, "copy"/"copied" micro, no invented URL). Verified both themes.
+5. Feedback only (NOT implemented): Experience imagery, merging Security Tools, certification prominence, opening interaction, Personality detail stories. Options and recommendations live in the owner-facing session notes and ROADMAP backlog; nothing about them is described as shipped anywhere.
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-09-06
+
+**Rationale:** Each track answers one brief point with the smallest distinct mechanism: the tagline needed its own language (not springs, wave, or scroll); statements needed the right half without decoration (typography only); the wall needed spatial clarity (rotation, scale, boundary, dock); the footer needed simplification (rows, not glyph/handle lines).
+
+**Alternatives Considered:** Underline draw for the tagline (rejected: annotation language belongs to editing, not memory); giant slideshow for statements (rejected by brief); cloning the reference wall cards/behavior (rejected: names-only cards would hide messages; starfield breaks the palette); brand-color social icons (rejected: monochrome keeps the editorial voice).
+
+**Impact:** First Load JS ~159 kB (plus ~1 kB for the tagline springs and wall presentation). No new dependencies. Real resume PDF committed (owner-supplied file replaces the placeholder).
+
+---
+
 ### 35. v4.6 Footer Life, Sliding Statements, Mark Wall (EXPERIMENTAL polish)
 
 **Decision:** Interaction-depth pass without touching working choreography foundations.
