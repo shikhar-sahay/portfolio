@@ -1,6 +1,6 @@
 import { Reveal } from '@/components/ui/Reveal';
 import { TechLogo, hasGlyph } from '@/components/ui/TechLogo';
-import { certifications, skillGroups, type Skill } from '@/content/systems';
+import { skillGroups, type Skill } from '@/content/systems';
 
 /**
  * Skills: each group is a slow drifting marquee of golden emblems, one
@@ -42,45 +42,6 @@ export function Skills() {
             </Reveal>
           ))}
         </div>
-
-        {/* Certifications: their own quiet register */}
-        <Reveal>
-          <div className="border-ink/15 mt-[11vh] border-t pt-5">
-            <h3 className="text-micro uppercase tracking-[0.16em] text-accent">Certifications</h3>
-            <ul className="mt-6 grid gap-x-14 sm:grid-cols-2">
-              {certifications.map(cert => (
-                <li
-                  key={cert.name}
-                  className="group/cert border-ink/10 flex items-center justify-between gap-4 border-b py-4"
-                >
-                  <span className="flex items-baseline gap-3 text-sm text-ink">
-                    <span
-                      aria-hidden="true"
-                      className="border-ink/40 inline-block h-1.5 w-1.5 shrink-0 rotate-45 border transition-colors duration-500 group-hover/cert:border-accent group-hover/cert:bg-accent"
-                    />
-                    {cert.name}
-                  </span>
-                  <a
-                    href={cert.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`${cert.name}, verified by ${cert.issuer}`}
-                    title={`Verify ${cert.name} on ${new URL(cert.url).hostname}`}
-                    className="group/link inline-flex shrink-0 items-baseline gap-1.5 text-micro uppercase tracking-[0.14em] text-muted transition-colors duration-300 hover:text-accent focus-visible:text-accent"
-                  >
-                    {cert.issuer}
-                    <span
-                      aria-hidden="true"
-                      className="inline-block transition-transform duration-500 ease-expo group-hover/link:-translate-y-px group-hover/link:translate-x-px"
-                    >
-                      ↗
-                    </span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </Reveal>
       </div>
     </section>
   );

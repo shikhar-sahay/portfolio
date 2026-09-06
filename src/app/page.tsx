@@ -5,6 +5,7 @@ import { About } from '@/components/sections/About';
 import { TransitionStatements } from '@/components/sections/TransitionStatements';
 import { Experience } from '@/components/sections/Experience';
 import { Skills } from '@/components/sections/Skills';
+import { Certifications } from '@/components/sections/Certifications';
 import { Projects } from '@/components/sections/Projects';
 import { Personality } from '@/components/sections/Personality';
 import { ControlCenter } from '@/components/sections/ControlCenter';
@@ -26,6 +27,7 @@ export default function Home() {
         <About />
         <Experience />
         <Skills />
+        <Certifications />
         <Projects />
         <Personality />
         <ControlCenter />
