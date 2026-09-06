@@ -1,6 +1,7 @@
 import { Reveal } from '@/components/ui/Reveal';
 import { CopyText } from '@/components/ui/CopyText';
 import { profile } from '@/content/profile';
+import { channelGlyphs, type ChannelGlyphKey } from '@/content/channelGlyphs';
 import { navLinks } from '@/content/sections';
 import { FooterWordmark } from '@/components/sections/FooterWordmark';
 
@@ -42,17 +43,32 @@ export function Contact() {
             <div className="grid grid-cols-2 gap-10">
               <div>
                 <p className="text-micro uppercase tracking-[0.16em] text-accent">Elsewhere</p>
-                <ul className="mt-4 space-y-3">
+                <ul className="mt-4 space-y-1">
                   {profile.socials.map(social => (
                     <li key={social.label}>
-                      <CompactLink label={social.label} href={social.href} handle={social.handle} />
+                      <SocialRow label={social.label} href={social.href} />
                     </li>
                   ))}
                   <li>
-                    <CompactLink label="Resume" href={profile.links.resume} />
-                  </li>
-                  <li>
-                    <CopyText text={profile.discord.username} label="Discord" />
+                    <CopyText
+                      text={profile.discord.username}
+                      label="Discord"
+                      maskValue="copy"
+                      icon={
+                        <svg
+                          viewBox="0 0 24 24"
+                          aria-hidden="true"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth={1.8}
+                          className="h-[15px] w-[15px] shrink-0 text-muted transition-all duration-500 ease-expo group-hover:-translate-y-px group-hover:text-accent"
+                        >
+                          <rect x={8} y={8} width={12} height={12} rx={1.5} />
+                          <path d="M16 8V6.5A1.5 1.5 0 0 0 14.5 5H6.5A1.5 1.5 0 0 0 5 6.5v8A1.5 1.5 0 0 0 6.5 16H8" />
+                        </svg>
+                      }
+                      className="group flex items-center gap-3 py-1.5 text-sm text-muted transition-all duration-300 hover:translate-x-0.5 hover:text-ink"
+                    />
                   </li>
                 </ul>
               </div>
@@ -172,37 +188,35 @@ function EmailLink() {
   );
 }
 
-/** Tiny personality markers for the Elsewhere channels (decorative). */
-const channelGlyphs: Record<string, string> = {
-  GitHub: '</>',
-  LinkedIn: '◈',
-  Instagram: '◉',
-  Medium: 'M',
-  X: '✕',
-  Spotify: '♪',
-  Resume: '▤',
-};
-
-function CompactLink({ label, href, handle }: { label: string; href: string; handle?: string }) {
+/** One Elsewhere row: the real brand mark plus the channel name. The whole
+    row is the link; handles never render here. Hover lifts the mark a
+    pixel, shifts the row, and reveals an arrow. Server-rendered:
+    placeholders stay plain text, never anchors. */
+function SocialRow({ label, href }: { label: string; href: string }) {
   const placeholder = href === '#';
-  const glyph = channelGlyphs[label] ?? '→';
-  // Server-rendered: placeholders are plain text, never anchors, so they
-  // can neither navigate nor steal keyboard focus.
+  const glyph = channelGlyphs[label as ChannelGlyphKey];
+  const mark = glyph ? (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      fill="currentColor"
+      className="h-[15px] w-[15px] shrink-0 text-muted transition-all duration-500 ease-expo group-hover:-translate-y-px group-hover:text-accent"
+    >
+      <path d={glyph.path} />
+    </svg>
+  ) : (
+    <span aria-hidden="true" className="inline-block text-accent">
+      →
+    </span>
+  );
   if (placeholder) {
     return (
       <span
         title={`${label} link coming soon`}
-        className="text-muted/60 inline-flex cursor-default items-baseline gap-2 text-sm"
+        className="text-muted/60 flex cursor-default items-center gap-3 py-1.5 text-sm"
       >
-        <span aria-hidden="true" className="text-accent">
-          {glyph}
-        </span>
+        {mark}
         {label}
-        {handle && (
-          <span aria-hidden="true" className="text-muted/50 text-micro uppercase tracking-[0.1em]">
-            {handle}
-          </span>
-        )}
       </span>
     );
   }
@@ -211,23 +225,16 @@ function CompactLink({ label, href, handle }: { label: string; href: string; han
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="group inline-flex items-baseline gap-2 text-sm text-muted transition-colors duration-300 hover:text-ink"
+      className="group flex items-center gap-3 py-1.5 text-sm text-muted transition-all duration-300 hover:translate-x-0.5 hover:text-ink"
     >
+      {mark}
+      {label}
       <span
         aria-hidden="true"
-        className="inline-block text-accent transition-transform duration-500 ease-expo group-hover:translate-x-0.5"
+        className="-translate-x-1 text-accent opacity-0 transition-all duration-500 ease-expo group-hover:translate-x-0 group-hover:opacity-100"
       >
-        {glyph}
+        →
       </span>
-      {label}
-      {handle && (
-        <span
-          aria-hidden="true"
-          className="text-muted/60 text-micro uppercase tracking-[0.1em] transition-colors duration-300 group-hover:text-muted"
-        >
-          {handle}
-        </span>
-      )}
     </a>
   );
 }

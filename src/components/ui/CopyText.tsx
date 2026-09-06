@@ -1,19 +1,25 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 
 /**
  * Copy-to-clipboard row for values with no public URL (Discord username).
- * Falls back gracefully when the clipboard API is unavailable.
+ * Falls back gracefully when the clipboard API is unavailable. Accepts an
+ * optional leading icon and an optional mask shown instead of the raw
+ * value (for rows that should not display handles).
  */
 export function CopyText({
   text,
   label,
   className,
+  icon,
+  maskValue,
 }: {
   text: string;
   label: string;
   className?: string;
+  icon?: ReactNode;
+  maskValue?: string;
 }) {
   const [copied, setCopied] = useState(false);
 
@@ -42,12 +48,14 @@ export function CopyText({
         className ?? 'text-muted hover:text-ink'
       }`}
     >
-      <span aria-hidden="true" className="inline-block text-accent">
-        ◎
-      </span>
+      {icon ?? (
+        <span aria-hidden="true" className="inline-block text-accent">
+          ◎
+        </span>
+      )}
       {label}
       <span aria-hidden="true" className="text-muted/60 text-micro uppercase tracking-[0.12em]">
-        {copied ? 'copied' : text}
+        {copied ? 'copied' : (maskValue ?? text)}
       </span>
     </button>
   );
