@@ -69,7 +69,7 @@ function TaglineMemory({ reduceMotion }: { reduceMotion: boolean }) {
           <motion.em
             aria-hidden="true"
             style={{ x: sx, y: sy }}
-            className={`font-serif pointer-events-none absolute inset-0 font-normal italic text-accent transition-opacity ${
+            className={`pointer-events-none absolute inset-0 font-serif font-normal italic text-accent transition-opacity ${
               haunted ? 'opacity-60 duration-200' : 'opacity-0 duration-1000'
             }`}
           >
@@ -198,7 +198,6 @@ export function Hero() {
 
             <motion.div {...scroll({ opacity: ledeO })}>
               <TaglineMemory reduceMotion={reduceMotion} />
-
 
               {/* Compact personal context: part of the composition, not cards */}
               <motion.div
