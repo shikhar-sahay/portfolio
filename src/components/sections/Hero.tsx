@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { motion, useMotionValue, useScroll, useSpring, useTransform } from 'motion/react';
 import { useMountedReducedMotion } from '@/hooks/useMountedReducedMotion';
@@ -18,6 +18,69 @@ import { InteractiveLetters } from '@/components/ui/InteractiveLetters';
  * a full, moving frame directly to the statements bridge. Reduced motion
  * never pins: the scene is a normal section that scrolls away cleanly.
  */
+/**
+ * The hero tagline keeps a memory. The serif word carries a vermilion
+ * afterimage that stirs a few pixels toward the pointer while it is near
+ * and lingers briefly after it leaves, then settles back to nothing. The
+ * ghost is absolutely positioned over its word (never layout), aria-hidden
+ * (readers hear the line once), and absent entirely under reduced motion
+ * or before hydration state exists. No loop runs: springs move only while
+ * the pointer is inside, and every value returns to rest on leave.
+ */
+function TaglineMemory({ reduceMotion }: { reduceMotion: boolean }) {
+  const [haunted, setHaunted] = useState(false);
+  const session = useRef(0);
+  const gx = useMotionValue(0);
+  const gy = useMotionValue(0);
+  const sx = useSpring(gx, { stiffness: 120, damping: 16 });
+  const sy = useSpring(gy, { stiffness: 120, damping: 16 });
+
+  return (
+    <p
+      onPointerEnter={() => {
+        if (reduceMotion) return;
+        session.current += 1;
+        setHaunted(true);
+      }}
+      onPointerMove={e => {
+        if (reduceMotion || !haunted) return;
+        const r = e.currentTarget.getBoundingClientRect();
+        gx.set((((e.clientX - r.left) / r.width) * 2 - 1) * 7);
+        gy.set((((e.clientY - r.top) / r.height) * 2 - 1) * 5);
+      }}
+      onPointerLeave={e => {
+        gx.set(0);
+        gy.set(0);
+        // Touch taps fire enter and leave in the same instant (React
+        // batches them, so the ghost would never paint). Hold the memory
+        // briefly for touch; mouse releases immediately into the slow fade.
+        const s = session.current;
+        const hold = e.pointerType === 'touch' ? 650 : 0;
+        window.setTimeout(() => {
+          if (session.current === s) setHaunted(false);
+        }, hold);
+      }}
+      className="anim-fade-rise mt-6 max-w-[26ch] text-lede font-medium tracking-tight text-ink [animation-delay:calc(var(--intro-delay)+0.6s)] sm:mt-8"
+    >
+      {profile.statementPre}
+      <span className="relative inline-block">
+        <em className="font-serif font-normal italic">{profile.statementEm}</em>
+        {!reduceMotion && (
+          <motion.em
+            aria-hidden="true"
+            style={{ x: sx, y: sy }}
+            className={`font-serif pointer-events-none absolute inset-0 font-normal italic text-accent transition-opacity ${
+              haunted ? 'opacity-60 duration-200' : 'opacity-0 duration-1000'
+            }`}
+          >
+            {profile.statementEm}
+          </motion.em>
+        )}
+      </span>
+    </p>
+  );
+}
+
 export function Hero() {
   const sceneRef = useRef<HTMLDivElement>(null);
   const reduceMotion = useMountedReducedMotion();
@@ -134,10 +197,8 @@ export function Hero() {
             </motion.h1>
 
             <motion.div {...scroll({ opacity: ledeO })}>
-              <p className="anim-fade-rise mt-6 max-w-[26ch] text-lede font-medium tracking-tight text-ink [animation-delay:calc(var(--intro-delay)+0.6s)] sm:mt-8">
-                {profile.statementPre}
-                <em className="font-serif font-normal italic">{profile.statementEm}</em>
-              </p>
+              <TaglineMemory reduceMotion={reduceMotion} />
+
 
               {/* Compact personal context: part of the composition, not cards */}
               <motion.div
