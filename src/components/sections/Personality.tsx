@@ -5,7 +5,7 @@ import { fragments } from '@/content/personality';
 import { NotesWall } from '@/components/sections/NotesWall';
 
 /**
- * 06 / Personality: fragments of a person. Selecting a fragment
+ * Pieces of Me: fragments of a person. Selecting a fragment
  * swaps the large serif word; captions are voice, not resume facts.
  * Keyboard accessible: fragments are buttons.
  */
@@ -15,8 +15,8 @@ export function Personality() {
 
   return (
     <section
-      id="personality"
-      aria-label="Personality"
+      id="pieces-of-me"
+      aria-label="Pieces of Me"
       className="theme-fade relative overflow-hidden border-t border-ink bg-paper px-5 py-[18vh] text-ink sm:px-10"
     >
       {/* Theme-following section: paper surface in light, warm charcoal in
@@ -24,7 +24,7 @@ export function Personality() {
       <div className="relative mx-auto max-w-6xl">
         <p className="flex items-center gap-3 text-micro uppercase tracking-[0.16em] text-muted">
           <span className="inline-block h-px w-10 bg-accent" aria-hidden="true" />
-          Personality
+          Pieces of Me
         </p>
 
         <h2 className="mt-8 max-w-[24ch] text-lede font-medium tracking-tight text-ink">

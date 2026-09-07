@@ -13,8 +13,8 @@ import { Contact } from '@/components/sections/Contact';
 
 /**
  * Long-scroll narrative, in order (see AGENTS.md section 5):
- * 01 Identity, 02 About, 03 Experience, 04 Skills, 05 Projects,
- * 06 Personality, 07 Contact + Footer.
+ * Identity, About, Experience, Toolkit (Skills plus Certifications),
+ * Projects, Pieces of Me, Control Center, Contact + Footer.
  */
 export default function Home() {
   return (

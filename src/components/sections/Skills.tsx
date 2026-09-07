@@ -3,25 +3,25 @@ import { TechLogo, hasGlyph } from '@/components/ui/TechLogo';
 import { skillGroups, type Skill } from '@/content/systems';
 
 /**
- * Skills: each group is a slow drifting marquee of golden emblems, one
- * direction per row, pausing under the cursor. The emblem core holds the
- * real technology mark wherever one exists (vendored CC0 paths, drawn
- * monochrome to keep the editorial voice); tools without a mark keep
- * their serif monogram. No counts, no proficiency bars. Certifications
- * keep their own quiet register below.
+ * Toolkit (Skills): each group is a slow drifting marquee of golden
+ * emblems, one direction per row, pausing under the cursor. The emblem
+ * core holds the real technology mark wherever one exists (vendored CC0
+ * paths, drawn monochrome to keep the editorial voice); tools without a
+ * mark keep their serif monogram. No counts, no proficiency bars. The
+ * Certifications ledger chapter follows inside the same Toolkit region.
  */
 export function Skills() {
   return (
     <section
-      id="skills"
-      aria-label="Skills"
+      id="toolkit"
+      aria-label="Toolkit"
       className="theme-fade border-ink/10 border-t bg-paper px-5 py-[14vh] sm:px-10"
     >
       <div className="mx-auto max-w-6xl">
         <Reveal>
           <p className="flex items-center gap-3 text-micro uppercase tracking-[0.16em] text-muted">
             <span className="inline-block h-px w-10 bg-accent" aria-hidden="true" />
-            Skills
+            Toolkit
           </p>
         </Reveal>
         <Reveal delay={0.08}>

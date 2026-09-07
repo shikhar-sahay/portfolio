@@ -23,7 +23,21 @@ export function SiteNav() {
   const [compact, setCompact] = useState(false);
   const [tucked, setTucked] = useState(false);
   const [active, setActive] = useState(sections[0]);
+  const [menuOpen, setMenuOpen] = useState(false);
   const prevY = useRef(0);
+  const panelRef = useRef<HTMLElement>(null);
+
+  // Mobile menu: Escape closes from anywhere, and opening moves focus to
+  // the first destination so keyboard users continue from the menu.
+  useEffect(() => {
+    if (!menuOpen) return;
+    panelRef.current?.querySelector('a')?.focus({ preventScroll: true });
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMenuOpen(false);
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [menuOpen]);
 
   useMotionValueEvent(scrollY, 'change', y => {
     const pastHero = y > 480;
@@ -94,7 +108,10 @@ export function SiteNav() {
               S. Sahay
             </a>
 
-            <ul className="flex items-center gap-2.5 sm:gap-7">
+            {/* Six destinations fit one premium row from md up; below
+                that the links collapse into a disclosure menu instead of
+                shrinking into unreadable text. */}
+            <ul className="hidden items-center gap-4 md:flex lg:gap-6 xl:gap-7">
               {navLinks.map(link => {
                 const section = sections.find(s => `#${s.id}` === link.href);
                 const isActive = section?.id === active.id;
@@ -103,7 +120,7 @@ export function SiteNav() {
                     <a
                       href={link.href}
                       aria-current={isActive ? 'true' : undefined}
-                      className={`relative inline-block whitespace-nowrap text-micro uppercase tracking-[0.1em] transition-colors duration-300 sm:tracking-[0.16em] ${linkHover} ${
+                      className={`relative inline-block whitespace-nowrap text-micro uppercase tracking-[0.1em] transition-colors duration-300 xl:tracking-[0.16em] ${linkHover} ${
                         isActive ? 'text-ink after:scale-x-100' : 'text-muted hover:text-ink'
                       }`}
                     >
@@ -112,12 +129,64 @@ export function SiteNav() {
                   </li>
                 );
               })}
-              <li aria-hidden="true" className="bg-ink/20 hidden h-3 w-px sm:block" />
+              <li aria-hidden="true" className="h-3 w-px bg-ink opacity-20" />
               <li>
                 <ThemeToggle />
               </li>
             </ul>
+            <div className="flex items-center gap-4 md:hidden">
+              <button
+                type="button"
+                onClick={() => setMenuOpen(v => !v)}
+                aria-expanded={menuOpen}
+                aria-controls="mobile-nav"
+                className="text-micro uppercase tracking-[0.16em] text-muted transition-colors duration-300 hover:text-ink"
+              >
+                {menuOpen ? 'Close' : 'Menu'}
+              </button>
+              <ThemeToggle />
+            </div>
           </nav>
+          {menuOpen && (
+            <nav
+              id="mobile-nav"
+              aria-label="Mobile"
+              ref={panelRef}
+              className="border-t border-ink bg-paper px-4 py-2 md:hidden"
+            >
+              <ul className="divide-y divide-ink">
+                {navLinks.map(link => {
+                  const section = sections.find(s => `#${s.id}` === link.href);
+                  const isActive = section?.id === active.id;
+                  return (
+                    <li key={link.label}>
+                      <a
+                        href={link.href}
+                        onClick={e => {
+                          // Close first: unmounting the panel shifts layout,
+                          // so the hash jump waits a beat for it to settle.
+                          e.preventDefault();
+                          setMenuOpen(false);
+                          window.setTimeout(() => {
+                            window.location.hash = link.href;
+                          }, 80);
+                        }}
+                        aria-current={isActive ? 'true' : undefined}
+                        className={`flex items-center justify-between py-3 text-micro uppercase tracking-[0.16em] transition-colors duration-300 ${
+                          isActive ? 'text-ink' : 'text-muted hover:text-ink'
+                        }`}
+                      >
+                        {link.label}
+                        <span aria-hidden="true" className="text-accent">
+                          {isActive ? '●' : '→'}
+                        </span>
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+            </nav>
+          )}
         </div>
       </motion.header>
     </>
