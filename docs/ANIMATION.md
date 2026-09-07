@@ -74,7 +74,6 @@ motion, where everything lands instantly).
 
 | Delay  | Element                       | Motion                                                               |
 | ------ | ----------------------------- | -------------------------------------------------------------------- |
-| +0.2s  | Eyebrow (`Portfolio, 2026`)   | Fade-in                                                              |
 | +0.25s | Name letters (staggered 45ms) | Fade-and-rise per letter (never a mask, never clips)                 |
 | +0.25s | Arch aperture                 | Clip-path wipe bottom-to-top (1.25s); photo settles from 1.14x scale |
 | +0.6s  | Statement lede                | Fade-rise                                                            |
