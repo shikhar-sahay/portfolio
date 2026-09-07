@@ -173,14 +173,6 @@ export function Hero() {
           {/* Identity column: min-w-0 so the oversized name can bleed over
               the portrait instead of squeezing the grid. */}
           <div className="relative z-10 order-2 min-w-0 lg:order-1">
-            <motion.p
-              className="anim-fade-in mb-6 flex items-center gap-3 text-micro uppercase tracking-[0.16em] text-muted [animation-delay:calc(var(--intro-delay)+0.2s)] sm:mb-8"
-              {...scroll({ opacity: metaO })}
-            >
-              <span className="inline-block h-px w-10 bg-accent" aria-hidden="true" />
-              Portfolio, 2026
-            </motion.p>
-
             <motion.h1
               className="select-none overflow-visible text-display uppercase"
               {...scroll({ scale: nameScale })}

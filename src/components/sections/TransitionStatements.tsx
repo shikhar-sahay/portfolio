@@ -18,21 +18,21 @@ interface Line {
 const lines: Line[] = [
   {
     verb: 'Build.',
-    note: 'tools, experiments, platforms',
+    note: 'things I wish existed.',
     offsetClass: '',
     center: 0.15,
     noteWindow: [0.07, 0.15],
   },
   {
     verb: 'Break.',
-    note: 'systems, to understand them: the ethical kind',
+    note: 'ideas until I understand them.',
     offsetClass: 'sm:pl-[4vw] lg:pl-[7vw]',
     center: 0.5,
     noteWindow: [0.42, 0.5],
   },
   {
     verb: 'Rebuild.',
-    note: 'better than before',
+    note: 'with everything I learned.',
     offsetClass: 'sm:pl-[8vw] lg:pl-[14vw]',
     center: 0.85,
     noteWindow: [0.77, 0.85],
