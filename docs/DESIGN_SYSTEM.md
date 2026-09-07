@@ -172,10 +172,9 @@ The identity system beyond type and color. Used consistently so sections read as
 | Serif interventions    | Instrument Serif italic for emphasis words and moments                     | Ledes, statement pronoun, personality word |
 | Outline display type   | `-webkit-text-stroke` transparent fill for second name line                | Hero                                       |
 | Arch aperture portrait | Arch mask + offset vermilion echo arch (see Imagery)                       | Hero                                       |
-| Inverted panel         | Single full-tone shift: `bg-ink` + `text-paper`                            | Personality                                |
 | Film grain             | Static SVG turbulence overlay, ~5% opacity, fixed                          | Whole site (`.grain`)                      |
 | Drifting light field   | Two fixed radial gradients (~5% opacity), 80s transform drift              | Whole site (`.atmosphere`)                 |
-| Ink stages             | Cinematic ink fields (`#1d1915` on paper text) staying dark in both themes | Opening, statements, Personality panel     |
+| Ink stages             | Cinematic ink fields (`#1d1915` on paper text) staying dark in both themes | Opening only                               |
 
 ## Component Inventory (as built)
 
@@ -184,7 +183,7 @@ The identity system beyond type and color. Used consistently so sections read as
 - ThemeToggle (quiet text control in the nav)
 - Reveal / WordReveal / Counter / InView primitives (ui)
 - InteractiveLetters (pointer spring field, hero + footer wordmark), TechLogo (monochrome brand marks)
-- Sections: Hero (arch + interactive name + tagline rule + veil exit), TransitionStatements (vertical accumulation with same-word residue echoes, themed surfaces), About (reading reveal + meta row), Experience (org timeline + spine), Skills (marquee emblem rows), Certifications (credential ledger with mask-wipe rows), Projects (drifting carousel) + ProjectPanel (lazy chunk with SVG motifs), Personality (fragment instrument + mosaic + full-bleed notes wall), ControlCenter (framed utility grid), Contact (footer: contact grid + icon-name social rows + resume row + whole-word marquee wordmark)
+- Sections: Hero (arch + interactive name + tagline rule + veil exit), TransitionStatements (vertical accumulation with full-word whisper echoes, themed surfaces), About (reading reveal + meta row), Experience (org timeline + spine), Skills as Toolkit (marquee emblem rows under the Toolkit eyebrow), Certifications (ledger chapter inside Toolkit, mask-wipe rows), Projects (drifting carousel) + ProjectPanel (lazy chunk with SVG motifs), Pieces of Me (fragment instrument + mosaic + full-bleed notes wall, theme-following), ControlCenter (framed utility grid), Contact (footer: contact grid + icon-name social rows + resume row + whole-word marquee wordmark)
 
 ## Shadows & Elevation (UNDECIDED)
 
@@ -248,13 +247,20 @@ This file will evolve as design decisions are finalized. Each section should be 
 
 ---
 
+## v5.0 Additions (EXPERIMENTAL, 2026-09-07)
+
+- **Statements echoes (supersedes the v4.9 residues below):** the complete verb (BUILD, BREAK, REBUILD), oversized and cropped low-right; subtlety via element opacity (`opacity-[0.06]`, `dark:opacity-[0.09]`), never color opacity modifiers (see DECISIONS.md #39).
+- **Pieces of Me (replaces Personality everywhere user-facing):** theme-following chapter, no fixed panel. Solid theme tokens throughout; dotted field and vignette as `color-mix` CSS (`.wall-dots`, `.wall-vignette`); reply rail and accent card borders genuinely vermilion.
+- **Toolkit IA:** Skills carries the Toolkit eyebrow, anchor, and aria label; Certifications stays a visual chapter with its deep anchor but no nav entry; nav, footer Pages, and control Navigate share `navLinks` (About, Experience, Toolkit, Projects, Pieces of Me, Contact). Header holds one row from md up and collapses to a disclosure menu below md.
+- **Inverted panel motif retired:** the fixed-dark `.panel-ink` scope is deleted (owner ruled the dark-in-light rendering a bug).
+
 ## v4.9 Additions (EXPERIMENTAL, 2026-09-07)
 
 - **Hero tagline (replaces the v4.8 afterimage):** a 2px vermilion rule draws beneath the serif word with a 7px diamond riding to the cursor; movement glides the marker, leave retracts. Springs only, aria-hidden, absent under reduced motion.
-- **Statements scene:** echoes are same-word trailing residues (LD/AK/LD), low-right, cropped by the frame; verbs at `clamp(4rem, 12.5vw, 14rem)`. Theme-deliberate: paper plus ink in light, deep warm charcoal plus cream in dark; veil and tail match per theme.
+- **Statements scene (v4.9 residues, superseded by the v5.0 full-word echoes above):** echoes were same-word trailing residues (LD/AK/LD), low-right, cropped by the frame; verbs at `clamp(4rem, 12.5vw, 14rem)`. Theme-deliberate: paper plus ink in light, deep warm charcoal plus cream in dark; veil and tail match per theme.
 - **Certifications chapter:** own section after Skills (eyebrow, serif lede, 20vh break, hairline ledger, featured first row, boxed Verify links); rows arrive with a scroll mask wipe.
 - **Footer wordmark:** whole-word velocity lean plus stretch, tracking breath, narrow vermilion sheen band at the cursor; 0.16em diamond separators with 0.7em air; seamless -50% loop.
-- **Panel scope:** `.panel-ink` pins light token values for the Personality subtree, so the inverted panel never becomes a light island in dark mode.
+- **Panel scope (retired in v5.0, see above):** `.panel-ink` pinned light token values for the Personality subtree, so the inverted panel never became a light island in dark mode.
 - **Notes wall:** full-bleed section-width surface (no box, no world boundary); mosaic statement plus hint microcopy; cursor-following placement ghost; Recenter replaced by Latest (global lookup, camera flight, thread on arrival).
 - **Theme toggle:** state-driven 180-degree icon rotation.
 

@@ -133,8 +133,9 @@ The name as a slow infinite marquee (two identical groups, -50% loop, pauses on 
 
 - Transparent with generous padding at top; compact with a paper backdrop, blur, and hairline edge past 64px; tucks away scrolling down past the hero, returns on scroll up.
 - Active section carries an accent underline (IntersectionObserver); a progress hairline (accent scaleX) runs along the very top. Theme-colored links (no blend modes). All time-based motion uses the shared expo easing.
+- Six destinations share one row from md up; below md a disclosure menu carries them (Escape or selection closes; selection jumps after the panel unmount settles; focus moves into the panel on open).
 
-### Personality fragment instrument (`Personality.tsx`)
+### Pieces of Me fragment instrument (`Personality.tsx`)
 
 - Selecting a fragment (hover, focus, or click/tap) swaps the large serif word and caption instantly (no transition choreography; `aria-live` announces the change). Active button fills vermilion. No backend, no persistence: selection is local state only. The word column has a fixed width so swaps never reflow the buttons (a past hover feedback loop).
 
@@ -172,7 +173,7 @@ The name as a slow infinite marquee (two identical groups, -50% loop, pauses on 
 - Statements: static stacked block (no pin, no overlap pull-up).
 - Carousel: native scroll row, instant arrows.
 - Footer: static fitted wordmark, no marquee.
-- Personality, control panel, timeline: instant state changes, ticking clocks render (time itself is not motion).
+- Pieces of Me, control panel, timeline: instant state changes, ticking clocks render (time itself is not motion).
 - Global CSS collapses all animation/transition durations; `useMountedReducedMotion` gates every client branch post-mount so SSR and hydration markup match.
 - Verified via `reducedMotion: 'reduce'` emulation: no hydration errors, complete static page.
 
@@ -360,10 +361,10 @@ Motion values are now concrete (see Implemented Patterns and Token Reference abo
 - The statements section is pulled up `-mt-[100dvh]` so its sticky engages the exact pixel the hero releases: the wipe is veil against incoming thought, with no tail and no gap. Each thought phase carries its own ink (the stage is transparent), so the hero stays pristine underneath until the first thought arrives; the bridge is pointer-transparent so hero hover survives the overlap.
 - Phase crossfades share windows (outgoing exit equals incoming enter) so some thought is always present; verb masks travel bottom-up on entry and top-down on exit.
 
-### Statements scene (v4.7 vertical accumulation, corrected v4.9; supersedes sliding panels)
+### Statements scene (v4.7 vertical accumulation, corrected v5.0; supersedes sliding panels)
 
 - One typographic composition travels upward with scroll (stack offset 42vh to minus 50vh over the section): three thoughts share the ride, and emphasis follows distance from center while inactive thoughts persist as dimmed, slightly smaller history above and below. Serif "I" leads each line slightly, the note trails; verbs at `clamp(4rem, 12.5vw, 14rem)` in theme ink.
-- Each row carries a static same-word residue (trailing two letters, 21vw, low-right, cropped by the frame edge) and a progressive left offset (diagonal cascade, flush on mobile): no extra motion state, so determinism is unchanged. Full-word echoes were tried and rejected after they stacked behind their own letterforms in light mode.
+- Each row carries its static full-word echo (the complete verb, 21vw, low-right, cropped by the frame edge) and a progressive left offset (diagonal cascade, flush on mobile): no extra motion state, so determinism is unchanged. Subtlety is element opacity (`opacity-[0.06]`, `dark:opacity-[0.09]`): the v4.9 two-letter residues existed because full words at full strength stacked into mud, and color opacity modifiers do not compile against the bare `var()` tokens (see DECISIONS.md #39).
 - Theme-deliberate surfaces: paper in light, deep warm charcoal in dark; hero veil and tail match per theme so both handoffs stay seamless.
 - Travel matches scroll direction, so motion always feels caused. The finale holds strong through release while About enters beneath it. All ranges end at 1.0; every state is a pure function of progress (identical forward and reverse).
 - Reduced motion: static stacked block with matching alignment and residues.

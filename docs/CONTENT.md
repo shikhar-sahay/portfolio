@@ -25,14 +25,14 @@ src/content/
 - `profile.links` holds real destinations (mailto email, GitHub, LinkedIn, Drive resume, local resume file); `profile.socials` holds the broader set (Instagram, Medium, X, Spotify) with handles; `profile.discord` holds a username only (no public URL exists, rendered as a copy action).
 - Certifications link to owner-supplied verification URLs (Credly, Coursera).
 - Placeholder links that remain (`#` project URLs) never navigate: client components swallow the click, server components render plain text instead of anchors, and every placeholder carries a "coming soon" label. Nothing pretends to work.
-- Personality captions are voice lines, deliberately not factual claims.
+- Pieces of Me captions are voice lines, deliberately not factual claims.
 - No em dashes anywhere in content.
 
 ### Section registry (drives navigation active state)
 
-Order is deliberate (Experience precedes Skills; Skills precedes Projects):
+Order is deliberate (Experience precedes Toolkit; Toolkit precedes Projects):
 
-Identity (opening + hero), About, Experience, Skills, Projects, Personality, Contact + Footer.
+Identity (opening + hero), About, Experience, Toolkit (Skills emblems plus Certifications ledger chapter), Projects, Pieces of Me, Contact + Footer.
 
 The resume moment lives inside Contact + Footer rather than as its own section.
 
@@ -149,7 +149,7 @@ Note: the Skilledity "Social Media Management Intern" entry intentionally has no
 
 ### Entries To Populate
 
-Education is covered (degree, school, period in `profile.education`, rendered in About meta and the control panel). Research and publications do not exist. Leadership and community work lives inside the Experience timeline and Personality fragments, not as separate entries.
+Education is covered (degree, school, period in `profile.education`, rendered in About meta and the control panel). Research and publications do not exist. Leadership and community work lives inside the Experience timeline and Pieces of Me fragments, not as separate entries.
 
 ### Content Guidelines (FINALIZED)
 
@@ -160,7 +160,7 @@ Education is covered (degree, school, period in `profile.education`, rendered in
 
 ---
 
-## Personality Content
+## Pieces of Me Content
 
 Actual model (`src/content/personality.ts`):
 
@@ -203,7 +203,7 @@ Presentation (not content, lives in `NotesWall.tsx`): deterministic tilt and res
 
 ## Contact Content
 
-Actual model: `profile.links` (mailto email, GitHub, LinkedIn, Drive resume, local resume file), `profile.socials` (GitHub, LinkedIn, Instagram, Medium, X, Spotify with hrefs; handles are stored but the footer Elsewhere column renders icon plus name only), `profile.discord` (username, copy action), plus `navLinks` in `sections.ts` (About, Experience, Projects, Contact anchors). Placeholders that remain (project URLs) render inert with "coming soon" labels. There is no contact form, no form endpoint, and no phone number on the site.
+Actual model: `profile.links` (mailto email, GitHub, LinkedIn, Drive resume, local resume file), `profile.socials` (GitHub, LinkedIn, Instagram, Medium, X, Spotify with hrefs; handles are stored but the footer Elsewhere column renders icon plus name only), `profile.discord` (username, copy action), plus `navLinks` in `sections.ts` (About, Experience, Toolkit, Projects, Pieces of Me, Contact anchors). Placeholders that remain (project URLs) render inert with "coming soon" labels. There is no contact form, no form endpoint, and no phone number on the site.
 
 ---
 

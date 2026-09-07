@@ -18,9 +18,9 @@ The goal is a directed digital experience that feels personal, cinematic, and te
 - **Signature motifs** (recurring, keep consistent): section eyebrows as plain editorial labels (e.g. `Experience`), hairline rules with accent ticks, diamond markers, film grain, drifting light field, outline display type.
 - **Portrait treatment:** an editorial arch aperture (rounded crown, straight base) with an offset vermilion echo arch behind it, overlapping the display type. Subtle pointer parallax. Never a rectangle beside text, never a circular avatar, never a zoom-on-scroll.
 - **Opening:** a minimal signal-line loader on an ink field (a hairline draws while a vermilion marker rides its tip), then the field lifts into the hero. ~1.6s, once per session, skipped pre-paint for returning visitors and reduced motion. No counters, no "loading" text.
-- **Hero to About bridge:** a pinned stage with a vertical accumulative composition traveling upward through I / BUILD, BREAK, and REBUILD (emphasis follows distance from center, inactive thoughts persist as dimmed history, same-word residues trail low-right), themed per colorway and overlapping the hero exit by exactly one viewport so the handoff never goes blank. The finale holds its frame into About.
-- **Certifications ledger:** its own chapter after Skills (hairline rows, featured first credential, boxed Verify links, scroll mask-wipe rows).
-- **Personality panel:** a fixed dark field in both themes (token scope, never a light island) holding the fragment instrument, the mosaic statement, and the full-bleed notes wall.
+- **Hero to About bridge:** a pinned stage with a vertical accumulative composition traveling upward through I / BUILD, BREAK, and REBUILD (emphasis follows distance from center, inactive thoughts persist as dimmed history, full-word echoes trail low-right at whisper element opacity), themed per colorway and overlapping the hero exit by exactly one viewport so the handoff never goes blank. The finale holds its frame into About.
+- **Toolkit:** one navigational destination spanning the Skills emblems and the Certifications ledger chapter (hairline rows, featured first credential, boxed Verify links, scroll mask-wipe rows). The ledger keeps its element id as a deep anchor but has no nav entry.
+- **Pieces of Me:** a theme-following chapter (paper in light, warm charcoal in dark) holding the fragment instrument, the mosaic statement, and the full-bleed notes wall.
 - **Atmosphere:** static film grain plus a very slow drifting light field. Nothing space-like, nothing neon.
 - Full status and values: `docs/DESIGN_SYSTEM.md`.
 
@@ -51,19 +51,18 @@ The goal is a directed digital experience that feels personal, cinematic, and te
 Long-scroll narrative, in this order:
 
 ```
-01 / OPENING + IDENTITY   (signal-line loader, then hero with arch portrait)
-02 / STATEMENTS BRIDGE    (vertical accumulative composition: I / BUILD, BREAK, REBUILD)
-03 / ABOUT                (word-by-word reading reveal, meta row, no index)
-04 / EXPERIENCE           (org-grouped timeline, centered spine, diamond markers)
-05 / SKILLS               (golden emblems with real technology marks)
-06 / CERTIFICATIONS       (credential ledger with mask-wipe rows; no nav entry)
-07 / PROJECTS             (infinite drifting carousel, 5 artifact panels)
-08 / PERSONALITY          (fragment instrument + mosaic + full-bleed wall, fixed panel)
-09 / CONTROL CENTER       (framed utility grid: now, IST clock, toolbox, links)
-10 / CONTACT + FOOTER     (resume moment, compact contact grid, whole-word marquee wordmark)
+OPENING + IDENTITY   (signal-line loader, then hero with arch portrait)
+STATEMENTS BRIDGE    (vertical accumulative composition: I / BUILD, BREAK, REBUILD)
+ABOUT                (word-by-word reading reveal, meta row, no index)
+EXPERIENCE           (org-grouped timeline, centered spine, diamond markers)
+TOOLKIT              (Skills golden emblems with real technology marks, plus the Certifications ledger chapter)
+PROJECTS             (infinite drifting carousel, 5 artifact panels)
+PIECES OF ME         (fragment instrument + mosaic + full-bleed wall, theme-following)
+CONTROL CENTER       (framed utility grid: now, IST clock, toolbox, links)
+CONTACT + FOOTER     (resume moment, compact contact grid, whole-word marquee wordmark)
 ```
 
-Experience precedes Skills; Skills precedes Projects. The section registry in `src/content/sections.ts` drives navigation. Numbers are internal only: the visitor never sees section counters (see section 3).
+Experience precedes Toolkit; Toolkit precedes Projects. The section registry in `src/content/sections.ts` drives navigation (About, Experience, Toolkit, Projects, Pieces of Me, Contact; Certifications belongs to Toolkit navigationally and has no entry). Numbers are internal only: the visitor never sees section counters (see section 3). Below md the header links collapse into a disclosure menu rather than shrinking.
 
 ## 6. Copy Rules
 
@@ -73,7 +72,7 @@ Experience precedes Skills; Skills precedes Projects. The section registry in `s
 
 ## 7. Performance Constraints
 
-- Budget: **150 kB First Load JS**. Current: ~158 kB (measured `next build`). Audit before adding any client JS; reclaim options in `docs/HANDOFF.md` known issues.
+- Budget: **150 kB First Load JS**. Current: ~160 kB (measured `next build`). Audit before adding any client JS; reclaim options in `docs/HANDOFF.md` known issues.
 - Stack is fixed: Next.js 14, React 18, TypeScript, Tailwind, Motion. Do not migrate frameworks or add animation/UI libraries without documented justification.
 - Server Components by default; every client component needs a reason (listed in `docs/HANDOFF.md`).
 - Animate only transform/opacity/clip-path. No layout-triggering animation, no continuous React state on scroll, no expensive scroll listeners.

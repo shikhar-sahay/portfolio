@@ -735,3 +735,24 @@ Do not make significant design/architecture decisions without documenting them h
 **Alternatives Considered:** Icon library for markers (rejected: Unicode text glyphs suffice); backend for marks (rejected: no infrastructure exists; faking shared persistence would be dishonest); mask-plus-slide combined transitions (rejected after a gray-band frame proved translucency over transparency fails; travel-first fade-last instead).
 
 **Impact:** First Load JS ~156 kB (plus ~3 kB for the wall, wave, and larger type). No new dependencies.
+
+---
+
+### 39. v5.0 Full-Word Echoes, Theme-Following Pieces of Me, Toolkit IA (EXPERIMENTAL polish)
+
+**Decision:** Three-track IA plus visual correction pass on owner directive (supersedes the residue-echo mapping and the fixed-dark panel of #38; #38 history stands).
+
+1. Statements: echoes render the COMPLETE verb (BUILD, BREAK, REBUILD), oversized and cropped low-right, same word behind same word. Root cause of the incident: the animated branch sliced trailing two-letter residues while the reduced-motion branch already rendered full words. Full words at full strength pile into mud (verified on screenshot), so subtlety moved to element opacity (`opacity-[0.06]`, `dark:opacity-[0.09]`): color opacity-modifier utilities do not compile against the bare `var()` tokens in Tailwind v3 (see item 4), while element opacity always generates. No choreography or theme change.
+2. Pieces of Me (renamed from Personality, see item 3) follows the theme like every other chapter: paper surface plus ink type in light, warm charcoal plus cream in dark. Root cause: `.panel-ink` pinned the subtree to a fixed dark treatment (dark background, light-pinned tokens, `text-paper` authoring). The scope is deleted; the section and wall are re-authored in solid theme tokens (`text-ink`, `text-muted`, `border-ink`, `border-paper`, `border-muted`, `bg-ink` plus `text-paper` pairs) with theme-relative washes (dotted field, vignette) living as `color-mix` CSS in `globals.css`. The vermilion reply rail and accent-bordered card variant now genuinely render vermilion (their `/50` and `/70` modifiers were compiling to nothing, so both had been falling back to currentColor). Reduced-motion, rapid-toggle, and refresh-persistence verified in both themes.
+3. Toolkit becomes a first-class navigational destination spanning the Skills emblems and the Certifications ledger chapter: the Skills section takes `id="toolkit"` plus the Toolkit eyebrow and aria label; the ledger keeps its `certifications` element id as a deep anchor but leaves the observed registry, so Toolkit stays the active nav entry through both. Primary nav, footer Pages, and control Navigate (all three render the shared `navLinks`) expose About, Experience, Toolkit, Projects, Pieces of Me, Contact. Desktop keeps one premium row from md up (tighter gaps and tracking below xl); below md a disclosure menu carries the six destinations (Escape closes, selection closes plus lands after layout settles, focus moves into the panel) instead of shrinking links into unreadable text. Certifications never appears as its own nav or footer entry.
+4. Authoring rule discovered (binding): Tailwind v3 does not emit color opacity-modifier utilities (`text-ink/80`, `border-ink/15`, `bg-paper/85`, `text-ink/[0.06]`) for colors defined as bare `var()` tokens, verified by compiling a fixture through the project config and by absence in the production CSS. Affected classes render as their unmodified fallback (usually full-strength currentColor or inherited text), which the approved look has implicitly absorbed. Do NOT author new `/opacity` color utilities; use solid tokens, element opacity, or `color-mix` CSS. A future global token migration (channel variables plus `<alpha-value>`) would change every subtle surface site-wide and needs its own owner-approved pass; recorded in HANDOFF known issues.
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-09-07
+
+**Rationale:** Every change answers the brief directly: full-word echoes are the intended design; a section that stays dark in light mode is a theme bug by owner ruling (the v4.9 inverted-panel direction is retired); Toolkit plus Pieces of Me is the new canonical IA.
+
+**Alternatives Considered:** Keeping residues (rejected: brief mandates full words); keeping the fixed dark panel as intentional contrast (rejected: owner ruled it a bug); hamburger-free wrapped mobile nav row (rejected: wraps unpredictably across small widths); global `<alpha-value>` token migration now (rejected: rebuilds the approved look of every section without owner review); `color-mix` arbitrary Tailwind values per use (rejected: the two wall washes are the only theme-relative needs, a tiny CSS home beats repeated arbitrary values).
+
+**Impact:** First Load JS ~160 kB (unchanged). No new dependencies. One small client addition (mobile menu state inside the existing SiteNav client component).

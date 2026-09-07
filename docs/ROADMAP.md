@@ -19,6 +19,8 @@
 | 8   | Performance, Accessibility & Deployment | Audits, optimization, launch           | NOT_STARTED                                                            |
 
 > **IA note (2026-08-23, v4):** The narrative order is now 01 Identity, 02 About, 03 Experience, 04 Skills, 05 Projects, 06 Personality, 07 Contact + Footer (Experience before Skills before Projects, owner-directed). The registry in `src/content/sections.ts` is the IA source of truth. The original milestone numbering above is retained for history; implementation now follows the v4 order.
+>
+> **IA note (2026-09-07, v5.0):** Toolkit is now one navigational destination spanning Skills and the Certifications ledger; Personality is user-facing Pieces of Me. Nav: About, Experience, Toolkit, Projects, Pieces of Me, Contact (see DECISIONS.md #39).
 
 ---
 
@@ -320,7 +322,7 @@ Studied 2026-09-06 against the current build. No code, no copy, no assets commit
 - [ ] **Merge Security Tools into Frameworks:** the Security Tooling row is thin; merging would improve density and rhythm but weakens taxonomy and the security-credibility signal. Category labels could survive as micro tags. Recommendation pending owner review of options.
 - [x] **Certification prominence:** IMPLEMENTED v4.9 as the credential-ledger direction (own chapter, hairline rows, featured first credential, boxed Verify links, mask-wipe progression).
 - [ ] **Opening interaction:** something interactive during the ~1.6s initialization that is not a fake loader (must stay session-aware, reduced-motion-safe, and hand into the hero). Recommendation pending owner review of options.
-- [ ] **Personality detail stories:** clicking a fragment reveals an owner-supplied story below the chooser and above the wall (replace vs accumulate, transition, height, keyboard, deep-linking open). Owner supplies all text; nothing invented. Recommendation pending owner review of options.
+- [ ] **Pieces of Me detail stories:** clicking a fragment reveals an owner-supplied story below the chooser and above the wall (replace vs accumulate, transition, height, keyboard, deep-linking open). Owner supplies all text; nothing invented. Recommendation pending owner review of options.
 
 ## Dependency Graph
 

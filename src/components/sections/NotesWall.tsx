@@ -60,7 +60,7 @@ const variantClass = [
 ];
 
 /**
- * The notes wall: Personality opens into a full-bleed living surface, no
+ * The notes wall: Pieces of Me opens into a full-bleed living surface, no
  * containing box. Notes rest tilted at varied sizes with pin-diamond
  * metadata and tactile shadows; hover straightens and lifts a card. Drag
  * to pan (the page keeps vertical scroll), click a note to open its
