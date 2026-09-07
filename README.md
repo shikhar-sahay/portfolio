@@ -53,7 +53,7 @@ pnpm format
 
 ```
 src/
-├── app/                    # App Router: layout (metadata, theme script), page (section order), globals.css, icon.svg
+├── app/                    # App Router: layout (metadata, theme script), page (section order), not-found (404 scene), globals.css, icon.svg
 ├── assets/                 # Static imports (hero portrait; enables blur placeholders)
 ├── components/
 │   ├── layout/             # Opening, SiteNav (header + progress + active section + mobile menu), ThemeToggle

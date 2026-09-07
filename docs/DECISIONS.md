@@ -756,3 +756,19 @@ Do not make significant design/architecture decisions without documenting them h
 **Alternatives Considered:** Keeping residues (rejected: brief mandates full words); keeping the fixed dark panel as intentional contrast (rejected: owner ruled it a bug); hamburger-free wrapped mobile nav row (rejected: wraps unpredictably across small widths); global `<alpha-value>` token migration now (rejected: rebuilds the approved look of every section without owner review); `color-mix` arbitrary Tailwind values per use (rejected: the two wall washes are the only theme-relative needs, a tiny CSS home beats repeated arbitrary values).
 
 **Impact:** First Load JS ~160 kB (unchanged). No new dependencies. One small client addition (mobile menu state inside the existing SiteNav client component).
+
+---
+
+### 40. Custom 404: You BROKE. plus REBUILD (EXPERIMENTAL polish)
+
+**Decision:** Genuine App Router `not-found.tsx` (proper 404 status on invalid and nested routes) designed as a hidden scene in the bridge grammar: editorial eyebrow (Missing page), serif pronoun (You) over the giant verb BROKE. with accent period, micro note (This page was never built), Error 404 plus the attempted path, and one accent REBUILD action home. The verb arrives misregistered like a slipped print (deterministic em offsets per letter; the accent period stays put as the registration anchor). The single interaction: REBUILD re-registers the letters with a staggered expo settle, holds a beat, then routes to `/`. Slim identity chrome only (brand link plus reused ThemeToggle, slim outro strip), never the full section nav. CSS transitions only, no animation library; the 404 route costs ~140 B over shared chunks. Reduced motion gets aligned type plus immediate navigation; no-JS gets a plain working link; the h1 carries an `You broke it` accessible label over aria-hidden letterforms.
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-09-07
+
+**Rationale:** The missing page reads as the broken fourth statement (I BUILD / I BREAK / I REBUILD becomes You BROKE.), so the joke is structural, never cheesy. Rebuild-before-navigate makes the action meaningful instead of decorative.
+
+**Alternatives Considered:** Generic centered 404 digits (rejected: explicitly banned); glitch/matrix/terminal treatments (rejected: banned aesthetics); pointer-driven letter displacement (rejected: too close to the hero Gaussian field); rebuilding on hover rather than on the home action (rejected: the payoff belongs to REBUILD); rendering the full SiteNav (rejected: section links are meaningless off-page; slim chrome keeps identity without clutter).
+
+**Impact:** Home First Load JS unchanged (~160 kB). No new dependencies. One new client component (`not-found.tsx`, justified by the rebuild interaction plus theme toggle).

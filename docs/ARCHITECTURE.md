@@ -60,6 +60,7 @@ src/
 │   ├── layout.tsx         # Root layout: metadata, theme pre-paint script, fonts
 │   ├── page.tsx           # Homepage: section order (Opening, Hero, Statements, About,
 │   │                       #   Experience, Toolkit, Projects, Pieces of Me, ControlCenter, Contact)
+│   ├── not-found.tsx      # 404 scene: You BROKE. plus REBUILD (client, CSS transitions only)
 │   ├── globals.css        # Tokens, keyframes, arch/mask/marquee/reduced-motion styles
 │   ├── icon.svg           # Favicon (ink field, vermilion diamond)
 │   └── api/notes/         # Wall API: list/create, replies, secret-gated moderation
@@ -89,7 +90,8 @@ There is no `src/lib/`, `src/types/`, `src/styles/`, `src/components/effects/`, 
 1. **UI primitives**: `InteractiveLetters` (pointer spring field), `TechLogo` (monochrome brand marks), `Reveal` (in-view rise), `WordReveal` (scroll reading reveal), `Counter` (animated metric), `InView` (`data-inview` gate for SVG motifs)
 2. **Sections**: Hero, TransitionStatements, About, Experience, Skills (Toolkit anchor), Certifications (ledger chapter inside Toolkit), Projects (+ lazy `ProjectPanel`), Personality (Pieces of Me), ControlCenter, Contact (footer). Each owns its scroll choreography; no shared timeline.
 3. **Layout**: Opening (session loader), SiteNav (progress hairline, tuck/reveal, active section, theme toggle, mobile disclosure menu), ThemeToggle
-4. **Hooks**: `useMountedReducedMotion`: the single hydration-safe reduced-motion flag every client component gates on
+4. **Not found**: `not-found.tsx` (genuine 404 route; misregistered BROKE. composition, REBUILD settles letters then routes home; reuses ThemeToggle)
+5. **Hooks**: `useMountedReducedMotion`: the single hydration-safe reduced-motion flag every client component gates on
 
 ### Component Principles (FINALIZED)
 
