@@ -269,7 +269,7 @@ This file will evolve as design decisions are finalized. Each section should be 
 - **Hero tagline (v4.8 afterimage, superseded by the v4.9 rule above):** the serif word kept a vermilion afterimage, removed after it read as misregistration.
 - **Statements scene:** verbs at `clamp(4rem, 12.5vw, 14rem)`; each row carries a giant cropped echo of the neighboring verb (21vw, 7% paper, off-canvas right, static CSS on the shared stack); rows cascade diagonally (flush mobile, progressive offsets from sm up); reduced-motion stack keeps echoes.
 - **Notes wall:** deterministic tilt (minus 2.2 to 2.2 degrees from id hash) plus restrained widths (standard, narrow, wide, occasional large); pin-diamond metadata; tactile shadows that deepen on hover/focus while the card straightens; dotted field plus vignette plus dashed world boundary with accent corner ticks; docked instrument cluster (leave a note, recenter, count); serif composer card; narrow thread slip with vermilion reply rail; focus moves into thread/composer on open.
-- **Footer Elsewhere:** icon plus name rows with real monochrome brand marks (whole row links, no handles); hover lifts the mark, shifts the row, reveals an arrow; Discord is a visually identical copy row (copy icon, "copy"/"copied" micro).
+- **Footer Elsewhere:** six icon plus name rows with real monochrome brand marks in fixed 15px icon boxes (whole row links, no handles) pairing the six Pages rows; hover lifts the mark, shifts the row, reveals an arrow.
 - **Resume:** `public/resume.pdf` is the real owner-supplied file (placeholder retired).
 
 ## v4.7 Additions (EXPERIMENTAL, 2026-09-06)
