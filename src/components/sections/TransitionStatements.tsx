@@ -20,8 +20,8 @@ const lines: Line[] = [
     verb: 'Build.',
     note: 'things I wish existed.',
     offsetClass: '',
-    center: 0.15,
-    noteWindow: [0.07, 0.15],
+    center: 0.1,
+    noteWindow: [0.02, 0.1],
   },
   {
     verb: 'Break.',
@@ -145,10 +145,11 @@ export function TransitionStatements() {
   });
 
   // The stack travels as one camera: BUILD centered early, REBUILD
-  // centered late, resolving slightly high to clear space for About.
+  // centered late, resolving high to clear space for About but near
+  // enough that the finale and the About entry share the frame briefly.
   // The section runs 200svh (down from 240svh) with a short REBUILD
   // hold (0.9 to 1.0): enough breath before About, never an empty wait.
-  const stackY = useTransform(scrollYProgress, [0, 1], ['42vh', '-50vh']);
+  const stackY = useTransform(scrollYProgress, [0, 1], ['42vh', '-44vh']);
   const panelO = useTransform(scrollYProgress, [0, 0.04, 1], [0, 1, 1]);
 
   if (reduce) {

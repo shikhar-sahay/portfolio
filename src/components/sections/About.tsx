@@ -7,7 +7,7 @@ import { profile } from '@/content/profile';
 const reveal = {
   initial: { opacity: 0, y: 28 },
   whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: '-12% 0px' },
+  viewport: { once: true, margin: '-20% 0px' },
 };
 
 const ease = [0.19, 1, 0.22, 1] as const;
@@ -21,7 +21,7 @@ export function About() {
     <section
       id="about"
       aria-label="About"
-      className="theme-fade relative z-10 bg-paper px-5 pb-[14vh] pt-[12vh] sm:px-10"
+      className="theme-fade relative z-10 bg-paper px-5 pb-[14vh] pt-[6vh] sm:px-10"
     >
       <div className="mx-auto max-w-6xl">
         <motion.p
