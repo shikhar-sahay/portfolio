@@ -17,16 +17,17 @@ export function Personality() {
     <section
       id="personality"
       aria-label="Personality"
-      className="panel-ink theme-fade border-ink/10 relative overflow-hidden border-t px-5 py-[18vh] sm:px-10"
+      className="theme-fade relative overflow-hidden border-t border-ink bg-paper px-5 py-[18vh] text-ink sm:px-10"
     >
-      {/* Inverted panel: the site's one full-tone shift */}
+      {/* Theme-following section: paper surface in light, warm charcoal in
+          dark, like every other chapter. No fixed panel treatment. */}
       <div className="relative mx-auto max-w-6xl">
-        <p className="text-paper/50 flex items-center gap-3 text-micro uppercase tracking-[0.16em]">
+        <p className="flex items-center gap-3 text-micro uppercase tracking-[0.16em] text-muted">
           <span className="inline-block h-px w-10 bg-accent" aria-hidden="true" />
           Personality
         </p>
 
-        <h2 className="mt-8 max-w-[24ch] text-lede font-medium tracking-tight text-paper">
+        <h2 className="mt-8 max-w-[24ch] text-lede font-medium tracking-tight text-ink">
           Resumes list skills. This lists <em className="font-serif font-normal italic">fuel</em>.
           Pick a fragment.
         </h2>
@@ -49,7 +50,7 @@ export function Personality() {
                   className={`border px-3.5 py-2 text-sm tracking-tight transition-all duration-300 ease-expo ${
                     i === active
                       ? 'border-accent bg-accent text-paper'
-                      : 'border-paper/25 text-paper/70 hover:border-paper/60 hover:text-paper'
+                      : 'border-muted text-muted hover:border-ink hover:text-ink'
                   }`}
                 >
                   <span className="mr-2 text-micro tabular-nums opacity-70">
@@ -63,10 +64,10 @@ export function Personality() {
 
           {/* Large word display */}
           <div className="min-h-[9rem] lg:min-h-0 lg:text-right" aria-live="polite">
-            <p className="font-serif text-[clamp(2.75rem,6vw,5.5rem)] italic leading-none text-paper">
+            <p className="font-serif text-[clamp(2.75rem,6vw,5.5rem)] italic leading-none text-ink">
               {fragment.word}
             </p>
-            <p className="text-paper/60 mt-4 text-sm">{fragment.caption}</p>
+            <p className="mt-4 text-sm text-muted">{fragment.caption}</p>
           </div>
         </div>
 
@@ -74,11 +75,11 @@ export function Personality() {
             the shared surface below. Copy is provisional (EXPERIMENTAL)
             until the owner approves it. */}
         <div className="mt-[12vh] max-w-[36ch]">
-          <p className="text-lede font-medium tracking-tight text-paper">
+          <p className="text-lede font-medium tracking-tight text-ink">
             I am a mosaic of everyone I have ever known. If they are a piece of me, they deserve to
             be a piece of <em className="font-serif font-normal italic">this place</em> too.
           </p>
-          <p className="text-paper/60 mt-5 text-sm leading-relaxed">
+          <p className="mt-5 text-sm leading-relaxed text-muted">
             Drag to look around. Open a note to reply, or leave one of your own. Be kind: everything
             here is public.
           </p>

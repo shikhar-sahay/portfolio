@@ -54,9 +54,9 @@ function widthFor(id: string): string {
 }
 
 const variantClass = [
-  'border-ink/25 bg-paper text-ink shadow-[0_24px_50px_-20px_rgba(0,0,0,0.55)]',
-  'border-paper/35 bg-ink text-paper shadow-[0_24px_50px_-20px_rgba(0,0,0,0.65)]',
-  'border-accent/70 bg-paper text-ink shadow-[0_24px_50px_-20px_rgba(0,0,0,0.55)]',
+  'border-ink bg-paper text-ink shadow-[0_24px_50px_-20px_rgba(0,0,0,0.55)]',
+  'border-paper bg-ink text-paper shadow-[0_24px_50px_-20px_rgba(0,0,0,0.65)]',
+  'border-accent bg-paper text-ink shadow-[0_24px_50px_-20px_rgba(0,0,0,0.55)]',
 ];
 
 /**
@@ -445,19 +445,12 @@ export function NotesWall() {
           if (!composing) return;
           placeDraft(e.clientX, e.clientY);
         }}
-        className={`relative ml-[calc(50%-50vw)] h-[78vh] min-h-[560px] w-screen touch-pan-y select-none overflow-hidden ${
+        className={`wall-dots relative ml-[calc(50%-50vw)] h-[78vh] min-h-[560px] w-screen touch-pan-y select-none overflow-hidden ${
           composing ? 'cursor-crosshair' : 'cursor-grab active:cursor-grabbing'
         }`}
-        style={{
-          backgroundImage: 'radial-gradient(circle, rgba(236,228,212,0.12) 1px, transparent 1.5px)',
-          backgroundSize: '32px 32px',
-        }}
       >
         {/* Depth: a soft vignette over the dotted field */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 z-[5] bg-[radial-gradient(120%_100%_at_50%_40%,transparent_55%,rgba(0,0,0,0.32)_100%)]"
-        />
+        <div aria-hidden="true" className="wall-vignette pointer-events-none absolute inset-0 z-[5]" />
         <div
           ref={canvasRef}
           className="absolute left-0 top-0 will-change-transform"
@@ -531,7 +524,7 @@ export function NotesWall() {
             className={`border px-4 py-2 text-micro font-semibold uppercase tracking-[0.16em] transition-all duration-300 ease-expo ${
               composing
                 ? 'border-accent bg-accent text-paper'
-                : 'border-paper/30 hover:border-paper/60 bg-ink text-paper'
+                : 'border-paper bg-ink text-paper hover:opacity-90'
             }`}
           >
             {composing ? 'Cancel' : 'Leave a note'}
@@ -539,12 +532,12 @@ export function NotesWall() {
           <button
             type="button"
             onClick={goLatest}
-            className="border-paper/30 text-paper/70 hover:border-paper/60 border bg-ink px-4 py-2 text-micro font-semibold uppercase tracking-[0.16em] transition-all duration-300 ease-expo hover:text-paper"
+            className="border border-paper bg-ink px-4 py-2 text-micro font-semibold uppercase tracking-[0.16em] text-paper transition-all duration-300 ease-expo hover:opacity-90"
           >
             Latest
           </button>
           <p
-            className="text-paper/50 bg-ink px-3 py-2 text-micro uppercase tracking-[0.14em]"
+            className="bg-ink px-3 py-2 text-micro uppercase tracking-[0.14em] text-paper"
             aria-live="polite"
           >
             {total} notes{live ? '' : ' · offline'}
@@ -558,7 +551,7 @@ export function NotesWall() {
             role="dialog"
             aria-modal="false"
             aria-label={`Note by ${openNote.name}`}
-            className="border-ink/20 absolute bottom-4 left-4 right-4 z-10 border bg-paper p-5 text-ink shadow-[0_24px_50px_-20px_rgba(0,0,0,0.55)] sm:bottom-4 sm:left-auto sm:right-4 sm:top-4 sm:w-72"
+            className="absolute bottom-4 left-4 right-4 z-10 border border-ink bg-paper p-5 text-ink shadow-[0_24px_50px_-20px_rgba(0,0,0,0.55)] sm:bottom-4 sm:left-auto sm:right-4 sm:top-4 sm:w-72"
           >
             <p className="text-micro uppercase tracking-[0.14em] text-accent">Thread</p>
             <div className="mt-2 flex items-start justify-between gap-4">
@@ -578,7 +571,7 @@ export function NotesWall() {
             </div>
             <p className="mt-3 text-sm leading-relaxed">{openNote.message}</p>
             {openNote.replies.length > 0 && (
-              <ul className="border-accent/50 mt-4 max-h-36 space-y-3 overflow-y-auto border-l-2 pl-3">
+              <ul className="mt-4 max-h-36 space-y-3 overflow-y-auto border-l-2 border-accent pl-3">
                 {openNote.replies.map(r => (
                   <li key={r.id}>
                     <p className="text-micro uppercase tracking-[0.14em] text-muted">{r.name}</p>
@@ -593,7 +586,7 @@ export function NotesWall() {
                 onChange={e => setReplyName(e.target.value.slice(0, LIMITS.nameMax))}
                 placeholder="Name (optional)"
                 aria-label="Your name"
-                className="border-ink/20 placeholder:text-muted/60 w-full border bg-transparent px-3 py-2 text-sm outline-none focus:border-accent"
+                className="w-full border border-ink bg-transparent px-3 py-2 text-sm outline-none placeholder:text-muted focus:border-accent"
               />
               <div className="flex gap-2">
                 <input
@@ -604,7 +597,7 @@ export function NotesWall() {
                   }}
                   placeholder={`Reply, up to ${LIMITS.replyMax} chars`}
                   aria-label="Your reply"
-                  className="border-ink/20 placeholder:text-muted/60 w-full border bg-transparent px-3 py-2 text-sm outline-none focus:border-accent"
+                  className="w-full border border-ink bg-transparent px-3 py-2 text-sm outline-none placeholder:text-muted focus:border-accent"
                 />
                 <button
                   type="button"
@@ -619,7 +612,7 @@ export function NotesWall() {
         )}
 
         {composing && (
-          <div className="border-ink/20 absolute bottom-4 left-4 right-4 z-20 border bg-paper p-5 text-ink shadow-[0_24px_50px_-20px_rgba(0,0,0,0.55)] sm:bottom-4 sm:left-auto sm:right-4 sm:top-4 sm:w-80">
+          <div className="absolute bottom-4 left-4 right-4 z-20 border border-ink bg-paper p-5 text-ink shadow-[0_24px_50px_-20px_rgba(0,0,0,0.55)] sm:bottom-4 sm:left-auto sm:right-4 sm:top-4 sm:w-80">
             <span
               aria-hidden="true"
               className="absolute -top-[7px] left-8 h-3 w-3 rotate-45 bg-accent"
@@ -636,7 +629,7 @@ export function NotesWall() {
                 }
                 placeholder="Name (optional)"
                 aria-label="Your name"
-                className="border-ink/20 placeholder:text-muted/60 w-full border bg-transparent px-3 py-2 text-sm outline-none focus:border-accent"
+                className="w-full border border-ink bg-transparent px-3 py-2 text-sm outline-none placeholder:text-muted focus:border-accent"
               />
               <textarea
                 ref={messageRef}
@@ -647,7 +640,7 @@ export function NotesWall() {
                 placeholder={`Message, up to ${LIMITS.messageMax} characters`}
                 aria-label="Your message"
                 rows={3}
-                className="border-ink/20 placeholder:text-muted/60 w-full resize-none border bg-transparent px-3 py-2 text-sm outline-none focus:border-accent"
+                className="w-full resize-none border border-ink bg-transparent px-3 py-2 text-sm outline-none placeholder:text-muted focus:border-accent"
               />
               <div className="flex items-center justify-between gap-2">
                 <span className="text-micro uppercase tracking-[0.12em] text-muted">
@@ -671,7 +664,7 @@ export function NotesWall() {
           {error}
         </p>
       )}
-      <p className="text-paper/40 mt-3 text-micro uppercase tracking-[0.14em]">
+      <p className="mt-3 text-micro uppercase tracking-[0.14em] text-muted">
         {live ? 'Shared wall: notes appear for every visitor.' : 'Offline: showing saved notes.'}{' '}
         Plain text only, nothing private.
       </p>

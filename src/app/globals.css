@@ -173,19 +173,32 @@ html[data-intro='skip'] .opening-overlay {
   color: #f3efe6;
 }
 
-/* Fixed editorial panel (Personality + notes wall): the subtree renders
-   the light colorway values in both themes, so the inverted panel never
-   becomes a light island in dark mode. Every utility referencing the
-   tokens (including opacity modifiers via color-mix) resolves locally. */
-.panel-ink {
-  --paper: #f3efe6;
-  --surface: #e9e2d3;
-  --ink: #1d1915;
-  --muted: #7c7568;
-  --accent: #bc3f1a;
-  --gold: #b08d2f;
-  background-color: #1d1915;
-  color: #f3efe6;
+/* Notes wall surface: the dotted field follows the theme ink via
+   color-mix (opacity-modifier color utilities do not compile against
+   bare var() tokens in Tailwind v3, so theme-relative washes live here
+   instead). The vignette deepens the fixed dark look in dark mode and
+   stays restrained on paper in light mode. */
+.wall-dots {
+  background-image: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--ink) 16%, transparent) 1px,
+    transparent 1.5px
+  );
+  background-size: 32px 32px;
+}
+.wall-vignette {
+  background: radial-gradient(
+    120% 100% at 50% 40%,
+    transparent 55%,
+    rgba(0, 0, 0, 0.14) 100%
+  );
+}
+html.dark .wall-vignette {
+  background: radial-gradient(
+    120% 100% at 50% 40%,
+    transparent 55%,
+    rgba(0, 0, 0, 0.32) 100%
+  );
 }
 
 .arch-echo {
