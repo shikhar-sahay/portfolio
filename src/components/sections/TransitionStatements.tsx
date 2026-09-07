@@ -94,18 +94,17 @@ function ThoughtLine({
       style={{ opacity, scale }}
       className={`relative flex h-[32vh] flex-col justify-center will-change-transform ${line.offsetClass}`}
     >
-      {/* Residual echo: the thought's trailing fragment, oversized and
-          cropped by the frame edge, so the full viewport reads as
-          composition. Same word behind same word is the only honest
-          mapping, and a two-letter residue can never stack behind its own
-          letterforms the way a full word does. Static CSS riding the
-          shared stack travel: no extra motion state, deterministic in both
-          directions. */}
+      {/* Full-word echo: the complete verb, oversized and cropped by the
+          frame edge, so the full viewport reads as composition. Same word
+          behind same word is the only honest mapping; the echo sits
+          low-right at whisper opacity so it never competes with its own
+          letterforms. Static CSS riding the shared stack travel: no extra
+          motion state, deterministic in both directions. */}
       <span
         aria-hidden="true"
-        className="text-ink/[0.06] dark:text-ink/[0.09] pointer-events-none absolute -right-[6vw] top-1/2 -translate-y-[30%] select-none whitespace-nowrap text-[21vw] font-semibold uppercase leading-none tracking-[-0.03em]"
+        className="pointer-events-none absolute -right-[6vw] top-1/2 -translate-y-[30%] select-none whitespace-nowrap text-[21vw] font-semibold uppercase leading-none tracking-[-0.03em] text-ink opacity-[0.06] dark:opacity-[0.09]"
       >
-        {line.verb.slice(-3, -1)}
+        {line.verb.slice(0, -1)}
       </span>
       <motion.p
         style={{ opacity: iO }}
@@ -161,7 +160,7 @@ export function TransitionStatements() {
             <div key={line.verb} className={`relative ${line.offsetClass}`}>
               <span
                 aria-hidden="true"
-                className="text-ink/[0.07] pointer-events-none absolute -right-[6vw] top-1/2 -translate-y-1/2 select-none whitespace-nowrap text-[21vw] font-semibold uppercase leading-none tracking-[-0.03em]"
+                className="pointer-events-none absolute -right-[6vw] top-1/2 -translate-y-1/2 select-none whitespace-nowrap text-[21vw] font-semibold uppercase leading-none tracking-[-0.03em] text-ink opacity-[0.07]"
               >
                 {line.verb.slice(0, -1)}
               </span>
