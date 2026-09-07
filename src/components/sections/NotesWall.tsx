@@ -450,7 +450,10 @@ export function NotesWall() {
         }`}
       >
         {/* Depth: a soft vignette over the dotted field */}
-        <div aria-hidden="true" className="wall-vignette pointer-events-none absolute inset-0 z-[5]" />
+        <div
+          aria-hidden="true"
+          className="wall-vignette pointer-events-none absolute inset-0 z-[5]"
+        />
         <div
           ref={canvasRef}
           className="absolute left-0 top-0 will-change-transform"

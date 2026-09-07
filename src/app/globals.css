@@ -187,18 +187,10 @@ html[data-intro='skip'] .opening-overlay {
   background-size: 32px 32px;
 }
 .wall-vignette {
-  background: radial-gradient(
-    120% 100% at 50% 40%,
-    transparent 55%,
-    rgba(0, 0, 0, 0.14) 100%
-  );
+  background: radial-gradient(120% 100% at 50% 40%, transparent 55%, rgba(0, 0, 0, 0.14) 100%);
 }
 html.dark .wall-vignette {
-  background: radial-gradient(
-    120% 100% at 50% 40%,
-    transparent 55%,
-    rgba(0, 0, 0, 0.32) 100%
-  );
+  background: radial-gradient(120% 100% at 50% 40%, transparent 55%, rgba(0, 0, 0, 0.32) 100%);
 }
 
 .arch-echo {
