@@ -7,9 +7,9 @@ export const profile = {
   statementPre: 'I build things worth ',
   statementEm: 'remembering.',
   introLedePre:
-    "I'm Shikhar. I study computer science at VIT Vellore, and I like making software that feels ",
+    "I'm Shikhar. I study computer science at VIT Vellore, and I like making things that feel ",
   introLedeEm: 'inevitable',
-  introLedePost: ': tools, experiments, and the occasional security rabbit hole.',
+  introLedePost: ': software, products, experiments, and ideas brought to life.',
   education: {
     school: 'Vellore Institute of Technology, Vellore',
     degree: 'B.Tech, Computer Science and Engineering (Cybersecurity)',

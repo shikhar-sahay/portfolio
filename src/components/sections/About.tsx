@@ -34,7 +34,7 @@ export function About() {
         </motion.p>
 
         <WordReveal
-          className="max-w-[30ch] text-[clamp(1.75rem,4.5vw,3.5rem)] font-medium leading-[1.25] tracking-tight text-ink sm:max-w-[34ch]"
+          className="max-w-[32ch] text-[clamp(1.75rem,5vw,4rem)] font-medium leading-[1.22] tracking-tight text-ink sm:max-w-[38ch]"
           segments={[
             { text: profile.introLedePre },
             { text: profile.introLedeEm, em: true },
@@ -48,18 +48,16 @@ export function About() {
           className="mt-[9vh] grid max-w-xl grid-cols-2 gap-6 sm:grid-cols-3"
         >
           <div className="border-ink/15 border-t pt-4">
-            <p className="text-micro uppercase tracking-[0.16em] text-accent">Based in</p>
-            <p className="mt-2 text-sm text-muted">{profile.location}</p>
+            <p className="text-micro uppercase tracking-[0.16em] text-accent">Home</p>
+            <p className="mt-2 text-sm text-muted">Bangalore, India</p>
           </div>
           <div className="border-ink/15 border-t pt-4">
             <p className="text-micro uppercase tracking-[0.16em] text-accent">Studying</p>
-            <p className="mt-2 text-sm text-muted">B.Tech CSE (Cybersecurity), VIT</p>
+            <p className="mt-2 text-sm text-muted">B.Tech CSE (Cybersecurity), VIT Vellore</p>
           </div>
           <div className="border-ink/15 col-span-2 border-t pt-4 sm:col-span-1">
-            <p className="text-micro uppercase tracking-[0.16em] text-accent">Otherwise</p>
-            <p className="mt-2 text-sm text-muted">
-              Writing, music, football, theatre, and long detours through security rabbit holes.
-            </p>
+            <p className="text-micro uppercase tracking-[0.16em] text-accent">Interests</p>
+            <p className="mt-2 text-sm text-muted">Entrepreneurship, writing, music &amp; football</p>
           </div>
         </motion.div>
       </div>
