@@ -772,3 +772,23 @@ Do not make significant design/architecture decisions without documenting them h
 **Alternatives Considered:** Generic centered 404 digits (rejected: explicitly banned); glitch/matrix/terminal treatments (rejected: banned aesthetics); pointer-driven letter displacement (rejected: too close to the hero Gaussian field); rebuilding on hover rather than on the home action (rejected: the payoff belongs to REBUILD); rendering the full SiteNav (rejected: section links are meaningless off-page; slim chrome keeps identity without clutter).
 
 **Impact:** Home First Load JS unchanged (~160 kB). No new dependencies. One new client component (`not-found.tsx`, justified by the rebuild interaction plus theme toggle).
+
+---
+
+### 41. Content plus Scroll Pacing: About Lede, Bridge Breaths (EXPERIMENTAL polish)
+
+**Decision:** Owner-locked About copy plus perceptual pacing fixes on both sides of the statement bridge.
+
+1. Hero to BUILD root cause: after the veil covers (hero progress 0.85) the bridge panel fades invisibly (paper on paper in light mode) while BUILD fades in over its first 15 percent, reading as an empty canvas for ~15svh. Fix on the bridge side only (hero choreography untouched): BUILD center 0.15 to 0.1 with note window [0.07, 0.15] to [0.02, 0.1], so the verb materializes promptly after the veil. Centers now sit evenly at 0.1 / 0.5 / 0.9. Measured veil-full to BUILD-readable: 10.5svh with continuous motion.
+2. REBUILD to About root cause: the finale hold (0.9 to 1.0) plus About top padding stacked into ~24svh before the eyebrow arrived, and the finale resolved high enough that the shared frame read empty. Fix as a combination: finale travel ends at -44vh instead of -50vh (finale rides nearer the About entry, still clearing it), About top padding 12vh to 6vh, About reveal trigger margin -12 percent to -20 percent. Measured REBUILD-full to eyebrow arrival: ~20svh with the finale and entry sharing the frame. No collision, no clipping, reverse deterministic, reduced motion untouched.
+3. About lede replaced with the locked copy (segmentation keeps serif italic on `inevitable` exactly as before, including the house space-before-colon rendering), lede type rebalanced to `clamp(1.75rem, 5vw, 4rem)` with a wider measure for confident viewport presence (4 lines desktop, 7 readable lines at 375), fact cards replaced with the locked HOME / STUDYING / INTERESTS values (card 2 gains its missing `Vellore`). About stays text-only; Experience untouched.
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-09-07
+
+**Rationale:** Both breaths are tuned perceptually in-browser, not to numeric targets: shorter but still present, with continuous motion across each transition and no blank viewport anywhere in either direction.
+
+**Alternatives Considered:** Shortening the hero scene (rejected: hero pacing is approved, fix belongs on the bridge side); negative margins or overlap hacks (rejected: fragile across viewports); compressing the whole bridge further (rejected: would rush all three phases and harm premium pacing); trimming About bottom padding (rejected: not part of the complaint); attaching the colon to the serif `inevitable` segment (rejected: keeps prior-art segmentation where the colon stays sans).
+
+**Impact:** First Load JS ~160 kB (unchanged). No new dependencies. No new client components.

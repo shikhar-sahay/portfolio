@@ -88,7 +88,7 @@ Warm print-inspired identity: cream paper, warm ink, vermilion accent. Dark is a
 ### Direction (EXPERIMENTAL)
 
 - Tailwind default 4px-based scale; no custom spacing tokens
-- Section rhythm: `py-[14vh]` standard (About `pt-[12vh]`, Control Center `py-[16vh]`, footer `pt-[14vh]`); content container `max-w-6xl`
+- Section rhythm: `py-[14vh]` standard (About `pt-[6vh]`, Control Center `py-[16vh]`, footer `pt-[14vh]`); content container `max-w-6xl`
 - Consistent page gutter: `px-5` mobile, `px-10` from sm up
 - Hero scene `h-[120svh]` with `h-dvh` sticky; statements `h-[200svh]` pulled up `-mt-[100dvh]` so its sticky engages the pixel the hero releases
 - Formal token scale remains UNDECIDED

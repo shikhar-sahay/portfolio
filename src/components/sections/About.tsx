@@ -57,7 +57,9 @@ export function About() {
           </div>
           <div className="border-ink/15 col-span-2 border-t pt-4 sm:col-span-1">
             <p className="text-micro uppercase tracking-[0.16em] text-accent">Interests</p>
-            <p className="mt-2 text-sm text-muted">Entrepreneurship, writing, music &amp; football</p>
+            <p className="mt-2 text-sm text-muted">
+              Entrepreneurship, writing, music &amp; football
+            </p>
           </div>
         </motion.div>
       </div>
