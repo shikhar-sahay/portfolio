@@ -3,23 +3,25 @@ import { profile } from '@/content/profile';
 import { channelGlyphs, type ChannelGlyphKey } from '@/content/channelGlyphs';
 import { navLinks } from '@/content/sections';
 import { FooterClock } from '@/components/sections/FooterClock';
+import { FooterThreshold } from '@/components/sections/FooterThreshold';
 import { FooterWordmark } from '@/components/sections/FooterWordmark';
 
 /**
  * Footer: a compact contact block (gesture, direct lines, pages), a slim
  * resume moment, and the closing frame: the name as an interactive
- * marquee. The wordmark is the dominant element; everything above it
- * stays small and structured.
+ * marquee. A single threshold line marks the entrance to the closing
+ * chapter; everything above the wordmark stays small and structured.
  */
 export function Contact() {
   return (
     <footer
       id="contact"
       aria-label="Contact and footer"
-      className="theme-fade bg-paper pt-[14vh] sm:px-10"
+      className="theme-fade bg-paper pt-[8vh] sm:px-10"
     >
       <div className="mx-auto max-w-6xl px-5 sm:px-0">
-        <Reveal>
+        <FooterThreshold />
+        <Reveal className="mt-[6vh]">
           <p className="flex items-center gap-3 text-micro uppercase tracking-[0.16em] text-muted">
             <span className="inline-block h-px w-10 bg-accent" aria-hidden="true" />
             Contact
