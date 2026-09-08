@@ -6,6 +6,7 @@ import { useMountedReducedMotion } from '@/hooks/useMountedReducedMotion';
 import { WordReveal } from '@/components/ui/WordReveal';
 import { orgTimeline, type EggTarget, type OrgEntry } from '@/content/experience';
 import { EggPhrase } from '@/components/sections/ExperienceEggs';
+import { OrgArtifact } from '@/components/sections/ExperienceArtifacts';
 
 const ease = [0.19, 1, 0.22, 1] as const;
 
@@ -166,7 +167,13 @@ function OrgBlock({
         </motion.span>
       </span>
 
-      <div className={left ? 'lg:col-start-1 lg:pr-4 lg:text-right' : 'lg:col-start-3 lg:pl-4'}>
+      <div
+        className={
+          left
+            ? 'lg:col-start-1 lg:row-start-1 lg:pr-4 lg:text-right'
+            : 'lg:col-start-3 lg:row-start-1 lg:pl-4'
+        }
+      >
         {entry.url ? (
           <a
             href={entry.url}
@@ -236,6 +243,9 @@ function OrgBlock({
           })}
         </ul>
       </div>
+
+      {/* Identity object in the negative space opposite the text. */}
+      <OrgArtifact artifact={entry.artifact} left={left} reduce={reduce} />
     </motion.li>
   );
 }
