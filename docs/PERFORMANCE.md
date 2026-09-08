@@ -16,7 +16,7 @@
 
 | Metric                              | Target         | Measured (2026-09-07, `next build`)                                                                                           |
 | ----------------------------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| **Initial JS (First Load)**         | < 150KB        | ~163 kB (13 kB over; see reclaim below)                                                                                       |
+| **Initial JS (First Load)**         | < 150KB        | ~163 kB (13 kB over; see reclaim below; unchanged by the Toolkit consolidation pass: removed skill data offsets the threshold island) |
 | **LCP (Largest Contentful Paint)**  | < 2.5s         | Not measured (no Lighthouse run yet)                                                                                          |
 | **CLS (Cumulative Layout Shift)**   | < 0.1          | Not measured                                                                                                                  |
 | **INP (Interaction to Next Paint)** | < 200ms        | Not measured                                                                                                                  |

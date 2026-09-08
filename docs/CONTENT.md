@@ -26,6 +26,7 @@ src/content/
 - Certifications link to owner-supplied verification URLs (Credly, Coursera).
 - Placeholder links that remain (`#` project URLs) never navigate: client components swallow the click, server components render plain text instead of anchors, and every placeholder carries a "coming soon" label. Nothing pretends to work.
 - Pieces of Me captions are voice lines, deliberately not factual claims.
+- Toolkit holds exactly two skill groups: Languages (10 items) and Technologies & Tools (existing frameworks, platforms, infrastructure, developer tools, plus Nmap and Wireshark). CrowdStrike Falcon, Veritas, and Beelzebub are Experience-context technologies, not Toolkit items. Toolkit intro: "The inventory behind the work. Collected through projects, problems, and curiosity."
 - No em dashes anywhere in content.
 
 ### Section registry (drives navigation active state)

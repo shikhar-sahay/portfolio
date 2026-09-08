@@ -151,6 +151,10 @@ The name as a slow infinite marquee (two identical groups, -50% loop, pauses on 
 
 - A small living detail below the Email action: minute-precision Bangalore IST, no motion of its own. Refreshes every 20 seconds (prompt minute rollover, no per-second React state). Hydration-safe placeholder on first paint.
 
+### Footer threshold (`FooterThreshold.tsx`, see DECISIONS.md #46)
+
+- The one deliberate closing line: a centered 80 percent hairline with a seated vermilion diamond. Draws once left to right on entry (1.2s expo; diamond fades in at 0.55s), `once: true`, transform plus opacity only. Static finished line under reduced motion. This is the single exception to the no-divider rule, allowed because the footer is terminal state, not narrative section.
+
 ### Theme crossfade
 
 - 0.7s CSS transition of background-color/color/border-color on body and `.theme-fade` containers; no JS animation. Cinematic ink fields (`.ink-stage`) stay dark in both themes.
@@ -172,7 +176,7 @@ The name as a slow infinite marquee (two identical groups, -50% loop, pauses on 
 - Statements: static stacked block (no pin, no overlap pull-up).
 - Carousel: native scroll row, instant arrows.
 - Footer: static fitted wordmark, no marquee.
-- Pieces of Me, footer clock, timeline: instant state changes, the clock renders (time itself is not motion).
+- Pieces of Me, footer clock, footer threshold, timeline: instant state changes; the clock renders and the threshold renders finished (time itself is not motion).
 - Global CSS collapses all animation/transition durations; `useMountedReducedMotion` gates every client branch post-mount so SSR and hydration markup match.
 - Verified via `reducedMotion: 'reduce'` emulation: no hydration errors, complete static page.
 

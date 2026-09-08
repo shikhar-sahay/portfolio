@@ -879,3 +879,26 @@ Do not make significant design/architecture decisions without documenting them h
 **Alternatives Considered:** Compressing the Certifications to Projects breath once the divider left (rejected: the whitespace is an intentional chapter breath, consistent with every other transition); a shared section wrapper to enforce the rule (rejected: three one-line deletions, same as #43).
 
 **Impact:** No JS change (pure class removals plus the #44 island). Both themes and reduced motion verified; no horizontal overflow at desktop or mobile widths.
+
+---
+
+### 46. Toolkit Consolidation plus Footer Threshold (EXPERIMENTAL polish)
+
+**Decision:** Toolkit drops from three carousels to two, and the footer gains a dedicated closing threshold.
+
+1. Toolkit intro copy is now exactly "The inventory behind the work. Collected through projects, problems, and curiosity." (reflective, broad enough for languages through tools, less defensive than the old line). Wrapping rebalances naturally at the existing measure; no forced breaks.
+2. The Security Tooling group is deleted outright. Nmap and Wireshark move into the second group; CrowdStrike Falcon, Veritas, and Beelzebub leave Toolkit (they keep their Experience context, where the professional meaning lives). The second group is renamed from "Frameworks & Platforms" to exactly "Technologies & Tools". Final groups: Languages (10 items, order preserved) and Technologies & Tools (11 items: existing 9 in order, Nmap plus Wireshark appended).
+3. Dead data deleted: the `Veritas` glyph entry in `techLogos.ts` (no remaining consumer; Wireshark glyph stays; CrowdStrike Falcon and Beelzebub never had glyphs). Carousel implementation untouched: seamless halves, alternate directions, hover pause, edge fade, reduced-motion static. Eleven items fill one half without doubling, so the second row repeats less by construction.
+4. Spacing retune at the source, no hacks: Certifications `pt-[20vh]` to `pt-[14vh]`, so the Toolkit to Certifications breath lands at the standard 28vh chapter rhythm (measured 224px last-row to eyebrow at 1440x900). No residual third-group allocation exists (`space-y` is dynamic). Certifications content, order, URLs, and row styling unchanged; the interaction redesign stays a separate pass.
+5. Footer threshold (`FooterThreshold.tsx`, tiny client island like the clock): a centered 80 percent hairline (`bg-ink` at element opacity 0.2, safe against the var-opacity rule) with a small vermilion diamond seated at its middle over a paper knockout. Draws once left to right on entry (1.2s expo, echoing the opening loader in reverse; diamond fades in at 0.55s); static under reduced motion. It sits inside the footer top breath (footer `pt-[14vh]` to `pt-[8vh]`, eyebrow gains `mt-[6vh]`, total unchanged), so it never collides with the Contact eyebrow.
+6. Design-system amendment to #45: narrative sections still never use full-width dividers; the footer, as terminal state rather than narrative section, may carry this one deliberate threshold. Internal footer rules (resume strip, credit strip) keep their separate structural roles.
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-09-09
+
+**Rationale:** Three marquees read as categories-in-search-of-content; two substantial rows earn the motion. Security vendors belong to the jobs where they were used, while Nmap and Wireshark are genuine general-purpose tools. The footer entered too softly after the divider retirement; an inset line plus diamond says closing chapter without restoring the stacked-slide edge.
+
+**Alternatives Considered:** Merging all tools into one row (rejected: loses the language versus tool distinction the intro sets up); keeping a slimmed Security row with two items (rejected: repeats visibly, the original defect); full-width footer line (rejected: indistinguishable from the retired generic dividers); restoring the old Contact `border-t` (rejected: same reason); endpoint diamond instead of centered (rejected: centered reads as a seal, endpoints read as decoration).
+
+**Impact:** First Load JS unchanged at 163 kB (route chunk 75.4 to 75.6 kB; removed data offsets the threshold island). No new dependencies. Verified 68 DOM/computed-style checks green on the production build across 6 widths, both themes, and reduced motion, plus 4 judged screenshots.
