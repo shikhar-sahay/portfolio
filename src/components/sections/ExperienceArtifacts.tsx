@@ -51,7 +51,7 @@ const ARTIFACTS: Record<ArtifactKey, ArtifactSpec> = {
   },
   gdg: {
     src: gdg,
-    box: 'w-[150px] lg:w-[220px]',
+    box: 'w-[165px] lg:w-[250px]',
     tilt: 3,
     settle: 1.01,
     lift: 0,
