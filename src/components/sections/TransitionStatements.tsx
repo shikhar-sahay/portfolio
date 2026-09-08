@@ -145,11 +145,11 @@ export function TransitionStatements() {
   });
 
   // The stack travels as one camera: BUILD centered early, REBUILD
-  // centered late, resolving high to clear space for About but near
-  // enough that the finale and the About entry share the frame briefly.
-  // The section runs 200svh (down from 240svh) with a short REBUILD
-  // hold (0.9 to 1.0): enough breath before About, never an empty wait.
-  const stackY = useTransform(scrollYProgress, [0, 1], ['42vh', '-44vh']);
+  // centered late, resolving just high enough to clear the About entry
+  // while still sharing the frame with it briefly. The section runs
+  // 200svh (down from 240svh) with a short REBUILD hold (0.9 to 1.0):
+  // enough breath before About, never an empty wait.
+  const stackY = useTransform(scrollYProgress, [0, 1], ['42vh', '-40vh']);
   const panelO = useTransform(scrollYProgress, [0, 0.04, 1], [0, 1, 1]);
 
   if (reduce) {

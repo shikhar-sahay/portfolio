@@ -7,7 +7,7 @@ import { profile } from '@/content/profile';
 const reveal = {
   initial: { opacity: 0, y: 28 },
   whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: '-20% 0px' },
+  viewport: { once: true, margin: '-12% 0px' },
 };
 
 const ease = [0.19, 1, 0.22, 1] as const;
