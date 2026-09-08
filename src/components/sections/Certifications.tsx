@@ -124,7 +124,7 @@ function CertRow({
           rel="noopener noreferrer"
           aria-label={`${cert.name}, verified by ${cert.issuer}`}
           title={`Verify ${cert.name} on ${new URL(cert.url).hostname}`}
-          className="group/link inline-flex shrink-0 items-baseline gap-2 border px-4 py-2.5 text-micro font-semibold uppercase tracking-[0.14em] text-ink transition-colors duration-300 hover:border-accent hover:text-accent focus-visible:border-accent focus-visible:text-accent"
+          className="group/link inline-flex min-h-11 shrink-0 items-center gap-2 border px-4 py-2.5 text-micro font-semibold uppercase tracking-[0.14em] text-ink transition-colors duration-300 hover:border-accent hover:text-accent focus-visible:border-accent focus-visible:text-accent"
           style={{ borderColor: 'color-mix(in srgb, var(--ink) 20%, transparent)' }}
         >
           Verify
