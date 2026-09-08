@@ -250,7 +250,7 @@ This file will evolve as design decisions are finalized. Each section should be 
 
 ## v5.1 Additions (EXPERIMENTAL, 2026-09-09)
 
-- **Control Center deleted:** the framed utility grid is gone with no remnants; only the live time survives as `FooterClock.tsx`, a two-line minute-precision Bangalore IST detail below the Email action (no box, no card, no border; hydration-safe placeholder; 20s refresh; kept under reduced motion). The footer is the canonical resume location (`Everything, condensed.` plus View resume and Download PDF). Footer bottom metadata reads Bangalore, India.
+- **Control Center deleted:** the framed utility grid is gone with no remnants; only the live time survives as `FooterClock.tsx`, a two-line second-precision Bangalore IST detail below the Email action (no box, no card, no border; hydration-safe placeholder; 1s refresh; kept under reduced motion). The footer is the canonical resume location (`Everything, condensed.` plus View resume and Download PDF). Footer bottom metadata reads Bangalore, India.
 - **Section boundary retirement complete:** no section root carries a full-width top divider (Projects, Pieces of Me, and the Contact footer top removed in this pass). Internal hairlines stay, including the footer internal resume-strip and credit-strip rules.
 
 ## v5.0 Additions (EXPERIMENTAL, 2026-09-07)

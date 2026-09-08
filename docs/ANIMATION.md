@@ -149,7 +149,7 @@ The name as a slow infinite marquee (two identical groups, -50% loop, pauses on 
 
 ### Footer clock (`FooterClock.tsx`; the Control Center panel is deleted, see DECISIONS.md #44)
 
-- A small living detail below the Email action: minute-precision Bangalore IST, no motion of its own. Refreshes every 20 seconds (prompt minute rollover, no per-second React state). Hydration-safe placeholder on first paint.
+- A small living detail below the Email action: second-precision Bangalore IST, no motion of its own. Refreshes every second. Hydration-safe placeholder on first paint.
 
 ### Footer threshold (`FooterThreshold.tsx`, see DECISIONS.md #46)
 

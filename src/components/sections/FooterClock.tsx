@@ -6,6 +6,7 @@ function formatBangalore(): string {
   return new Intl.DateTimeFormat('en-GB', {
     hour: '2-digit',
     minute: '2-digit',
+    second: '2-digit',
     hour12: false,
     timeZone: 'Asia/Kolkata',
   }).format(new Date());
@@ -13,10 +14,9 @@ function formatBangalore(): string {
 
 /**
  * Footer clock: a small living detail below the Email action, not a
- * dashboard module. Minute precision, 24-hour IST, Bangalore identity.
+ * dashboard module. Second precision, 24-hour IST, Bangalore identity.
  * Hydration-safe: server and first client paint agree on a placeholder,
- * live time swaps in after mount. Refreshes every 20 seconds so minute
- * rollover lands promptly without per-second busyness. Time content
+ * live time swaps in after mount. Refreshes every second. Time content
  * changing is content, not decorative motion, so reduced motion keeps it.
  */
 export function FooterClock() {
@@ -24,14 +24,14 @@ export function FooterClock() {
 
   useEffect(() => {
     setTime(formatBangalore());
-    const id = window.setInterval(() => setTime(formatBangalore()), 20000);
+    const id = window.setInterval(() => setTime(formatBangalore()), 1000);
     return () => window.clearInterval(id);
   }, []);
 
   return (
     <p aria-label={time ? `Local time ${time} IST, Bangalore` : 'Local time, Bangalore'}>
       <span className="mt-6 block text-sm font-medium tabular-nums tracking-tight text-ink">
-        {time ?? '--:--'} IST
+        {time ?? '--:--:--'} IST
       </span>
       <span className="mt-1 block text-micro uppercase tracking-[0.16em] text-muted">
         Bangalore

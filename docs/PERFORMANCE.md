@@ -160,7 +160,7 @@ There is no `.github/` directory and no Lighthouse CI, bundle gate, or deploy pi
 
 ## v5.1 Status (2026-09-09)
 
-- First Load JS: ~163 kB against the 150 kB budget (was ~165 kB). The Control Center deletion removes the framed panel, its modules, and both per-second timers; the only addition is the tiny footer clock island (one 20s interval, no animation loop).
+- First Load JS: ~163 kB against the 150 kB budget (was ~165 kB). The Control Center deletion removes the framed panel, its modules, and both per-second timers; the only addition is the tiny footer clock island (one 1s interval, no animation loop).
 - Reclamation options (unchanged): cheapen the InteractiveLetters tint, trim carousel hint state, or move Counter out of the lazy chunk. Track in HANDOFF known issues.
 
 ## v4.5 Status (2026-09-05)
