@@ -118,6 +118,11 @@ Used in About and Experience ledes. Words start at 18% opacity and brighten to f
 
 Each tool is a gold-ring emblem with a monochrome core (real brand mark, or a serif monogram in the same ink where no genuine mark exists); the core tints to accent at 1.1 scale on hover. The ring rotates 90 degrees and a dashed orbit wakes on hover. Emblem rows drift as infinite CSS marquee loops (alternate directions, pause on hover, edge fade). Gold exists only in rings and the Certifications register.
 
+### Certifications disclosure stack (`Certifications.tsx`)
+
+- The four ledger rows retain their one-time in-view mask wipe. Opening a row reveals its certificate inside the same list item through a 500ms clipped grid expansion plus a small upward opacity settle. Closing uses the same restrained timing. Only one row can be open.
+- Reduced motion bypasses the transition entirely. The control still opens and closes the same semantic region immediately.
+
 ### Project carousel (`Projects.tsx`, lazy `ProjectPanel.tsx`)
 
 - Single rAF loop owns a two-copy track: auto-drift 40px/s until the first interaction (drag, swipe, arrows, keys), then manual for the session. Arrow/keyboard targets tween toward the card grid (lerp 0.16); drag writes the offset directly; release settles to the grid; clicks after drags are suppressed. Offset wraps modulo one exactly measured copy width. The loop pauses offscreen via IntersectionObserver.

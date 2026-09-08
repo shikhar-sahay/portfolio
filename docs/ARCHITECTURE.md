@@ -95,7 +95,7 @@ There is no `src/lib/`, `src/types/`, `src/styles/`, `src/components/effects/`, 
 
 ### Component Principles (FINALIZED)
 
-- **Server Components by default**: only `"use client"` when needed (current clients: Opening, SiteNav, ThemeToggle, Hero, About, TransitionStatements, Experience, ExperienceEggs (prose Easter eggs), Projects, ProjectPanel, Personality, NotesWall, FooterClock, FooterWordmark, Certifications (scroll mask choreography), plus the interactive primitives InteractiveLetters, Reveal, WordReveal, Counter, InView, CopyText. Server: Skills, Contact, TechLogo)
+- **Server Components by default**: only `"use client"` when needed (current clients: Opening, SiteNav, ThemeToggle, Hero, About, TransitionStatements, Experience, ExperienceEggs (prose Easter eggs), Projects, ProjectPanel, Personality, NotesWall, FooterClock, FooterWordmark, Certifications (scroll mask choreography and local disclosure state), plus the interactive primitives InteractiveLetters, Reveal, WordReveal, Counter, InView, CopyText. Server: Skills, Contact, TechLogo)
 - **Composition over configuration**: slots/children over props explosion
 - **Design tokens via Tailwind**: CSS variables as color source of truth
 - **Lazy-load heavy components**: `ProjectPanel` via `next/dynamic` with `ssr: false` (the only lazy chunk)

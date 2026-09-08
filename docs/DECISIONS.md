@@ -902,3 +902,25 @@ Do not make significant design/architecture decisions without documenting them h
 **Alternatives Considered:** Merging all tools into one row (rejected: loses the language versus tool distinction the intro sets up); keeping a slimmed Security row with two items (rejected: repeats visibly, the original defect); full-width footer line (rejected: indistinguishable from the retired generic dividers); restoring the old Contact `border-t` (rejected: same reason); endpoint diamond instead of centered (rejected: centered reads as a seal, endpoints read as decoration).
 
 **Impact:** First Load JS unchanged at 163 kB (route chunk 75.4 to 75.6 kB; removed data offsets the threshold island). No new dependencies. Verified 68 DOM/computed-style checks green on the production build across 6 widths, both themes, and reduced motion, plus 4 judged screenshots.
+
+---
+
+### 47. Certifications Compact Disclosure Stack (EXPERIMENTAL polish)
+
+**Decision:** Certifications becomes a quiet four-row editorial disclosure stack. All credentials have equal weight. The row button owns the issuer and credential name, while the existing Verify anchor remains an independent sibling. Only one row opens at a time and the owner-supplied PNG unfolds beneath that same list item.
+
+1. The authoritative order, issuer metadata, verification URLs, and four supplied PNGs remain unchanged. The static image map follows the `systems.ts` order: CompTIA Security+, Google Cybersecurity Professional, IBM Cybersecurity Fundamentals, Cisco Introduction to Cybersecurity.
+2. Rows are compact hairline entries with one 8px diamond marker, no featured credential, no separate image card, no overlay, and no added imagery treatment. Expanded images use `next/image`, their natural aspect ratios, blur placeholders, `max-w-[880px]` on desktop, and full available width on mobile.
+3. The row button provides native Enter and Space behavior, `aria-expanded`, and `aria-controls`; its labeled region references that button. Verify is independently focusable, opens the existing external URL in a new tab, and cannot toggle or close the row because it is not inside the button.
+4. Opening uses a 500ms clipped grid reveal with opacity and an 8px vertical settle. Closing shares the restrained choreography. Reduced motion removes the transition, preserving the same disclosure behavior.
+5. The Certifications to Projects breath is retained, except for the chapter's bottom padding reducing from 16vh to 12vh so the compact stack does not create a redundant trailing gap.
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-09-09
+
+**Rationale:** Certifications are supporting proof. The closed group reads quickly as one precise ledger, while opening a row makes the evidence available in place without elevating any credential or interrupting the page with a modal.
+
+**Alternatives Considered:** A featured Security+ row (rejected: all four credentials carry equal weight); modal or lightbox viewing (rejected: breaks the reading flow); an FAQ-style accordion with chevrons and rounded panels (rejected: generic UI language); a framed certificate card (rejected: proof should extend the row, not become its own object); a carousel or sticky gallery (rejected: too prominent for supporting evidence).
+
+**Impact:** No dependency added. Certifications remains the existing client island, now justified by local disclosure state in addition to its one-time mask wipe. Final bundle measurement is recorded in PERFORMANCE.md and HANDOFF.md.

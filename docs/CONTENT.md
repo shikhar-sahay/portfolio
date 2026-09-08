@@ -23,7 +23,7 @@ src/content/
 
 - Metrics and claims come only from owner-supplied source material (55K+ users, 1.2M+ views, top 1% of 4,000+, top 3% of 2,000+, 1.8L+ rupees, DevJams 750+ participants, tens of thousands of followers, 4 to 7 member team). Academic scores in source material are never displayed anywhere on the site.
 - `profile.links` holds real destinations (mailto email, GitHub, LinkedIn, Drive resume, local resume file); `profile.socials` holds the broader set (Instagram, Medium, X, Spotify) with handles; `profile.discord` holds a username only (no public URL exists, rendered as a copy action).
-- Certifications link to owner-supplied verification URLs (Credly, Coursera).
+- Certifications link to owner-supplied verification URLs (Credly, Coursera). Their owner-supplied PNG proof files map in the authoritative `systems.ts` order: CompTIA Security+, Google Cybersecurity Professional, IBM Cybersecurity Fundamentals, then Cisco Introduction to Cybersecurity.
 - Placeholder links that remain (`#` project URLs) never navigate: client components swallow the click, server components render plain text instead of anchors, and every placeholder carries a "coming soon" label. Nothing pretends to work.
 - Pieces of Me captions are voice lines, deliberately not factual claims.
 - Toolkit holds exactly two skill groups: Languages (10 items) and Technologies & Tools (existing frameworks, platforms, infrastructure, developer tools, plus Nmap and Wireshark). CrowdStrike Falcon, Veritas, and Beelzebub are Experience-context technologies, not Toolkit items. Toolkit intro: "The inventory behind the work. Collected through projects, problems, and curiosity."

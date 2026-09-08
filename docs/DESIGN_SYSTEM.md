@@ -253,6 +253,10 @@ This file will evolve as design decisions are finalized. Each section should be 
 - **Control Center deleted:** the framed utility grid is gone with no remnants; only the live time survives as `FooterClock.tsx`, a two-line second-precision Bangalore IST detail below the Email action (no box, no card, no border; hydration-safe placeholder; 1s refresh; kept under reduced motion). The footer is the canonical resume location (`Everything, condensed.` plus View resume and Download PDF). Footer bottom metadata reads Bangalore, India.
 - **Section boundary retirement complete:** no section root carries a full-width top divider (Projects, Pieces of Me, and the Contact footer top removed in this pass). Internal hairlines stay, including the footer internal resume-strip and credit-strip rules.
 
+## v5.2 Additions (EXPERIMENTAL, 2026-09-09)
+
+- **Certifications disclosure stack:** the credential chapter is four equal-weight, compact editorial rows. A row is the disclosure control, with issuer, name, diamond marker, and separate boxed Verify link. Its owner-supplied certificate PNG unfolds directly beneath the same row with no card, modal, or decorative frame. The image is capped at 880px on larger screens and uses the available mobile width.
+
 ## v5.0 Additions (EXPERIMENTAL, 2026-09-07)
 
 - **Statements echoes (supersedes the v4.9 residues below):** the complete verb (BUILD, BREAK, REBUILD), oversized and cropped low-right; subtlety via element opacity (`opacity-[0.06]`, `dark:opacity-[0.09]`), never color opacity modifiers (see DECISIONS.md #39).

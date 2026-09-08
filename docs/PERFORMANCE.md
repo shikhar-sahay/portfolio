@@ -16,7 +16,7 @@
 
 | Metric                              | Target         | Measured (2026-09-07, `next build`)                                                                                           |
 | ----------------------------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| **Initial JS (First Load)**         | < 150KB        | ~163 kB (13 kB over; see reclaim below; unchanged by the Toolkit consolidation pass: removed skill data offsets the threshold island) |
+| **Initial JS (First Load)**         | < 150KB        | 164 kB (14 kB over; see reclaim below; Certifications disclosure behavior changes the route by about 1 kB)                    |
 | **LCP (Largest Contentful Paint)**  | < 2.5s         | Not measured (no Lighthouse run yet)                                                                                          |
 | **CLS (Cumulative Layout Shift)**   | < 0.1          | Not measured                                                                                                                  |
 | **INP (Interaction to Next Paint)** | < 200ms        | Not measured                                                                                                                  |
@@ -162,6 +162,10 @@ There is no `.github/` directory and no Lighthouse CI, bundle gate, or deploy pi
 
 - First Load JS: ~163 kB against the 150 kB budget (was ~165 kB). The Control Center deletion removes the framed panel, its modules, and both per-second timers; the only addition is the tiny footer clock island (one 1s interval, no animation loop).
 - Reclamation options (unchanged): cheapen the InteractiveLetters tint, trim carousel hint state, or move Counter out of the lazy chunk. Track in HANDOFF known issues.
+
+## v5.2 Status (2026-09-09)
+
+- Production build: 164 kB First Load JS, route chunk 76.8 kB. The compact Certifications disclosure stack adds local state and static proof-image imports to its existing client island. No dependency or recurring runtime loop was added.
 
 ## v4.5 Status (2026-09-05)
 
