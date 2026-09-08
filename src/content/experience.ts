@@ -73,7 +73,7 @@ export const orgTimeline: OrgEntry[] = [
       {
         role: 'Senior Core Member',
         period: 'Mar 2026 - Sep 2026',
-        body: "By Senior Core, I had gone from helping run the room to owning parts of it. I served as PoC for DevJams'26, GDG's flagship hackathon with 3,000+ registrations, helped execute Women Techies'26 and Hexathon'26, and mentored the next Core cohort. Oh, and I also raised ₹3.3L+ in sponsorships along the way.",
+        body: "By Senior Core, I had gone from helping run the room to owning parts of it. I served as PoC for DevJams'26, GDG's flagship hackathon with 3,000+ registrations, helped execute Women Techies'26 and Hexathon'26, and mentored the next Core cohort. Oh, and I also brought my sponsorship total to ₹3.3L+ along the way.",
         egg: { kind: 'rupees', target: '₹3.3L+' },
       },
       {
