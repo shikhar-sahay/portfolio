@@ -14,14 +14,6 @@ import teamShade from '../../assets/org-logos/shade_websitelogo.png';
 
 const ease = [0.19, 1, 0.22, 1] as const;
 
-interface SweepSpec {
-  /** Peak overlay opacity on engagement. */
-  opacity: number;
-  /** Band geometry (narrower reads as a single bevel catching light). */
-  widthClass: string;
-  leftClass: string;
-}
-
 interface ArtifactSpec {
   src: StaticImageData;
   /** File-box width (mobile, then lg). Optical size follows the baked padding. */
@@ -30,7 +22,7 @@ interface ArtifactSpec {
   tilt: number;
   /** Max pointer drift in px. */
   shift: number;
-  /** Engagement settle scale. */
+  /** Engagement settle scale (the forward Z read). */
   settle: number;
   /** Engagement lift in px (badge-like kinds only). */
   lift: number;
@@ -38,10 +30,8 @@ interface ArtifactSpec {
   twist: number;
   /** Radial compression toward the edges (the GDG give). */
   give: boolean;
-  /** Press dip before tilt takes over (the tile press). */
+  /** Press dip before tilt takes over (tile and badge press). */
   press: boolean;
-  /** Warm traveling highlight, null disables. */
-  sweep: SweepSpec | null;
   /** Spring voice: heavy kinds are slow, the coin is snappy. */
   spring: { stiffness: number; damping: number };
 }
@@ -52,25 +42,23 @@ const ARTIFACTS: Record<ArtifactKey, ArtifactSpec> = {
     box: 'w-[132px] lg:w-[200px]',
     tilt: 3,
     shift: 3,
-    settle: 1.015,
-    lift: 0,
+    settle: 1.03,
+    lift: -2,
     twist: 0,
     give: false,
     press: false,
-    sweep: { opacity: 0.22, widthClass: 'w-1/3', leftClass: '-left-1/6' },
     spring: { stiffness: 120, damping: 20 },
   },
   recipharm: {
     src: recipharm,
     box: 'w-[200px] lg:w-[300px]',
     tilt: 1.5,
-    shift: 2,
-    settle: 1.008,
+    shift: 3,
+    settle: 1.006,
     lift: 0,
     twist: 0,
     give: false,
     press: false,
-    sweep: { opacity: 0.3, widthClass: 'w-1/3', leftClass: '-left-1/6' },
     spring: { stiffness: 180, damping: 22 },
   },
   gdg: {
@@ -80,10 +68,9 @@ const ARTIFACTS: Record<ArtifactKey, ArtifactSpec> = {
     shift: 4,
     settle: 1.01,
     lift: 0,
-    twist: 1.2,
+    twist: 1.5,
     give: true,
     press: false,
-    sweep: null,
     spring: { stiffness: 140, damping: 15 },
   },
   codechef: {
@@ -95,8 +82,7 @@ const ARTIFACTS: Record<ArtifactKey, ArtifactSpec> = {
     lift: -2,
     twist: 0.8,
     give: false,
-    press: false,
-    sweep: { opacity: 0.22, widthClass: 'w-1/2', leftClass: '-left-1/4' },
+    press: true,
     spring: { stiffness: 160, damping: 18 },
   },
   skilledity: {
@@ -106,23 +92,21 @@ const ARTIFACTS: Record<ArtifactKey, ArtifactSpec> = {
     shift: 3,
     settle: 1.008,
     lift: 0,
-    twist: 1.5,
+    twist: 2,
     give: false,
     press: true,
-    sweep: { opacity: 0.18, widthClass: 'w-1/2', leftClass: '-left-1/4' },
     spring: { stiffness: 200, damping: 20 },
   },
   'team-shade': {
     src: teamShade,
     box: 'w-[130px] lg:w-[165px]',
-    tilt: 4,
+    tilt: 5,
     shift: 2,
     settle: 1.01,
     lift: 0,
-    twist: 1,
+    twist: 1.2,
     give: false,
     press: false,
-    sweep: { opacity: 0.25, widthClass: 'w-1/4', leftClass: '-left-1/8' },
     spring: { stiffness: 220, damping: 14 },
   },
 };
@@ -133,11 +117,13 @@ const ARTIFACTS: Record<ArtifactKey, ArtifactSpec> = {
  * position over the object, one perspective stage, spring return, rest
  * state at identity, subtle scroll arrival. Per-organization personality
  * comes only from the spec above: tilt range, drift, settle, lift,
- * twist, radial give, press dip, traveling highlight, spring voice.
- * No loops, no continuous animation, transform and opacity only.
- * Decorative: hidden from assistive tech, never focusable, pointer
- * tracking is mouse-only so touch scrolling stays clean. Keyboard users
- * get the same gentle engagement through the org-link spotlight below.
+ * twist, radial give, press dip, spring voice. The baked PNG lighting
+ * carries all material response: no sweep overlays, no traveling
+ * highlights, no shine layers anywhere. No loops, no continuous
+ * animation, transform and opacity only. Decorative: hidden from
+ * assistive tech, never focusable, pointer tracking is mouse-only so
+ * touch scrolling stays clean. Keyboard users get the same gentle
+ * engagement through the org-link spotlight below.
  */
 function ArtifactFigure({
   spec,
@@ -159,10 +145,9 @@ function ArtifactFigure({
   const x = useTransform(sx, [-0.5, 0.5], [-spec.shift, spec.shift]);
   const y = useTransform(sy, [-0.5, 0.5], [-spec.shift, spec.shift]);
   const rotateZ = useTransform(sx, [-0.5, 0.5], [spec.twist, -spec.twist]);
-  const sweepX = useTransform(sx, [-0.5, 0.5], ['-35%', '35%']);
   const giveX = useTransform([sx, sy], (v: number[]) => {
     if (!spec.give) return 1;
-    return 1 - Math.min(0.5, Math.hypot(v[0], v[1])) * 0.05;
+    return 1 - Math.min(0.5, Math.hypot(v[0], v[1])) * 0.07;
   });
 
   // Pointer engagement, or the keyboard spotlight from the org link.
@@ -233,15 +218,6 @@ function ArtifactFigure({
               className="h-auto w-full select-none"
               draggable={false}
             />
-            {spec.sweep && (
-              <motion.span
-                aria-hidden="true"
-                style={{ x: sweepX }}
-                animate={{ opacity: active ? spec.sweep.opacity : 0 }}
-                transition={{ duration: 0.4 }}
-                className={`pointer-events-none absolute inset-y-0 ${spec.sweep.leftClass} ${spec.sweep.widthClass} bg-gradient-to-r from-transparent via-[rgba(255,242,220,0.4)] to-transparent`}
-              />
-            )}
           </motion.div>
         </motion.div>
       </div>
