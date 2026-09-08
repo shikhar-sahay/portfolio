@@ -16,7 +16,7 @@
 
 | Metric                              | Target         | Measured (2026-09-07, `next build`)                                                                                           |
 | ----------------------------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| **Initial JS (First Load)**         | < 150KB        | 164 kB (14 kB over; see reclaim below; Certifications disclosure behavior changes the route by about 1 kB)                    |
+| **Initial JS (First Load)**         | < 150KB        | 165 kB (15 kB over; see reclaim below; project artwork/cards and certification holder measured 2026-09-09)                    |
 | **LCP (Largest Contentful Paint)**  | < 2.5s         | Not measured (no Lighthouse run yet)                                                                                          |
 | **CLS (Cumulative Layout Shift)**   | < 0.1          | Not measured                                                                                                                  |
 | **INP (Interaction to Next Paint)** | < 200ms        | Not measured                                                                                                                  |
@@ -166,6 +166,11 @@ There is no `.github/` directory and no Lighthouse CI, bundle gate, or deploy pi
 ## v5.2 Status (2026-09-09)
 
 - Production build: 164 kB First Load JS, route chunk 76.8 kB. The compact Certifications disclosure stack adds local state and static proof-image imports to its existing client island. No dependency or recurring runtime loop was added.
+
+## v5.3 Status (2026-09-09)
+
+- Production build: 165 kB First Load JS, route chunk 77.9 kB. Projects now import five owner-supplied static artwork files and render them through `next/image` inside the existing lazy `ProjectPanel` chunk. The old project metric/counter card layer and SVG preview motifs were removed, so no new dependency or recurring runtime loop was added.
+- Runtime changes are interaction-gated: project images get only a tiny hover scale plus saturation/contrast lift, and `.project-carousel-dragging` suppresses that treatment while dragging. The carousel keeps the existing single offscreen-paused rAF loop.
 
 ## v4.5 Status (2026-09-05)
 

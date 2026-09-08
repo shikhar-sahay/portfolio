@@ -924,3 +924,27 @@ Do not make significant design/architecture decisions without documenting them h
 **Alternatives Considered:** A featured Security+ row (rejected: all four credentials carry equal weight); modal or lightbox viewing (rejected: breaks the reading flow); an FAQ-style accordion with chevrons and rounded panels (rejected: generic UI language); a framed certificate card (rejected: proof should extend the row, not become its own object); a carousel or sticky gallery (rejected: too prominent for supporting evidence).
 
 **Impact:** No dependency added. Certifications remains the existing client island, now justified by local disclosure state in addition to its one-time mask wipe. Final bundle measurement is recorded in PERFORMANCE.md and HANDOFF.md.
+
+---
+
+### 48. Certifications Holder plus Projects Artifact Rebuild (EXPERIMENTAL polish)
+
+**Decision:** Certifications now uses one unified holder for the expanded credential, and Projects now uses the final five owner-supplied project artifacts, content, links, and artwork.
+
+1. Certification heading copy changed to "Learning, with the paperwork to match." with the paperwork phrase in the established serif italic treatment. The supporting line is "Four credentials, collected along the way."
+2. The open credential row now becomes the header of a restrained vermilion holder. The expanded region carries a small uppercase Certificate label, a fine vermilion rule, and the real certificate image with `next/image`, preserving natural aspect ratio and equal visual weight across all four credentials.
+3. Projects category labels, metric modules, role labels, and fake case-study actions are removed. Final carousel order is Papers by CodeChef, Hawk3ye, HolmesKit, This Site, RT-ENSS.
+4. Project cards render authentic owner-provided previews from `src/assets/projects/` with per-image fit and position metadata. Images remain in their native visual identities, with no generated replacement, device mockup, duotone, grayscale lock, glow, or heavy processing.
+5. Project actions are truthful only: live links where a distinct deployment exists, GitHub links where supplied, and the non-interactive "YOU'RE ALREADY HERE." location line for This Site.
+6. Carousel architecture is preserved: slow automatic movement, drag and swipe, arrows, keyboard controls, pause behavior, and reduced-motion native scrolling. Hover image enhancement is intentionally tiny and disabled while dragging.
+7. QA found collapsed certificate proof images could still force horizontal overflow through grid min-content sizing. The holder now uses explicit overflow and min-size guards so closed proofs cannot widen the page.
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-09-09
+
+**Rationale:** The certifications needed containment, not a new presentation mode: the row and document should read as one ledger object. Projects needed to stop abstracting the work into categories and instead let the real artifacts carry identity, breadth, and credibility.
+
+**Alternatives Considered:** Beige document frames (rejected: too literal and against the reference intent); modal certificate viewing (rejected: interrupts the page); featured Security+ treatment (rejected: unequal weight); project category labels (rejected: five projects communicate breadth without classification); grayscale-to-color artwork interaction (rejected: the authentic colors are valuable at rest); fake case studies (rejected: only real actions appear).
+
+**Impact:** First Load JS measured at 165 kB after the project artwork and holder pass. No new dependencies. No new animation library. Project SVG motif code was removed from the cards, while static images are optimized through `next/image`.

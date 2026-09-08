@@ -87,7 +87,7 @@ There is no `src/lib/`, `src/types/`, `src/styles/`, `src/components/effects/`, 
 
 ### Component Categories (FINALIZED)
 
-1. **UI primitives**: `InteractiveLetters` (pointer spring field), `TechLogo` (monochrome brand marks), `Reveal` (in-view rise), `WordReveal` (scroll reading reveal), `Counter` (animated metric), `InView` (`data-inview` gate for SVG motifs)
+1. **UI primitives**: `InteractiveLetters` (pointer spring field), `TechLogo` (monochrome brand marks), `Reveal` (in-view rise), `WordReveal` (scroll reading reveal), `Counter` (animated metric), `InView` (currently unused, kept as a small reusable in-view gate)
 2. **Sections**: Hero, TransitionStatements, About, Experience, Skills (Toolkit anchor), Certifications (ledger chapter inside Toolkit), Projects (+ lazy `ProjectPanel`), Personality (Pieces of Me), Contact (footer with the `FooterClock` and `FooterThreshold` islands). Each owns its scroll choreography; no shared timeline.
 3. **Layout**: Opening (session loader), SiteNav (progress hairline, tuck/reveal, active section, theme toggle, mobile disclosure menu), ThemeToggle
 4. **Not found**: `not-found.tsx` (genuine 404 route; misregistered BROKE. composition, REBUILD settles letters then routes home; reuses ThemeToggle)
@@ -123,7 +123,7 @@ There is no `src/lib/`, `src/types/`, `src/styles/`, `src/components/effects/`, 
 
 | Content Type            | Source                                                                                                                   | Status      |
 | ----------------------- | ------------------------------------------------------------------------------------------------------------------------ | ----------- |
-| **Projects**            | `src/content/projects.ts` (5 artifacts, SVG motifs)                                                                      | `FINALIZED` |
+| **Projects**            | `src/content/projects.ts` (5 owner-supplied artifacts, real links, project artwork metadata)                             | `FINALIZED` |
 | **Experience/Timeline** | `src/content/experience.ts` (org-grouped)                                                                                | `FINALIZED` |
 | **Skills / certs**      | `src/content/systems.ts` (+ `techLogos.ts` marks)                                                                        | `FINALIZED` |
 | **Personal info**       | `src/content/profile.ts`                                                                                                 | `FINALIZED` |

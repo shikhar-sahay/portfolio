@@ -255,7 +255,8 @@ This file will evolve as design decisions are finalized. Each section should be 
 
 ## v5.2 Additions (EXPERIMENTAL, 2026-09-09)
 
-- **Certifications disclosure stack:** the credential chapter is four equal-weight, compact editorial rows. A row is the disclosure control, with issuer, name, diamond marker, and separate boxed Verify link. Its owner-supplied certificate PNG unfolds directly beneath the same row with no card, modal, or decorative frame. The image is capped at 880px on larger screens and uses the available mobile width.
+- **Certifications holder:** the credential chapter is four equal-weight editorial rows. A closed row is a compact ledger entry. When opened, the same list item becomes one restrained vermilion holder: row header, independent boxed Verify link, quiet `CERTIFICATE` label, fine vermilion rule, and owner-supplied PNG proof. The image is capped at 880px on larger screens and uses the available mobile width; collapsed panels must keep explicit overflow and min-size guards so proof images never affect page width.
+- **Project artifact cards:** Projects use authentic owner-provided previews from `src/assets/projects/` through `next/image`, not abstract generated motifs or fake device frames. Cards keep the editorial hairline frame, fixed image viewport, title-first hierarchy, concise description, stack row, and truthful actions only. The images keep their original color at rest; hover may add only a tiny scale and color-depth lift, suppressed during drag.
 
 ## v5.0 Additions (EXPERIMENTAL, 2026-09-07)
 
@@ -309,7 +310,7 @@ This file will evolve as design decisions are finalized. Each section should be 
 - **Hero name interaction:** 2D gaussian field (sigma X 130px, sigma Y 85px), lift 0.12em, per-letter springs; rows carry overflow-visible boundaries plus a 0.05em airspace gap; footer marquee carries 0.18em vertical bleed inside its mask. Reduced motion never pins the hero scene.
 - **Statements bridge type (v4.3, superseded by v4.5 phases above):** per-line sizes (BUILD 11vw, BREAK 12vw, REBUILD 11vw, same clamp ends), flush-left / flush-right / indented registers, controlled row overlap, activation scale 0.94 to 1.
 - **Skills emblems:** real CC0 brand marks rendered monochrome via currentColor (19 of 23 tools); monogram fallback only where no genuine mark exists; hover tints the mark to accent at 1.1 scale.
-- **Placeholder links:** client components swallow the click; server components render plain text; every placeholder carries a "coming soon" label.
+- **Project links:** project cards render only real actions. No placeholder, fake case-study, or redundant Live action for This Site.
 - **Favicon:** `src/app/icon.svg`, ink field with vermilion diamond.
 
 ## v4.2 Additions (EXPERIMENTAL, 2026-08-26)

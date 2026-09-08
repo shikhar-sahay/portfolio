@@ -118,16 +118,16 @@ Used in About and Experience ledes. Words start at 18% opacity and brighten to f
 
 Each tool is a gold-ring emblem with a monochrome core (real brand mark, or a serif monogram in the same ink where no genuine mark exists); the core tints to accent at 1.1 scale on hover. The ring rotates 90 degrees and a dashed orbit wakes on hover. Emblem rows drift as infinite CSS marquee loops (alternate directions, pause on hover, edge fade). Gold exists only in rings and the Certifications register.
 
-### Certifications disclosure stack (`Certifications.tsx`)
+### Certifications holder (`Certifications.tsx`)
 
-- The four ledger rows retain their one-time in-view mask wipe. Opening a row reveals its certificate inside the same list item through a 500ms clipped grid expansion plus a small upward opacity settle. Closing uses the same restrained timing. Only one row can be open.
+- The four ledger rows retain their one-time in-view mask wipe. Opening a row turns that same list item into a restrained vermilion holder, then reveals the certificate through a 500ms clipped grid expansion plus a small upward opacity settle. The `CERTIFICATE` label and fine rule arrive with the same panel opacity, so the motion reads as a document sleeve opening. Closing uses the same restrained timing. Only one row can be open.
 - Reduced motion bypasses the transition entirely. The control still opens and closes the same semantic region immediately.
 
 ### Project carousel (`Projects.tsx`, lazy `ProjectPanel.tsx`)
 
 - Single rAF loop owns a two-copy track: auto-drift 40px/s until the first interaction (drag, swipe, arrows, keys), then manual for the session. Arrow/keyboard targets tween toward the card grid (lerp 0.16); drag writes the offset directly; release settles to the grid; clicks after drags are suppressed. Offset wraps modulo one exactly measured copy width. The loop pauses offscreen via IntersectionObserver.
-- Forward (Next, ArrowRight, drift) is negative offset. Placeholder links are inert so clicks and drag releases never navigate.
-- Cards are uniform (fixed preview surface, clamped description, pinned stack/links rows); preview motifs animate via the `data-inview` gate. Reduced motion: native scroll row with instant arrow scrolls.
+- Forward (Next, ArrowRight, drift) is negative offset. Project links are all real actions, so the existing drag click-suppression remains the protection against accidental navigation.
+- Cards are uniform with a fixed `next/image` artifact viewport, clamped description, and pinned stack/action rows. Artwork keeps authentic color at rest; hover adds only a tiny scale and saturation/contrast lift, and `.project-carousel-dragging` suppresses that lift while the user drags. Reduced motion: native scroll row with instant arrow scrolls and no auto-drift.
 
 ### Footer wordmark (`FooterWordmark.tsx`, rebuilt v4.9 as one object)
 
@@ -423,4 +423,4 @@ Motion values are now concrete (see Implemented Patterns and Token Reference abo
 ### Projects carousel
 
 - Single rAF loop owns the track: drift 40px/s; arrow/keyboard targets tween at lerp 0.16; drag writes offset directly; on release the offset eases to the nearest card boundary. Offset wraps modulo one copy width (two copies rendered). Loop pauses via IntersectionObserver when offscreen. Reduced motion: no loop, native overflow scroll, instant arrow scrolls.
-- Forward (Next, ArrowRight, drift) is negative offset. One copy width is summed from slide offsetWidth plus margin (scrollWidth drops the trailing margin and would put every wrap 24px off grid). Placeholder links are inert (client preventDefault; server components render plain text) so clicks and drag releases never navigate.
+- Forward (Next, ArrowRight, drift) is negative offset. One copy width is summed from slide offsetWidth plus margin (scrollWidth drops the trailing margin and would put every wrap 24px off grid). Project links are real, and click suppression after drags prevents accidental navigation on release.

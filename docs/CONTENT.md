@@ -24,7 +24,7 @@ src/content/
 - Metrics and claims come only from owner-supplied source material (55K+ users, 1.2M+ views, top 1% of 4,000+, top 3% of 2,000+, 1.8L+ rupees, DevJams 750+ participants, tens of thousands of followers, 4 to 7 member team). Academic scores in source material are never displayed anywhere on the site.
 - `profile.links` holds real destinations (mailto email, GitHub, LinkedIn, Drive resume, local resume file); `profile.socials` holds the broader set (Instagram, Medium, X, Spotify) with handles; `profile.discord` holds a username only (no public URL exists, rendered as a copy action).
 - Certifications link to owner-supplied verification URLs (Credly, Coursera). Their owner-supplied PNG proof files map in the authoritative `systems.ts` order: CompTIA Security+, Google Cybersecurity Professional, IBM Cybersecurity Fundamentals, then Cisco Introduction to Cybersecurity.
-- Placeholder links that remain (`#` project URLs) never navigate: client components swallow the click, server components render plain text instead of anchors, and every placeholder carries a "coming soon" label. Nothing pretends to work.
+- Project links now point only to real owner-supplied destinations. Cards show no placeholder or fake case-study actions.
 - Pieces of Me captions are voice lines, deliberately not factual claims.
 - Toolkit holds exactly two skill groups: Languages (10 items) and Technologies & Tools (existing frameworks, platforms, infrastructure, developer tools, plus Nmap and Wireshark). CrowdStrike Falcon, Veritas, and Beelzebub are Experience-context technologies, not Toolkit items. Toolkit intro: "The inventory behind the work. Collected through projects, problems, and curiosity."
 - No em dashes anywhere in content.
@@ -95,18 +95,24 @@ Actual model (`src/content/projects.ts`):
 export interface Project {
   id: string;
   name: string;
-  kind: string; // e.g. "Public platform", "Security experiment"
   description: string;
-  role?: string; // provenance line, rendered muted under the name
   stack: string[]; // rendered with breakable separators
-  metric?: { value: number; decimals?: number; suffix: string; label: string };
-  secondMetric?: { value: number; decimals?: number; suffix: string; label: string };
-  links: { live: string; github: string; caseStudy: string }; // '#' placeholders
-  visual: 'utility' | 'signal' | 'manifest' | 'honeypot' | 'site';
+  links: { live?: string; github?: string };
+  currentLocationLabel?: string; // This Site only: "YOU'RE ALREADY HERE."
+  artwork: {
+    src: StaticImageData;
+    alt: string;
+    fit: 'cover' | 'contain';
+    position: string;
+  };
 }
 ```
 
-Current items (5): Papers (utility), HawkEye (signal), HolmesKit (manifest), SSH Honeypot (honeypot), This Site (site). All links are `#` placeholders rendered inert until the owner supplies destinations. No project detail pages, no filters, no galleries exist.
+Current items (5, in order): Papers by CodeChef, Hawk3ye, HolmesKit, This Site, RT-ENSS. Categories are intentionally removed from the visible card hierarchy. Papers has Live and GitHub, Hawk3ye has Live and GitHub, HolmesKit has GitHub only, This Site shows "YOU'RE ALREADY HERE." plus GitHub, and RT-ENSS has GitHub only. No project detail pages, filters, or galleries exist.
+
+Artwork lives in `src/assets/projects/` and is owner-supplied: `papersbackdrop.jpg`, `hawk3yebackdrop.png`, `holmeskitbackdrop.png`, `portfoliobackdrop.jpg`, and `rtenssbackdrop.jpg`. These are rendered through `next/image` without generated replacements, recoloring, grayscale treatment, mockups, or global duotone. Per-image `fit` and `position` preserve the recognizable artifact.
+
+Accuracy constraints: Papers by CodeChef was an existing CodeChef VIT product Shikhar helped maintain. Hawk3ye uses the rebuilt FastAPI, React, TypeScript, PostgreSQL architecture represented by the current repository. RT-ENSS is a simulation; never imply physical embedded deployment, production CAN deployment, or real-world infrastructure deployment.
 
 ### Content Guidelines (FINALIZED)
 
