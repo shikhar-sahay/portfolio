@@ -1,6 +1,5 @@
 'use client';
 
-import { Counter } from '@/components/ui/Counter';
 import { InView } from '@/components/ui/InView';
 import type { Project } from '@/content/projects';
 
@@ -18,43 +17,18 @@ export function ProjectPanel({ project }: { project: Project }) {
             {project.visual === 'utility' && <UtilityPreview />}
             {project.visual === 'signal' && <SignalPreview />}
             {project.visual === 'manifest' && <ManifestPreview />}
-            {project.visual === 'honeypot' && <HoneypotPreview />}
             {project.visual === 'site' && <SitePreview />}
+            {project.visual === 'rtenss' && <RtEnssPreview />}
           </InView>
         </div>
       </div>
 
       {/* Info block: clamped so every panel stays the same height */}
       <div className="flex flex-1 flex-col p-5 sm:p-6">
-        <p className="text-micro uppercase tracking-[0.16em] text-accent">{project.kind}</p>
-        <h3 className="mt-2 text-2xl font-semibold tracking-tight text-ink">{project.name}</h3>
-        {project.role && (
-          <p className="mt-1.5 text-micro uppercase tracking-[0.12em] text-muted">{project.role}</p>
-        )}
-        <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-muted">
+        <h3 className="text-3xl font-semibold tracking-tight text-ink">{project.name}</h3>
+        <p className="mt-4 line-clamp-4 text-sm leading-relaxed text-muted">
           {project.description}
         </p>
-
-        {project.metric && (
-          <div className="border-ink/10 mt-4 flex gap-8 border-t pt-3">
-            {[project.metric, project.secondMetric].map(
-              m =>
-                m && (
-                  <div key={m.label}>
-                    <Counter
-                      value={m.value}
-                      decimals={m.decimals}
-                      suffix={m.suffix}
-                      className="block text-xl font-semibold tabular-nums leading-none tracking-tight text-ink"
-                    />
-                    <p className="mt-1 text-micro uppercase tracking-[0.14em] text-muted">
-                      {m.label}
-                    </p>
-                  </div>
-                )
-            )}
-          </div>
-        )}
 
         {/* Stack + links: pinned to the bottom of every panel */}
         <div className="mt-auto pt-5">
@@ -69,9 +43,13 @@ export function ProjectPanel({ project }: { project: Project }) {
             ))}
           </p>
           <div className="border-ink/10 mt-4 flex items-center gap-5 border-t pt-4">
-            <PanelLink label="Live" href={project.links.live} />
-            <PanelLink label="GitHub" href={project.links.github} />
-            <PanelLink label="Case study" href={project.links.caseStudy} />
+            {project.currentLocationLabel && (
+              <span className="text-micro font-semibold uppercase tracking-[0.14em] text-muted">
+                {project.currentLocationLabel}
+              </span>
+            )}
+            {project.links.live && <PanelLink label="Live" href={project.links.live} />}
+            {project.links.github && <PanelLink label="GitHub" href={project.links.github} />}
           </div>
         </div>
       </div>
@@ -80,25 +58,20 @@ export function ProjectPanel({ project }: { project: Project }) {
 }
 
 function PanelLink({ label, href }: { label: string; href: string }) {
-  const placeholder = href === '#';
   return (
     <a
       href={href}
-      aria-disabled={placeholder || undefined}
-      title={placeholder ? `${label} link coming soon` : label}
-      // Placeholders must never navigate: href="#" would jump to the top
-      // of the page (and hijack drag releases), so the click is swallowed.
-      onClick={placeholder ? e => e.preventDefault() : undefined}
-      className={`group/link inline-flex items-center gap-1.5 text-micro font-semibold uppercase tracking-[0.14em] transition-colors duration-300 ${
-        placeholder ? 'text-muted/60 cursor-default' : 'text-ink hover:text-accent'
-      }`}
+      target="_blank"
+      rel="noopener noreferrer"
+      title={label}
+      className="group/link inline-flex items-center gap-1.5 text-micro font-semibold uppercase tracking-[0.14em] text-ink transition-colors duration-300 hover:text-accent"
     >
       {label}
       <span
         aria-hidden="true"
         className="inline-block transition-transform duration-500 ease-expo group-hover/link:translate-x-0.5"
       >
-        &rarr;
+        ↗
       </span>
     </a>
   );
@@ -226,19 +199,19 @@ function ManifestPreview() {
   );
 }
 
-/* SSH Honeypot: probes converging into a trap. */
-function HoneypotPreview() {
+/* RT-ENSS: simulated embedded network with scheduled tasks. */
+function RtEnssPreview() {
   return (
     <svg viewBox="0 0 300 120" className="w-full" aria-hidden="true">
-      {[20, 60, 100, 140, 180, 220, 260].map((x, i) => (
+      {[55, 115, 185, 245].map((x, i) => (
         <line
           key={x}
           x1={x}
-          y1="18"
+          y1="28"
           x2="150"
-          y2="78"
-          stroke={i === 3 ? 'var(--accent)' : 'var(--muted)'}
-          strokeOpacity={i === 3 ? 0.9 : 0.4}
+          y2="64"
+          stroke={i === 1 ? 'var(--accent)' : 'var(--muted)'}
+          strokeOpacity={i === 1 ? 0.9 : 0.4}
           strokeWidth="1"
           strokeDasharray="2 3"
           className="signal-edge"
@@ -247,34 +220,48 @@ function HoneypotPreview() {
       ))}
       <g className="signal-node">
         <rect
-          x="128"
-          y="76"
+          x="129"
+          y="52"
           width="44"
-          height="30"
+          height="24"
           fill="none"
           stroke="var(--accent)"
           strokeWidth="1"
         />
         <text
           x="150"
-          y="95"
+          y="68"
           textAnchor="middle"
           fill="var(--accent)"
           className="text-[8px] uppercase"
           style={{ letterSpacing: '0.14em' }}
         >
-          TRAP
+          IDS
         </text>
       </g>
-      {[20, 60, 100, 140, 180, 220, 260].map((x, i) => (
+      {[55, 115, 185, 245].map((x, i) => (
         <circle
           key={x}
           cx={x}
-          cy="18"
+          cy="28"
           r="3"
           fill="var(--muted)"
           className="signal-node"
           style={{ transitionDelay: `${i * 60}ms` }}
+        />
+      ))}
+      {[40, 84, 128, 172, 216].map((x, i) => (
+        <rect
+          key={x}
+          x={x}
+          y={92 - (i % 2) * 12}
+          width="24"
+          height="10"
+          fill={i === 2 ? 'var(--accent)' : 'none'}
+          stroke={i === 2 ? 'var(--accent)' : 'var(--muted)'}
+          strokeOpacity={i === 2 ? 0.9 : 0.45}
+          className="signal-node"
+          style={{ transitionDelay: `${260 + i * 70}ms` }}
         />
       ))}
     </svg>

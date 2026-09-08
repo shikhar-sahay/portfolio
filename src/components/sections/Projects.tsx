@@ -200,8 +200,7 @@ export function Projects() {
         </Reveal>
         <Reveal delay={0.08}>
           <h2 className="mt-8 max-w-[24ch] text-lede font-medium tracking-tight text-ink">
-            Artifacts from the communities around them: a public utility, a signal map, a toolkit, a
-            trap, and this page.
+            Ideas are more interesting once they exist. Here are a few I made real.
           </h2>
         </Reveal>
       </div>
@@ -252,10 +251,10 @@ export function Projects() {
         <div className="mx-auto mt-8 flex max-w-6xl items-center justify-between gap-4">
           <p className="text-micro uppercase tracking-[0.16em] text-muted">
             {reduce
-              ? 'Swipe or use the arrows'
+              ? 'IT MOVES ON ITS OWN. DRAG, SWIPE, OR INTERRUPT.'
               : drifting
-                ? 'It drifts on its own: drag, swipe, or take the wheel'
-                : 'Paused: you have the wheel'}
+                ? 'IT MOVES ON ITS OWN. DRAG, SWIPE, OR INTERRUPT.'
+                : 'IT MOVES ON ITS OWN. DRAG, SWIPE, OR INTERRUPT.'}
           </p>
           <div className="flex gap-3">
             <CarouselButton direction="previous" onClick={() => nudge(1)} />

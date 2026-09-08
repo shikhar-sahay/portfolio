@@ -1,80 +1,74 @@
 export interface ProjectLinks {
-  live: string;
-  github: string;
-  caseStudy: string;
+  live?: string;
+  github?: string;
 }
 
 export interface Project {
   id: string;
   name: string;
-  kind: string;
   description: string;
-  role?: string;
   stack: string[];
-  metric?: { value: number; decimals?: number; suffix: string; label: string };
-  secondMetric?: { value: number; decimals?: number; suffix: string; label: string };
   links: ProjectLinks;
-  visual: 'utility' | 'signal' | 'manifest' | 'honeypot' | 'site';
+  currentLocationLabel?: string;
+  visual: 'utility' | 'signal' | 'manifest' | 'site' | 'rtenss';
 }
 
 /**
- * Link values are structured placeholders until the owner supplies real
- * destinations. They are rendered as disabled-looking anchors (href "#")
- * so the layout is final but nothing pretends to work.
+ * Project order, descriptions, stacks, and links are owner-supplied.
+ * Keep copy concise and truthful: Papers was maintained as a CodeChef VIT
+ * product, and RT-ENSS is a simulation.
  */
 export const projects: Project[] = [
   {
     id: 'papers',
-    name: 'Papers',
-    kind: 'Public platform',
+    name: 'Papers by CodeChef',
     description:
-      "One of VIT's most-used platforms for previous year question papers. Find your course, pull the paper, get back to work.",
-    role: 'Front-end and back-end development, CodeChef-VIT',
+      "Papers makes VIT's previous-year question papers easy to find and use for exam prep, serving 55K+ users across 1.2M+ page views.",
     stack: ['Next.js', 'TypeScript', 'TailwindCSS', 'MongoDB'],
-    metric: { value: 55, suffix: 'K+', label: 'active users' },
-    secondMetric: { value: 1.2, decimals: 1, suffix: 'M+', label: 'page views' },
-    links: { live: '#', github: '#', caseStudy: '#' },
+    links: {
+      live: 'https://www.papers.codechefvit.com/',
+      github: 'https://github.com/shikhar-sahay/papers-codechef',
+    },
     visual: 'utility',
   },
   {
-    id: 'hawkeye',
-    name: 'HawkEye',
-    kind: 'Security visualization',
+    id: 'hawk3ye',
+    name: 'Hawk3ye',
     description:
-      'An attack and risk visualization SIEM. It ingests security logs, simulates attacker behavior, correlates events into attack paths, computes risk scores, and maps activity to MITRE ATT&CK.',
-    stack: ['Python', 'Flask', 'JavaScript', 'Plotly.js'],
-    links: { live: '#', github: '#', caseStudy: '#' },
+      'Hawk3ye turns application security events into live threat intelligence, detecting suspicious behavior, mapping attacks to MITRE ATT&CK, and correlating alerts into incidents.',
+    stack: ['FastAPI', 'React', 'TypeScript', 'PostgreSQL'],
+    links: {
+      live: 'https://hawk3ye.vercel.app/',
+      github: 'https://github.com/shikhar-sahay/hawk3ye',
+    },
     visual: 'signal',
   },
   {
     id: 'holmeskit',
     name: 'HolmesKit',
-    kind: 'Windows toolkit',
     description:
-      'A modular Windows optimization toolkit. Registry, service, power plan and TCP/IP tweaks, with the safety rails built in: automated backups, session logging, and rollback support.',
+      'HolmesKit strips unnecessary overhead from Windows through transparent, reversible system optimizations, with every change explained, backed up, and logged.',
     stack: ['PowerShell', 'Batch'],
-    links: { live: '#', github: '#', caseStudy: '#' },
+    links: { github: 'https://github.com/shikhar-sahay/holmes-kit/' },
     visual: 'manifest',
-  },
-  {
-    id: 'honeypot',
-    name: 'SSH Honeypot',
-    kind: 'Security experiment',
-    description:
-      'An AWS honeypot that pretends to be a vulnerable Linux box. It logs every probe, adapts its shell responses, and turns attacker curiosity into structured telemetry.',
-    role: 'Built during the Cyber Defenders internship',
-    stack: ['Beelzebub', 'Python', 'AWS'],
-    links: { live: '#', github: '#', caseStudy: '#' },
-    visual: 'honeypot',
   },
   {
     id: 'site',
     name: 'This Site',
-    kind: 'The page you are on',
     description:
-      'A continuous editorial portfolio: scroll-driven typography, an arch portrait, and a control panel, composed to feel like one world.',
-    stack: ['Next.js', 'TypeScript', 'Tailwind', 'Motion'],
-    links: { live: '#', github: '#', caseStudy: '#' },
+      'This site turns a portfolio into something closer to an experience, combining editorial design, physical motion, interactive storytelling, and a slightly unreasonable attention to detail.',
+    stack: ['Next.js', 'TypeScript', 'TailwindCSS', 'Motion'],
+    links: { github: 'https://github.com/shikhar-sahay/portfolio/' },
+    currentLocationLabel: "YOU'RE ALREADY HERE.",
     visual: 'site',
+  },
+  {
+    id: 'rt-enss',
+    name: 'RT-ENSS',
+    description:
+      'RT-ENSS brings intrusion detection into a real-time embedded network, responding to simulated spoofing, replay, and DoS attacks while keeping critical tasks on schedule.',
+    stack: ['SystemC', 'C++', 'Python'],
+    links: { github: 'https://github.com/shikhar-sahay/rt-enss' },
+    visual: 'rtenss',
   },
 ];
