@@ -17,7 +17,7 @@ export function Personality() {
     <section
       id="pieces-of-me"
       aria-label="Pieces of Me"
-      className="theme-fade relative overflow-hidden border-t border-ink bg-paper px-5 py-[18vh] text-ink sm:px-10"
+      className="theme-fade relative overflow-hidden bg-paper px-5 py-[18vh] text-ink sm:px-10"
     >
       {/* Theme-following section: paper surface in light, warm charcoal in
           dark, like every other chapter. No fixed panel treatment. */}

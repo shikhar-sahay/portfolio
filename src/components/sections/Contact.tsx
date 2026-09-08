@@ -2,6 +2,7 @@ import { Reveal } from '@/components/ui/Reveal';
 import { profile } from '@/content/profile';
 import { channelGlyphs, type ChannelGlyphKey } from '@/content/channelGlyphs';
 import { navLinks } from '@/content/sections';
+import { FooterClock } from '@/components/sections/FooterClock';
 import { FooterWordmark } from '@/components/sections/FooterWordmark';
 
 /**
@@ -15,7 +16,7 @@ export function Contact() {
     <footer
       id="contact"
       aria-label="Contact and footer"
-      className="theme-fade border-ink/10 border-t bg-paper pt-[14vh] sm:px-10"
+      className="theme-fade bg-paper pt-[14vh] sm:px-10"
     >
       <div className="mx-auto max-w-6xl px-5 sm:px-0">
         <Reveal>
@@ -36,6 +37,7 @@ export function Contact() {
               the inbox is open.
             </p>
             <EmailLink />
+            <FooterClock />
           </Reveal>
 
           <Reveal delay={0.12}>

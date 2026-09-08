@@ -2,7 +2,7 @@ export const profile = {
   name: 'Shikhar Sahay',
   shortName: 'S. Sahay',
   firstName: 'Shikhar',
-  location: 'Vellore, India',
+  location: 'Bangalore, India',
   role: 'Computer Science @ VIT Vellore, building across software, security and the web.',
   statementPre: 'I build things worth ',
   statementEm: 'remembering.',

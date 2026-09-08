@@ -189,7 +189,7 @@ export function Projects() {
     <section
       id="projects"
       aria-label="Selected projects"
-      className="theme-fade border-ink/10 border-t bg-paper px-5 py-[14vh] sm:px-10"
+      className="theme-fade bg-paper px-5 py-[14vh] sm:px-10"
     >
       <div className="mx-auto max-w-6xl">
         <Reveal>
