@@ -47,11 +47,11 @@ export function Certifications() {
           <span className="inline-block h-px w-10 bg-accent" aria-hidden="true" />
           Certifications
         </p>
-        <h2 className="mt-8 max-w-[22ch] text-lede font-medium tracking-tight text-ink">
-          Earned, <em className="font-serif font-normal italic">verifiable.</em>
+        <h2 className="mt-8 max-w-[28ch] text-lede font-medium tracking-tight text-ink">
+          Learning, <em className="font-serif font-normal italic">with the paperwork to match.</em>
         </h2>
         <p className="mt-4 text-sm leading-relaxed text-muted">
-          Four credentials. Each one opens its proof.
+          Four credentials, collected along the way.
         </p>
 
         <ol className="mt-[6vh]">
@@ -91,10 +91,14 @@ function CertRow({
       whileInView={reduce ? undefined : { clipPath: 'inset(0 0 0% 0)' }}
       viewport={{ once: true, margin: '-12% 0px' }}
       transition={reduce ? undefined : { duration: 0.9, delay: index * 0.07, ease }}
-      className="border-t last:border-b"
-      style={{ borderColor: 'color-mix(in srgb, var(--ink) 15%, transparent)' }}
+      className={`border transition-colors duration-500 ${open ? 'relative z-10' : '-mt-px'}`}
+      style={{
+        borderColor: open
+          ? 'color-mix(in srgb, var(--accent) 88%, transparent)'
+          : 'color-mix(in srgb, var(--ink) 15%, transparent)',
+      }}
     >
-      <div className="flex flex-wrap items-center justify-between gap-x-8 gap-y-3 py-5 sm:py-6">
+      <div className="flex flex-wrap items-center justify-between gap-x-8 gap-y-3 px-5 py-5 sm:px-7 sm:py-6">
         <button
           type="button"
           id={toggleId}
@@ -135,6 +139,23 @@ function CertRow({
             ↗
           </span>
         </a>
+        <button
+          type="button"
+          aria-label={`${open ? 'Collapse' : 'Expand'} ${cert.name} certificate`}
+          aria-expanded={open}
+          aria-controls={panelId}
+          onClick={onToggle}
+          className="flex h-11 w-11 shrink-0 items-center justify-center text-ink transition-colors duration-300 hover:text-accent focus-visible:text-accent"
+        >
+          <span
+            aria-hidden="true"
+            className={`block transition-transform duration-500 ease-expo ${
+              open ? '-rotate-90' : 'rotate-90'
+            }`}
+          >
+            &rarr;
+          </span>
+        </button>
       </div>
 
       <div
@@ -147,17 +168,30 @@ function CertRow({
       >
         <div className="overflow-hidden">
           <div
-            className={`pb-8 pt-1 ${
+            className={`border-t px-5 pb-7 pt-4 sm:px-7 sm:pb-8 ${
               reduce ? '' : 'transition-[opacity,transform] duration-500 ease-expo'
             } ${open ? 'translate-y-0 opacity-100' : '-translate-y-2 opacity-0'}`}
+            style={{ borderColor: 'color-mix(in srgb, var(--accent) 70%, transparent)' }}
           >
-            <Image
-              src={certImages[index]}
-              alt={`${cert.name} certificate`}
-              placeholder="blur"
-              sizes="(max-width: 768px) 100vw, 880px"
-              className="h-auto w-full max-w-[880px]"
-            />
+            <div className="mb-5 flex items-center gap-3">
+              <p className="text-micro font-semibold uppercase tracking-[0.16em] text-accent">
+                Certificate
+              </p>
+              <span
+                aria-hidden="true"
+                className="h-px flex-1"
+                style={{ backgroundColor: 'color-mix(in srgb, var(--accent) 70%, transparent)' }}
+              />
+            </div>
+            <div className="flex justify-center">
+              <Image
+                src={certImages[index]}
+                alt={`${cert.name} certificate`}
+                placeholder="blur"
+                sizes="(max-width: 768px) calc(100vw - 40px), 880px"
+                className="h-auto w-full max-w-[880px]"
+              />
+            </div>
           </div>
         </div>
       </div>
