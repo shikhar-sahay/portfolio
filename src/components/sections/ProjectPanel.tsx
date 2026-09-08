@@ -17,7 +17,7 @@ export function ProjectPanel({ project }: { project: Project }) {
           alt={project.artwork.alt}
           placeholder="blur"
           sizes="(max-width: 640px) 80vw, 400px"
-          className={`h-full w-full transition duration-700 ease-expo group-hover:scale-[1.015] group-hover:contrast-[1.04] group-hover:saturate-[1.05] ${
+          className={`project-artwork h-full w-full transition duration-700 ease-expo group-hover:scale-[1.015] group-hover:contrast-[1.04] group-hover:saturate-[1.05] ${
             project.artwork.fit === 'contain' ? 'object-contain' : 'object-cover'
           }`}
           style={{ objectPosition: project.artwork.position }}

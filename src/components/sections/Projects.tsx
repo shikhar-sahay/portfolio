@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import { useMountedReducedMotion } from '@/hooks/useMountedReducedMotion';
 import { Reveal } from '@/components/ui/Reveal';
@@ -38,12 +38,10 @@ export function Projects() {
     visible: true,
     lastT: 0,
   });
-  const [drifting, setDrifting] = useState(true);
 
   const stopAuto = useCallback(() => {
     if (s.current.auto) {
       s.current.auto = false;
-      setDrifting(false);
     }
   }, []);
 
@@ -141,6 +139,7 @@ export function Projects() {
     st.lastX = e.clientX;
     st.moved = 0;
     st.target = null;
+    viewportRef.current?.classList.add('project-carousel-dragging');
     viewportRef.current?.setPointerCapture(e.pointerId);
   };
 
@@ -157,6 +156,7 @@ export function Projects() {
     const st = s.current;
     if (!st.dragging) return;
     st.dragging = false;
+    viewportRef.current?.classList.remove('project-carousel-dragging');
     // Settle gently onto the card grid; no hard snap.
     st.target = Math.round(st.offset / st.step) * st.step;
   };
@@ -250,11 +250,7 @@ export function Projects() {
         {/* Controls */}
         <div className="mx-auto mt-8 flex max-w-6xl items-center justify-between gap-4">
           <p className="text-micro uppercase tracking-[0.16em] text-muted">
-            {reduce
-              ? 'IT MOVES ON ITS OWN. DRAG, SWIPE, OR INTERRUPT.'
-              : drifting
-                ? 'IT MOVES ON ITS OWN. DRAG, SWIPE, OR INTERRUPT.'
-                : 'IT MOVES ON ITS OWN. DRAG, SWIPE, OR INTERRUPT.'}
+            IT MOVES ON ITS OWN. DRAG, SWIPE, OR INTERRUPT.
           </p>
           <div className="flex gap-3">
             <CarouselButton direction="previous" onClick={() => nudge(1)} />
