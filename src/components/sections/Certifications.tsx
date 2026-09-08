@@ -162,11 +162,11 @@ function CertRow({
         id={panelId}
         role="region"
         aria-labelledby={toggleId}
-        className={`grid ${open ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'} ${
+        className={`grid overflow-hidden ${open ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'} ${
           open ? 'visible' : 'invisible'
         } ${reduce ? '' : 'transition-[grid-template-rows,visibility] duration-500 ease-expo'}`}
       >
-        <div className="overflow-hidden">
+        <div className="min-h-0 min-w-0 overflow-hidden">
           <div
             className={`border-t px-5 pb-7 pt-4 sm:px-7 sm:pb-8 ${
               reduce ? '' : 'transition-[opacity,transform] duration-500 ease-expo'
