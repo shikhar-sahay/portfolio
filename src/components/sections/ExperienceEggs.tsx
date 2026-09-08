@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import type { EggKind } from '@/content/experience';
 import { useMountedReducedMotion } from '@/hooks/useMountedReducedMotion';
 
@@ -52,6 +52,38 @@ function Trigger({
   );
 }
 
+/**
+ * Per-character spans grouped by word. Inter-word spaces stay real text
+ * nodes between the word wrappers: a lone space inside an inline-block
+ * collapses to zero width (this once jammed an entire phrase together),
+ * while a text-node space keeps normal width and wrapping.
+ */
+function Chars({
+  text,
+  render,
+}: {
+  text: string;
+  render: (ch: string, i: number) => React.ReactNode;
+}) {
+  let n = 0;
+  return (
+    <>
+      {text.split(' ').map((word, wi, arr) => (
+        <Fragment key={wi}>
+          <span className="inline-block">
+            {word.split('').map(ch => {
+              const el = render(ch, n);
+              n += 1;
+              return <Fragment key={n}>{el}</Fragment>;
+            })}
+          </span>
+          {wi < arr.length - 1 ? ' ' : null}
+        </Fragment>
+      ))}
+    </>
+  );
+}
+
 /** Cyber Defenders: the phrase takes one tiny directional hit, springs back. */
 function AttackEgg({ text, reduce }: { text: string; reduce: boolean }) {
   const [hit, setHit] = useState(false);
@@ -63,15 +95,17 @@ function AttackEgg({ text, reduce }: { text: string; reduce: boolean }) {
   };
   return (
     <Trigger label={`${text} (playful animation)`} playing={hit} onPlay={play}>
-      {text.split('').map((ch, i) => (
-        <span
-          key={i}
-          className="inline-block transition-transform duration-150 ease-out will-change-transform"
-          style={hit ? { transform: `translate(${jit(i, 5)}px, ${jit(i + 7, 5)}px)` } : undefined}
-        >
-          {ch}
-        </span>
-      ))}
+      <Chars
+        text={text}
+        render={(ch, i) => (
+          <span
+            className="inline-block transition-transform duration-150 ease-out will-change-transform"
+            style={hit ? { transform: `translate(${jit(i, 5)}px, ${jit(i + 7, 5)}px)` } : undefined}
+          >
+            {ch}
+          </span>
+        )}
+      />
     </Trigger>
   );
 }
@@ -89,18 +123,20 @@ function RecoverEgg({ text, reduce }: { text: string; reduce: boolean }) {
   };
   return (
     <Trigger label={`${text} (playful animation)`} playing={phase !== 0} onPlay={play}>
-      {text.split('').map((ch, i) => (
-        <span
-          key={i}
-          className="inline-block transition-opacity duration-200"
-          style={{
-            transitionDelay: phase === 0 ? `${i * 30}ms` : `${i * 28}ms`,
-            opacity: phase === 1 ? 0 : 1,
-          }}
-        >
-          {ch}
-        </span>
-      ))}
+      <Chars
+        text={text}
+        render={(ch, i) => (
+          <span
+            className="inline-block transition-opacity duration-200"
+            style={{
+              transitionDelay: phase === 0 ? `${i * 30}ms` : `${i * 28}ms`,
+              opacity: phase === 1 ? 0 : 1,
+            }}
+          >
+            {ch}
+          </span>
+        )}
+      />
     </Trigger>
   );
 }
