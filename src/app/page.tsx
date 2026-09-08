@@ -8,13 +8,12 @@ import { Skills } from '@/components/sections/Skills';
 import { Certifications } from '@/components/sections/Certifications';
 import { Projects } from '@/components/sections/Projects';
 import { Personality } from '@/components/sections/Personality';
-import { ControlCenter } from '@/components/sections/ControlCenter';
 import { Contact } from '@/components/sections/Contact';
 
 /**
  * Long-scroll narrative, in order (see AGENTS.md section 5):
  * Identity, About, Experience, Toolkit (Skills plus Certifications),
- * Projects, Pieces of Me, Control Center, Contact + Footer.
+ * Projects, Pieces of Me, Contact + Footer.
  */
 export default function Home() {
   return (
@@ -30,7 +29,6 @@ export default function Home() {
         <Certifications />
         <Projects />
         <Personality />
-        <ControlCenter />
         <Contact />
       </main>
     </>
