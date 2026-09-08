@@ -46,12 +46,12 @@ export function Experience() {
         </motion.p>
 
         <WordReveal
-          className="mt-8 max-w-[26ch] text-lede font-medium tracking-tight"
+          className="mt-8 max-w-[30ch] text-lede font-medium tracking-tight"
           segments={[
             {
-              text: 'From esports group chats to GMP-regulated infrastructure: ',
+              text: "I've worked across software, security, communities, and early-stage teams. ",
             },
-            { text: 'build the thing, gather the people.', em: true },
+            { text: 'take ownership, learn fast, and make the work count.', em: true },
           ]}
         />
 
@@ -145,9 +145,26 @@ function OrgBlock({
       </span>
 
       <div className={left ? 'lg:col-start-1 lg:pr-14 lg:text-right' : 'lg:col-start-3 lg:pl-14'}>
-        <h3 className="text-xl font-semibold tracking-tight text-ink sm:text-2xl">{entry.org}</h3>
-        {entry.location && (
-          <p className="mt-1 text-micro uppercase tracking-[0.16em] text-muted">{entry.location}</p>
+        {entry.url ? (
+          <a
+            href={entry.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group/org inline-flex items-baseline gap-2"
+            aria-label={`${entry.org} (opens in a new tab)`}
+          >
+            <h3 className="text-xl font-semibold tracking-tight text-ink transition-colors duration-300 group-hover/org:text-accent sm:text-2xl">
+              {entry.org}
+            </h3>
+            <span
+              aria-hidden="true"
+              className="text-base text-muted transition-all duration-500 ease-expo group-hover/org:-translate-y-px group-hover/org:translate-x-px group-hover/org:text-accent"
+            >
+              ↗
+            </span>
+          </a>
+        ) : (
+          <h3 className="text-xl font-semibold tracking-tight text-ink sm:text-2xl">{entry.org}</h3>
         )}
 
         {/* Roles read as a progression: hairline dividers order the steps,
@@ -162,26 +179,17 @@ function OrgBlock({
                   }`}
                 >
                   <p className="text-sm font-semibold text-ink">{role.role}</p>
-                  {role.period && (
-                    <p className="text-micro uppercase tabular-nums tracking-[0.14em] text-accent">
-                      {role.period}
-                    </p>
-                  )}
+                  <p className="text-micro uppercase tabular-nums tracking-[0.14em] text-accent">
+                    {role.period}
+                  </p>
                 </div>
-                {role.summary && (
-                  <p
-                    className={`group-hover/role:text-ink/80 mt-1 max-w-[54ch] text-sm leading-relaxed text-muted transition-colors duration-500 ${
-                      left ? 'lg:ml-auto' : ''
-                    }`}
-                  >
-                    {role.summary}
-                  </p>
-                )}
-                {!role.period && !role.summary && (
-                  <p className="text-muted/60 mt-1 text-micro uppercase tracking-[0.14em]">
-                    Details coming soon
-                  </p>
-                )}
+                <p
+                  className={`group-hover/role:text-ink/80 mt-1 max-w-[54ch] text-sm leading-relaxed text-muted transition-colors duration-500 ${
+                    left ? 'lg:ml-auto' : ''
+                  }`}
+                >
+                  {role.body}
+                </p>
               </>
             );
             return reduce ? (
