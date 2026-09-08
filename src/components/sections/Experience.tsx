@@ -217,9 +217,7 @@ function OrgBlock({
             );
             return reduce ? (
               <li key={role.role} className="group/role py-4 first:pt-0 last:pb-0">
-                {ri > 0 && (
-                  <div aria-hidden="true" className="mb-4 h-px bg-ink opacity-15" />
-                )}
+                {ri > 0 && <div aria-hidden="true" className="mb-4 h-px bg-ink opacity-15" />}
                 {body}
               </li>
             ) : (
@@ -231,9 +229,7 @@ function OrgBlock({
                 transition={{ duration: 0.7, delay: ri * 0.09, ease }}
                 className="group/role py-4 first:pt-0 last:pb-0"
               >
-                {ri > 0 && (
-                  <div aria-hidden="true" className="mb-4 h-px bg-ink opacity-15" />
-                )}
+                {ri > 0 && <div aria-hidden="true" className="mb-4 h-px bg-ink opacity-15" />}
                 {body}
               </motion.li>
             );

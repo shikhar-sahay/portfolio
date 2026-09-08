@@ -67,11 +67,7 @@ function AttackEgg({ text, reduce }: { text: string; reduce: boolean }) {
         <span
           key={i}
           className="inline-block transition-transform duration-150 ease-out will-change-transform"
-          style={
-            hit
-              ? { transform: `translate(${jit(i, 5)}px, ${jit(i + 7, 5)}px)` }
-              : undefined
-          }
+          style={hit ? { transform: `translate(${jit(i, 5)}px, ${jit(i + 7, 5)}px)` } : undefined}
         >
           {ch}
         </span>
@@ -160,7 +156,7 @@ function CrowdEgg({ text, reduce }: { text: string; reduce: boolean }) {
               style={{
                 width: 3 + (i % 2),
                 height: 3 + (i % 2),
-                left: `${(i * 71) % 108 - 4}%`,
+                left: `${((i * 71) % 108) - 4}%`,
                 top: `${-46 + ((i * 37) % 150)}%`,
                 animationDelay: `${i * 45}ms`,
               }}
@@ -187,10 +183,16 @@ function PublishEgg({ text, reduce }: { text: string; reduce: boolean }) {
       <span className="relative inline-block">
         {text}
         {stage === 1 && (
-          <span aria-hidden="true" className="egg-caret ml-1 inline-block h-[1em] w-[2px] bg-accent" />
+          <span
+            aria-hidden="true"
+            className="egg-caret ml-1 inline-block h-[1em] w-[2px] bg-accent"
+          />
         )}
         {stage === 2 && (
-          <span aria-hidden="true" className="anim-fade-in ml-1.5 inline-block text-[0.85em] text-accent">
+          <span
+            aria-hidden="true"
+            className="anim-fade-in ml-1.5 inline-block text-[0.85em] text-accent"
+          >
             ✓
           </span>
         )}

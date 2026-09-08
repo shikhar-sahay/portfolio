@@ -12,7 +12,7 @@ src/content/
 ├── profile.ts       # Name, location, statement, lede, education, links
 ├── sections.ts      # Section registry: id, name, note (nav order source of truth)
 ├── projects.ts      # Five artifacts with visual treatment keys, metrics, role lines
-├── experience.ts    # Org-grouped roles (role, period, summary)
+├── experience.ts    # Org-grouped prose roles (role, period, body, egg target)
 ├── systems.ts       # Skill groups (name + monogram) + certifications
 ├── personality.ts   # Fragment words + voice captions (tonal, not factual claims)
 ├── techLogos.ts     # Vendored CC0 brand paths for tools
@@ -118,34 +118,33 @@ Current items (5): Papers (utility), HawkEye (signal), HolmesKit (manifest), SSH
 
 ## Experience Content (M4)
 
-### Data Structure (EXPERIMENTAL, updated 2026-08-26)
+### Data Structure (EXPERIMENTAL, updated 2026-09-08)
 
-Experience is grouped by organization; roles nest inside each org entry.
+Experience is grouped by organization: one entry per org, one timeline
+node per org, roles nested inside as progression with full prose bodies.
 
 ```typescript
 // content/experience.ts
 export interface RoleEntry {
   role: string;
-  period?: string; // omitted only when the owner's source supplies no dates
-  summary?: string; // one condensed factual line; detail lives in the resume
+  period: string;
+  body: string; // full prose paragraph, owner-supplied verbatim
+  egg?: EggTarget; // one prose Easter egg per org max ({ kind, target })
 }
 
 export interface OrgEntry {
-  org: string;
-  location?: string;
+  org: string; // display name, exact styling (skilledity stays lowercase)
+  url?: string; // absent only for Team Shade: never invent one
+  artifact: ArtifactKey; // key into the logo artifact system
   roles: RoleEntry[];
 }
 
-// Canonical order (owner-mandated; roles follow the current resume):
-// Cyber Defenders, Recipharm, GDG On Campus (Senior Core),
-// CodeChef-VIT Student Chapter (Senior Core),
-// Skilledity (Team Lead, Intern), Team Shade.
-// GDG and CodeChef list the single senior roles the resume establishes;
-// the earlier Inner/Junior splits and their event lines were removed
-// rather than carry dates the resume contradicts.
+// Canonical order (owner-mandated 2026-09-08):
+// Cyber Defenders, Recipharm, GDG On Campus VIT Vellore,
+// CodeChef-VIT Student Chapter, skilledity, Team Shade.
+// Multi-role orgs (GDG, CodeChef, skilledity) nest both roles with
+// periods and prose; no "Details coming soon" remains anywhere.
 ```
-
-Note: the Skilledity "Social Media Management Intern" entry intentionally has no period or summary until the owner supplies dates and facts. Do not invent them. The timeline renders a muted "Details coming soon" line for it.
 
 ### Entries To Populate
 
