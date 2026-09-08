@@ -26,7 +26,7 @@ export function Skills() {
         </Reveal>
         <Reveal delay={0.08}>
           <h2 className="mt-8 max-w-[26ch] text-lede font-medium tracking-tight text-ink">
-            The inventory behind the work. Tools are either in use or they are not listed.
+            The inventory behind the work. Collected through projects, problems, and curiosity.
           </h2>
         </Reveal>
 

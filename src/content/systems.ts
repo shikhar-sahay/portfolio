@@ -29,7 +29,7 @@ export const skillGroups: SkillGroup[] = [
   },
   {
     id: 'S.02',
-    label: 'Frameworks & Platforms',
+    label: 'Technologies & Tools',
     items: [
       { name: 'React', abbr: 'Re' },
       { name: 'Next.js', abbr: 'Nx' },
@@ -40,17 +40,8 @@ export const skillGroups: SkillGroup[] = [
       { name: 'Linux', abbr: 'Li' },
       { name: 'Docker', abbr: 'Dk' },
       { name: 'AWS', abbr: 'AW' },
-    ],
-  },
-  {
-    id: 'S.03',
-    label: 'Security Tooling',
-    items: [
-      { name: 'Wireshark', abbr: 'Ws' },
       { name: 'Nmap', abbr: 'Nm' },
-      { name: 'CrowdStrike Falcon', abbr: 'CF' },
-      { name: 'Veritas', abbr: 'Vt' },
-      { name: 'Beelzebub', abbr: 'Bz' },
+      { name: 'Wireshark', abbr: 'Ws' },
     ],
   },
 ];
