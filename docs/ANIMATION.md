@@ -147,9 +147,9 @@ The name as a slow infinite marquee (two identical groups, -50% loop, pauses on 
 - Opening the thread slip or composer moves focus inside it (no scroll), so Escape and Tab continue from the wall.
 - Virtualized: only notes near the viewport render (capped at 150); visibility recomputes on pan end and data change, never per frame.
 
-### Control center micro-motion
+### Footer clock (`FooterClock.tsx`; the Control Center panel is deleted, see DECISIONS.md #44)
 
-- Modules warm to surface on hover; module diamonds rotate; channel tiles lift for real links; navigation arrows nudge on hover. IST clock and session uptime tick once per second (the only per-second React state on the page).
+- A small living detail below the Email action: minute-precision Bangalore IST, no motion of its own. Refreshes every 20 seconds (prompt minute rollover, no per-second React state). Hydration-safe placeholder on first paint.
 
 ### Theme crossfade
 
@@ -172,7 +172,7 @@ The name as a slow infinite marquee (two identical groups, -50% loop, pauses on 
 - Statements: static stacked block (no pin, no overlap pull-up).
 - Carousel: native scroll row, instant arrows.
 - Footer: static fitted wordmark, no marquee.
-- Pieces of Me, control panel, timeline: instant state changes, ticking clocks render (time itself is not motion).
+- Pieces of Me, footer clock, timeline: instant state changes, the clock renders (time itself is not motion).
 - Global CSS collapses all animation/transition durations; `useMountedReducedMotion` gates every client branch post-mount so SSR and hydration markup match.
 - Verified via `reducedMotion: 'reduce'` emulation: no hydration errors, complete static page.
 
@@ -265,7 +265,7 @@ The name as a slow infinite marquee (two identical groups, -50% loop, pauses on 
 
 ### Exceptions
 
-- **Ticking clocks** (IST, session uptime) keep ticking: time display is information, not motion.
+- **Ticking clock** (footer Bangalore IST) keeps ticking: time display is information, not motion.
 - **Instant state changes** (fragment swap, theme switch, carousel arrows) stay functional with zero animation.
 
 ---

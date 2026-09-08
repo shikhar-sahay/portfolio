@@ -16,7 +16,7 @@
 
 | Metric                              | Target         | Measured (2026-09-07, `next build`)                                                                                           |
 | ----------------------------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| **Initial JS (First Load)**         | < 150KB        | ~160 kB (10 kB over; see reclaim below)                                                                                       |
+| **Initial JS (First Load)**         | < 150KB        | ~163 kB (13 kB over; see reclaim below)                                                                                       |
 | **LCP (Largest Contentful Paint)**  | < 2.5s         | Not measured (no Lighthouse run yet)                                                                                          |
 | **CLS (Cumulative Layout Shift)**   | < 0.1          | Not measured                                                                                                                  |
 | **INP (Interaction to Next Paint)** | < 200ms        | Not measured                                                                                                                  |
@@ -119,7 +119,7 @@
 
 - [ ] Lighthouse audit (target 90+ performance, 95+ accessibility)
 - [ ] Core Web Vitals measurement (LCP, CLS, INP)
-- [ ] Bundle size back under 150 kB initial JS (currently ~160 kB)
+- [ ] Bundle size back under 150 kB initial JS (currently ~163 kB)
 - [ ] Vercel deployment + custom domain + production measurement
 - [ ] Real-device checks (iOS Safari, Chrome Android)
 - [ ] Cross-browser checks (Firefox, Safari, Edge; only Chromium verified so far)
@@ -157,6 +157,11 @@ There is no `.github/` directory and no Lighthouse CI, bundle gate, or deploy pi
 - `ANIMATION.md` has complementary animation-specific performance rules.
 
 ---
+
+## v5.1 Status (2026-09-09)
+
+- First Load JS: ~163 kB against the 150 kB budget (was ~165 kB). The Control Center deletion removes the framed panel, its modules, and both per-second timers; the only addition is the tiny footer clock island (one 20s interval, no animation loop).
+- Reclamation options (unchanged): cheapen the InteractiveLetters tint, trim carousel hint state, or move Counter out of the lazy chunk. Track in HANDOFF known issues.
 
 ## v4.5 Status (2026-09-05)
 

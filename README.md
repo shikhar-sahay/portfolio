@@ -21,8 +21,7 @@ A directed long-scroll experience that feels personal, cinematic, and technicall
 6. **Toolkit:** one navigational destination with the Skills emblems (three drifting marquee rows of golden emblems with real monochrome technology marks: 19 of 23, ink monograms where no genuine mark exists, no proficiency levels) plus the Certifications ledger chapter (eyebrow, serif lede, hairline rows, featured first credential, boxed Verify links), rows arriving with a scroll mask wipe.
 7. **Projects:** infinite drifting carousel (auto until first touch, then manual forever), drag/swipe/arrows/keyboard, five artifact cards with SVG preview motifs and inert placeholder links.
 8. **Pieces of Me:** theme-following chapter with a fragment word-swap instrument (buttons, keyboard accessible), a mosaic statement, plus a full-bleed notes wall (tilted tactile cards, docked instrument with Latest flight, placement preview, serif composer, thread slip with one-level replies, keyboard parity, calm reduced motion). Captions are voice lines, not factual claims.
-9. **Control center:** framed utility grid (Now, IST clock, Studying, Toolbox, Channels, Navigate) with live status, session uptime, and brand channel tiles.
-10. **Footer:** compact contact grid (six icon plus name social rows with real brand marks pairing six arrow-marked page links), slim resume row (Drive view plus local download), and a closing SHIKHAR SAHAY marquee that leans as one object with a cursor-following vermilion sheen (zero cost at idle).
+9. **Footer:** compact contact grid (six icon plus name social rows with real brand marks pairing six arrow-marked page links), small live Bangalore IST clock below Email, slim resume row (Drive view plus local download), and a closing SHIKHAR SAHAY marquee that leans as one object with a cursor-following vermilion sheen (zero cost at idle).
 
 ## Interaction highlights
 
@@ -60,7 +59,7 @@ src/
 │   ├── sections/           # Hero, TransitionStatements, About, Experience, Skills (Toolkit),
 │   │                       #   Certifications (ledger chapter inside Toolkit), Projects,
 │   │                       #   ProjectPanel (lazy chunk), Personality (Pieces of Me),
-│   │                       #   NotesWall (open surface), ControlCenter,
+│   │                       #   NotesWall (open surface), FooterClock (tiny IST island),
 │   │                       #   Contact (footer), FooterWordmark
 │   └── ui/                 # InteractiveLetters, TechLogo, Reveal, WordReveal,
 │                           #   Counter, InView, CopyText

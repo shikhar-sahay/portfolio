@@ -89,8 +89,7 @@ OPENING (signal-line loader)
   → CERTIFICATIONS (credential ledger)
   → PROJECTS (drifting carousel)
   → PERSONALITY (fragment instrument, mosaic, full-bleed wall, fixed panel)
-  → CONTROL CENTER (utility grid)
-  → CONTACT + FOOTER (contact grid, resume row, marquee wordmark)
+  → CONTACT + FOOTER (contact grid, small live Bangalore IST clock, resume row, marquee wordmark)
 ```
 
 **Constraints on flow:**

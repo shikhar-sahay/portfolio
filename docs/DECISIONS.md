@@ -838,3 +838,44 @@ Do not make significant design/architecture decisions without documenting them h
 **Alternatives Considered:** Independent glow layers per artifact (rejected: shine ban); splitting the GDG raster (rejected again: fidelity); trimming section padding for extra tightness (rejected: target already met, crash risk); removing all section borders site-wide at once (rejected: out-of-scope sections keep theirs until their passes); a shared section wrapper component (rejected: three one-line deletions beat new abstraction).
 
 **Impact:** First Load JS 165 kB unchanged (page chunk 77.9 kB). No new dependencies. PNG bytes untouched.
+
+---
+
+### 44. Control Center Removal, Footer Clock Salvage (EXPERIMENTAL polish)
+
+**Decision:** The Control Center section is deleted outright, not redesigned or redistributed.
+
+1. `ControlCenter.tsx` deleted (320 lines: framed instrument, six modules, channel tiles, IST seconds clock, session uptime). `page.tsx` no longer imports or renders it. No empty wrapper, no orphan `#control` id, no dead imports, timers, icons, or CSS left behind. Registry, nav links, and footer Pages needed no change (Control Center never had a nav entry).
+2. Only the live time survives, as a new `FooterClock.tsx` client island placed below the Email action in the footer left column. Two lines, no box, no card, no border: `22:11 IST` (text-sm semibold ink, tabular numerals) over `BANGALORE` (micro uppercase muted). Minute precision, 24-hour, Asia/Kolkata. Hydration-safe placeholder (`--:-- IST`) renders on server and first paint, live time swaps in after mount. Refreshes every 20 seconds (prompt minute rollover, no per-second busyness). Time changing is content, so reduced motion keeps it.
+3. Nothing else moves. Toolbox lists, role summaries, study card, extra navigation panel, and redundant social buttons are intentionally deleted. The footer keeps both resume actions and `Everything, condensed.` untouched as the canonical resume location.
+4. Footer bottom location metadata changes from Vellore to Bangalore (`profile.location`, used only there): Bangalore is home, Vellore remains the study location in About. The clock and the credit line now agree.
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-09-09
+
+**Rationale:** The panel was well made but redundant: About, Experience, Toolkit, navigation, and the footer already communicate everything inside it more effectively. Redistribution would have preserved the redundancy in pieces. The clock earns its place as a small living detail at the true ending, not a dashboard.
+
+**Alternatives Considered:** Shrinking the panel to a slim strip (rejected: still a redundant beat before the footer); moving toolbox or role summaries into About or Toolkit (rejected: that content already lives there in stronger form); seconds precision on the footer clock (rejected: constantly busy, dashboard voice); labeling the clock Vellore (rejected: Bangalore is home, and the footer must agree with itself).
+
+**Impact:** First Load JS 165 kB to 163 kB (page chunk 75.4 kB). The per-second Control Center timers are gone from the bundle; the only new client code is the tiny footer clock island. No new dependencies.
+
+---
+
+### 45. Section Boundary Retirement Complete (EXPERIMENTAL polish)
+
+**Decision:** The remaining full-width major-section dividers are removed: Projects `border-t`, Pieces of Me `border-t`, Contact footer top `border-t`. The system rule now holds site-wide: major page sections separate through negative space plus the vermilion eyebrow plus typography, never full-width horizontal rules.
+
+1. Boundary audit outcome: Hero/Statements (no boundary, handoff hairline kept), About (none, meta rules kept), Experience (none, removed in #43), Toolkit/Skills (none, removed in #43), Certifications (none, removed in #43), Projects (removed now), Pieces of Me (removed now, full-strength `border-ink` line), Control Center (deleted with the section), Contact/Footer (top rule removed now).
+2. Intentionally retained: short vermilion eyebrow ticks, Experience role hairlines, Toolkit category rules, certification row separators, About meta rules, project card borders, button outlines, footer internal resume-strip and credit-strip rules, note-wall UI lines. The footer internal rules structure footer content; they do not separate page sections.
+3. No spacing surgery. Pieces of Me (`py-[18vh]`) into Contact (`pt-[14vh]`) measures contiguous with the established 28 to 32vh chapter rhythm; Certifications to Projects and Projects to Pieces already sit in the same band, so divider removal needed no padding compensation. About to Experience and Experience to Toolkit untouched.
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-09-09
+
+**Rationale:** The dividers read as stacked-slide edges; without them the page reads as one continuous editorial object. Internal hairlines carry local hierarchy, so they stay: the rule distinguishes page separation from component structure.
+
+**Alternatives Considered:** Compressing the Certifications to Projects breath once the divider left (rejected: the whitespace is an intentional chapter breath, consistent with every other transition); a shared section wrapper to enforce the rule (rejected: three one-line deletions, same as #43).
+
+**Impact:** No JS change (pure class removals plus the #44 island). Both themes and reduced motion verified; no horizontal overflow at desktop or mobile widths.

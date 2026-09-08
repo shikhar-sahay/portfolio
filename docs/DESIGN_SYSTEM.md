@@ -88,7 +88,7 @@ Warm print-inspired identity: cream paper, warm ink, vermilion accent. Dark is a
 ### Direction (EXPERIMENTAL)
 
 - Tailwind default 4px-based scale; no custom spacing tokens
-- Section rhythm: `py-[14vh]` standard (About `pt-[6vh]`, Control Center `py-[16vh]`, footer `pt-[14vh]`); content container `max-w-6xl`
+- Section rhythm: `py-[14vh]` standard (About `pt-[6vh]`, footer `pt-[14vh]`); content container `max-w-6xl`
 - Consistent page gutter: `px-5` mobile, `px-10` from sm up
 - Hero scene `h-[120svh]` with `h-dvh` sticky; statements `h-[200svh]` pulled up `-mt-[100dvh]` so its sticky engages the pixel the hero releases
 - Formal token scale remains UNDECIDED
@@ -100,7 +100,7 @@ Warm print-inspired identity: cream paper, warm ink, vermilion accent. Dark is a
 ### Hairlines (FINALIZED)
 
 - 1px divisions in `border-ink/15` (module grids via `gap-px`, certification rows, footer rules); accent 40px ticks before eyebrow labels; diamond bullets (rotated squares) for timeline markers, module labels, and cert rows.
-- Major section-top boundary rules are retired as a system (EXPERIMENTAL rollout, starting around Experience and Toolkit): sections separate through spacing plus the vermilion eyebrow, not full-width lines. Internal informational hairlines stay. Remaining section-top rules retire with their own section passes.
+- Major section-top boundary rules are retired as a system (FINALIZED, complete site-wide per DECISIONS.md #43 and #45): no section root carries a full-width top divider; sections separate through spacing plus the vermilion eyebrow, not full-width lines. Internal informational hairlines stay.
 
 ### Border Radius (EXPERIMENTAL)
 
@@ -184,7 +184,7 @@ The identity system beyond type and color. Used consistently so sections read as
 - ThemeToggle (quiet text control in the nav)
 - Reveal / WordReveal / Counter / InView primitives (ui)
 - InteractiveLetters (pointer spring field, hero + footer wordmark), TechLogo (monochrome brand marks)
-- Sections: Hero (arch + interactive name + tagline rule + veil exit), TransitionStatements (vertical accumulation with full-word whisper echoes, themed surfaces), About (reading reveal + meta row), Experience (org timeline + spine), Skills as Toolkit (marquee emblem rows under the Toolkit eyebrow), Certifications (ledger chapter inside Toolkit, mask-wipe rows), Projects (drifting carousel) + ProjectPanel (lazy chunk with SVG motifs), Pieces of Me (fragment instrument + mosaic + full-bleed notes wall, theme-following), ControlCenter (framed utility grid), Contact (footer: contact grid + icon-name social rows + resume row + whole-word marquee wordmark), 404 (You BROKE. misregistered composition plus REBUILD settle-and-route, slim chrome)
+- Sections: Hero (arch + interactive name + tagline rule + veil exit), TransitionStatements (vertical accumulation with full-word whisper echoes, themed surfaces), About (reading reveal + meta row), Experience (org timeline + spine), Skills as Toolkit (marquee emblem rows under the Toolkit eyebrow), Certifications (ledger chapter inside Toolkit, mask-wipe rows), Projects (drifting carousel) + ProjectPanel (lazy chunk with SVG motifs), Pieces of Me (fragment instrument + mosaic + full-bleed notes wall, theme-following), Contact (footer: contact grid + icon-name social rows + small live Bangalore IST clock + resume row + whole-word marquee wordmark), 404 (You BROKE. misregistered composition plus REBUILD settle-and-route, slim chrome)
 
 ## Shadows & Elevation (UNDECIDED)
 
@@ -247,6 +247,11 @@ The identity system beyond type and color. Used consistently so sections read as
 This file will evolve as design decisions are finalized. Each section should be updated with `FINALIZED` status once decided, with the actual values documented.
 
 ---
+
+## v5.1 Additions (EXPERIMENTAL, 2026-09-09)
+
+- **Control Center deleted:** the framed utility grid is gone with no remnants; only the live time survives as `FooterClock.tsx`, a two-line minute-precision Bangalore IST detail below the Email action (no box, no card, no border; hydration-safe placeholder; 20s refresh; kept under reduced motion). The footer is the canonical resume location (`Everything, condensed.` plus View resume and Download PDF). Footer bottom metadata reads Bangalore, India.
+- **Section boundary retirement complete:** no section root carries a full-width top divider (Projects, Pieces of Me, and the Contact footer top removed in this pass). Internal hairlines stay, including the footer internal resume-strip and credit-strip rules.
 
 ## v5.0 Additions (EXPERIMENTAL, 2026-09-07)
 

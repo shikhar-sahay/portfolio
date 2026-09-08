@@ -58,8 +58,7 @@ EXPERIENCE           (org-grouped timeline, centered spine, diamond markers)
 TOOLKIT              (Skills golden emblems with real technology marks, plus the Certifications ledger chapter)
 PROJECTS             (infinite drifting carousel, 5 artifact panels)
 PIECES OF ME         (fragment instrument + mosaic + full-bleed wall, theme-following)
-CONTROL CENTER       (framed utility grid: now, IST clock, toolbox, links)
-CONTACT + FOOTER     (resume moment, compact contact grid, whole-word marquee wordmark)
+CONTACT + FOOTER     (resume moment, compact contact grid, small live Bangalore IST clock, whole-word marquee wordmark)
 ```
 
 Experience precedes Toolkit; Toolkit precedes Projects. The section registry in `src/content/sections.ts` drives navigation (About, Experience, Toolkit, Projects, Pieces of Me, Contact; Certifications belongs to Toolkit navigationally and has no entry). Numbers are internal only: the visitor never sees section counters (see section 3). Below md the header links collapse into a disclosure menu rather than shrinking.

@@ -59,7 +59,7 @@ src/
 ├── app/                    # Next.js App Router
 │   ├── layout.tsx         # Root layout: metadata, theme pre-paint script, fonts
 │   ├── page.tsx           # Homepage: section order (Opening, Hero, Statements, About,
-│   │                       #   Experience, Toolkit, Projects, Pieces of Me, ControlCenter, Contact)
+│   │                       #   Experience, Toolkit, Projects, Pieces of Me, Contact)
 │   ├── not-found.tsx      # 404 scene: You BROKE. plus REBUILD (client, CSS transitions only)
 │   ├── globals.css        # Tokens, keyframes, arch/mask/marquee/reduced-motion styles
 │   ├── icon.svg           # Favicon (ink field, vermilion diamond)
@@ -70,7 +70,7 @@ src/
 │   ├── sections/          # Hero, TransitionStatements, About, Experience, Skills (Toolkit),
 │   │                       #   Certifications (ledger chapter), Projects, ProjectPanel (lazy chunk),
 │   │                       #   Personality (Pieces of Me), NotesWall,
-│   │                       #   ControlCenter, Contact, FooterWordmark
+│   │                       #   FooterClock, Contact, FooterWordmark
 │   └── layout/            # Opening, SiteNav, ThemeToggle
 ├── hooks/                 # useMountedReducedMotion (hydration-safe reduced-motion flag)
 └── content/               # Typed data: profile, sections, projects, experience,
@@ -88,14 +88,14 @@ There is no `src/lib/`, `src/types/`, `src/styles/`, `src/components/effects/`, 
 ### Component Categories (FINALIZED)
 
 1. **UI primitives**: `InteractiveLetters` (pointer spring field), `TechLogo` (monochrome brand marks), `Reveal` (in-view rise), `WordReveal` (scroll reading reveal), `Counter` (animated metric), `InView` (`data-inview` gate for SVG motifs)
-2. **Sections**: Hero, TransitionStatements, About, Experience, Skills (Toolkit anchor), Certifications (ledger chapter inside Toolkit), Projects (+ lazy `ProjectPanel`), Personality (Pieces of Me), ControlCenter, Contact (footer). Each owns its scroll choreography; no shared timeline.
+2. **Sections**: Hero, TransitionStatements, About, Experience, Skills (Toolkit anchor), Certifications (ledger chapter inside Toolkit), Projects (+ lazy `ProjectPanel`), Personality (Pieces of Me), Contact (footer with the `FooterClock` island). Each owns its scroll choreography; no shared timeline.
 3. **Layout**: Opening (session loader), SiteNav (progress hairline, tuck/reveal, active section, theme toggle, mobile disclosure menu), ThemeToggle
 4. **Not found**: `not-found.tsx` (genuine 404 route; misregistered BROKE. composition, REBUILD settles letters then routes home; reuses ThemeToggle)
 5. **Hooks**: `useMountedReducedMotion`: the single hydration-safe reduced-motion flag every client component gates on
 
 ### Component Principles (FINALIZED)
 
-- **Server Components by default**: only `"use client"` when needed (current clients: Opening, SiteNav, ThemeToggle, Hero, About, TransitionStatements, Experience, ExperienceEggs (prose Easter eggs), Projects, ProjectPanel, Personality, NotesWall, ControlCenter, FooterWordmark, Certifications (scroll mask choreography), plus the interactive primitives InteractiveLetters, Reveal, WordReveal, Counter, InView, CopyText. Server: Skills, Contact, TechLogo)
+- **Server Components by default**: only `"use client"` when needed (current clients: Opening, SiteNav, ThemeToggle, Hero, About, TransitionStatements, Experience, ExperienceEggs (prose Easter eggs), Projects, ProjectPanel, Personality, NotesWall, FooterClock, FooterWordmark, Certifications (scroll mask choreography), plus the interactive primitives InteractiveLetters, Reveal, WordReveal, Counter, InView, CopyText. Server: Skills, Contact, TechLogo)
 - **Composition over configuration**: slots/children over props explosion
 - **Design tokens via Tailwind**: CSS variables as color source of truth
 - **Lazy-load heavy components**: `ProjectPanel` via `next/dynamic` with `ssr: false` (the only lazy chunk)

@@ -153,7 +153,7 @@ export interface OrgEntry {
 
 ### Entries To Populate
 
-Education is covered (degree, school, period in `profile.education`, rendered in About meta and the control panel). Research and publications do not exist. Leadership and community work lives inside the Experience timeline and Pieces of Me fragments, not as separate entries.
+Education is covered (degree, school, period in `profile.education`, rendered in About meta). Research and publications do not exist. Leadership and community work lives inside the Experience timeline and Pieces of Me fragments, not as separate entries.
 
 ### Content Guidelines (FINALIZED)
 
@@ -207,7 +207,7 @@ Presentation (not content, lives in `NotesWall.tsx`): deterministic tilt and res
 
 ## Contact Content
 
-Actual model: `profile.links` (mailto email, GitHub, LinkedIn, Drive resume, local resume file), `profile.socials` (GitHub, LinkedIn, Instagram, Medium, X, Spotify with hrefs; handles are stored but the footer Elsewhere column renders icon plus name only), `profile.discord` (username, copy action), plus `navLinks` in `sections.ts` (About, Experience, Toolkit, Projects, Pieces of Me, Contact anchors). Placeholders that remain (project URLs) render inert with "coming soon" labels. There is no contact form, no form endpoint, and no phone number on the site.
+Actual model: `profile.links` (mailto email, GitHub, LinkedIn, Drive resume, local resume file), `profile.location` (Bangalore, India: home; rendered in the footer credit line and echoed by the footer clock), `profile.socials` (GitHub, LinkedIn, Instagram, Medium, X, Spotify with hrefs; handles are stored but the footer Elsewhere column renders icon plus name only), `profile.discord` (username, copy action), plus `navLinks` in `sections.ts` (About, Experience, Toolkit, Projects, Pieces of Me, Contact anchors). Placeholders that remain (project URLs) render inert with "coming soon" labels. There is no contact form, no form endpoint, and no phone number on the site.
 
 ---
 
