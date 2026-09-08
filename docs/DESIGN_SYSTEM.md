@@ -99,7 +99,8 @@ Warm print-inspired identity: cream paper, warm ink, vermilion accent. Dark is a
 
 ### Hairlines (FINALIZED)
 
-- 1px divisions in `border-ink/15` (section tops, module grids via `gap-px`, certification rows, footer rules); accent 40px ticks before eyebrow labels; diamond bullets (rotated squares) for timeline markers, module labels, and cert rows.
+- 1px divisions in `border-ink/15` (module grids via `gap-px`, certification rows, footer rules); accent 40px ticks before eyebrow labels; diamond bullets (rotated squares) for timeline markers, module labels, and cert rows.
+- Major section-top boundary rules are retired as a system (EXPERIMENTAL rollout, starting around Experience and Toolkit): sections separate through spacing plus the vermilion eyebrow, not full-width lines. Internal informational hairlines stay. Remaining section-top rules retire with their own section passes.
 
 ### Border Radius (EXPERIMENTAL)
 

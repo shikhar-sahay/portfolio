@@ -816,3 +816,25 @@ Do not make significant design/architecture decisions without documenting them h
 **Alternatives Considered:** Sentence-specific wrapping hacks (rejected: banned, and unneeded); splitting the GDG raster for literal separation (rejected: fidelity risk); per-artifact animation systems (rejected: one spec map); removing the artifact entrance (rejected: it matches every section reveal); shortening the bridge or About padding (rejected: would rush approved pacing); tightening Hero to BUILD (rejected: continuous motion already, no blank frame).
 
 **Impact:** First Load JS ~165 kB (unchanged by this pass; page chunk 77.9 to 78.2 kB). No new dependencies. Org-link focus handlers are the only new client state (one boolean per block).
+
+---
+
+### 43. Experience Final Cleanup: Physical Artifacts, Footnote Removal, Boundary Retirement (EXPERIMENTAL polish)
+
+**Decision:** Owner-directed closing pass on Experience before the Toolkit redesign.
+
+1. All traveling highlight overlays deleted from `ExperienceArtifacts.tsx` (SweepSpec, per-org sweep entries, sweep transform, overlay layer); baked PNG lighting carries material response. Physicality deepened through transform composition instead: cyber forward Z pick-up (settle 1.03 plus lift -2), recipharm shallow perspective plus wider drift, gdg stronger radial give (0.07) plus twist, codechef press-into-depth keyframes, skilledity diagonal shear, shade wider coin yaw. Shared foundation, springs, spotlight, and reduced-motion branches unchanged.
+2. Experience resume footnote deleted; the section ends on Team Shade. Resume remains in the footer. No empty wrapper left behind.
+3. Experience to Toolkit gap tightened by footnote removal alone (measured 328px to 235px at 1440, about 28 percent perceived reduction, inside the 25 to 35 band); no padding changes, no negative margins.
+4. Full-width section-top boundary rules removed from Experience, Skills, and Certifications sections (there is no shared wrapper component; each section owned its own `border-t`). Internal hairlines kept: role dividers, skill group rules, cert ledger rows, About meta rules, eyebrow ticks. Remaining sections keep their rules until their own passes. About to Experience and Toolkit to Certifications spacing unchanged (252px and the intended generous break); hierarchy now comes from space plus eyebrows.
+5. Lasting rules recorded: major sections separate through spacing plus the vermilion eyebrow system, never full-width boundary rules; Experience artifacts use physical interaction with a static rest state, never animated shimmer.
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-09-09
+
+**Rationale:** Shimmer fought the baked lighting instead of enhancing it; depth reads better from composed transforms. The footnote diluted the Team Shade ending and its removal alone hit the spacing target, so padding surgery would have been gratuitous. Boundaries read as slide edges; their removal was verified transition by transition (About to Experience, Experience to Toolkit, Toolkit to Certifications) in both themes.
+
+**Alternatives Considered:** Independent glow layers per artifact (rejected: shine ban); splitting the GDG raster (rejected again: fidelity); trimming section padding for extra tightness (rejected: target already met, crash risk); removing all section borders site-wide at once (rejected: out-of-scope sections keep theirs until their passes); a shared section wrapper component (rejected: three one-line deletions beat new abstraction).
+
+**Impact:** First Load JS 165 kB unchanged (page chunk 77.9 kB). No new dependencies. PNG bytes untouched.

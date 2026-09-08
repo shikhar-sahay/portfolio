@@ -403,8 +403,8 @@ Motion values are now concrete (see Implemented Patterns and Token Reference abo
 
 ### Experience artifacts (`ExperienceArtifacts.tsx`)
 
-- Shared foundation, distinct personalities. One normalized pointer position per object, one 900px perspective stage, spring return to identity, still at rest. Per-org specs set tilt range (1.5 to 4 degrees), drift (2 to 4px), settle scale, lift, twist, radial give (GDG only), press dip (skilledity only), traveling warm highlight geometry, and spring voice (heavy 120/20 for the shield, snappy 220/14 for the coin). No loops, no continuous animation; transform and opacity only; mouse-only tracking so touch scrolling stays clean.
-- Keyboard: focusing an org link wakes its artifact with the same gentle engagement (no extra tab stops; figures stay decorative and unfocused). Reduced motion: fully visible static figures, no tilt, no sweeps, no entrance.
+- Shared foundation, distinct physical personalities. One normalized pointer position per object, one 900px perspective stage, spring return to identity, still at rest. Per-org specs set tilt range (1.5 to 5 degrees), drift (2 to 4px), settle scale, lift, twist, radial give (GDG only), press dip (tile and badge), and spring voice (heavy 120/20 for the shield, snappy 220/14 for the coin). Baked PNG lighting carries all material response: no sweep overlays, no traveling highlights, no shine layers anywhere (removed as a system rule). No loops, no continuous animation; transform and opacity only; mouse-only tracking so touch scrolling stays clean.
+- Keyboard: focusing an org link wakes its artifact with the same gentle engagement (no extra tab stops; figures stay decorative and unfocused). Reduced motion: fully visible static figures, no tilt, no press, no entrance.
 - Scroll entrance is shared, once: opacity 0 to 1, 14px rise, 0.98 to 1 scale, 0.8s expo. Personality comes from interaction, never from the entrance.
 
 ### Skills marquee
