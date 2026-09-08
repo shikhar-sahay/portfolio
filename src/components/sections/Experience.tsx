@@ -145,7 +145,7 @@ function OrgBlock({
     <motion.li
       {...reveal}
       transition={{ duration: 0.8, ease }}
-      className="group relative max-lg:pl-10 lg:grid lg:grid-cols-[1fr_5rem_1fr] lg:items-start"
+      className="group relative max-lg:pl-10 lg:grid lg:grid-cols-[1fr_3rem_1fr] lg:items-start"
     >
       {/* Marker: outer span owns the axis position; the middle span plays
           the entrance; the diamond itself handles hover. Splitting the
@@ -166,7 +166,7 @@ function OrgBlock({
         </motion.span>
       </span>
 
-      <div className={left ? 'lg:col-start-1 lg:pr-14 lg:text-right' : 'lg:col-start-3 lg:pl-14'}>
+      <div className={left ? 'lg:col-start-1 lg:pr-4 lg:text-right' : 'lg:col-start-3 lg:pl-4'}>
         {entry.url ? (
           <a
             href={entry.url}
@@ -207,7 +207,7 @@ function OrgBlock({
                   </p>
                 </div>
                 <p
-                  className={`group-hover/role:text-ink/80 mt-1 max-w-[54ch] text-sm leading-relaxed text-muted transition-colors duration-500 ${
+                  className={`group-hover/role:text-ink/80 mt-1 max-w-[58ch] text-pretty text-sm leading-relaxed text-muted transition-colors duration-500 ${
                     left ? 'lg:ml-auto' : ''
                   }`}
                 >
