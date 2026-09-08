@@ -56,7 +56,7 @@ export function Experience() {
             {
               text: "I've worked across software, security, communities, and early-stage teams. ",
             },
-            { text: 'take ownership, learn fast, and make the work count.', em: true },
+            { text: 'different rooms, same instinct: find the problem and get to work.', em: true },
           ]}
         />
 
