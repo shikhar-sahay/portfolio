@@ -38,7 +38,7 @@ export function Experience() {
     <section
       id="experience"
       aria-label="Experience"
-      className="theme-fade border-ink/10 border-t bg-paper px-5 py-[14vh] sm:px-10"
+      className="theme-fade bg-paper px-5 py-[14vh] sm:px-10"
     >
       <div className="mx-auto max-w-6xl">
         <motion.p
@@ -88,21 +88,6 @@ export function Experience() {
             ))}
           </ol>
         </div>
-
-        <motion.p
-          {...reveal}
-          transition={{ duration: 0.9, ease }}
-          className="mt-[8vh] max-w-[52ch] text-sm leading-relaxed text-muted"
-        >
-          Full details for every role live in the{' '}
-          <a
-            href="/resume.pdf"
-            className="text-ink underline decoration-accent underline-offset-4 transition-colors hover:text-accent"
-          >
-            resume
-          </a>
-          .
-        </motion.p>
       </div>
     </section>
   );
