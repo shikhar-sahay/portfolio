@@ -792,3 +792,27 @@ Do not make significant design/architecture decisions without documenting them h
 **Alternatives Considered:** Shortening the hero scene (rejected: hero pacing is approved, fix belongs on the bridge side); negative margins or overlap hacks (rejected: fragile across viewports); compressing the whole bridge further (rejected: would rush all three phases and harm premium pacing); trimming About bottom padding (rejected: not part of the complaint); attaching the colon to the serif `inevitable` segment (rejected: keeps prior-art segmentation where the colon stays sans).
 
 **Impact:** First Load JS ~160 kB (unchanged). No new dependencies. No new client components.
+
+---
+
+### 42. Experience Polish: Copy, Artifact Personalities, Bridge Breath, Device Rule (EXPERIMENTAL polish)
+
+**Decision:** Owner-directed Experience pass plus one scroll-spacing fix and one standing rule.
+
+1. Experience intro continuation replaced with the owner-supplied "different rooms, same instinct: find the problem and get to work." (serif italic, same WordReveal thought, no layout redesign; judged at desktop widths).
+2. GDG Senior final sentence now reads the cumulative "brought my sponsorship total to ₹3.3L+ along the way." (₹3.3L+ is the GDG total, not an additional raise). The `₹3.3L+` egg target is untouched, so the rupees interaction keeps working. Wrap rechecked at 1440/1366/1280: Senior stays 4 lines with a 428px final line; every other paragraph unchanged; no measure adjustment needed.
+3. Multi-role artifact alignment verified, not changed: settled centering offset measures 0px on all blocks (an early scare was un-triggered entrance transforms, not layout bias). The `self-stretch` plus `items-center` cell construction already centers each artifact against its whole organization block.
+4. GDG artifact enlarged moderately (220px to 250px box, mobile 150px to 165px) for optical balance; neighbors re-judged, no other size touched.
+5. Artifact interactions rebuilt as six personalities on one shared foundation (normalized pointer, one perspective stage, spring return, rest at identity; mouse-only tracking): cyber heavy tilt with narrow bevel sheen; recipharm shallow tilt with lettering sweep (quietest moving part); gdg lateral shift with radial give plus twist (no asset split); codechef badge lift with edge sweep; skilledity press dip with lean; shade coin yaw with traveling specular plus snappy spring. Keyboard spotlight wakes the artifact from org-link focus (no new tab stops); reduced motion stays fully static; one shared scroll entrance kept (personality lives in interaction, not entrance).
+6. REBUILD to About root cause: the finale resolved high while About entered low, so the frame always held an empty middle and the eyebrow arrived after the finale had left. Fix: finale resolves at -40vh instead of -44vh, and the About reveal margin returns to -12 percent (reverting half of #41, which had overshot). The eyebrow now lands while REBUILD is still readable, sharing the frame with no overlap; breath is short and deliberate. Hero to BUILD measured (veil-full to readable ~14svh with continuous overlapping motion) and left alone.
+7. Standing device vetting rule recorded in HANDOFF: every section in the website-wide pass is vetted at large desktop, laptop, narrower desktop, tablet, and phone with input-appropriate interactions (this pass: 1440/1366/1280/1024/820/390/360, dark plus light, reduced motion, touch scroll, keyboard spotlight).
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-09-09
+
+**Rationale:** Copy carries owner-mandated meaning (cumulative total, rooms/instinct voice). Alignment needed measurement, not adjustment. Size and interaction judgments were made against the live page, one artifact at a time, keeping text primary. The spacing fix addresses frame composition (empty middle) rather than scroll duration, which is why a margin value plus a resolve height beat further padding or hold tweaks. The Hero opening stays untouched for a marginal gain.
+
+**Alternatives Considered:** Sentence-specific wrapping hacks (rejected: banned, and unneeded); splitting the GDG raster for literal separation (rejected: fidelity risk); per-artifact animation systems (rejected: one spec map); removing the artifact entrance (rejected: it matches every section reveal); shortening the bridge or About padding (rejected: would rush approved pacing); tightening Hero to BUILD (rejected: continuous motion already, no blank frame).
+
+**Impact:** First Load JS ~165 kB (unchanged by this pass; page chunk 77.9 to 78.2 kB). No new dependencies. Org-link focus handlers are the only new client state (one boolean per block).

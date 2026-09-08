@@ -401,6 +401,12 @@ Motion values are now concrete (see Implemented Patterns and Token Reference abo
 
 - Accent line scaleY bound to section scroll progress via useSpring (stiffness 70, damping 22), origin top. Diamond markers scale in once per org block (whileInView).
 
+### Experience artifacts (`ExperienceArtifacts.tsx`)
+
+- Shared foundation, distinct personalities. One normalized pointer position per object, one 900px perspective stage, spring return to identity, still at rest. Per-org specs set tilt range (1.5 to 4 degrees), drift (2 to 4px), settle scale, lift, twist, radial give (GDG only), press dip (skilledity only), traveling warm highlight geometry, and spring voice (heavy 120/20 for the shield, snappy 220/14 for the coin). No loops, no continuous animation; transform and opacity only; mouse-only tracking so touch scrolling stays clean.
+- Keyboard: focusing an org link wakes its artifact with the same gentle engagement (no extra tab stops; figures stay decorative and unfocused). Reduced motion: fully visible static figures, no tilt, no sweeps, no entrance.
+- Scroll entrance is shared, once: opacity 0 to 1, 14px rise, 0.98 to 1 scale, 0.8s expo. Personality comes from interaction, never from the entrance.
+
 ### Skills marquee
 
 - CSS translate3d keyframe loop, width: max-content, two identical halves, uniform item slots (margins, not gap) so -50% is seamless. 20 to 50s per row, alternate rows reversed, animation-play-state: paused on hover, none under reduced motion, edge fade via mask-image.

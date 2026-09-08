@@ -144,6 +144,11 @@ export interface OrgEntry {
 // CodeChef-VIT Student Chapter, skilledity, Team Shade.
 // Multi-role orgs (GDG, CodeChef, skilledity) nest both roles with
 // periods and prose; no "Details coming soon" remains anywhere.
+// Owner-mandated 2026-09-09: GDG Senior final sentence reads the
+// cumulative "brought my sponsorship total to ₹3.3L+ along the way"
+// (₹3.3L+ is the GDG total, not an additional raise); the Experience
+// intro continuation reads "different rooms, same instinct: find the
+// problem and get to work." (rendered inline in Experience.tsx).
 ```
 
 ### Entries To Populate
