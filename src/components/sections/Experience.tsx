@@ -1,6 +1,6 @@
 'use client';
 
-import { Fragment, useRef } from 'react';
+import { Fragment, useRef, useState } from 'react';
 import { motion, useScroll, useSpring } from 'motion/react';
 import { useMountedReducedMotion } from '@/hooks/useMountedReducedMotion';
 import { WordReveal } from '@/components/ui/WordReveal';
@@ -142,6 +142,10 @@ function OrgBlock({
   reduce: boolean;
 }) {
   const left = index % 2 === 0;
+  // Keyboard spotlight: focusing the org link wakes its artifact with
+  // the same gentle engagement pointer users get (no extra tab stops;
+  // the figure itself stays decorative and unfocusable).
+  const [linkHot, setLinkHot] = useState(false);
   return (
     <motion.li
       {...reveal}
@@ -179,6 +183,8 @@ function OrgBlock({
             href={entry.url}
             target="_blank"
             rel="noopener noreferrer"
+            onFocus={() => setLinkHot(true)}
+            onBlur={() => setLinkHot(false)}
             className="group/org inline-flex items-baseline gap-2"
             aria-label={`${entry.org} (opens in a new tab)`}
           >
@@ -245,7 +251,7 @@ function OrgBlock({
       </div>
 
       {/* Identity object in the negative space opposite the text. */}
-      <OrgArtifact artifact={entry.artifact} left={left} reduce={reduce} />
+      <OrgArtifact artifact={entry.artifact} left={left} reduce={reduce} spotlight={linkHot} />
     </motion.li>
   );
 }
