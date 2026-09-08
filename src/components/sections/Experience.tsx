@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { Fragment, useRef } from 'react';
 import { motion, useScroll, useSpring } from 'motion/react';
 import { useMountedReducedMotion } from '@/hooks/useMountedReducedMotion';
 import { WordReveal } from '@/components/ui/WordReveal';
@@ -9,10 +9,13 @@ import { orgTimeline, type OrgEntry } from '@/content/experience';
 const ease = [0.19, 1, 0.22, 1] as const;
 
 /**
- * Experience: one visual timeline grouped by organization. A hairline
- * spine fills with accent as the visitor scrolls; org blocks alternate
- * sides on wide screens and stack along the spine on small ones. Every
- * role is a compact block: title, period, one factual line.
+ * Experience: one visual timeline grouped by organization, one node per
+ * org. A hairline spine fills with accent as the visitor scrolls; org
+ * blocks alternate sides on wide screens and stack along the spine on
+ * small ones. The org name (an external link when a URL exists) appears
+ * once; roles inside read as progression (title, period, prose) parted
+ * by an extremely restrained hairline. Multi-role orgs get full height:
+ * nothing is compressed to shorten the timeline.
  */
 export function Experience() {
   const listRef = useRef<HTMLDivElement>(null);
@@ -77,7 +80,7 @@ export function Experience() {
             />
           </div>
 
-          <ol className="space-y-[9vh] lg:space-y-[11vh]">
+          <ol className="space-y-[11vh] lg:space-y-[13vh]">
             {orgTimeline.map((entry, i) => (
               <OrgBlock key={entry.org} entry={entry} index={i} reveal={reveal} reduce={reduce} />
             ))}
@@ -167,9 +170,10 @@ function OrgBlock({
           <h3 className="text-xl font-semibold tracking-tight text-ink sm:text-2xl">{entry.org}</h3>
         )}
 
-        {/* Roles read as a progression: hairline dividers order the steps,
-            each step reveals with its own stagger. */}
-        <ul className="divide-ink/10 mt-4 divide-y">
+        {/* Roles read as a progression: a restrained hairline parts the
+            steps (solid token plus element opacity, never a dead
+            opacity modifier), each step reveals with its own stagger. */}
+        <ul className="mt-5">
           {entry.roles.map((role, ri) => {
             const body = (
               <>
@@ -193,7 +197,10 @@ function OrgBlock({
               </>
             );
             return reduce ? (
-              <li key={role.role} className="group/role py-3 first:pt-0 last:pb-0">
+              <li key={role.role} className="group/role py-4 first:pt-0 last:pb-0">
+                {ri > 0 && (
+                  <div aria-hidden="true" className="mb-4 h-px bg-ink opacity-15" />
+                )}
                 {body}
               </li>
             ) : (
@@ -203,8 +210,11 @@ function OrgBlock({
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-10% 0px' }}
                 transition={{ duration: 0.7, delay: ri * 0.09, ease }}
-                className="group/role py-3 first:pt-0 last:pb-0"
+                className="group/role py-4 first:pt-0 last:pb-0"
               >
+                {ri > 0 && (
+                  <div aria-hidden="true" className="mb-4 h-px bg-ink opacity-15" />
+                )}
                 {body}
               </motion.li>
             );
