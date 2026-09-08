@@ -286,6 +286,70 @@ html.dark .wall-vignette {
   animation: cue-travel 2.2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
 }
 
+/* Experience prose Easter eggs: one-shot micro animations, transform and
+   opacity only. The dotted hint never shifts layout; reduced motion
+   collapses every keyframe duration globally. */
+.egg-hint {
+  text-decoration: underline dotted transparent 1px;
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.3s ease;
+}
+.egg-hint:hover,
+.egg-hint:focus-visible {
+  text-decoration-color: var(--accent);
+}
+@keyframes egg-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-26px);
+  }
+}
+.egg-rupee {
+  animation: egg-rise 0.65s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+  opacity: 0;
+}
+@keyframes egg-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  30% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+}
+.egg-dot {
+  animation: egg-pop 0.9s ease forwards;
+  opacity: 0;
+}
+@keyframes caret-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+.egg-caret {
+  animation: caret-blink 0.35s steps(2, jump-none) 2;
+  vertical-align: -0.12em;
+}
+
 /* Outline display type: second line of the name */
 .type-outline {
   color: transparent;

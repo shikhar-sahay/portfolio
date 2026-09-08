@@ -4,7 +4,8 @@ import { Fragment, useRef } from 'react';
 import { motion, useScroll, useSpring } from 'motion/react';
 import { useMountedReducedMotion } from '@/hooks/useMountedReducedMotion';
 import { WordReveal } from '@/components/ui/WordReveal';
-import { orgTimeline, type OrgEntry } from '@/content/experience';
+import { orgTimeline, type EggTarget, type OrgEntry } from '@/content/experience';
+import { EggPhrase } from '@/components/sections/ExperienceEggs';
 
 const ease = [0.19, 1, 0.22, 1] as const;
 
@@ -106,6 +107,24 @@ export function Experience() {
   );
 }
 
+/**
+ * Role prose with its Easter egg phrase split out. Fail-safe: if the
+ * target ever stops matching, the paragraph renders whole, so copy can
+ * never break and the joined text always equals the source string.
+ */
+function Prose({ body, egg }: { body: string; egg?: EggTarget }) {
+  if (!egg) return <>{body}</>;
+  const i = body.indexOf(egg.target);
+  if (i === -1) return <>{body}</>;
+  return (
+    <>
+      {body.slice(0, i)}
+      <EggPhrase kind={egg.kind} text={egg.target} />
+      {body.slice(i + egg.target.length)}
+    </>
+  );
+}
+
 function OrgBlock({
   entry,
   index,
@@ -192,7 +211,7 @@ function OrgBlock({
                     left ? 'lg:ml-auto' : ''
                   }`}
                 >
-                  {role.body}
+                  <Prose body={role.body} egg={role.egg} />
                 </p>
               </>
             );
