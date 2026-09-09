@@ -327,6 +327,24 @@ html:not(.dark) .lm-nav {
   background-color: color-mix(in srgb, var(--paper) 88%, transparent);
 }
 
+/* Projects short-window rhythm: on desktop/laptop windows with limited
+   vertical space, tighten the section breath so more of each card shares
+   the frame with the heading. Content sizes never change, so artwork,
+   type, and card geometry are identical; taller windows, mobile, and
+   reduced motion never match this query and stay untouched. */
+@media (min-width: 768px) and (max-height: 760px) {
+  #projects {
+    padding-top: 6vh;
+    padding-bottom: 8vh;
+  }
+  #projects .projects-track-region {
+    margin-top: 4vh;
+  }
+  #projects .projects-controls {
+    margin-top: 1.25rem;
+  }
+}
+
 /* Experience prose Easter eggs: one-shot micro animations, transform and
    opacity only. The dotted hint never shifts layout; reduced motion
    collapses every keyframe duration globally. */

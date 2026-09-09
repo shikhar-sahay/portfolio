@@ -83,10 +83,10 @@ export const projects: Project[] = [
   },
   {
     id: 'site',
-    name: 'This Site',
+    name: 'Portfolio Website',
     description:
-      'This site turns a portfolio into something closer to an experience, combining editorial design, physical motion, interactive storytelling, and a slightly unreasonable attention to detail.',
-    stack: ['Next.js', 'TypeScript', 'TailwindCSS', 'Motion'],
+      "This site! Yes, the one you're currently scrolling through. I wanted a portfolio that felt less like a résumé with CSS and more like something worth exploring.",
+    stack: ['Next.js', 'TypeScript', 'TailwindCSS'],
     links: { github: 'https://github.com/shikhar-sahay/portfolio/' },
     currentLocationLabel: "YOU'RE ALREADY HERE.",
     artwork: {

@@ -227,7 +227,7 @@ export function Projects() {
         role="region"
         aria-roledescription="carousel"
         aria-label="Project artifacts"
-        className="mt-[6vh] md:mt-[7vh]"
+        className="projects-track-region mt-[6vh] md:mt-[7vh]"
         tabIndex={0}
         onKeyDown={onKeyDown}
       >
@@ -266,7 +266,7 @@ export function Projects() {
         </div>
 
         {/* Controls */}
-        <div className="mx-auto mt-8 flex max-w-6xl items-center justify-between gap-4">
+        <div className="projects-controls mx-auto mt-8 flex max-w-6xl items-center justify-between gap-4">
           <p className="text-micro uppercase tracking-[0.16em] text-muted">
             IT MOVES ON ITS OWN. DRAG, SWIPE, OR INTERRUPT.
           </p>
