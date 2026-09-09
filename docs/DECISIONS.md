@@ -948,3 +948,27 @@ Do not make significant design/architecture decisions without documenting them h
 **Alternatives Considered:** Beige document frames (rejected: too literal and against the reference intent); modal certificate viewing (rejected: interrupts the page); featured Security+ treatment (rejected: unequal weight); project category labels (rejected: five projects communicate breadth without classification); grayscale-to-color artwork interaction (rejected: the authentic colors are valuable at rest); fake case studies (rejected: only real actions appear).
 
 **Impact:** First Load JS measured at 165 kB after the project artwork and holder pass. No new dependencies. No new animation library. Project SVG motif code was removed from the cards, while static images are optimized through `next/image`.
+
+---
+
+### 49. Projects Link Repair plus Persistent Notes Wall Rebuild (EXPERIMENTAL polish)
+
+**Decision:** The Projects carousel keeps its architecture but restores real anchor activation, and Pieces of Me now ends in a Postgres-backed spatial notes wall.
+
+1. Project links opt out of carousel pointer capture and click suppression through an explicit interactive marker. The carousel still supports card drag and still suppresses accidental link activation after real drags. A centered low-opacity hairline now closes the Projects control row without restoring full-width section dividers.
+2. Pieces of Me is reduced to five provisional fragments: Writing, Music, Football, Rabbit Holes, Communities. The selector rebalances as a five-item instrument, with the selected word and micro-subheading interaction preserved.
+3. Notes persistence moves from in-memory storage to Postgres through `@neondatabase/serverless`. The schema lives in `db/001_wall_notes.sql`, uses one `wall_notes` table with nullable `parent_id` for one-level replies, visible/hidden moderation state, persisted coordinates, seed rows, and indexes for latest, viewport reads, and replies.
+4. Missing `DATABASE_URL` is an explicit setup state: API routes return 503, and the UI shows seed notes with database setup pending. There is no silent memory fallback in production.
+5. The wall presentation is rebuilt as one full-bleed spatial field: manifesto, notes, composer, and controls live in the same world. The field keeps normal page scroll, direct panning, keyboard arrow panning, short camera flights for Latest and Random, a viewport-aware Center action, and instant behavior under reduced motion.
+6. Seed content is neutral `Guest NN` sample material plus one Shikhar owner note. It is not presented as real testimonials from named people.
+7. One-level replies remain implemented because the Postgres model supports them cleanly without deeper nesting or a social-media side panel.
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-09-09
+
+**Rationale:** The link bug was interaction arbitration, not missing URLs. The notes wall needed a real durable store and a visual model that belongs to the page rather than a bounded mini-app. Postgres fits the relational data shape and the planned Vercel deployment, while Neon keeps the route-handler integration small.
+
+**Alternatives Considered:** Disabling carousel drag (rejected: loses the intended interaction); fake click handlers for links (rejected: semantic anchors must remain); localStorage or in-memory persistence (rejected: not durable); Redis/KV primary storage (rejected: relational notes and replies fit Postgres better); wheel zoom (rejected: long-scroll page should preserve normal scrolling); deeply nested replies (rejected: outside the portfolio scale).
+
+**Impact:** First Load JS measured at 166 kB. One server-side dependency was added: `@neondatabase/serverless`. Client wall work remains event-gated, with no wheel hijack, no idle wall animation, and a 150-note render cap.

@@ -145,12 +145,12 @@ The name as a slow infinite marquee (two identical groups, -50% loop, pauses on 
 
 ### Mark wall (SUPERSEDED by the notes wall below; `MarkWall.tsx` deleted)
 
-### Notes wall (`NotesWall.tsx`, opened up v4.9)
+### Notes wall (`NotesWall.tsx`, spatial field v5.4)
 
-- Full-bleed section-width surface (no box, no boundary): dotted field plus vignette only. Pan is direct manipulation: pointer drag writes a clamped canvas transform through rAF (no React state during pan); wheel always scrolls the page, never the wall; touch keeps vertical page scroll (`touch-pan-y`) with horizontal drag panning; arrow keys pan when focused; a docked Latest button flies the camera to the newest global note (650ms expo flight, jump under reduced motion) and opens its thread.
+- Full-bleed viewport-width field (no box, no visible world boundary): dotted field plus vignette only. The mosaic manifesto, notes, composer, and discovery controls share the same spatial surface. Pan is direct manipulation: pointer drag writes a camera transform through rAF (no React state during pan); wheel always scrolls the page, never the wall; touch keeps vertical page scroll (`touch-pan-y`); arrow keys pan when focused.
+- Discovery controls: Latest and Random fly the camera to the matching persisted top-level note and open it; Center returns to the viewport-appropriate initial camera; Leave a note opens the composer. Flights use a short 620ms ease-out camera move and jump immediately under reduced motion.
 - Cards rest tilted (deterministic per id) and straighten plus lift on hover and keyboard focus (500ms expo; instant under reduced motion); placed notes arrive with a short fade-rise settle. Composing shows a cursor-following placement ghost written straight to the DOM (no re-renders). No continuous animation anywhere.
-- Opening the thread slip or composer moves focus inside it (no scroll), so Escape and Tab continue from the wall.
-- Virtualized: only notes near the viewport render (capped at 150); visibility recomputes on pan end and data change, never per frame.
+- Virtualized: only notes near the viewport render (capped at 150); visibility recomputes on pan end and data change, never per frame. API reads can use viewport bounds so the persistent store can scale beyond the initial seed set.
 
 ### Footer clock (`FooterClock.tsx`; the Control Center panel is deleted, see DECISIONS.md #44)
 

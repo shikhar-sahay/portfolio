@@ -117,7 +117,7 @@ The hero should contain:
 - **Styling:** Tailwind CSS 3 + CSS variables
 - **Animation:** Motion v13 (the only animation library)
 - **Advanced animation / smooth scroll / 3D:** none (GSAP, Lenis, Three.js excluded by rule unless a documented reason emerges)
-- **Backend / persistence:** notes wall API (`/api/notes`, validation plus rate limits, in-memory store with a documented KV path); otherwise static (theme in localStorage, intro flag in sessionStorage, wall cache in localStorage)
+- **Backend / persistence:** notes wall API (`/api/notes`, validation plus rate limits, Postgres through `DATABASE_URL`, one-level replies, secret-gated moderation); otherwise static (theme in localStorage, intro flag in sessionStorage)
 - **Deployment:** Vercel (planned, not yet deployed)
 
 ## Performance Requirement

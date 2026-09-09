@@ -258,6 +258,12 @@ This file will evolve as design decisions are finalized. Each section should be 
 - **Certifications holder:** the credential chapter is four equal-weight editorial rows. A closed row is a compact ledger entry. When opened, the same list item becomes one restrained vermilion holder: row header, independent boxed Verify link, quiet `CERTIFICATE` label, fine vermilion rule, and owner-supplied PNG proof. The image is capped at 880px on larger screens and uses the available mobile width; collapsed panels must keep explicit overflow and min-size guards so proof images never affect page width.
 - **Project artifact cards:** Projects use authentic owner-provided previews from `src/assets/projects/` through `next/image`, not abstract generated motifs or fake device frames. Cards keep the editorial hairline frame, fixed image viewport, title-first hierarchy, concise description, stack row, and truthful actions only. The images keep their original color at rest; hover may add only a tiny scale and color-depth lift, suppressed during drag.
 
+## v5.4 Additions (EXPERIMENTAL, 2026-09-09)
+
+- **Projects closing punctuation:** the Projects carousel keeps its existing architecture and gains one centered, low-opacity 1px hairline beneath the instruction and control row. It is local punctuation, not a restored section divider.
+- **Pieces fragments:** Pieces of Me now has five provisional fragments: Writing, Music, Football, Rabbit Holes, Communities. The selector rebalances as a clean five-item instrument, with selected state and keyboard behavior preserved.
+- **Notes wall spatial field:** the wall is a full-bleed editorial field of human traces. The mosaic manifesto sits inside the same coordinate surface as the notes, with dotted field, vignette, restrained cream/ink note treatments, small vermilion pins, and compact Leave a note, Latest, Random, Center controls. Light and dark themes use the same token system rather than a dark-only treatment.
+
 ## v5.0 Additions (EXPERIMENTAL, 2026-09-07)
 
 - **Statements echoes (supersedes the v4.9 residues below):** the complete verb (BUILD, BREAK, REBUILD), oversized and cropped low-right; subtlety via element opacity (`opacity-[0.06]`, `dark:opacity-[0.09]`), never color opacity modifiers (see DECISIONS.md #39).
@@ -272,7 +278,7 @@ This file will evolve as design decisions are finalized. Each section should be 
 - **Certifications chapter:** own section after Skills (eyebrow, serif lede, 20vh break, hairline ledger, featured first row, boxed Verify links); rows arrive with a scroll mask wipe.
 - **Footer wordmark:** whole-word velocity lean plus stretch, tracking breath, narrow vermilion sheen band at the cursor; 0.16em diamond separators with 0.7em air; seamless -50% loop.
 - **Panel scope (retired in v5.0, see above):** `.panel-ink` pinned light token values for the Personality subtree, so the inverted panel never became a light island in dark mode.
-- **Notes wall:** full-bleed section-width surface (no box, no world boundary); mosaic statement plus hint microcopy; cursor-following placement ghost; Recenter replaced by Latest (global lookup, camera flight, thread on arrival).
+- **Notes wall:** full-bleed section-width surface (no box, no world boundary); mosaic statement plus hint microcopy; cursor-following placement ghost; the older center-only control later gave way to Latest and Random discovery plus Center.
 - **Theme toggle:** state-driven 180-degree icon rotation.
 
 ## v4.8 Additions (EXPERIMENTAL, 2026-09-06)

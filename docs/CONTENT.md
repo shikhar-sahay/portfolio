@@ -11,7 +11,7 @@
 src/content/
 ├── profile.ts       # Name, location, statement, lede, education, links
 ├── sections.ts      # Section registry: id, name, note (nav order source of truth)
-├── projects.ts      # Five artifacts with visual treatment keys, metrics, role lines
+├── projects.ts      # Five artifacts with truthful links and artwork metadata
 ├── experience.ts    # Org-grouped prose roles (role, period, body, egg target)
 ├── systems.ts       # Skill groups (name + monogram) + certifications
 ├── personality.ts   # Fragment words + voice captions (tonal, not factual claims)
@@ -183,25 +183,27 @@ export interface Fragment {
 export const fragments: Fragment[] = [
   { word: 'Writing', caption: 'notes, drafts, and sentences that almost work' },
   { word: 'Music', caption: 'the one background process that never exits' },
-  // ... Football, Theatre, Rabbit Holes, Building, Communities, Teaching
+  // ... Football, Rabbit Holes, Communities
 ];
 ```
 
-Eight fragments, each a tonal word plus a voice caption. There are no writing links, no external profiles, no visitor input, and no persistence: selection is local component state only.
+Five provisional fragments, each a tonal word plus a voice caption: Writing, Music, Football, Rabbit Holes, Communities. The prior expanded set is intentionally removed. There are no writing links, no external profiles, no fragment-specific graphics, and no new routes. Fragment selection is local component state only.
 
 ### Mosaic statement (EXPERIMENTAL copy, owner meaning preserved)
 
-Above the wall, a personal lede establishes why the surface exists: "I am a mosaic of everyone I have ever known. If they are a piece of me, they deserve to be a piece of this place too." (Owner supplied the wording; lightly polished for rhythm. Provisional until approved.) A hint line follows: drag to look around, open a note to reply, leave one of your own.
+Inside the wall field, a personal lede establishes why the surface exists: "I am a mosaic of everyone I have ever known. If they are a piece of me, they deserve to be a piece of this place too." The phrase "this place" stays serif italic. A hint line follows: "Drag to look around. Leave a note, or just see what people have left behind. Be kind: everything here is public."
 
 ### Notes wall model (`src/content/wall.ts`, API under `src/app/api/notes/`)
 
-Visitor marks are not owner content and never sync anywhere except through the wall API. Notes carry id, world coordinates, display name, message, timestamp, style variant, owner flag, and replies; replies carry id, note id, name, message, timestamp. Limits: names 24 chars, messages 140, replies 100, 10 notes and 20 replies per IP per hour, 4 KB payloads. Rendering is plain text nodes only. Seeds are two labeled Shikhar notes using site copy. The default store is in-memory (per process); production needs the documented KV swap.
+Visitor marks are not owner content and never sync anywhere except through the wall API. Notes carry id, world coordinates, display name, message, timestamp, style variant, owner flag, reply count, and one-level replies; replies carry id, note id, name, message, timestamp. Limits: names 24 chars, messages 140, replies 100, 10 notes and 20 replies per IP per hour, 4 KB payloads. Rendering is plain text nodes only. Seeds are neutral `Guest NN` sample notes plus one labeled Shikhar owner note, never fabricated testimonials from real people.
 
-Presentation (not content, lives in `NotesWall.tsx`): deterministic tilt and restrained widths derive from note ids; tilt, width, and variant are display-only. (The older geometric-glyph stamp wall, `MarkWall.tsx`, was deleted in v4.7; no glyph system exists.)
+Persistence is PostgreSQL through `@neondatabase/serverless`, configured by server-only `DATABASE_URL`. Schema lives in `db/001_wall_notes.sql`. Missing database configuration returns 503 from the API and the UI shows seed notes with "database setup pending"; it does not silently write to memory in production. `WALL_ADMIN_SECRET` protects the moderation hide endpoint.
 
-### Latest-note lookup (API)
+Presentation (not content, lives in `NotesWall.tsx`): deterministic tilt and restrained widths derive from note ids; tilt, width, and variant are display-only. The wall uses a practical large coordinate range rather than a visible finite canvas. (The older geometric-glyph stamp wall, `MarkWall.tsx`, was deleted in v4.7; no glyph system exists.)
 
-`GET /api/notes?order=latest` returns the newest note across the whole store (`{ note }`), so Latest navigation never mistakes the newest loaded note for the newest global one. The `NoteStore` interface requires `latest()`; KV implementations must answer from the full dataset. Rate limits, validation, and caps are unchanged.
+### Discovery API
+
+`GET /api/notes?order=latest` returns the newest top-level note across the whole database. `GET /api/notes?order=random` returns a random visible top-level note. Normal list calls accept optional `minX`, `maxX`, `minY`, and `maxY` bounds for viewport-oriented fetching. Rate limits, validation, and caps are server-side.
 
 ### Content Guidelines (FINALIZED)
 

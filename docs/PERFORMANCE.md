@@ -16,7 +16,7 @@
 
 | Metric                              | Target         | Measured (2026-09-07, `next build`)                                                                                           |
 | ----------------------------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| **Initial JS (First Load)**         | < 150KB        | 165 kB (15 kB over; see reclaim below; project artwork/cards and certification holder measured 2026-09-09)                    |
+| **Initial JS (First Load)**         | < 150KB        | 166 kB (16 kB over; see reclaim below; Postgres wall rebuild measured 2026-09-09)                                             |
 | **LCP (Largest Contentful Paint)**  | < 2.5s         | Not measured (no Lighthouse run yet)                                                                                          |
 | **CLS (Cumulative Layout Shift)**   | < 0.1          | Not measured                                                                                                                  |
 | **INP (Interaction to Next Paint)** | < 200ms        | Not measured                                                                                                                  |
@@ -53,7 +53,7 @@
 - **Client Components Only For:** genuine interactivity (see `ARCHITECTURE.md` for the exact list)
 - **Code Splitting:** automatic via App Router + `next/dynamic` (`ssr: false`) for `ProjectPanel`
 - **No animation/UI libraries** beyond Motion; no icon libraries (vendored paths); no third-party scripts at all
-- **No network calls:** fully static, no API routes, no analytics, no fonts fetched at runtime beyond `next/font` self-hosting
+- **Network calls:** main page is static, but the notes wall calls same-origin API routes for Postgres-backed notes. No analytics or third-party browser scripts exist.
 
 ### CSS
 
@@ -171,6 +171,11 @@ There is no `.github/` directory and no Lighthouse CI, bundle gate, or deploy pi
 
 - Production build: 165 kB First Load JS, route chunk 77.9 kB. Projects now import five owner-supplied static artwork files and render them through `next/image` inside the existing lazy `ProjectPanel` chunk. The old project metric/counter card layer and SVG preview motifs were removed, so no new dependency or recurring runtime loop was added.
 - Runtime changes are interaction-gated: project images get only a tiny hover scale plus saturation/contrast lift, and `.project-carousel-dragging` suppresses that treatment while dragging. The carousel keeps the existing single offscreen-paused rAF loop.
+
+## v5.4 Status (2026-09-09)
+
+- Production build: 166 kB First Load JS, route chunk 78.5 kB. The notes wall now uses `@neondatabase/serverless` in route handlers only, adds no client database credentials, and keeps API routes at 0 B in the app build report.
+- Runtime changes stay event-gated: wall panning writes one transform through rAF only while dragging or during short camera flights; visible notes are capped at 150 and recomputed after movement or data changes. No wheel hijack and no idle wall animation were added.
 
 ## v4.5 Status (2026-09-05)
 

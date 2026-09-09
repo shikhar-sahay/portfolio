@@ -63,7 +63,7 @@ src/
 │   ├── not-found.tsx      # 404 scene: You BROKE. plus REBUILD (client, CSS transitions only)
 │   ├── globals.css        # Tokens, keyframes, arch/mask/marquee/reduced-motion styles
 │   ├── icon.svg           # Favicon (ink field, vermilion diamond)
-│   └── api/notes/         # Wall API: list/create, replies, secret-gated moderation
+│   └── api/notes/         # Wall API: Postgres list/create, replies, secret-gated moderation
 ├── assets/                # Static imports (shikhar-hero.jpg; enables blur placeholders)
 ├── components/
 │   ├── ui/                # InteractiveLetters, TechLogo, Reveal, WordReveal, Counter, InView, CopyText
@@ -75,6 +75,8 @@ src/
 ├── hooks/                 # useMountedReducedMotion (hydration-safe reduced-motion flag)
 └── content/               # Typed data: profile, sections, projects, experience,
                              #   systems, personality, wall, techLogos, channelGlyphs
+db/
+└── 001_wall_notes.sql      # Postgres schema and seed notes for the wall
 public/
 └── resume.pdf             # Real owner-supplied resume (committed 2026-09-06)
 ```
@@ -104,18 +106,18 @@ There is no `src/lib/`, `src/types/`, `src/styles/`, `src/components/effects/`, 
 
 ## State Management
 
-| Need                       | Solution                                                                                                                                                                       | Status         |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------- |
-| **Theme**                  | `<html>` class + localStorage, pre-paint head script                                                                                                                           | `FINALIZED`    |
-| **Intro played**           | sessionStorage flag, read pre-paint                                                                                                                                            | `FINALIZED`    |
-| **Reduced motion**         | `useMountedReducedMotion` hook (post-mount flag, hydration-safe)                                                                                                               | `FINALIZED`    |
-| **Scroll choreography**    | One `useScroll` progress per scene, pure `useTransform` mapping                                                                                                                | `FINALIZED`    |
-| **Carousel**               | Local ref + single rAF loop (no React state on scroll)                                                                                                                         | `FINALIZED`    |
-| **Pieces of Me selection** | Local `useState` (no persistence)                                                                                                                                              | `FINALIZED`    |
-| **Wall persistence**       | `/api/notes` routes (list/create, replies, moderation, `?order=latest`) plus in-memory store behind a KV-swappable interface (`latest()` required); wall cache in localStorage | `EXPERIMENTAL` |
-| **Global store / forms**   | None exist                                                                                                                                                                     | `UNDECIDED`    |
+| Need                       | Solution                                                                                                                                                          | Status         |
+| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| **Theme**                  | `<html>` class + localStorage, pre-paint head script                                                                                                              | `FINALIZED`    |
+| **Intro played**           | sessionStorage flag, read pre-paint                                                                                                                               | `FINALIZED`    |
+| **Reduced motion**         | `useMountedReducedMotion` hook (post-mount flag, hydration-safe)                                                                                                  | `FINALIZED`    |
+| **Scroll choreography**    | One `useScroll` progress per scene, pure `useTransform` mapping                                                                                                   | `FINALIZED`    |
+| **Carousel**               | Local ref + single rAF loop (no React state on scroll)                                                                                                            | `FINALIZED`    |
+| **Pieces of Me selection** | Local `useState` (no persistence)                                                                                                                                 | `FINALIZED`    |
+| **Wall persistence**       | `/api/notes` routes backed by Postgres through `@neondatabase/serverless`; list/create, one-level replies, moderation, latest, random, and viewport-bounded reads | `EXPERIMENTAL` |
+| **Global store / forms**   | None exist                                                                                                                                                        | `UNDECIDED`    |
 
-**Principle (FINALIZED):** No global state library unless genuinely needed. No database, no analytics, no contact backend. The only wall backend is the notes API (validation plus rate limits, in-memory until the documented KV swap). Browser storage holds the theme choice, the intro flag, and the wall cache.
+**Principle (FINALIZED):** No global state library unless genuinely needed. Browser storage holds the theme choice and intro flag. The notes wall is the only database-backed feature: credentials stay server-only in `DATABASE_URL`, with `WALL_ADMIN_SECRET` for moderation.
 
 ---
 
@@ -127,7 +129,7 @@ There is no `src/lib/`, `src/types/`, `src/styles/`, `src/components/effects/`, 
 | **Experience/Timeline** | `src/content/experience.ts` (org-grouped)                                                                                | `FINALIZED` |
 | **Skills / certs**      | `src/content/systems.ts` (+ `techLogos.ts` marks)                                                                        | `FINALIZED` |
 | **Personal info**       | `src/content/profile.ts`                                                                                                 | `FINALIZED` |
-| **Pieces of Me**        | `src/content/personality.ts` (fragments + captions)                                                                      | `FINALIZED` |
+| **Pieces of Me**        | `src/content/personality.ts` (five provisional fragments + captions)                                                     | `FINALIZED` |
 | **Sections/nav**        | `src/content/sections.ts` (order source of truth; visible nav is About/Experience/Toolkit/Projects/Pieces of Me/Contact) | `FINALIZED` |
 | **Images**              | `src/assets/` static imports + `next/image`                                                                              | `FINALIZED` |
 | **SEO/Metadata**        | `metadata` export in `layout.tsx` + `icon.svg`                                                                           | `FINALIZED` |
@@ -151,13 +153,14 @@ There is no `src/lib/`, `src/types/`, `src/styles/`, `src/components/effects/`, 
 
 ## Deployment & Infrastructure
 
-| Aspect                  | Decision                           | Status      |
-| ----------------------- | ---------------------------------- | ----------- |
-| **Platform**            | Vercel (planned, not yet deployed) | `FINALIZED` |
-| **Preview deployments** | None configured                    | `UNDECIDED` |
-| **Analytics**           | None installed                     | `UNDECIDED` |
-| **Error tracking**      | None installed                     | `UNDECIDED` |
-| **Edge/ISR**            | Unused (fully static)              | `FINALIZED` |
+| Aspect                  | Decision                           | Status         |
+| ----------------------- | ---------------------------------- | -------------- |
+| **Platform**            | Vercel (planned, not yet deployed) | `FINALIZED`    |
+| **Wall database**       | Neon Postgres via `DATABASE_URL`   | `EXPERIMENTAL` |
+| **Preview deployments** | None configured                    | `UNDECIDED`    |
+| **Analytics**           | None installed                     | `UNDECIDED`    |
+| **Error tracking**      | None installed                     | `UNDECIDED`    |
+| **Edge/ISR**            | Unused (fully static)              | `FINALIZED`    |
 
 ---
 

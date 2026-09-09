@@ -20,14 +20,14 @@ A directed long-scroll experience that feels personal, cinematic, and technicall
 5. **Experience:** org-grouped timeline (Cyber Defenders, Recipharm, GDG On Campus, CodeChef-VIT Student Chapter, Skilledity, Team Shade) on a mathematically centered spine with a scroll-drawn accent fill and diamond markers.
 6. **Toolkit:** one navigational destination with the Skills emblems (three drifting marquee rows of golden emblems with real monochrome technology marks: 19 of 23, ink monograms where no genuine mark exists, no proficiency levels) plus the Certifications ledger chapter (eyebrow, serif lede, hairline rows, featured first credential, boxed Verify links), rows arriving with a scroll mask wipe.
 7. **Projects:** infinite drifting carousel (auto until first touch, then manual forever), drag/swipe/arrows/keyboard, five artifact cards with SVG preview motifs and inert placeholder links.
-8. **Pieces of Me:** theme-following chapter with a fragment word-swap instrument (buttons, keyboard accessible), a mosaic statement, plus a full-bleed notes wall (tilted tactile cards, docked instrument with Latest flight, placement preview, serif composer, thread slip with one-level replies, keyboard parity, calm reduced motion). Captions are voice lines, not factual claims.
+8. **Pieces of Me:** theme-following chapter with five provisional fragments (buttons, keyboard accessible), plus a full-bleed spatial notes wall where the mosaic manifesto, notes, composer, and discovery controls share one editorial field. Captions are voice lines, not factual claims.
 9. **Footer:** compact contact grid (six icon plus name social rows with real brand marks pairing six arrow-marked page links), small live Bangalore IST clock below Email, slim resume row (Drive view plus local download), and a closing SHIKHAR SAHAY marquee that leans as one object with a cursor-following vermilion sheen (zero cost at idle).
 
 ## Interaction highlights
 
 - Pointer-reactive display type (hero letter springs; footer wordmark leans as one object with a sheen sweep).
 - Scroll-scrubbed scene choreography with one coherent progress model per scene; every range ends at 1.0 (Motion v13 drops flat terminal segments past the last keyframe).
-- Theme toggle persisted to localStorage; intro flag in sessionStorage; wall cache in localStorage. The only backend is the notes wall API (validation plus rate limits, in-memory store with a documented KV path).
+- Theme toggle persisted to localStorage; intro flag in sessionStorage. The only backend is the notes wall API, backed by Postgres through `DATABASE_URL`.
 
 ## Tech stack
 
@@ -84,7 +84,15 @@ Performance is a hard requirement. Server Components by default, one small lazy 
 
 ## Persistence and backend status
 
-There is no traditional backend: no database, no analytics, no contact form backend. The notes wall exposes API routes (`/api/notes`: list/create, replies, secret-gated moderation, global-latest lookup) backed by an in-memory store with validation and rate limiting; on serverless hosts each instance sees its own wall until the documented KV swap is configured. Browser storage holds the theme choice (localStorage), the intro-played flag (sessionStorage), and a wall cache. Any future shared persistence needs an API route plus a tiny store with server allow-listing and rate limiting; the wall's storage interface is shaped for exactly that swap.
+There is no analytics or contact form backend. The notes wall exposes API routes (`/api/notes`: viewport list/create, latest, random, one-level replies, secret-gated moderation) backed by Postgres through `@neondatabase/serverless`. Browser storage holds the theme choice (localStorage) and the intro-played flag (sessionStorage). If `DATABASE_URL` is missing, the API returns a setup error and the UI shows seed notes only.
+
+### Notes Wall Setup
+
+1. Create a Postgres database, Neon is the intended production fit for Vercel.
+2. Run `db/001_wall_notes.sql`.
+3. Set `DATABASE_URL` in local and production environments.
+4. Set `WALL_ADMIN_SECRET` to enable the protected moderation endpoint.
+5. Never expose either value to the client.
 
 ## Known placeholders (owner input needed)
 
