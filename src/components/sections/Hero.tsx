@@ -214,7 +214,10 @@ export function Hero() {
                 <p className="text-micro uppercase tracking-[0.16em] text-muted">
                   CS @ VIT Vellore
                 </p>
-                <span className="bg-ink/25 hidden h-3 w-px sm:block" aria-hidden="true" />
+                <span
+                  className="bg-ink/25 lm-fill-line hidden h-3 w-px sm:block"
+                  aria-hidden="true"
+                />
                 <p className="text-micro uppercase tracking-[0.16em] text-muted">
                   Software, security &amp; the web
                 </p>
@@ -267,7 +270,7 @@ export function Hero() {
         {/* Handoff hairline: becomes the boundary into the statements bridge */}
         <motion.div
           aria-hidden="true"
-          className="bg-ink/20 absolute inset-x-5 bottom-0 h-px origin-left sm:inset-x-10"
+          className="bg-ink/20 lm-fill-line absolute inset-x-5 bottom-0 h-px origin-left sm:inset-x-10"
           {...scroll({ scaleX: handoffLine })}
         />
         {/* Scroll invitation */}

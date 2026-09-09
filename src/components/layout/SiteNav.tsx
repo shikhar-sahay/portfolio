@@ -88,7 +88,7 @@ export function SiteNav() {
         <div
           className={`transition-all duration-500 ease-expo ${
             compact
-              ? 'border-ink/10 bg-paper/85 border-b backdrop-blur-md'
+              ? 'border-ink/10 bg-paper/85 lm-nav border-b backdrop-blur-md'
               : 'border-b border-transparent bg-transparent'
           }`}
         >

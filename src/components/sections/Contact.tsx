@@ -79,7 +79,7 @@ export function Contact() {
 
         {/* Resume moment, one slim row */}
         <Reveal delay={0.08}>
-          <div className="border-ink/15 mt-[9vh] flex flex-wrap items-center justify-between gap-5 border-t py-7">
+          <div className="border-ink/15 lm-line-soft mt-[9vh] flex flex-wrap items-center justify-between gap-5 border-t py-7">
             <p className="font-serif text-xl italic tracking-tight text-ink sm:text-2xl">
               Everything, condensed.
             </p>
@@ -101,7 +101,7 @@ export function Contact() {
               <a
                 href={profile.links.resumeFile}
                 download
-                className="border-ink/25 inline-flex items-center gap-2.5 border px-5 py-2.5 text-micro font-semibold uppercase tracking-[0.16em] text-ink transition-colors duration-300 hover:border-accent hover:text-accent"
+                className="border-ink/25 lm-line inline-flex items-center gap-2.5 border px-5 py-2.5 text-micro font-semibold uppercase tracking-[0.16em] text-ink transition-colors duration-300 hover:border-accent hover:text-accent"
               >
                 Download PDF
                 <span aria-hidden="true">&darr;</span>
@@ -116,7 +116,7 @@ export function Contact() {
         <FooterWordmark />
       </div>
 
-      <div className="border-ink/10 mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 border-t px-5 py-6 sm:px-0">
+      <div className="border-ink/10 lm-line-soft mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 border-t px-5 py-6 sm:px-0">
         <p className="text-micro uppercase tracking-[0.16em] text-muted">
           Designed and built by Shikhar Sahay
         </p>
