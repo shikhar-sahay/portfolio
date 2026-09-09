@@ -36,9 +36,9 @@ export function Personality() {
             desktop) must never resize the button column, or hovering
             between fragments reflows the buttons under the cursor and the
             active state chases itself. Width depends on viewport only. */}
-        <div className="mt-[10vh] grid items-end gap-12 lg:grid-cols-[minmax(0,1fr)_28rem]">
+        <div className="mt-[10vh] grid items-end gap-12 lg:grid-cols-[minmax(0,1fr)_30rem]">
           {/* Fragment selector */}
-          <ul className="flex flex-wrap gap-2.5" role="list">
+          <ul className="grid gap-2.5 sm:grid-cols-5 lg:flex lg:flex-wrap" role="list">
             {fragments.map((f, i) => (
               <li key={f.word}>
                 <button
@@ -47,7 +47,7 @@ export function Personality() {
                   onMouseEnter={() => setActive(i)}
                   onFocus={() => setActive(i)}
                   aria-pressed={i === active}
-                  className={`border px-3.5 py-2 text-sm tracking-tight transition-all duration-300 ease-expo ${
+                  className={`h-full w-full border px-3.5 py-2 text-left text-sm tracking-tight transition-all duration-300 ease-expo sm:min-h-16 lg:w-auto lg:text-center ${
                     i === active
                       ? 'border-accent bg-accent text-paper'
                       : 'border-muted text-muted hover:border-ink hover:text-ink'
