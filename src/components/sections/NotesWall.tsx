@@ -30,6 +30,10 @@ function clampCamera(camera: Camera): Camera {
   };
 }
 
+function homeCamera(width: number): Camera {
+  return width < 640 ? { x: 220, y: 520 } : CAMERA_HOME;
+}
+
 function formatDate(at: number): string {
   if (!at) return 'seed note';
   try {
@@ -84,6 +88,7 @@ export function NotesWall() {
   } | null>(null);
   const flight = useRef(0);
   const camera = useRef<Camera>(CAMERA_HOME);
+  const cameraInitialized = useRef(false);
 
   const [notes, setNotes] = useState<WallNote[]>(SEED_NOTES);
   const [total, setTotal] = useState(SEED_NOTES.length);
@@ -183,6 +188,11 @@ export function NotesWall() {
   }, [viewportBounds]);
 
   useEffect(() => {
+    if (!cameraInitialized.current) {
+      const width = viewportRef.current?.clientWidth ?? window.innerWidth;
+      camera.current = homeCamera(width);
+      cameraInitialized.current = true;
+    }
     applyCamera();
     refreshVisible();
     void fetchVisibleNotes();
@@ -542,7 +552,11 @@ export function NotesWall() {
           </button>
           <WallButton onClick={() => void goRemoteNote('latest')}>Latest</WallButton>
           <WallButton onClick={() => void goRemoteNote('random')}>Random</WallButton>
-          <WallButton onClick={() => flyTo(CAMERA_HOME)}>Center</WallButton>
+          <WallButton
+            onClick={() => flyTo(homeCamera(viewportRef.current?.clientWidth ?? window.innerWidth))}
+          >
+            Center
+          </WallButton>
           <p className="border border-ink bg-paper px-3 py-2 text-micro uppercase tracking-[0.14em] text-muted">
             {statusText}
           </p>
