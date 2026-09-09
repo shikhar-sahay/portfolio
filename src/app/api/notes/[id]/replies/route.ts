@@ -1,14 +1,22 @@
 import { NextResponse } from 'next/server';
 import { LIMITS, validateReply } from '@/content/wall';
-import { checkRateLimit, clientIp, noteStore } from '../../_store';
+import {
+  checkRateLimit,
+  clientIp,
+  getNoteStore,
+  notesPersistenceConfigured,
+  persistenceErrorResponse,
+} from '../../_store';
 
 export async function GET(_request: Request, { params }: { params: { id: string } }) {
-  const note = noteStore.get(params.id);
+  if (!notesPersistenceConfigured()) return persistenceErrorResponse();
+  const note = await getNoteStore().get(params.id);
   if (!note) return NextResponse.json({ error: 'Note not found.' }, { status: 404 });
   return NextResponse.json({ replies: note.replies });
 }
 
 export async function POST(request: Request, { params }: { params: { id: string } }) {
+  if (!notesPersistenceConfigured()) return persistenceErrorResponse();
   const ip = clientIp(request.headers);
   const gate = checkRateLimit(ip, 'replies');
   if (!gate.ok) {
@@ -29,7 +37,7 @@ export async function POST(request: Request, { params }: { params: { id: string 
   }
   const parsed = validateReply(body);
   if (!parsed.ok) return NextResponse.json({ error: parsed.error }, { status: 422 });
-  const reply = noteStore.addReply(params.id, parsed.reply);
+  const reply = await getNoteStore().addReply(params.id, parsed.reply);
   if (!reply) return NextResponse.json({ error: 'Note not found.' }, { status: 404 });
   return NextResponse.json({ reply }, { status: 201 });
 }

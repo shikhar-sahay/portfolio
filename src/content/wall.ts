@@ -22,11 +22,24 @@ export interface WallNote {
   createdAt: number;
   variant: number;
   owner: boolean;
+  replyCount: number;
   replies: WallReply[];
 }
 
-/** World-space canvas bounds (viewport is only a window into this). */
-export const WORLD = { w: 2400, h: 1600 } as const;
+/**
+ * Practical world bounds. The wall is not presented as a finite canvas:
+ * these limits only keep persisted coordinates sane.
+ */
+export const WORLD = {
+  w: 200000,
+  h: 200000,
+  minX: -100000,
+  maxX: 100000,
+  minY: -100000,
+  maxY: 100000,
+  originX: 0,
+  originY: 0,
+} as const;
 
 /** Strict input limits (mirrored client and server). */
 export const LIMITS = {
@@ -53,7 +66,7 @@ function cleanText(value: unknown, max: number): string | null {
 
 function cleanCoord(value: unknown, max: number): number | null {
   if (typeof value !== 'number' || !Number.isFinite(value)) return null;
-  if (value < 0 || value > max) return null;
+  if (value < -max || value > max) return null;
   return Math.round(value);
 }
 
@@ -66,8 +79,8 @@ export function validateNote(
   const body = input as Record<string, unknown>;
   const name = cleanText(body.name ?? 'anonymous', LIMITS.nameMax);
   const message = cleanText(body.message, LIMITS.messageMax);
-  const x = cleanCoord(body.x, WORLD.w);
-  const y = cleanCoord(body.y, WORLD.h);
+  const x = cleanCoord(body.x, WORLD.maxX);
+  const y = cleanCoord(body.y, WORLD.maxY);
   const variant =
     typeof body.variant === 'number' && body.variant >= 0 && body.variant < VARIANTS.length
       ? body.variant
@@ -92,31 +105,164 @@ export function validateReply(
 }
 
 /**
- * Owner seeds: clearly labeled system notes using only site copy, so the
- * wall reads as intentional before any visitor arrives. Never presented
- * as visitor content.
+ * Seed notes: neutral examples, not fabricated testimonials. They make
+ * the world feel alive before persistence has enough visitor marks.
  */
 export const SEED_NOTES: WallNote[] = [
   {
-    id: 'owner-welcome',
-    x: 1180,
-    y: 760,
-    name: 'Shikhar',
-    message: 'This wall is yours too. Leave something kind behind.',
+    id: 'seed-ananya',
+    x: 520,
+    y: -120,
+    name: 'Ananya',
+    message: 'A small note can still change the room.',
     createdAt: 0,
-    variant: 1,
-    owner: true,
+    variant: 0,
+    owner: false,
+    replyCount: 0,
     replies: [],
   },
   {
-    id: 'owner-how',
-    x: 660,
-    y: 480,
-    name: 'Shikhar',
-    message: 'Drag to look around. Click anywhere to pin a note.',
+    id: 'seed-ritvik',
+    x: 960,
+    y: -210,
+    name: 'Ritvik',
+    message: 'Different perspectives make the world a lot more interesting.',
+    createdAt: 0,
+    variant: 1,
+    owner: false,
+    replyCount: 0,
+    replies: [],
+  },
+  {
+    id: 'seed-kartik',
+    x: 1480,
+    y: -130,
+    name: 'Kartik',
+    message: 'More people like you please.',
     createdAt: 0,
     variant: 0,
+    owner: false,
+    replyCount: 0,
+    replies: [],
+  },
+  {
+    id: 'seed-meera',
+    x: 360,
+    y: 260,
+    name: 'Meera',
+    message: 'Found this through a friend. Ended up spending way too long here.',
+    createdAt: 0,
+    variant: 1,
+    owner: false,
+    replyCount: 0,
+    replies: [],
+  },
+  {
+    id: 'seed-shruti',
+    x: 850,
+    y: 230,
+    name: 'Shruti',
+    message: "You're proof that it is possible to care about both the technical and human side.",
+    createdAt: 0,
+    variant: 0,
+    owner: false,
+    replyCount: 0,
+    replies: [],
+  },
+  {
+    id: 'seed-aarav',
+    x: 1360,
+    y: 330,
+    name: 'Aarav',
+    message: 'Pokemon, Beyblade, and cybersecurity on the same site? Elite taste.',
+    createdAt: 0,
+    variant: 1,
+    owner: false,
+    replyCount: 0,
+    replies: [],
+  },
+  {
+    id: 'seed-dev',
+    x: 260,
+    y: 620,
+    name: 'Dev',
+    message: 'Leaving my mark here.',
+    createdAt: 0,
+    variant: 0,
+    owner: false,
+    replyCount: 0,
+    replies: [],
+  },
+  {
+    id: 'seed-tanvi',
+    x: 720,
+    y: 650,
+    name: 'Tanvi',
+    message: 'Good ideas find good people.',
+    createdAt: 0,
+    variant: 1,
+    owner: false,
+    replyCount: 0,
+    replies: [],
+  },
+  {
+    id: 'seed-aditya',
+    x: 1030,
+    y: 590,
+    name: 'Aditya',
+    message: 'Keep building. The internet needs more people who build with intention.',
+    createdAt: 0,
+    variant: 0,
+    owner: false,
+    replyCount: 0,
+    replies: [],
+  },
+  {
+    id: 'seed-sameer',
+    x: 620,
+    y: 930,
+    name: 'Sameer',
+    message: 'Football makes life better.',
+    createdAt: 0,
+    variant: 0,
+    owner: false,
+    replyCount: 0,
+    replies: [],
+  },
+  {
+    id: 'seed-nish',
+    x: 1190,
+    y: 940,
+    name: 'Nish',
+    message: 'Randomly stumbled here and now I am saving this as reference.',
+    createdAt: 0,
+    variant: 1,
+    owner: false,
+    replyCount: 0,
+    replies: [],
+  },
+  {
+    id: 'seed-owner',
+    x: 180,
+    y: 980,
+    name: 'Shikhar',
+    message: 'Different people. Same direction.',
+    createdAt: 0,
+    variant: 2,
     owner: true,
+    replyCount: 0,
+    replies: [],
+  },
+  {
+    id: 'seed-lina',
+    x: 1580,
+    y: 760,
+    name: 'Lina',
+    message: 'Strangers today, stories tomorrow.',
+    createdAt: 0,
+    variant: 1,
+    owner: false,
+    replyCount: 0,
     replies: [],
   },
 ];

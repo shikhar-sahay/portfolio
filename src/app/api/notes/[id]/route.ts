@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { noteStore } from '../_store';
+import { getNoteStore, notesPersistenceConfigured, persistenceErrorResponse } from '../_store';
 
 /**
  * Owner moderation endpoint. Requires the WALL_ADMIN_SECRET environment
@@ -7,6 +7,7 @@ import { noteStore } from '../_store';
  * returns 503 with an explicit message (never silently open).
  */
 export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+  if (!notesPersistenceConfigured()) return persistenceErrorResponse();
   const secret = process.env.WALL_ADMIN_SECRET;
   if (!secret) {
     return NextResponse.json(
@@ -17,7 +18,7 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
   if (request.headers.get('x-wall-admin') !== secret) {
     return NextResponse.json({ error: 'Forbidden.' }, { status: 403 });
   }
-  const removed = noteStore.remove(params.id);
+  const removed = await getNoteStore().hide(params.id);
   if (!removed) return NextResponse.json({ error: 'Note not found.' }, { status: 404 });
   return NextResponse.json({ ok: true });
 }
