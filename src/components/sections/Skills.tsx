@@ -95,15 +95,15 @@ function SkillEmblem({ skill }: { skill: Skill }) {
       <div className="relative flex h-20 w-20 items-center justify-center">
         <span
           aria-hidden="true"
-          className="border-gold/60 absolute inset-0 rounded-full border transition-transform duration-700 ease-expo group-hover:rotate-90"
+          className="border-gold/60 lm-gold absolute inset-0 rounded-full border transition-transform duration-700 ease-expo group-hover:rotate-90"
         />
         <span
           aria-hidden="true"
-          className="border-gold/0 group-hover:border-gold/40 absolute -inset-1.5 rounded-full border border-dashed transition-all duration-700 group-hover:rotate-45"
+          className="border-gold/0 group-hover:border-gold/40 lm-gold-hi absolute -inset-1.5 rounded-full border border-dashed transition-all duration-700 group-hover:rotate-45"
         />
         <span
           aria-hidden="true"
-          className="group-hover:bg-gold/10 absolute inset-[8px] rounded-full bg-surface transition-colors duration-500"
+          className="group-hover:bg-gold/10 lm-gold-wash absolute inset-[8px] rounded-full bg-surface transition-colors duration-500"
         />
         {logo ? (
           <TechLogo

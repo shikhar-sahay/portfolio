@@ -8,7 +8,7 @@ import { projects } from '@/content/projects';
 
 const ProjectPanel = dynamic(() => import('./ProjectPanel').then(m => m.ProjectPanel), {
   ssr: false,
-  loading: () => <div className="border-ink/10 h-[540px] border" aria-hidden="true" />,
+  loading: () => <div className="border-ink/10 lm-line-soft h-[540px] border" aria-hidden="true" />,
 });
 
 const AUTO_SPEED = 40; // px per second, the resting drift
@@ -235,7 +235,7 @@ export function Projects() {
           ref={viewportRef}
           className={
             reduce
-              ? 'border-ink/10 overflow-x-auto border-y'
+              ? 'border-ink/10 lm-line-soft overflow-x-auto border-y'
               : 'marquee-fade cursor-grab touch-pan-y select-none overflow-hidden active:cursor-grabbing'
           }
           {...(reduce
@@ -296,7 +296,7 @@ function CarouselButton({
       type="button"
       onClick={onClick}
       aria-label={`${direction === 'next' ? 'Next' : 'Previous'} project`}
-      className="border-ink/25 flex h-11 w-11 items-center justify-center border text-ink transition-colors duration-300 hover:border-accent hover:text-accent"
+      className="border-ink/25 lm-line flex h-11 w-11 items-center justify-center border text-ink transition-colors duration-300 hover:border-accent hover:text-accent"
     >
       <span
         aria-hidden="true"
