@@ -42,7 +42,7 @@ export function Skills() {
             </Reveal>
           ))}
         </div>
-        <div aria-hidden="true" className="border-ink/15 mt-[9vh] border-t" />
+        <div aria-hidden="true" className="mt-[9vh] h-px bg-ink opacity-15" />
       </div>
     </section>
   );

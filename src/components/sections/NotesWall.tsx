@@ -453,7 +453,7 @@ export function NotesWall() {
           <span className="inline-block h-px w-10 bg-accent" aria-hidden="true" />
           The notes wall
         </p>
-        <div className="mt-8 max-w-[34ch] text-[clamp(2.65rem,6.3vw,6rem)] font-medium leading-[0.96] tracking-tight text-ink sm:max-w-[18ch]">
+        <div className="mt-8 max-w-[24ch] text-lede font-medium tracking-tight text-ink">
           <p>I am a mosaic of everyone I have ever known.</p>
           <p className="mt-5">
             If they are a piece of me, they deserve to be a piece of{' '}
