@@ -133,6 +133,7 @@ export function Projects() {
   );
 
   const onPointerDown = (e: React.PointerEvent) => {
+    if ((e.target as HTMLElement).closest('[data-carousel-interactive="true"]')) return;
     const st = s.current;
     stopAuto();
     st.dragging = true;
@@ -163,6 +164,7 @@ export function Projects() {
 
   // A drag should not fire the links under the pointer on release.
   const onClickCapture = (e: React.MouseEvent) => {
+    if ((e.target as HTMLElement).closest('[data-carousel-interactive="true"]')) return;
     const st = s.current;
     if (st.moved > 6) {
       e.preventDefault();
@@ -257,6 +259,10 @@ export function Projects() {
             <CarouselButton direction="next" onClick={() => nudge(-1)} />
           </div>
         </div>
+        <div
+          aria-hidden="true"
+          className="mx-auto mt-10 h-px w-[86%] max-w-5xl bg-ink opacity-15"
+        />
       </div>
     </section>
   );

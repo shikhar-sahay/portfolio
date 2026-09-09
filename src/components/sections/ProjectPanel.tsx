@@ -65,6 +65,9 @@ function PanelLink({ label, href }: { label: string; href: string }) {
       target="_blank"
       rel="noopener noreferrer"
       title={label}
+      data-carousel-interactive="true"
+      onPointerDown={event => event.stopPropagation()}
+      onClick={event => event.stopPropagation()}
       className="group/link inline-flex items-center gap-1.5 text-micro font-semibold uppercase tracking-[0.14em] text-ink transition-colors duration-300 hover:text-accent"
     >
       {label}

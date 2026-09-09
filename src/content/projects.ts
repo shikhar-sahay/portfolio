@@ -1,9 +1,9 @@
 import type { StaticImageData } from 'next/image';
-import papersBackdrop from '@/assets/projects/papersbackdrop.jpg';
+import papersBackdrop from '@/assets/projects/papersbackdrop.png';
 import hawk3yeBackdrop from '@/assets/projects/hawk3yebackdrop.png';
 import holmeskitBackdrop from '@/assets/projects/holmeskitbackdrop.png';
 import portfolioBackdrop from '@/assets/projects/portfoliobackdrop.jpg';
-import rtEnssBackdrop from '@/assets/projects/rtenssbackdrop.jpg';
+import rtEnssBackdrop from '@/assets/projects/rtenssbackdrop.png';
 
 export interface ProjectLinks {
   live?: string;
