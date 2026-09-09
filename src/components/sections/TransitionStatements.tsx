@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform, type MotionValue } from 'motion/react';
 import { useMountedReducedMotion } from '@/hooks/useMountedReducedMotion';
 
@@ -92,7 +92,7 @@ function ThoughtLine({
   return (
     <motion.div
       style={{ opacity, scale }}
-      className={`relative flex h-[32vh] flex-col justify-center will-change-transform ${line.offsetClass}`}
+      className={`relative flex h-[30svh] flex-col justify-center will-change-transform sm:h-[32vh] ${line.offsetClass}`}
     >
       {/* Full-word echo: the complete verb, oversized and cropped by the
           frame edge, so the full viewport reads as composition. Same word
@@ -144,12 +144,29 @@ export function TransitionStatements() {
     offset: ['start start', 'end end'],
   });
 
+  // Small screens get a tighter cut of the same choreography: the type
+  // stays small while viewports stay tall, so the full travel parks each
+  // thought too high and leaves dead frame below it. Desktop values are
+  // untouched; the compact flag only ever engages below sm.
+  const [compact, setCompact] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 639px)');
+    const update = () => setCompact(mq.matches);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, []);
+
   // The stack travels as one camera: BUILD centered early, REBUILD
   // centered late, resolving just high enough to clear the About entry
   // while still sharing the frame with it briefly. The section runs
   // 200svh (down from 240svh) with a short REBUILD hold (0.9 to 1.0):
-  // enough breath before About, never an empty wait.
-  const stackY = useTransform(scrollYProgress, [0, 1], ['42vh', '-40vh']);
+  // enough breath before About, never an empty wait. The compact cut
+  // runs 165svh with a lower finale resolve so REBUILD shares the frame
+  // with the About entry instead of parking above a void.
+  const stackYFull = useTransform(scrollYProgress, [0, 1], ['42vh', '-40vh']);
+  const stackYCompact = useTransform(scrollYProgress, [0, 1], ['28vh', '-20vh']);
+  const stackY = compact ? stackYCompact : stackYFull;
   const panelO = useTransform(scrollYProgress, [0, 0.04, 1], [0, 1, 1]);
 
   if (reduce) {
@@ -186,7 +203,7 @@ export function TransitionStatements() {
     <section
       ref={ref}
       aria-label="Introduction statements"
-      className="pointer-events-none relative -mt-[100dvh] h-[200svh]"
+      className="pointer-events-none relative -mt-[100dvh] h-[165svh] sm:h-[200svh]"
     >
       <div className="sticky top-0 h-dvh overflow-hidden">
         <motion.div
