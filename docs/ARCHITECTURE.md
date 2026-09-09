@@ -66,9 +66,9 @@ src/
 │   └── api/notes/         # Wall API: Postgres list/create, replies, secret-gated moderation
 ├── assets/                # Static imports (shikhar-hero.jpg; enables blur placeholders)
 ├── components/
-│   ├── ui/                # InteractiveLetters, TechLogo, Reveal, WordReveal, Counter, InView, CopyText
+│   ├── ui/                # InteractiveLetters, TechLogo, Reveal, WordReveal
 │   ├── sections/          # Hero, TransitionStatements, About, Experience, Skills (Toolkit),
-│   │                       #   Certifications (ledger chapter), Projects, ProjectPanel (lazy chunk),
+│   │                       #   Certifications (disclosure stack), Projects, ProjectPanel (lazy chunk),
 │   │                       #   Personality (Pieces of Me), NotesWall,
 │   │                       #   FooterClock, Contact, FooterWordmark
 │   └── layout/            # Opening, SiteNav, ThemeToggle
@@ -89,15 +89,15 @@ There is no `src/lib/`, `src/types/`, `src/styles/`, `src/components/effects/`, 
 
 ### Component Categories (FINALIZED)
 
-1. **UI primitives**: `InteractiveLetters` (pointer spring field), `TechLogo` (monochrome brand marks), `Reveal` (in-view rise), `WordReveal` (scroll reading reveal), `Counter` (animated metric), `InView` (currently unused, kept as a small reusable in-view gate)
-2. **Sections**: Hero, TransitionStatements, About, Experience, Skills (Toolkit anchor), Certifications (ledger chapter inside Toolkit), Projects (+ lazy `ProjectPanel`), Personality (Pieces of Me), Contact (footer with the `FooterClock` island). Each owns its scroll choreography; no shared timeline.
+1. **UI primitives**: `InteractiveLetters` (pointer spring field), `TechLogo` (monochrome brand marks), `Reveal` (in-view rise), `WordReveal` (scroll reading reveal)
+2. **Sections**: Hero, TransitionStatements, About, Experience, Skills (Toolkit anchor), Certifications (disclosure stack inside Toolkit), Projects (+ lazy `ProjectPanel`), Personality (Pieces of Me), Contact (footer with the `FooterClock` island). Each owns its scroll choreography; no shared timeline.
 3. **Layout**: Opening (session loader), SiteNav (progress hairline, tuck/reveal, active section, theme toggle, mobile disclosure menu), ThemeToggle
 4. **Not found**: `not-found.tsx` (genuine 404 route; misregistered BROKE. composition, REBUILD settles letters then routes home; reuses ThemeToggle)
 5. **Hooks**: `useMountedReducedMotion`: the single hydration-safe reduced-motion flag every client component gates on
 
 ### Component Principles (FINALIZED)
 
-- **Server Components by default**: only `"use client"` when needed (current clients: Opening, SiteNav, ThemeToggle, Hero, About, TransitionStatements, Experience, ExperienceEggs (prose Easter eggs), Projects, ProjectPanel, Personality, NotesWall, FooterClock, FooterWordmark, Certifications (scroll mask choreography and local disclosure state), plus the interactive primitives InteractiveLetters, Reveal, WordReveal, Counter, InView, CopyText. Server: Skills, Contact, TechLogo)
+- **Server Components by default**: only `"use client"` when needed (current clients: Opening, SiteNav, ThemeToggle, Hero, About, TransitionStatements, Experience, ExperienceEggs (prose Easter eggs), Projects, ProjectPanel, Personality, NotesWall, FooterClock, FooterWordmark, Certifications (disclosure state plus mask wipe), plus the interactive primitives InteractiveLetters, Reveal, WordReveal. Server: Skills, Contact, TechLogo)
 - **Composition over configuration**: slots/children over props explosion
 - **Design tokens via Tailwind**: CSS variables as color source of truth
 - **Lazy-load heavy components**: `ProjectPanel` via `next/dynamic` with `ssr: false` (the only lazy chunk)

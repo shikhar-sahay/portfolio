@@ -178,6 +178,11 @@ There is no `.github/` directory and no Lighthouse CI, bundle gate, or deploy pi
 - Runtime changes stay event-gated: wall panning writes one transform through rAF only while dragging or during short camera flights; visible notes are capped at 150 and recomputed after movement or data changes. No wheel hijack and no idle wall animation were added.
 - Follow-up polish removes local seed/demo notes and SQL seed inserts. The guidance inscription, static manifesto width change, and spacing tune add no dependencies and no recurring runtime work.
 
+## v5.5 Status (2026-09-09)
+
+- Production build: 165 kB First Load JS, route chunk 77.9 kB. The audit pass removed three dead UI primitives (`Counter`, `CopyText`, `InView`, zero usages, 129 deleted lines) and added only a small-viewport statements variant plus one theme token swap. No dependency or recurring runtime loop was added.
+- Remaining 15 kB overage: reclaim paths are the InteractiveLetters accent tint, carousel hint state, and below-fold island boundaries. Forcing 150 kB now would cost interaction architecture, so the delta is documented, not forced.
+
 ## v4.5 Status (2026-09-05)
 
 - First Load JS: still ~153 kB against the 150 kB budget. The opening-architecture rework (overlap, crossfade windows, mask direction) added no measurable JS.

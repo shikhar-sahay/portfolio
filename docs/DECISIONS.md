@@ -1010,3 +1010,26 @@ Do not make significant design/architecture decisions without documenting them h
 **Rationale:** The live database no longer needs local demo content, and the wall reads better when the manifesto behaves like a major section intro while the guidance feels printed into the field. The spacing tune addresses actual measured dead air instead of applying one global reduction.
 
 **Alternatives Considered:** Keeping seed rows for local demos (rejected now that production has real persistence); anchoring guidance as fixed overlay text (rejected because it should belong to the spatial field); hardcoded line breaks in the manifesto (rejected to preserve responsive typography); globally reducing section padding (rejected because each transition has different content density).
+
+---
+
+### 52. Production Audit and Responsive Polish, Mobile First (EXPERIMENTAL polish)
+
+**Decision:** End-to-end audit pass over the deployed site with the weight on mobile, fixing root causes without touching the desktop identity.
+
+1. Notes Wall manifesto now uses the standard section-intro scale (`text-lede`) at the full content measure, so it reads as a normal major-section intro and its first sentence holds one line at wide desktop widths. The serif italic on `this place` is preserved and no hardcoded breaks were added.
+2. The wall guidance keeps its exact meaning but loses the hardcoded line-break orphans. It renders as a fixed ch-measure inscription with pretty wrapping, slightly larger type, and the existing emphasis treatment. Root cause of the mobile one-word column: the inscription lives in a zero-width transformed world layer, so a max-width collapsed under shrink-to-fit; a fixed width removes the dependence.
+3. The statements bridge runs a compact cut below sm: 165svh section, 30svh rows, tighter stack travel, lower finale resolve. Desktop phase math, centers, and travel are untouched. Reduced-motion static stack is shared.
+4. Project preview letterboxing no longer inverts: the preview surface uses the theme-relative surface matte instead of the inverting ink token, so contained art and fractional drift offsets cannot flash light seams in the dark colorway. Artwork files are untouched.
+5. Certification rows stack their Verify and arrow actions below full-width names on small screens, ending text-under-button overlap. The redundant arrow tab stop is removed (pointer affordance kept, keyboard uses the main row button).
+6. Dead UI primitives (`Counter`, `CopyText`, `InView`) with zero usages were deleted. First Load JS moved 166 to 165 kB. The remaining overage is documented, not forced.
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-09-09
+
+**Rationale:** Each fix targets a measured defect: oversized manifesto type, a zero-width containing block, sparse mobile statement frames, an inverting matte token, a 100px flex squeeze, and shipped dead code. Desktop rendering is preserved by gating every behavior change below sm or behind interaction.
+
+**Alternatives Considered:** One global mobile spacing reduction (rejected: each transition has different density); cover fit for all artwork (rejected: crops authentic artifacts); forcing the 150 kB budget through architectural compromise (rejected: documented instead).
+
+**Impact:** First Load JS 166 to 165 kB (dead primitives removed). No new dependencies. Verified across 1440/1280/1024/820/390/360, both themes, reduced motion, touch, and keyboard, with zero console errors on the production build.

@@ -169,7 +169,7 @@ The identity system beyond type and color. Used consistently so sections read as
 | Eyebrow labels         | Plain editorial word with 40px accent tick prefix, micro uppercase         | Every section                              |
 | Hairline rules         | 1px `border-ink/15` separators and `gap-px` module grids                   | Every section                              |
 | Diamond markers        | Small rotated squares; fill vermilion on hover                             | Timeline, module labels, cert rows         |
-| Marching dashes        | Dashed SVG edges with slow dash animation, gated by `data-inview`          | Project preview motifs (signal, honeypot)  |
+| Marching dashes        | Dashed SVG edges with slow dash animation, gated by `data-inview`          | Retired with the project preview motifs; no current usage                  |
 | Serif interventions    | Instrument Serif italic for emphasis words and moments                     | Ledes, statement pronoun, personality word |
 | Outline display type   | `-webkit-text-stroke` transparent fill for second name line                | Hero                                       |
 | Arch aperture portrait | Arch mask + offset vermilion echo arch (see Imagery)                       | Hero                                       |
@@ -182,9 +182,9 @@ The identity system beyond type and color. Used consistently so sections read as
 - Opening sequence overlay (client, session-gated, ink-stage)
 - SiteNav: progress hairline, tuck/reveal, active-section underline, theme toggle (theme-colored links, paper backdrop when compact)
 - ThemeToggle (quiet text control in the nav)
-- Reveal / WordReveal / Counter / InView primitives (ui)
+- Reveal / WordReveal primitives (ui)
 - InteractiveLetters (pointer spring field, hero + footer wordmark), TechLogo (monochrome brand marks)
-- Sections: Hero (arch + interactive name + tagline rule + veil exit), TransitionStatements (vertical accumulation with full-word whisper echoes, themed surfaces), About (reading reveal + meta row), Experience (org timeline + spine), Skills as Toolkit (marquee emblem rows under the Toolkit eyebrow), Certifications (ledger chapter inside Toolkit, mask-wipe rows), Projects (drifting carousel) + ProjectPanel (lazy chunk with SVG motifs), Pieces of Me (fragment instrument + wide Notes Wall manifesto + full-bleed notes wall, theme-following), Contact (footer: contact grid + icon-name social rows + small live Bangalore IST clock + resume row + whole-word marquee wordmark), 404 (You BROKE. misregistered composition plus REBUILD settle-and-route, slim chrome)
+- Sections: Hero (arch + interactive name + tagline rule + veil exit), TransitionStatements (vertical accumulation with full-word whisper echoes, themed surfaces; tighter compact cut below sm), About (reading reveal + meta row), Experience (org timeline + spine), Skills as Toolkit (two marquee emblem rows under the Toolkit eyebrow, content-width closing rule), Certifications (four-row disclosure stack with in-place PNG proof and independent Verify links), Projects (drifting carousel of real artwork cards) + ProjectPanel (lazy chunk with theme-relative preview matte), Pieces of Me (fragment instrument + section-scale wall manifesto + printed guidance inscription + full-bleed notes wall, theme-following), Contact (footer: contact grid + icon-name social rows + small live Bangalore IST clock + resume row + whole-word marquee wordmark), 404 (You BROKE. misregistered composition plus REBUILD settle-and-route, slim chrome)
 
 ## Shadows & Elevation (UNDECIDED)
 

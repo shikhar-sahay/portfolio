@@ -108,7 +108,7 @@
 - [x] Scroll progress indicator (accent hairline)
 - [x] Scroll-driven animation foundation (one progress per scene, ranges end at 1.0)
 - [x] Keyboard navigation (focusable controls, carousel arrow keys)
-- [x] Mobile nav pattern (quiet row, no hamburger needed)
+- [x] Mobile nav pattern (disclosure menu below md with Escape handling)
 
 ### Design Decisions Needed (resolved during implementation)
 
@@ -133,11 +133,11 @@
 
 ### Tasks
 
-- [x] Project data structure (`src/content/projects.ts`: kind, name, role, stack, metrics, links, visual key)
-- [x] Populated with 5 artifacts (3 real, honeypot, this site)
+- [x] Project data structure (`src/content/projects.ts`: name, description, stack, truthful links, artwork metadata)
+- [x] Populated with 5 owner-supplied artifacts in final order (Papers by CodeChef, Hawk3ye, HolmesKit, This Site, RT-ENSS) with real Live/GitHub actions
 - [x] Infinite drifting carousel (drag/swipe/arrows/keyboard, grid-exact wrap)
 - [ ] Project detail views (decided: details live in the resume; no modals)
-- [x] SVG preview motifs (resolution-independent, no image cost)
+- [x] Real project artwork (`src/assets/projects/`, per-image contain or cover, `next/image`)
 - [ ] No filter/tag system (decided: unnecessary at 5 items)
 - [x] Mobile touch/swipe works for carousel
 
@@ -192,8 +192,8 @@
 
 ### Tasks
 
-- [x] Curated content (8 fragments with voice captions in `src/content/personality.ts`)
-- [x] Fragment instrument section (inverted panel, not a hobbies list)
+- [x] Curated content (5 provisional fragments with voice captions in `src/content/personality.ts`)
+- [x] Fragment instrument section (five-button instrument with fixed word column, not a hobbies list)
 - [x] Hover, focus, click/tap micro-interactions (keyboard accessible, aria-live)
 
 ### Design Decisions Needed
@@ -261,9 +261,9 @@
 - [ ] Real-device testing (open)
 - [x] No layout shift sources found (fixed display sizes, blur placeholder, uniform slots)
 - [x] Loading states (blur placeholder, carousel skeleton, session loader)
-- [x] Real owner links wired (email, socials, Drive resume, cert verifications, real resume PDF; project URLs still pending)
-- [x] SEO metadata basic set (title, description, OG/Twitter cards, robots) + favicon
-- [ ] OG image, JSON-LD, custom 404, print stylesheet (open)
+- [x] Real owner links wired (email, socials, Drive resume, cert verifications, real resume PDF, real project Live/GitHub links)
+- [x] SEO metadata basic set (title, description, OG/Twitter cards, robots) + favicon + genuine 404 scene
+- [ ] OG image, JSON-LD, print stylesheet (open; 404 scene exists)
 
 ### Exit Criteria
 
@@ -320,7 +320,7 @@ Studied 2026-09-06 against the current build. No code, no copy, no assets commit
 
 - [ ] **Experience imagery:** one image per org on the timeline side opposite its text (image or org name hyperlinked). Needs art direction: photo vs logo vs contextual image, size/crop, alternation discipline, mobile stacking, busyness risk. Recommendation pending owner review of options.
 - [x] **Merge Security Tools into Frameworks:** IMPLEMENTED 2026-09-09 per DECISIONS.md #46 (Security Tooling row deleted; Nmap plus Wireshark moved into renamed "Technologies & Tools"; CrowdStrike Falcon, Veritas, Beelzebub remain Experience-context only).
-- [x] **Certification prominence:** IMPLEMENTED v4.9 as the credential-ledger direction (own chapter, hairline rows, featured first credential, boxed Verify links, mask-wipe progression).
+- [x] **Certification redesign:** IMPLEMENTED per DECISIONS.md #47 and #48 (compact four-row disclosure stack with in-place PNG proof, vermilion holder, independent Verify links).
 - [ ] **Opening interaction:** something interactive during the ~1.6s initialization that is not a fake loader (must stay session-aware, reduced-motion-safe, and hand into the hero). Recommendation pending owner review of options.
 - [ ] **Pieces of Me detail stories:** clicking a fragment reveals an owner-supplied story below the chooser and above the wall (replace vs accumulate, transition, height, keyboard, deep-linking open). Owner supplies all text; nothing invented. Recommendation pending owner review of options.
 

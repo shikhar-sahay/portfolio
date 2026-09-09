@@ -18,8 +18,8 @@ A directed long-scroll experience that feels personal, cinematic, and technicall
 3. **Statements bridge:** one vertical composition traveling upward with scroll, deliberately themed (paper plus ink in light, warm charcoal plus cream in dark). Three thoughts share the ride with emphasis following distance from center while inactive thoughts persist as dimmed history; each row carries a cropped full-word echo at whisper element opacity and the rows cascade diagonally, so the full viewport reads as composition; the finale holds its frame into About.
 4. **About:** word-by-word reading reveal plus a small meta row (based in, studying, otherwise).
 5. **Experience:** org-grouped timeline (Cyber Defenders, Recipharm, GDG On Campus, CodeChef-VIT Student Chapter, Skilledity, Team Shade) on a mathematically centered spine with a scroll-drawn accent fill and diamond markers.
-6. **Toolkit:** one navigational destination with the Skills emblems (three drifting marquee rows of golden emblems with real monochrome technology marks: 19 of 23, ink monograms where no genuine mark exists, no proficiency levels) plus the Certifications ledger chapter (eyebrow, serif lede, hairline rows, featured first credential, boxed Verify links), rows arriving with a scroll mask wipe.
-7. **Projects:** infinite drifting carousel (auto until first touch, then manual forever), drag/swipe/arrows/keyboard, five artifact cards with SVG preview motifs and inert placeholder links.
+6. **Toolkit:** one navigational destination with the Skills emblems (two drifting marquee rows of golden emblems with real monochrome technology marks, ink monograms where no genuine mark exists, no proficiency levels) plus the Certifications disclosure chapter (eyebrow, serif lede, four equal-weight compact rows, boxed Verify links, in-place certificate reveal), rows arriving with a scroll mask wipe.
+7. **Projects:** infinite drifting carousel (auto until first touch, then manual forever), drag/swipe/arrows/keyboard, five artifact cards with real owner-supplied artwork and truthful Live/GitHub actions.
 8. **Pieces of Me:** theme-following chapter with five provisional fragments (buttons, keyboard accessible), a static wide Notes Wall manifesto, and a full-bleed spatial notes wall for notes, composer, replies, and discovery controls. Captions are voice lines, not factual claims.
 9. **Footer:** compact contact grid (six icon plus name social rows with real brand marks pairing six arrow-marked page links), small live Bangalore IST clock below Email, slim resume row (Drive view plus local download), and a closing SHIKHAR SAHAY marquee that leans as one object with a cursor-following vermilion sheen (zero cost at idle).
 
@@ -61,8 +61,7 @@ src/
 │   │                       #   ProjectPanel (lazy chunk), Personality (Pieces of Me),
 │   │                       #   NotesWall (open surface), FooterClock (tiny IST island),
 │   │                       #   Contact (footer), FooterWordmark
-│   └── ui/                 # InteractiveLetters, TechLogo, Reveal, WordReveal,
-│                           #   Counter, InView, CopyText
+│   └── ui/                 # InteractiveLetters, TechLogo, Reveal, WordReveal
 ├── content/                # Typed data modules: profile, sections, projects,
 │                           #   experience, systems, personality, wall, techLogos, channelGlyphs
 └── hooks/                  # useMountedReducedMotion (hydration-safe reduced-motion flag)
@@ -80,7 +79,7 @@ docs/                       # Design system, architecture, animation, content, p
 
 ## Performance philosophy
 
-Performance is a hard requirement. Server Components by default, one small lazy chunk (`ProjectPanel`), compositor-only animation (transform/opacity/clip-path), single rAF loops gated by pointer presence or viewport visibility, static-first build. Budget: 150 kB First Load JS; current ~160 kB (see `docs/PERFORMANCE.md` for the measured state and reclaim options).
+Performance is a hard requirement. Server Components by default, one small lazy chunk (`ProjectPanel`), compositor-only animation (transform/opacity/clip-path), single rAF loops gated by pointer presence or viewport visibility, static-first build. Budget: 150 kB First Load JS; current 165 kB (see `docs/PERFORMANCE.md` for the measured state and reclaim options).
 
 ## Persistence and backend status
 
@@ -98,9 +97,9 @@ There is no analytics or contact form backend. The notes wall exposes API routes
 
 - Contact links: email, GitHub, LinkedIn, Instagram, Medium, X, Spotify, and Drive resume are real and wired; the Discord username is stored in profile data but not rendered (no public URL exists)
 - Resume PDF is the real owner-supplied file (Drive link remains canonical for viewing)
-- Project Live/GitHub/Case study links (`#` in `src/content/projects.ts`)
+- Project Live/GitHub links are real and wired
 - Skilledity Social Media Management Intern: no dates or summary supplied
-- Four skills keep monogram emblems (SQL, Nmap, CrowdStrike Falcon, Beelzebub: no genuine CC0 mark found)
+- Two skills keep monogram emblems (SQL, Nmap: no genuine CC0 mark found)
 - All copy is provisional until the owner approves it
 
 Placeholders never navigate: client components swallow the click, server components render plain text, every placeholder carries a "coming soon" label.
