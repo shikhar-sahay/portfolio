@@ -187,6 +187,10 @@ There is no `.github/` directory and no Lighthouse CI, bundle gate, or deploy pi
 
 - Production build: 165 kB First Load JS, route chunk 77.9 kB, unchanged. The carousel takeover-intent rework adds only branching on the existing drag accumulator (comments plus threshold logic, no new state, no new listeners), and the Toolkit rule unification is class-only markup. No dependency or recurring runtime work was added.
 
+## v5.7 Status (2026-09-09)
+
+- Production build: 165 kB First Load JS, route chunk 78.2 kB. The responsive-system pass adds CSS media-query rules, a height-aware bridge compact flag, and smaller mobile spacing values. No dependency, new client component, new image, or recurring runtime loop was added.
+
 ## v4.5 Status (2026-09-05)
 
 - First Load JS: still ~153 kB against the 150 kB budget. The opening-architecture rework (overlap, crossfade windows, mask direction) added no measurable JS.

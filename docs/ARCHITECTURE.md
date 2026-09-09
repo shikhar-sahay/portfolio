@@ -90,7 +90,7 @@ There is no `src/lib/`, `src/types/`, `src/styles/`, `src/components/effects/`, 
 ### Component Categories (FINALIZED)
 
 1. **UI primitives**: `InteractiveLetters` (pointer spring field), `TechLogo` (monochrome brand marks), `Reveal` (in-view rise), `WordReveal` (scroll reading reveal)
-2. **Sections**: Hero, TransitionStatements, About, Experience, Skills (Toolkit anchor), Certifications (disclosure stack inside Toolkit), Projects (+ lazy `ProjectPanel`), Personality (Pieces of Me), Contact (footer with the `FooterClock` island). Each owns its scroll choreography; no shared timeline.
+2. **Sections**: Hero, TransitionStatements, About, Experience, Skills (Toolkit anchor), Certifications (disclosure stack inside Toolkit), Projects (+ lazy `ProjectPanel`), Personality (Pieces of Me), Contact (footer with the `FooterClock` island). Each owns its scroll choreography; no shared timeline. Hero and TransitionStatements share responsive handoff assumptions through CSS classes and one Motion scroll progress, with short landscape handled by media query rather than a new component.
 3. **Layout**: Opening (session loader), SiteNav (progress hairline, tuck/reveal, active section, theme toggle, mobile disclosure menu), ThemeToggle
 4. **Not found**: `not-found.tsx` (genuine 404 route; misregistered BROKE. composition, REBUILD settles letters then routes home; reuses ThemeToggle)
 5. **Hooks**: `useMountedReducedMotion`: the single hydration-safe reduced-motion flag every client component gates on

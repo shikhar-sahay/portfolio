@@ -1075,3 +1075,24 @@ Do not make significant design/architecture decisions without documenting them h
 **Alternatives Considered:** Globally darkening border tokens (rejected: restyles dark without owner review); per-component inline color-mix styles (rejected: repeats identical washes across files, utilities centralize); the channel-variable token migration (rejected in #39: needs its own owner-approved pass); pure-black borders (rejected: kills the paper subtlety); leaving the invisible hero handoff and spine base as-is (rejected: they are choreography, not decoration).
 
 **Impact:** First Load JS unchanged at 165 kB. No new dependencies. CSS only, no new client state. Verified light at 1440/1280/1024/820/430/390/375/360 with judged screenshots (Experience, About, Toolkit, Projects, Contact, hero), dark at 1440/390 with computed-style parity plus a judged Experience screenshot, zero horizontal overflow, no new console errors.
+
+---
+
+### 55. Mobile Responsive System Stabilization (EXPERIMENTAL polish)
+
+**Decision:** Fix the mobile and short-landscape responsive architecture without redesigning desktop.
+
+1. The statements bridge now gates the whole moving stack with the bridge surface opacity. Because the section overlaps the final hero viewport, child rows could previously be present in the lower landing viewport before the sticky bridge had actually begun. The stack opacity prevents BREAK or REBUILD from leaking into first load, while BUILD starts readable as soon as the bridge takes over.
+2. Compact statement choreography now applies to both narrow portrait viewports and short landscape viewports. It uses a 155svh bridge, tighter travel, quieter inactive rows, smaller mobile verb type, and a nearly immediate handoff fade. The strongest sampled state progresses BUILD, then BREAK, then REBUILD across 360, 375, 390, 430, 844 by 390, 820, 1024, 1280, and 1440.
+3. Short landscape viewports below lg get a separate hero composition: identity left, restrained arch right, compact metadata, hidden scroll cue, and a nav surface. The full desktop nav row starts at lg, so tablet and phone landscape views keep the disclosure menu instead of drawing links across the portrait.
+4. Section spacing is tuned by transition for mobile: About, Experience, Toolkit, Certifications, Projects, Pieces of Me, Notes Wall, and Contact lose accidental mobile dead air; md and up keep the existing broader chapter rhythm.
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-09-09
+
+**Rationale:** The failure was structural, not only visual. The bridge overlap put later statement rows in the landing viewport, width-only compact logic ignored short-wide screens, and desktop section padding leaked into mobile continuity. The fix uses viewport height and orientation where those are the actual variables.
+
+**Alternatives Considered:** Removing the hero and bridge overlap (rejected: it is the desktop handoff mechanism); reducing every section's padding globally (rejected: each transition has different content density); forcing desktop nav into tablet landscape (rejected: it crosses the hero image and becomes hard to read); adding a new animation dependency (rejected: Motion plus CSS already solve it).
+
+**Impact:** No new dependencies and no new client components. One additional media-query strategy lives in `globals.css`; the bridge reuses its existing Motion progress. Build size unchanged in local checks.

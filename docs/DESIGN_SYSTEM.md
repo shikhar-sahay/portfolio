@@ -147,7 +147,8 @@ The portrait is never a rectangle beside text and never an avatar. It is an **ed
 
 - Below lg: single column, portrait (capped 300-380px) above the name, both centered; name never wraps (`whitespace-nowrap`); sticky frame clips horizontally, body clips globally, so the bleed never scrolls
 - lg and up: two-column composition with type/arch interlock; face-safe at every width
-- Nav stays a quiet horizontal row at all widths (labels are short enough not to require a hamburger)
+- Short landscape viewports below lg use a deliberate two-column compact composition: identity left, restrained arch right, a hidden scroll cue, and a paper nav surface so the menu and theme control never sit illegibly over the photograph
+- Nav shows the six-link row from lg up. Below lg it uses the disclosure menu, including tablets and short landscape phones where the full row would collide with the hero
 - No horizontal overflow (`overflow-x: clip` on body; verified 0px at 1920/1440/768/375)
 
 ### Mobile-First Principles (FINALIZED)
@@ -268,6 +269,7 @@ This file will evolve as design decisions are finalized. Each section should be 
 - **Notes Wall intro plus spatial field:** the manifesto sits above the field as a normal wide section intro and uses the full content measure at desktop. The wall remains a full-bleed editorial field of human traces, with dotted field, vignette, restrained cream/ink note treatments, small vermilion pins, a printed guidance inscription near the initial upper-left view, plain count status, and compact Leave a note, Latest, Random, Center controls. Light and dark themes use the same token system rather than a dark-only treatment.
 - **Contact threshold removed:** Contact arrives through whitespace. The footer keeps only its internal resume and credit rules.
 - **Late chapter spacing:** mobile and tablet rhythm is tighter around Experience, Toolkit, Certifications, Projects, and Pieces of Me; desktop keeps the broader editorial breath. Notes Wall into Contact is intentionally short whitespace.
+- **Responsive continuity pass:** the hero to statements bridge now gates the overlapped statement stack until the hero handoff, so landing screens do not show premature BREAK or REBUILD. Mobile spacing is tuned per transition rather than globally, with desktop spacing restored from md upward.
 
 ## v5.0 Additions (EXPERIMENTAL, 2026-09-07)
 
