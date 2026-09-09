@@ -189,15 +189,15 @@ export const fragments: Fragment[] = [
 
 Five provisional fragments, each a tonal word plus a voice caption: Writing, Music, Football, Rabbit Holes, Communities. The prior expanded set is intentionally removed. There are no writing links, no external profiles, no fragment-specific graphics, and no new routes. Fragment selection is local component state only.
 
-### Mosaic statement (EXPERIMENTAL copy, owner meaning preserved)
+### Notes Wall intro (EXPERIMENTAL copy, owner meaning preserved)
 
-Inside the wall field, a personal lede establishes why the surface exists: "I am a mosaic of everyone I have ever known. If they are a piece of me, they deserve to be a piece of this place too." The phrase "this place" stays serif italic. A hint line follows: "Drag to look around. Leave a note, or just see what people have left behind. Be kind: everything here is public."
+Above the wall field, a wide static section intro establishes why the surface exists: "I am a mosaic of everyone I have ever known. If they are a piece of me, they deserve to be a piece of this place too." The phrase "this place" stays serif italic. Operational guidance belongs inside the wall UI, not in the manifesto.
 
 ### Notes wall model (`src/content/wall.ts`, API under `src/app/api/notes/`)
 
 Visitor marks are not owner content and never sync anywhere except through the wall API. Notes carry id, world coordinates, display name, message, timestamp, style variant, owner flag, reply count, and one-level replies; replies carry id, note id, name, message, timestamp. Limits: names 24 chars, messages 140, replies 100, 10 notes and 20 replies per IP per hour, 4 KB payloads. Rendering is plain text nodes only. Seeds are neutral `Guest NN` sample notes plus one labeled Shikhar owner note, never fabricated testimonials from real people.
 
-Persistence is PostgreSQL through `@neondatabase/serverless`, configured by server-only `DATABASE_URL`. Schema lives in `db/001_wall_notes.sql`. Missing database configuration returns 503 from the API and the UI shows seed notes with "database setup pending"; it does not silently write to memory in production. `WALL_ADMIN_SECRET` protects the moderation hide endpoint.
+Persistence is PostgreSQL through `@neondatabase/serverless`, configured by server-only `DATABASE_URL`. Schema lives in `db/001_wall_notes.sql`. Missing database configuration returns 503 from the API; the visible wall status remains a plain note count. `WALL_ADMIN_SECRET` protects the moderation hide endpoint.
 
 Presentation (not content, lives in `NotesWall.tsx`): deterministic tilt and restrained widths derive from note ids; tilt, width, and variant are display-only. The wall uses a practical large coordinate range rather than a visible finite canvas. (The older geometric-glyph stamp wall, `MarkWall.tsx`, was deleted in v4.7; no glyph system exists.)
 

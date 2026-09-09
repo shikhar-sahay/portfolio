@@ -147,7 +147,7 @@ The name as a slow infinite marquee (two identical groups, -50% loop, pauses on 
 
 ### Notes wall (`NotesWall.tsx`, spatial field v5.4)
 
-- Full-bleed viewport-width field (no box, no visible world boundary): dotted field plus vignette only. The mosaic manifesto, notes, composer, and discovery controls share the same spatial surface. Pan is direct manipulation: pointer drag writes a camera transform through rAF (no React state during pan); wheel always scrolls the page, never the wall; touch keeps vertical page scroll (`touch-pan-y`); arrow keys pan when focused.
+- Full-bleed viewport-width field (no box, no visible world boundary): dotted field plus vignette only. The manifesto sits above the wall as a static section intro; notes, composer, and discovery controls share the spatial surface. Pan is direct manipulation: pointer drag writes a camera transform through rAF (no React state during pan); wheel always scrolls the page, never the wall; touch keeps vertical page scroll (`touch-pan-y`); arrow keys pan when focused.
 - Discovery controls: Latest and Random fly the camera to the matching persisted top-level note and open it; Center returns to the viewport-appropriate initial camera; Leave a note opens the composer. Flights use a short 620ms ease-out camera move and jump immediately under reduced motion.
 - Cards rest tilted (deterministic per id) and straighten plus lift on hover and keyboard focus (500ms expo; instant under reduced motion); placed notes arrive with a short fade-rise settle. Composing shows a cursor-following placement ghost written straight to the DOM (no re-renders). No continuous animation anywhere.
 - Virtualized: only notes near the viewport render (capped at 150); visibility recomputes on pan end and data change, never per frame. API reads can use viewport bounds so the persistent store can scale beyond the initial seed set.
@@ -155,10 +155,6 @@ The name as a slow infinite marquee (two identical groups, -50% loop, pauses on 
 ### Footer clock (`FooterClock.tsx`; the Control Center panel is deleted, see DECISIONS.md #44)
 
 - A small living detail below the Email action: second-precision Bangalore IST, no motion of its own. Refreshes every second. Hydration-safe placeholder on first paint.
-
-### Footer threshold (`FooterThreshold.tsx`, see DECISIONS.md #46)
-
-- The one deliberate closing line: a centered 80 percent hairline with a seated vermilion diamond. Draws once left to right on entry (1.2s expo; diamond fades in at 0.55s), `once: true`, transform plus opacity only. Static finished line under reduced motion. This is the single exception to the no-divider rule, allowed because the footer is terminal state, not narrative section.
 
 ### Theme crossfade
 
@@ -181,7 +177,7 @@ The name as a slow infinite marquee (two identical groups, -50% loop, pauses on 
 - Statements: static stacked block (no pin, no overlap pull-up).
 - Carousel: native scroll row, instant arrows.
 - Footer: static fitted wordmark, no marquee.
-- Pieces of Me, footer clock, footer threshold, timeline: instant state changes; the clock renders and the threshold renders finished (time itself is not motion).
+- Pieces of Me, footer clock, timeline: instant state changes; the clock renders without animated treatment (time itself is not motion).
 - Global CSS collapses all animation/transition durations; `useMountedReducedMotion` gates every client branch post-mount so SSR and hydration markup match.
 - Verified via `reducedMotion: 'reduce'` emulation: no hydration errors, complete static page.
 

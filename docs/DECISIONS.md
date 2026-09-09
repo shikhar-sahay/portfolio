@@ -958,7 +958,7 @@ Do not make significant design/architecture decisions without documenting them h
 1. Project links opt out of carousel pointer capture and click suppression through an explicit interactive marker. The carousel still supports card drag and still suppresses accidental link activation after real drags. A centered low-opacity hairline now closes the Projects control row without restoring full-width section dividers.
 2. Pieces of Me is reduced to five provisional fragments: Writing, Music, Football, Rabbit Holes, Communities. The selector rebalances as a five-item instrument, with the selected word and micro-subheading interaction preserved.
 3. Notes persistence moves from in-memory storage to Postgres through `@neondatabase/serverless`. The schema lives in `db/001_wall_notes.sql`, uses one `wall_notes` table with nullable `parent_id` for one-level replies, visible/hidden moderation state, persisted coordinates, seed rows, and indexes for latest, viewport reads, and replies.
-4. Missing `DATABASE_URL` is an explicit setup state: API routes return 503, and the UI shows seed notes with database setup pending. There is no silent memory fallback in production.
+4. Missing `DATABASE_URL` is an explicit API setup state: routes return 503. The visible wall status was later simplified to a plain count in #50. There is no silent memory fallback in production.
 5. The wall presentation is rebuilt as one full-bleed spatial field: manifesto, notes, composer, and controls live in the same world. The field keeps normal page scroll, direct panning, keyboard arrow panning, short camera flights for Latest and Random, a viewport-aware Center action, and instant behavior under reduced motion.
 6. Seed content is neutral `Guest NN` sample material plus one Shikhar owner note. It is not presented as real testimonials from named people.
 7. One-level replies remain implemented because the Postgres model supports them cleanly without deeper nesting or a social-media side panel.
@@ -972,3 +972,22 @@ Do not make significant design/architecture decisions without documenting them h
 **Alternatives Considered:** Disabling carousel drag (rejected: loses the intended interaction); fake click handlers for links (rejected: semantic anchors must remain); localStorage or in-memory persistence (rejected: not durable); Redis/KV primary storage (rejected: relational notes and replies fit Postgres better); wheel zoom (rejected: long-scroll page should preserve normal scrolling); deeply nested replies (rejected: outside the portfolio scale).
 
 **Impact:** First Load JS measured at 166 kB. One server-side dependency was added: `@neondatabase/serverless`. Client wall work remains event-gated, with no wheel hijack, no idle wall animation, and a 150-note render cap.
+
+---
+
+### 50. Toolkit Closing Rule, Wall Intro, Contact Threshold Removal (EXPERIMENTAL polish)
+
+**Decision:** Four small visual corrections.
+
+1. Toolkit gets a content-width 1px ink hairline after the Technologies & Tools carousel. It uses element opacity and no diamond, matching the local carousel rhythm without becoming a section divider.
+2. The footer threshold line plus centered vermilion diamond is removed. Contact now arrives through whitespace; footer-internal resume and credit rules remain.
+3. The Notes Wall manifesto moves out of the transformed coordinate world into a normal wide static section intro above the wall. The dotted field, notes, panning, persistence, replies, placement, and discovery controls remain intact.
+4. The visible wall status is simplified to a plain uppercase note count. Database architecture and API error behavior do not change.
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-09-09
+
+**Rationale:** The Toolkit instrument needed local closure after the second carousel. The Contact threshold over-explained the footer entrance. The manifesto reads better in the site's section-intro grammar, while the wall can stay focused on interaction.
+
+**Alternatives Considered:** Reusing the old Toolkit border utility (rejected after browser inspection showed the rule was not visible); keeping a footer threshold because #46 allowed it (rejected by owner direction); leaving setup status text for local development (rejected because production persistence is now confirmed).
