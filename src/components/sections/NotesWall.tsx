@@ -459,7 +459,7 @@ export function NotesWall() {
   const countText = `${total} NOTES`;
 
   return (
-    <div className="mt-[12vh]">
+    <div className="mt-[9vh] md:mt-[12vh]">
       <div className="mx-auto max-w-6xl">
         <p className="flex items-center gap-3 text-micro uppercase tracking-[0.16em] text-accent">
           <span className="inline-block h-px w-10 bg-accent" aria-hidden="true" />
@@ -480,7 +480,7 @@ export function NotesWall() {
         tabIndex={0}
         onKeyDown={onKeyDown}
         onPointerDown={onPointerDown}
-        className={`wall-dots relative left-1/2 h-[86vh] min-h-[620px] w-screen -translate-x-1/2 touch-pan-y select-none overflow-hidden ${
+        className={`wall-dots relative left-1/2 h-[78vh] min-h-[560px] w-screen -translate-x-1/2 touch-pan-y select-none overflow-hidden md:h-[86vh] md:min-h-[620px] ${
           composing ? 'cursor-crosshair' : 'cursor-grab active:cursor-grabbing'
         }`}
       >

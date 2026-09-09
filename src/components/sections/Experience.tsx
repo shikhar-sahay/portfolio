@@ -38,7 +38,7 @@ export function Experience() {
     <section
       id="experience"
       aria-label="Experience"
-      className="theme-fade bg-paper px-5 pb-[10vh] pt-[12vh] sm:px-10 md:py-[14vh]"
+      className="theme-fade bg-paper px-5 pb-[9vh] pt-[10vh] sm:px-10 md:py-[14vh]"
     >
       <div className="mx-auto max-w-6xl">
         <motion.p
@@ -61,7 +61,7 @@ export function Experience() {
         />
 
         {/* The timeline */}
-        <div ref={listRef} className="relative mt-[10vh]">
+        <div ref={listRef} className="relative mt-[8vh] md:mt-[10vh]">
           {/* Spine: base hairline plus the accent fill that draws with scroll.
               Both are 1px wide and shifted by half their width, so the axis
               sits exactly on the container midpoint and the fill passes
@@ -82,7 +82,7 @@ export function Experience() {
             />
           </div>
 
-          <ol className="space-y-[11vh] lg:space-y-[13vh]">
+          <ol className="space-y-[9vh] md:space-y-[11vh] lg:space-y-[13vh]">
             {orgTimeline.map((entry, i) => (
               <OrgBlock key={entry.org} entry={entry} index={i} reveal={reveal} reduce={reduce} />
             ))}

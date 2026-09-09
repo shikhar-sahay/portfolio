@@ -17,7 +17,7 @@ export function Personality() {
     <section
       id="pieces-of-me"
       aria-label="Pieces of Me"
-      className="theme-fade relative overflow-hidden bg-paper px-5 pb-[8vh] pt-[12vh] text-ink sm:px-10 md:pb-[10vh] md:pt-[16vh]"
+      className="theme-fade relative overflow-hidden bg-paper px-5 pb-[6vh] pt-[10vh] text-ink sm:px-10 md:pb-[10vh] md:pt-[16vh]"
     >
       {/* Theme-following section: paper surface in light, warm charcoal in
           dark, like every other chapter. No fixed panel treatment. */}
@@ -36,7 +36,7 @@ export function Personality() {
             desktop) must never resize the button column, or hovering
             between fragments reflows the buttons under the cursor and the
             active state chases itself. Width depends on viewport only. */}
-        <div className="mt-[10vh] grid items-end gap-12 lg:grid-cols-[minmax(0,1fr)_30rem]">
+        <div className="mt-[8vh] grid items-end gap-10 md:mt-[10vh] md:gap-12 lg:grid-cols-[minmax(0,1fr)_30rem]">
           {/* Fragment selector */}
           <ul className="grid gap-2.5 sm:grid-cols-5 lg:flex lg:flex-wrap" role="list">
             {fragments.map((f, i) => (

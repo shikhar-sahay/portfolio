@@ -16,7 +16,7 @@ export function Contact() {
     <footer
       id="contact"
       aria-label="Contact and footer"
-      className="theme-fade bg-paper pt-[14vh] sm:px-10"
+      className="theme-fade bg-paper pt-[10vh] sm:px-10 md:pt-[14vh]"
     >
       <div className="mx-auto max-w-6xl px-5 sm:px-0">
         <Reveal>
@@ -79,7 +79,7 @@ export function Contact() {
 
         {/* Resume moment, one slim row */}
         <Reveal delay={0.08}>
-          <div className="border-ink/15 lm-line-soft mt-[9vh] flex flex-wrap items-center justify-between gap-5 border-t py-7">
+          <div className="border-ink/15 lm-line-soft mt-[7vh] flex flex-wrap items-center justify-between gap-5 border-t py-7 md:mt-[9vh]">
             <p className="font-serif text-xl italic tracking-tight text-ink sm:text-2xl">
               Everything, condensed.
             </p>
@@ -112,7 +112,7 @@ export function Contact() {
       </div>
 
       {/* Closing frame: the name, drifting, letter by letter */}
-      <div className="mt-[9vh] pb-4">
+      <div className="mt-[7vh] pb-4 md:mt-[9vh]">
         <FooterWordmark />
       </div>
 

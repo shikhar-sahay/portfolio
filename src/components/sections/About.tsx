@@ -21,7 +21,7 @@ export function About() {
     <section
       id="about"
       aria-label="About"
-      className="theme-fade relative z-10 bg-paper px-5 pb-[14vh] pt-[6vh] sm:px-10"
+      className="theme-fade relative z-10 bg-paper px-5 pb-[11vh] pt-[5vh] sm:px-10 md:pb-[14vh] md:pt-[6vh]"
     >
       <div className="mx-auto max-w-6xl">
         <motion.p
@@ -45,7 +45,7 @@ export function About() {
         <motion.div
           {...reveal}
           transition={{ duration: 0.9, delay: 0.1, ease }}
-          className="mt-[9vh] grid max-w-xl grid-cols-2 gap-6 sm:grid-cols-3"
+          className="mt-[7vh] grid max-w-xl grid-cols-2 gap-6 sm:grid-cols-3 md:mt-[9vh]"
         >
           <div className="border-ink/15 lm-line-soft border-t pt-4">
             <p className="text-micro uppercase tracking-[0.16em] text-accent">Home</p>

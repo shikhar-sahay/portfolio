@@ -207,7 +207,7 @@ export function Projects() {
     <section
       id="projects"
       aria-label="Selected projects"
-      className="theme-fade bg-paper px-5 pb-[11vh] pt-[12vh] sm:px-10 md:py-[14vh]"
+      className="theme-fade bg-paper px-5 pb-[9vh] pt-[10vh] sm:px-10 md:py-[14vh]"
     >
       <div className="mx-auto max-w-6xl">
         <Reveal>
@@ -227,7 +227,7 @@ export function Projects() {
         role="region"
         aria-roledescription="carousel"
         aria-label="Project artifacts"
-        className="mt-[7vh]"
+        className="mt-[6vh] md:mt-[7vh]"
         tabIndex={0}
         onKeyDown={onKeyDown}
       >

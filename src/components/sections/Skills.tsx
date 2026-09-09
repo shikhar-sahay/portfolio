@@ -15,7 +15,7 @@ export function Skills() {
     <section
       id="toolkit"
       aria-label="Toolkit"
-      className="theme-fade bg-paper px-5 py-[12vh] sm:px-10 md:py-[14vh]"
+      className="theme-fade bg-paper px-5 py-[10vh] sm:px-10 md:py-[14vh]"
     >
       <div className="mx-auto max-w-6xl">
         <Reveal>
@@ -30,7 +30,7 @@ export function Skills() {
           </h2>
         </Reveal>
 
-        <div className="mt-[9vh] space-y-[9vh]">
+        <div className="mt-[7vh] space-y-[7vh] md:mt-[9vh] md:space-y-[9vh]">
           {skillGroups.map((group, gi) => (
             <Reveal key={group.id} delay={gi * 0.05}>
               {/* Group rule: the same standalone 1px ink hairline the
@@ -48,7 +48,7 @@ export function Skills() {
             </Reveal>
           ))}
         </div>
-        <div aria-hidden="true" className="mt-[9vh] h-px bg-ink opacity-15" />
+        <div aria-hidden="true" className="mt-[7vh] h-px bg-ink opacity-15 md:mt-[9vh]" />
       </div>
     </section>
   );

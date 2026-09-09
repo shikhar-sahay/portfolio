@@ -40,7 +40,7 @@ export function Certifications() {
     <section
       id="certifications"
       aria-label="Certifications"
-      className="theme-fade bg-paper px-5 pb-[10vh] pt-[12vh] sm:px-10 md:pb-[12vh] md:pt-[14vh]"
+      className="theme-fade bg-paper px-5 pb-[9vh] pt-[10vh] sm:px-10 md:pb-[12vh] md:pt-[14vh]"
     >
       <div className="mx-auto max-w-6xl">
         <p className="flex items-center gap-3 text-micro uppercase tracking-[0.16em] text-muted">
@@ -54,7 +54,7 @@ export function Certifications() {
           Four credentials, collected along the way.
         </p>
 
-        <ol className="mt-[6vh]">
+        <ol className="mt-[5vh] md:mt-[6vh]">
           {certifications.map((cert, i) => (
             <CertRow
               key={cert.name}
