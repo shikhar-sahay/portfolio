@@ -68,7 +68,7 @@ export function Experience() {
               through the exact center of every marker. */}
           <div
             aria-hidden="true"
-            className="bg-ink/15 absolute bottom-0 left-[7px] top-0 w-px -translate-x-1/2 lg:left-1/2"
+            className="bg-ink/15 lm-fill-line absolute bottom-0 left-[7px] top-0 w-px -translate-x-1/2 lg:left-1/2"
           />
           {/* Positioning wrapper holds the axis; the inner line only scales,
               so Motion's inline transform can never disturb the geometry. */}
@@ -152,7 +152,7 @@ function OrgBlock({
           transition={{ duration: 0.5, ease }}
           className="block h-3 w-3"
         >
-          <span className="border-ink/40 block h-3 w-3 rotate-45 border bg-paper transition-all duration-500 ease-expo group-hover:rotate-[135deg] group-hover:scale-125 group-hover:border-accent group-hover:bg-accent" />
+          <span className="border-ink/40 lm-line block h-3 w-3 rotate-45 border bg-paper transition-all duration-500 ease-expo group-hover:rotate-[135deg] group-hover:scale-125 group-hover:border-accent group-hover:bg-accent" />
         </motion.span>
       </span>
 
@@ -205,7 +205,7 @@ function OrgBlock({
                   </p>
                 </div>
                 <p
-                  className={`group-hover/role:text-ink/80 mt-1 max-w-[58ch] text-pretty text-sm leading-relaxed text-muted transition-colors duration-500 ${
+                  className={`mt-1 max-w-[58ch] text-pretty text-sm leading-relaxed text-muted transition-colors duration-500 group-hover/role:text-ink ${
                     left ? 'lg:ml-auto' : ''
                   }`}
                 >
