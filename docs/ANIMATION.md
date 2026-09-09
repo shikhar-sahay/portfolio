@@ -126,7 +126,7 @@ Each tool is a gold-ring emblem with a monochrome core (real brand mark, or a se
 
 ### Project carousel (`Projects.tsx`, lazy `ProjectPanel.tsx`)
 
-- Single rAF loop owns a two-copy track: auto-drift 40px/s until the first interaction (drag, swipe, arrows, keys), then manual for the session. Arrow/keyboard targets tween toward the card grid (lerp 0.16); drag writes the offset directly; release settles to the grid; clicks after drags are suppressed. Offset wraps modulo one exactly measured copy width. The loop pauses offscreen via IntersectionObserver.
+- Single rAF loop owns a two-copy track: auto-drift 40px/s until a genuine takeover (a real drag or swipe past the 6px intent threshold, arrows, keys), then manual for the session. Taps and vertical scroll pass-throughs never stop the drift and leave no snap target behind, so mobile keeps the same rest drift as desktop. Arrow/keyboard targets tween toward the card grid (lerp 0.16); drag writes the offset directly; release after a real drag settles to the grid; clicks after drags are suppressed. Offset wraps modulo one exactly measured copy width. The loop pauses offscreen via IntersectionObserver.
 - Forward (Next, ArrowRight, drift) is negative offset. Project links are all real actions, so the existing drag click-suppression remains the protection against accidental navigation.
 - Cards are uniform with a fixed `next/image` artifact viewport, clamped description, and pinned stack/action rows. Artwork keeps authentic color at rest; hover adds only a tiny scale and saturation/contrast lift, and `.project-carousel-dragging` suppresses that lift while the user drags. Reduced motion: native scroll row with instant arrow scrolls and no auto-drift.
 
@@ -420,5 +420,5 @@ Motion values are now concrete (see Implemented Patterns and Token Reference abo
 
 ### Projects carousel
 
-- Single rAF loop owns the track: drift 40px/s; arrow/keyboard targets tween at lerp 0.16; drag writes offset directly; on release the offset eases to the nearest card boundary. Offset wraps modulo one copy width (two copies rendered). Loop pauses via IntersectionObserver when offscreen. Reduced motion: no loop, native overflow scroll, instant arrow scrolls.
+- Single rAF loop owns the track: drift 40px/s until a genuine takeover (real drag past the 6px intent threshold, arrows, keys); taps and scroll pass-throughs never stop it. Drag writes offset directly; on release after a real drag the offset eases to the nearest card boundary, otherwise no snap target is left behind. Offset wraps modulo one copy width (two copies rendered). Loop pauses via IntersectionObserver when offscreen. Reduced motion: no loop, native overflow scroll, instant arrow scrolls.
 - Forward (Next, ArrowRight, drift) is negative offset. One copy width is summed from slide offsetWidth plus margin (scrollWidth drops the trailing margin and would put every wrap 24px off grid). Project links are real, and click suppression after drags prevents accidental navigation on release.

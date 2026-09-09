@@ -183,6 +183,10 @@ There is no `.github/` directory and no Lighthouse CI, bundle gate, or deploy pi
 - Production build: 165 kB First Load JS, route chunk 77.9 kB. The audit pass removed three dead UI primitives (`Counter`, `CopyText`, `InView`, zero usages, 129 deleted lines) and added only a small-viewport statements variant plus one theme token swap. No dependency or recurring runtime loop was added.
 - Remaining 15 kB overage: reclaim paths are the InteractiveLetters accent tint, carousel hint state, and below-fold island boundaries. Forcing 150 kB now would cost interaction architecture, so the delta is documented, not forced.
 
+## v5.6 Status (2026-09-09)
+
+- Production build: 165 kB First Load JS, route chunk 77.9 kB, unchanged. The carousel takeover-intent rework adds only branching on the existing drag accumulator (comments plus threshold logic, no new state, no new listeners), and the Toolkit rule unification is class-only markup. No dependency or recurring runtime work was added.
+
 ## v4.5 Status (2026-09-05)
 
 - First Load JS: still ~153 kB against the 150 kB budget. The opening-architecture rework (overlap, crossfade windows, mask direction) added no measurable JS.

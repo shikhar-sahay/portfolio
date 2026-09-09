@@ -164,18 +164,18 @@ The portrait is never a rectangle beside text and never an avatar. It is an **ed
 
 The identity system beyond type and color. Used consistently so sections read as one document. Removed motifs (section index numerals, ghost numerals, `P.01` artifact tags, magnetic pull) are gone everywhere and must not return.
 
-| Motif                  | Implementation                                                             | Where                                      |
-| ---------------------- | -------------------------------------------------------------------------- | ------------------------------------------ |
-| Eyebrow labels         | Plain editorial word with 40px accent tick prefix, micro uppercase         | Every section                              |
-| Hairline rules         | 1px `border-ink/15` separators and `gap-px` module grids                   | Every section                              |
-| Diamond markers        | Small rotated squares; fill vermilion on hover                             | Timeline, module labels, cert rows         |
-| Marching dashes        | Dashed SVG edges with slow dash animation, gated by `data-inview`          | Retired with the project preview motifs; no current usage                  |
-| Serif interventions    | Instrument Serif italic for emphasis words and moments                     | Ledes, statement pronoun, personality word |
-| Outline display type   | `-webkit-text-stroke` transparent fill for second name line                | Hero                                       |
-| Arch aperture portrait | Arch mask + offset vermilion echo arch (see Imagery)                       | Hero                                       |
-| Film grain             | Static SVG turbulence overlay, ~5% opacity, fixed                          | Whole site (`.grain`)                      |
-| Drifting light field   | Two fixed radial gradients (~5% opacity), 80s transform drift              | Whole site (`.atmosphere`)                 |
-| Ink stages             | Cinematic ink fields (`#1d1915` on paper text) staying dark in both themes | Opening only                               |
+| Motif                  | Implementation                                                             | Where                                                     |
+| ---------------------- | -------------------------------------------------------------------------- | --------------------------------------------------------- |
+| Eyebrow labels         | Plain editorial word with 40px accent tick prefix, micro uppercase         | Every section                                             |
+| Hairline rules         | 1px `border-ink/15` separators and `gap-px` module grids                   | Every section                                             |
+| Diamond markers        | Small rotated squares; fill vermilion on hover                             | Timeline, module labels, cert rows                        |
+| Marching dashes        | Dashed SVG edges with slow dash animation, gated by `data-inview`          | Retired with the project preview motifs; no current usage |
+| Serif interventions    | Instrument Serif italic for emphasis words and moments                     | Ledes, statement pronoun, personality word                |
+| Outline display type   | `-webkit-text-stroke` transparent fill for second name line                | Hero                                                      |
+| Arch aperture portrait | Arch mask + offset vermilion echo arch (see Imagery)                       | Hero                                                      |
+| Film grain             | Static SVG turbulence overlay, ~5% opacity, fixed                          | Whole site (`.grain`)                                     |
+| Drifting light field   | Two fixed radial gradients (~5% opacity), 80s transform drift              | Whole site (`.atmosphere`)                                |
+| Ink stages             | Cinematic ink fields (`#1d1915` on paper text) staying dark in both themes | Opening only                                              |
 
 ## Component Inventory (as built)
 
@@ -262,7 +262,7 @@ This file will evolve as design decisions are finalized. Each section should be 
 
 - **Projects closing punctuation:** the Projects carousel keeps its existing architecture and gains one centered, low-opacity 1px hairline beneath the instruction and control row. It is local punctuation, not a restored section divider.
 - **Pieces fragments:** Pieces of Me now has five provisional fragments: Writing, Music, Football, Rabbit Holes, Communities. The selector rebalances as a clean five-item instrument, with selected state and keyboard behavior preserved.
-- **Toolkit closing punctuation:** the second Toolkit carousel now has a matching content-width 1px ink hairline after it. It closes the local instrument only, with no diamond and no section-divider role.
+- **Toolkit rule system:** all three Toolkit hairlines (above Languages, between the groups, closing after Technologies & Tools) are the identical standalone `h-px bg-ink opacity-15` rule at content width. The group rules use this instead of a border utility because color opacity modifiers do not compile against the bare `var()` tokens (see DECISIONS.md #39, #53). The system closes the local instrument only, with no diamond, no animation, and no section-divider role.
 - **Notes Wall intro plus spatial field:** the manifesto sits above the field as a normal wide section intro and uses the full content measure at desktop. The wall remains a full-bleed editorial field of human traces, with dotted field, vignette, restrained cream/ink note treatments, small vermilion pins, a printed guidance inscription near the initial upper-left view, plain count status, and compact Leave a note, Latest, Random, Center controls. Light and dark themes use the same token system rather than a dark-only treatment.
 - **Contact threshold removed:** Contact arrives through whitespace. The footer keeps only its internal resume and credit rules.
 - **Late chapter spacing:** mobile and tablet rhythm is tighter around Experience, Toolkit, Certifications, Projects, and Pieces of Me; desktop keeps the broader editorial breath. Notes Wall into Contact is intentionally short whitespace.

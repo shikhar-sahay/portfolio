@@ -1033,3 +1033,24 @@ Do not make significant design/architecture decisions without documenting them h
 **Alternatives Considered:** One global mobile spacing reduction (rejected: each transition has different density); cover fit for all artwork (rejected: crops authentic artifacts); forcing the 150 kB budget through architectural compromise (rejected: documented instead).
 
 **Impact:** First Load JS 166 to 165 kB (dead primitives removed). No new dependencies. Verified across 1440/1280/1024/820/390/360, both themes, reduced motion, touch, and keyboard, with zero console errors on the production build.
+
+---
+
+### 53. Mobile Stabilization: Carousel Takeover Intent, Unified Toolkit Rules (EXPERIMENTAL polish)
+
+**Decision:** Focused responsive pass over three reported issues plus a regression sweep, changing only what measured broken.
+
+1. Certifications mobile collision: verified already resolved in current source by #52 item 5 (the row toggle takes a full-width first flex line below sm while Verify plus the arrow share a dedicated second row). Re-verified with bounding-box overlap checks at 360/375/390/430/640/820/1024/1440, the open holder at 390, and both themes: zero overlaps, 44px touch targets, one-open-at-a-time intact, proof images uncropped. No new edit; restyling it again would be churn.
+2. Projects mobile drift root cause: the drift itself already ran on mobile (measured 40px/s at a 390 viewport), but any pointerdown stopped it permanently, and on touch screens nearly every scroll gesture starts with a pointerdown on the track. Mobile visitors therefore ended the drift before ever seeing it move. Fix: pointerdown only arms the drag; the drift stops solely on genuine takeover intent (accumulated movement past the 6px click-suppression threshold), arrows, or keys. Taps and vertical scroll pass-throughs leave no snap target, so the rest drift resumes cleanly. While dragging, the rAF loop already yields (auto is gated on not dragging), so nothing fights the finger. Verified: incidental click keeps drifting, a 160px drag stops it permanently with a grid settle, links stay real, reduced motion stays a native scroll row.
+3. Toolkit closing rule root cause: the two group rules used `border-ink/15 border-t`, which emits no border-color rule against bare `var()` tokens (binding rule from #39), so they rendered the preflight fallback gray at full strength while the closing rule rendered true ink at element opacity 0.15. Measured at 360: fallback `rgb(229, 231, 235)` at opacity 1 versus ink at 0.15, identical widths. Fix unifies all three on the identical standalone `h-px bg-ink opacity-15` hairline (the group rule moves out of the heading wrapper, spacing unchanged). Direction is deliberate: the group rules change toward the closing rule, never the reverse, because the fallback look was a compiler accident, never a token. This also removes the last opacity-modifier utilities in the Toolkit section. No diamond, no animation, carousels untouched. Verified identical computed style (1px, theme ink, 0.15, same width and x) in light and dark at 390 and 1440.
+4. Project image seams: the theme-relative preview matte from #52 item 4 verified intact in dark mode (dark surface, no light seams at fractional drift offsets). No new image or container change.
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-09-09
+
+**Rationale:** Each change answers a measured defect with the smallest mechanism: intent threshold instead of press-to-kill, one shared hairline class instead of mixed mechanisms, verification instead of rework where the previous fix holds. Desktop behavior is preserved by construction (same drift, same stop conditions for real input, same grid settle).
+
+**Alternatives Considered:** Per-certification offsets or min-widths (rejected: the flex-line construction already makes overlap impossible); resuming drift on an idle timer after takeover (rejected: breaks the desktop permanent-manual contract); matching the closing rule to the fallback gray (rejected: theme-wrong in dark mode and fragile); cover fit for all artwork (rejected before in #52: crops authentic artifacts).
+
+**Impact:** First Load JS unchanged at 165 kB (route chunk 77.9 kB). No new dependencies. No new client components. Verified 1440/1280/1024/820/390/375/360, light plus dark, reduced-motion emulation, touch-equivalent pointer flows, keyboard, zero horizontal overflow, footer clock ticking, no new console errors (local notes API 503s remain the expected no-DATABASE_URL setup state).
