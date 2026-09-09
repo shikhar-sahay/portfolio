@@ -286,6 +286,47 @@ html.dark .wall-vignette {
   animation: cue-travel 2.2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
 }
 
+/* ------------------------------------------------------------------ */
+/* Light-mode structural contrast. Opacity-modifier color utilities    */
+/* (border-ink/15, bg-ink/20, border-gold/60, ...) do not compile      */
+/* against bare var() tokens in Tailwind v3: backgrounds render        */
+/* transparent and borders fall back to the preflight gray, which      */
+/* nearly disappears on paper. These classes carry explicit color-mix  */
+/* washes scoped outside .dark, so the dark colorway keeps its         */
+/* absorbed rendering exactly. Levels: line (structural borders),      */
+/* line-soft (hairlines in whitespace), fill-line (1px bg lines),      */
+/* gold (emblem rings, the only place gold draws structure).           */
+/* ------------------------------------------------------------------ */
+
+html:not(.dark) .lm-line {
+  border-color: color-mix(in srgb, var(--ink) 30%, transparent);
+}
+html:not(.dark) .lm-line-soft {
+  border-color: color-mix(in srgb, var(--ink) 16%, transparent);
+}
+html:not(.dark) .lm-fill-line {
+  background-color: color-mix(in srgb, var(--ink) 22%, transparent);
+}
+html:not(.dark) .lm-gold {
+  border-color: color-mix(in srgb, var(--gold) 65%, transparent);
+}
+html:not(.dark) .lm-gold-hi {
+  border-color: transparent;
+}
+html:not(.dark) .group:hover .lm-gold-hi {
+  border-color: color-mix(in srgb, var(--gold) 45%, transparent);
+}
+html:not(.dark) .group:hover .lm-gold-wash {
+  background-color: color-mix(in srgb, var(--gold) 12%, transparent);
+}
+html:not(.dark) .lm-hover-accent:hover {
+  border-color: var(--accent);
+}
+html:not(.dark) .lm-nav {
+  border-color: color-mix(in srgb, var(--ink) 16%, transparent);
+  background-color: color-mix(in srgb, var(--paper) 88%, transparent);
+}
+
 /* Experience prose Easter eggs: one-shot micro animations, transform and
    opacity only. The dotted hint never shifts layout; reduced motion
    collapses every keyframe duration globally. */
