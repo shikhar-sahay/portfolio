@@ -449,7 +449,7 @@ export function NotesWall() {
         tabIndex={0}
         onKeyDown={onKeyDown}
         onPointerDown={onPointerDown}
-        className={`wall-dots relative ml-[calc(50%-50vw)] h-[86vh] min-h-[620px] w-screen touch-pan-y select-none overflow-hidden ${
+        className={`wall-dots relative left-1/2 h-[86vh] min-h-[620px] w-screen -translate-x-1/2 touch-pan-y select-none overflow-hidden ${
           composing ? 'cursor-crosshair' : 'cursor-grab active:cursor-grabbing'
         }`}
       >
