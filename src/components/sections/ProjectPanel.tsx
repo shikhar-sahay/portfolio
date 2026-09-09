@@ -10,8 +10,11 @@ import type { Project } from '@/content/projects';
 export function ProjectPanel({ project }: { project: Project }) {
   return (
     <article className="border-ink/15 hover:border-accent/70 group flex h-full flex-col border transition-colors duration-500">
-      {/* Preview surface: authentic owner-provided project artifact. */}
-      <div className="border-ink/15 relative h-52 overflow-hidden border-b bg-ink sm:h-56">
+      {/* Preview surface: authentic owner-provided project artifact. The
+          matte stays theme-relative (never the inverting ink token) so
+          letterboxed contain art and fractional drift offsets cannot flash
+          a light seam, especially in the dark colorway. */}
+      <div className="border-ink/15 relative h-52 overflow-hidden border-b bg-surface sm:h-56">
         <Image
           src={project.artwork.src}
           alt={project.artwork.alt}
