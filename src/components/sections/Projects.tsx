@@ -236,7 +236,7 @@ export function Projects() {
           className={
             reduce
               ? 'border-ink/10 lm-line-soft overflow-x-auto border-y'
-              : 'marquee-fade cursor-grab touch-pan-y select-none overflow-hidden active:cursor-grabbing'
+              : 'marquee-fade cursor-grab touch-pan-y select-none overflow-hidden px-5 active:cursor-grabbing sm:px-10'
           }
           {...(reduce
             ? {}
