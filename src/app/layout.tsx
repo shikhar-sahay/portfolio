@@ -16,22 +16,27 @@ const instrumentSerif = Instrument_Serif({
   display: 'swap',
 });
 
+const siteUrl = 'https://shikharsahay.vercel.app/';
+const siteDescription =
+  'I build things worth remembering. Explore the portfolio of Shikhar Sahay, a computer science student at VIT Vellore working across software, cybersecurity, and the web.';
+
 export const metadata: Metadata = {
-  title: 'Shikhar Sahay - Portfolio',
-  description:
-    'Portfolio of Shikhar Sahay - Computer Science student, cybersecurity enthusiast, builder of memorable things.',
+  metadataBase: new URL(siteUrl),
+  title: 'Shikhar Sahay | Portfolio',
+  description: siteDescription,
   authors: [{ name: 'Shikhar Sahay' }],
+  alternates: { canonical: '/' },
   openGraph: {
-    title: 'Shikhar Sahay - Portfolio',
-    description:
-      'Portfolio of Shikhar Sahay - Computer Science student, cybersecurity enthusiast, builder of memorable things.',
+    title: 'Shikhar Sahay | Portfolio',
+    description: siteDescription,
+    url: '/',
+    siteName: 'Shikhar Sahay',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Shikhar Sahay - Portfolio',
-    description:
-      'Portfolio of Shikhar Sahay - Computer Science student, cybersecurity enthusiast, builder of memorable things.',
+    title: 'Shikhar Sahay | Portfolio',
+    description: siteDescription,
   },
   robots: {
     index: true,
