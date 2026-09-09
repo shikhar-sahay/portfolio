@@ -1054,3 +1054,24 @@ Do not make significant design/architecture decisions without documenting them h
 **Alternatives Considered:** Per-certification offsets or min-widths (rejected: the flex-line construction already makes overlap impossible); resuming drift on an idle timer after takeover (rejected: breaks the desktop permanent-manual contract); matching the closing rule to the fallback gray (rejected: theme-wrong in dark mode and fragile); cover fit for all artwork (rejected before in #52: crops authentic artifacts).
 
 **Impact:** First Load JS unchanged at 165 kB (route chunk 77.9 kB). No new dependencies. No new client components. Verified 1440/1280/1024/820/390/375/360, light plus dark, reduced-motion emulation, touch-equivalent pointer flows, keyboard, zero horizontal overflow, footer clock ticking, no new console errors (local notes API 503s remain the expected no-DATABASE_URL setup state).
+
+---
+
+### 54. Light-Mode Structural Contrast System (EXPERIMENTAL polish)
+
+**Decision:** Light-mode legibility pass built so dark mode keeps its rendering exactly.
+
+1. Shared root cause: opacity-modifier color utilities do not compile against bare `var()` tokens (binding rule from #39). Measured consequences in the browser: every `bg-ink/xx` renders transparent (the Experience base spine, the hero meta divider, and the hero handoff hairline were invisible in both themes); every `border-ink/yy` and `border-gold/yy` falls back to the preflight gray, which nearly disappears on paper in light while reading as a deliberate light line on charcoal in dark (a large part of why dark felt like the stronger theme).
+2. Fix at the correct level: one `lm-*` utility family in `globals.css`, every rule scoped `html:not(.dark)`. Levels: `lm-line` (structural borders, ink 30 percent), `lm-line-soft` (hairlines in whitespace, ink 16 percent), `lm-fill-line` (1px background lines, ink 22 percent), `lm-gold` (emblem rings, gold 65 percent; dashed orbit transparent at rest, gold 45 percent on hover; gold 12 percent hover wash), `lm-hover-accent` (working card hover), `lm-nav` (compact header: hairline border plus 88 percent paper tint over the blur). Dark rendering verified unchanged by computed style (same gray fallbacks, same transparent spine).
+3. Section applications: Experience spine base plus diamond borders (prose hover becomes solid `group-hover/role:text-ink`, which also repairs the dead hover in dark); About meta rules to the hairline level; Toolkit rings to real gold; project frames to structural with seams and stack dividers at hairline level plus a working accent hover; footer resume and credit rules to hairline level with DOWNLOAD PDF at structural; compact nav edge plus tint; hero meta divider and handoff line restored.
+4. Deliberately untouched: `--muted` (about 4.0 to 1 on paper, the approved secondary voice), the statement serif notes at full ink (intended read), the Opening loader (theme-proof ink field, identical in both themes), the Notes Wall (solid tokens throughout), Certifications (already color-mix), mobile menu dividers (solid ink), placeholder-only `text-muted/60` paths.
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-09-09
+
+**Rationale:** One shared light-only mechanism beats per-section hacks, and light-only scoping beats globally darkening tokens (which would rebuild the approved dark look). Levels mirror the existing editorial grammar: structural borders carry weight, hairlines stay quiet, vermilion stays the only accent.
+
+**Alternatives Considered:** Globally darkening border tokens (rejected: restyles dark without owner review); per-component inline color-mix styles (rejected: repeats identical washes across files, utilities centralize); the channel-variable token migration (rejected in #39: needs its own owner-approved pass); pure-black borders (rejected: kills the paper subtlety); leaving the invisible hero handoff and spine base as-is (rejected: they are choreography, not decoration).
+
+**Impact:** First Load JS unchanged at 165 kB. No new dependencies. CSS only, no new client state. Verified light at 1440/1280/1024/820/430/390/375/360 with judged screenshots (Experience, About, Toolkit, Projects, Contact, hero), dark at 1440/390 with computed-style parity plus a judged Experience screenshot, zero horizontal overflow, no new console errors.

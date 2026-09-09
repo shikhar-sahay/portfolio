@@ -164,18 +164,18 @@ The portrait is never a rectangle beside text and never an avatar. It is an **ed
 
 The identity system beyond type and color. Used consistently so sections read as one document. Removed motifs (section index numerals, ghost numerals, `P.01` artifact tags, magnetic pull) are gone everywhere and must not return.
 
-| Motif                  | Implementation                                                             | Where                                                     |
-| ---------------------- | -------------------------------------------------------------------------- | --------------------------------------------------------- |
-| Eyebrow labels         | Plain editorial word with 40px accent tick prefix, micro uppercase         | Every section                                             |
-| Hairline rules         | 1px `border-ink/15` separators and `gap-px` module grids                   | Every section                                             |
-| Diamond markers        | Small rotated squares; fill vermilion on hover                             | Timeline, module labels, cert rows                        |
-| Marching dashes        | Dashed SVG edges with slow dash animation, gated by `data-inview`          | Retired with the project preview motifs; no current usage |
-| Serif interventions    | Instrument Serif italic for emphasis words and moments                     | Ledes, statement pronoun, personality word                |
-| Outline display type   | `-webkit-text-stroke` transparent fill for second name line                | Hero                                                      |
-| Arch aperture portrait | Arch mask + offset vermilion echo arch (see Imagery)                       | Hero                                                      |
-| Film grain             | Static SVG turbulence overlay, ~5% opacity, fixed                          | Whole site (`.grain`)                                     |
-| Drifting light field   | Two fixed radial gradients (~5% opacity), 80s transform drift              | Whole site (`.atmosphere`)                                |
-| Ink stages             | Cinematic ink fields (`#1d1915` on paper text) staying dark in both themes | Opening only                                              |
+| Motif                  | Implementation                                                                                                                                       | Where                                                     |
+| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| Eyebrow labels         | Plain editorial word with 40px accent tick prefix, micro uppercase                                                                                   | Every section                                             |
+| Hairline rules         | Structural borders at ink 30 percent plus quiet hairlines at ink 16 percent (`lm-line` / `lm-line-soft` in light; dark keeps its absorbed rendering) | Every section                                             |
+| Diamond markers        | Small rotated squares; fill vermilion on hover                                                                                                       | Timeline, module labels, cert rows                        |
+| Marching dashes        | Dashed SVG edges with slow dash animation, gated by `data-inview`                                                                                    | Retired with the project preview motifs; no current usage |
+| Serif interventions    | Instrument Serif italic for emphasis words and moments                                                                                               | Ledes, statement pronoun, personality word                |
+| Outline display type   | `-webkit-text-stroke` transparent fill for second name line                                                                                          | Hero                                                      |
+| Arch aperture portrait | Arch mask + offset vermilion echo arch (see Imagery)                                                                                                 | Hero                                                      |
+| Film grain             | Static SVG turbulence overlay, ~5% opacity, fixed                                                                                                    | Whole site (`.grain`)                                     |
+| Drifting light field   | Two fixed radial gradients (~5% opacity), 80s transform drift                                                                                        | Whole site (`.atmosphere`)                                |
+| Ink stages             | Cinematic ink fields (`#1d1915` on paper text) staying dark in both themes                                                                           | Opening only                                              |
 
 ## Component Inventory (as built)
 
@@ -254,6 +254,8 @@ This file will evolve as design decisions are finalized. Each section should be 
 - **Section boundary retirement complete:** no section root carries a full-width top divider (Projects, Pieces of Me, and the Contact footer top removed in this pass). Internal hairlines stay, including the footer internal resume-strip and credit-strip rules.
 
 ## v5.2 Additions (EXPERIMENTAL, 2026-09-09)
+
+- **Light-mode contrast system (see DECISIONS.md #54):** structural lines that must read on paper use explicit color-mix washes scoped outside dark mode (`lm-line` for card frames, buttons, diamonds, nav edge; `lm-line-soft` for hairlines in whitespace; `lm-fill-line` for 1px background lines such as the timeline spine and hero handoff; `lm-gold` for the Toolkit emblem rings with a transparent orbit at rest). Dark keeps its existing rendering exactly. Vermilion stays the only accent; no new color families, no shadows, no pure-black borders.
 
 - **Certifications holder:** the credential chapter is four equal-weight editorial rows. A closed row is a compact ledger entry. When opened, the same list item becomes one restrained vermilion holder: row header, independent boxed Verify link, quiet `CERTIFICATE` label, fine vermilion rule, and owner-supplied PNG proof. The image is capped at 880px on larger screens and uses the available mobile width; collapsed panels must keep explicit overflow and min-size guards so proof images never affect page width.
 - **Project artifact cards:** Projects use authentic owner-provided previews from `src/assets/projects/` through `next/image`, not abstract generated motifs or fake device frames. Cards keep the editorial hairline frame, fixed image viewport, title-first hierarchy, concise description, stack row, and truthful actions only. The images keep their original color at rest; hover may add only a tiny scale and color-depth lift, suppressed during drag.
