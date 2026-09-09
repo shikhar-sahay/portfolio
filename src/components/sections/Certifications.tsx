@@ -139,13 +139,10 @@ function CertRow({
             ↗
           </span>
         </a>
-        <button
-          type="button"
-          aria-label={`${open ? 'Collapse' : 'Expand'} ${cert.name} certificate`}
-          aria-expanded={open}
-          aria-controls={panelId}
+        <span
+          aria-hidden="true"
           onClick={onToggle}
-          className="flex h-11 w-11 shrink-0 items-center justify-center text-ink transition-colors duration-300 hover:text-accent focus-visible:text-accent"
+          className="flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center text-ink transition-colors duration-300 hover:text-accent"
         >
           <span
             aria-hidden="true"
@@ -155,7 +152,7 @@ function CertRow({
           >
             &rarr;
           </span>
-        </button>
+        </span>
       </div>
 
       <div
