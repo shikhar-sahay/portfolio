@@ -71,20 +71,6 @@ export function Personality() {
           </div>
         </div>
 
-        {/* Why the wall exists: the mosaic statement hands directly into
-            the shared surface below. Copy is provisional (EXPERIMENTAL)
-            until the owner approves it. */}
-        <div className="mt-[12vh] max-w-[36ch]">
-          <p className="text-lede font-medium tracking-tight text-ink">
-            I am a mosaic of everyone I have ever known. If they are a piece of me, they deserve to
-            be a piece of <em className="font-serif font-normal italic">this place</em> too.
-          </p>
-          <p className="mt-5 text-sm leading-relaxed text-muted">
-            Drag to look around. Open a note to reply, or leave one of your own. Be kind: everything
-            here is public.
-          </p>
-        </div>
-
         <NotesWall />
       </div>
     </section>

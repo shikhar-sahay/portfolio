@@ -111,7 +111,7 @@ export function validateReply(
 export const SEED_NOTES: WallNote[] = [
   {
     id: 'seed-ananya',
-    x: 520,
+    x: 280,
     y: -120,
     name: 'Ananya',
     message: 'A small note can still change the room.',
@@ -123,8 +123,8 @@ export const SEED_NOTES: WallNote[] = [
   },
   {
     id: 'seed-ritvik',
-    x: 960,
-    y: -210,
+    x: 500,
+    y: -180,
     name: 'Ritvik',
     message: 'Different perspectives make the world a lot more interesting.',
     createdAt: 0,
@@ -135,8 +135,8 @@ export const SEED_NOTES: WallNote[] = [
   },
   {
     id: 'seed-kartik',
-    x: 1480,
-    y: -130,
+    x: 250,
+    y: 80,
     name: 'Kartik',
     message: 'More people like you please.',
     createdAt: 0,
@@ -147,7 +147,7 @@ export const SEED_NOTES: WallNote[] = [
   },
   {
     id: 'seed-meera',
-    x: 360,
+    x: -20,
     y: 260,
     name: 'Meera',
     message: 'Found this through a friend. Ended up spending way too long here.',
@@ -159,7 +159,7 @@ export const SEED_NOTES: WallNote[] = [
   },
   {
     id: 'seed-shruti',
-    x: 850,
+    x: 420,
     y: 230,
     name: 'Shruti',
     message: "You're proof that it is possible to care about both the technical and human side.",
@@ -171,8 +171,8 @@ export const SEED_NOTES: WallNote[] = [
   },
   {
     id: 'seed-aarav',
-    x: 1360,
-    y: 330,
+    x: 650,
+    y: 360,
     name: 'Aarav',
     message: 'Pokemon, Beyblade, and cybersecurity on the same site? Elite taste.',
     createdAt: 0,
@@ -183,8 +183,8 @@ export const SEED_NOTES: WallNote[] = [
   },
   {
     id: 'seed-dev',
-    x: 260,
-    y: 620,
+    x: -100,
+    y: 520,
     name: 'Dev',
     message: 'Leaving my mark here.',
     createdAt: 0,
@@ -195,8 +195,8 @@ export const SEED_NOTES: WallNote[] = [
   },
   {
     id: 'seed-tanvi',
-    x: 720,
-    y: 650,
+    x: 320,
+    y: 520,
     name: 'Tanvi',
     message: 'Good ideas find good people.',
     createdAt: 0,
@@ -207,8 +207,8 @@ export const SEED_NOTES: WallNote[] = [
   },
   {
     id: 'seed-aditya',
-    x: 1030,
-    y: 590,
+    x: 620,
+    y: 600,
     name: 'Aditya',
     message: 'Keep building. The internet needs more people who build with intention.',
     createdAt: 0,
@@ -219,8 +219,8 @@ export const SEED_NOTES: WallNote[] = [
   },
   {
     id: 'seed-sameer',
-    x: 620,
-    y: 930,
+    x: 180,
+    y: 760,
     name: 'Sameer',
     message: 'Football makes life better.',
     createdAt: 0,
@@ -231,8 +231,8 @@ export const SEED_NOTES: WallNote[] = [
   },
   {
     id: 'seed-nish',
-    x: 1190,
-    y: 940,
+    x: 760,
+    y: 820,
     name: 'Nish',
     message: 'Randomly stumbled here and now I am saving this as reference.',
     createdAt: 0,
@@ -243,8 +243,8 @@ export const SEED_NOTES: WallNote[] = [
   },
   {
     id: 'seed-owner',
-    x: 180,
-    y: 980,
+    x: -260,
+    y: 740,
     name: 'Shikhar',
     message: 'Different people. Same direction.',
     createdAt: 0,
@@ -255,8 +255,8 @@ export const SEED_NOTES: WallNote[] = [
   },
   {
     id: 'seed-lina',
-    x: 1580,
-    y: 760,
+    x: 900,
+    y: 120,
     name: 'Lina',
     message: 'Strangers today, stories tomorrow.',
     createdAt: 0,
