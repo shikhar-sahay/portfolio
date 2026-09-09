@@ -1,128 +1,91 @@
-# Shikhar Sahay, Portfolio
+# Shikhar Sahay - Portfolio
 
-Personal portfolio website for Shikhar Sahay: Computer Science student (VIT Vellore, Cybersecurity major), builder across software, security, and the web.
+> I wanted a portfolio that felt less like a résumé with CSS and more like something worth exploring.
 
-A directed long-scroll experience that feels personal, cinematic, and technically crafted. Warm print-editorial identity (cream paper, warm charcoal ink, single vermilion accent), oversized Instrument type, scroll-choreographed scenes. Professional enough for recruiters and placement committees.
+This repository powers my interactive portfolio at **https://shikharsahay.vercel.app/**. It is one continuous long-scroll page: an opening signal line, an editorial hero, a statements bridge, and chapters for About, Experience, Toolkit, Projects, Pieces of Me, and Contact. Warm paper, warm charcoal ink, one vermilion accent. No hacker clichés anywhere; security is what I do, not what the site looks like.
 
-## Design and art direction
+## Why it exists
 
-- **Identity:** warm print-editorial. Cream paper `#F3EFE6`, warm charcoal ink `#1D1915`, one vermilion accent (`#BC3F1A` light, `#E0643B` dark). Instrument Sans (workhorse) plus Instrument Serif italic (accent moments). Intentional light and dark colorways with a persisted header toggle.
-- **Signature motifs:** plain editorial section eyebrows, hairline rules with accent ticks, diamond markers, film grain, slow drifting light field, outline display type, arch portrait aperture with vermilion echo.
-- **Security is content, not visual identity.** No cyberpunk, hacker, terminal, or neon aesthetics anywhere.
-- Full system: `docs/DESIGN_SYSTEM.md`.
+Recruiters should get the facts in seconds. Everyone else should get a small experience: type that reacts to the pointer, a spine that draws itself down my work history, a carousel of real projects that drifts until you grab it, and a wall where visitors leave notes that persist in Postgres. Clean at rest, extraordinary in motion.
 
-## Sections and features (top to bottom)
+## Notable interactions
 
-1. **Opening:** minimal signal-line loader on an ink field (~1.6s, once per session, skipped for returning visitors and reduced motion).
-2. **Hero:** arch portrait with pointer parallax plus an oversized two-line name that reacts letter by letter to the pointer (2D spring field, fine pointers only). The tagline keeps an accent rule: a vermilion hairline draws beneath the serif word with a diamond riding to the cursor. Scroll exit is a two-beat scene change into a surface-matched veil (the bridge owns every word, so nothing duplicates). Never zooms the face.
-3. **Statements bridge:** one vertical composition traveling upward with scroll, deliberately themed (paper plus ink in light, warm charcoal plus cream in dark). Three thoughts share the ride with emphasis following distance from center while inactive thoughts persist as dimmed history; each row carries a cropped full-word echo at whisper element opacity and the rows cascade diagonally, so the full viewport reads as composition; the finale holds its frame into About.
-4. **About:** word-by-word reading reveal plus a small meta row (based in, studying, otherwise).
-5. **Experience:** org-grouped timeline (Cyber Defenders, Recipharm, GDG On Campus, CodeChef-VIT Student Chapter, Skilledity, Team Shade) on a mathematically centered spine with a scroll-drawn accent fill and diamond markers.
-6. **Toolkit:** one navigational destination with the Skills emblems (two drifting marquee rows of golden emblems with real monochrome technology marks, ink monograms where no genuine mark exists, no proficiency levels) plus the Certifications disclosure chapter (eyebrow, serif lede, four equal-weight compact rows, boxed Verify links, in-place certificate reveal), rows arriving with a scroll mask wipe.
-7. **Projects:** infinite drifting carousel (auto until first touch, then manual forever), drag/swipe/arrows/keyboard, five artifact cards with real owner-supplied artwork and truthful Live/GitHub actions.
-8. **Pieces of Me:** theme-following chapter with five provisional fragments (buttons, keyboard accessible), a static wide Notes Wall manifesto, and a full-bleed spatial notes wall for notes, composer, replies, and discovery controls. Captions are voice lines, not factual claims.
-9. **Footer:** compact contact grid (six icon plus name social rows with real brand marks pairing six arrow-marked page links), small live Bangalore IST clock below Email, slim resume row (Drive view plus local download), and a closing SHIKHAR SAHAY marquee that leans as one object with a cursor-following vermilion sheen (zero cost at idle).
+- Pointer-reactive display type (hero letter springs, footer wordmark lean with a cursor sheen)
+- Scroll-scrubbed scenes: hero exit veil, vertical statements accumulation, timeline spine fill
+- Toolkit emblem marquees with real monochrome technology marks
+- Infinite projects carousel: slow auto-drift, drag/swipe/arrows/keyboard, truthful Live/GitHub actions
+- Certifications ledger: one-open-at-a-time rows unfolding the real certificate in place
+- Full-bleed spatial Notes Wall: pan, composer, replies, Latest/Random/Center discovery
+- Light and dark colorways with a persisted toggle; the Email action opens Gmail compose
 
-## Interaction highlights
+## Stack
 
-- Pointer-reactive display type (hero letter springs; footer wordmark leans as one object with a sheen sweep).
-- Scroll-scrubbed scene choreography with one coherent progress model per scene; every range ends at 1.0 (Motion v13 drops flat terminal segments past the last keyframe).
-- Theme toggle persisted to localStorage; intro flag in sessionStorage. The only backend is the notes wall API, backed by Postgres through `DATABASE_URL`.
+Next.js 14 (App Router), React 18, TypeScript strict, Tailwind CSS 3, Motion (the only animation library). Postgres via `@neondatabase/serverless` for the wall API only. No GSAP, Lenis, Three.js, icon libraries, or UI kits. Package manager: pnpm 9.
 
-## Tech stack
+## Project structure
 
-Next.js 14 (App Router, static export), React 18, TypeScript (strict), Tailwind CSS 3, Motion (the only animation library). No GSAP, Lenis, Three.js, icon libraries, or UI kits. Package manager: pnpm 9.
+```
+src/
+  app/            layout (metadata, theme script), page, not-found,
+                  globals.css, icon.svg, apple-icon.tsx, opengraph-image.tsx,
+                  api/notes (wall API)
+  assets/         hero portrait, project artwork, org logos, certificate PNGs
+  components/
+    layout/       Opening, SiteNav, ThemeToggle
+    sections/     Hero, TransitionStatements, About, Experience (+Eggs, +Artifacts),
+                  Skills, Certifications, Projects (+lazy ProjectPanel),
+                  Personality (Pieces of Me), NotesWall, Contact, FooterClock, FooterWordmark
+    ui/           InteractiveLetters, TechLogo, Reveal, WordReveal
+  content/        profile, sections, projects, experience, systems,
+                  personality, wall, techLogos, channelGlyphs
+  hooks/          useMountedReducedMotion
+db/               001_wall_notes.sql (wall schema)
+public/           resume.pdf
+docs/             design system, architecture, animation, content, performance,
+                  roadmap, decisions, handoff, agent protocol
+```
 
 ## Local development
 
 ```bash
 pnpm install
 pnpm dev      # start development server
-pnpm build    # production build (static)
+pnpm build    # production build
 pnpm start    # serve production build
 pnpm typecheck
 pnpm lint
 pnpm format:check
-pnpm format
 ```
 
-`pnpm typecheck`, `pnpm lint`, `pnpm format:check`, and `pnpm build` must all pass before committing.
+`pnpm typecheck`, `pnpm lint`, `pnpm format:check`, and `pnpm build` must all pass before committing. Read `AGENTS.md`, then `docs/HANDOFF.md`, before changing anything.
 
-## Project structure
+## Environment variables
 
-```
-src/
-├── app/                    # App Router: layout (metadata, theme script), page (section order), not-found (404 scene), globals.css, icon.svg
-├── assets/                 # Static imports (hero portrait; enables blur placeholders)
-├── components/
-│   ├── layout/             # Opening, SiteNav (header + progress + active section + mobile menu), ThemeToggle
-│   ├── sections/           # Hero, TransitionStatements, About, Experience, Skills (Toolkit),
-│   │                       #   Certifications (ledger chapter inside Toolkit), Projects,
-│   │                       #   ProjectPanel (lazy chunk), Personality (Pieces of Me),
-│   │                       #   NotesWall (open surface), FooterClock (tiny IST island),
-│   │                       #   Contact (footer), FooterWordmark
-│   └── ui/                 # InteractiveLetters, TechLogo, Reveal, WordReveal
-├── content/                # Typed data modules: profile, sections, projects,
-│                           #   experience, systems, personality, wall, techLogos, channelGlyphs
-└── hooks/                  # useMountedReducedMotion (hydration-safe reduced-motion flag)
-public/
-└── resume.pdf              # Real owner-supplied resume
-docs/                       # Design system, architecture, animation, content, performance,
-                            #   roadmap, decisions, handoff, agent protocol
-```
+| Variable            | Purpose                                | Required             |
+| ------------------- | -------------------------------------- | -------------------- |
+| `DATABASE_URL`      | Postgres connection for the Notes Wall | For wall persistence |
+| `WALL_ADMIN_SECRET` | Secret gating the moderation endpoint  | For moderation only  |
+
+Without `DATABASE_URL` the wall API returns a setup error and the wall shows a plain note count. Never expose either value to the client.
+
+## Notes Wall setup
+
+1. Create a Postgres database (Neon is the production fit for Vercel).
+2. Run `db/001_wall_notes.sql`.
+3. Set `DATABASE_URL` locally and in production.
+4. Set `WALL_ADMIN_SECRET` to enable moderation.
 
 ## Accessibility and reduced motion
 
-- Semantic landmarks, complete keyboard flow with visible focus rings, aria labels on icon-only controls, `aria-hidden` on duplicated carousel/marquee copies.
-- Every animation has a reduced-motion equivalent via `useMountedReducedMotion` (gated post-mount so SSR and hydration markup match): static hero (never pinned), static statement stack with residues, native-scroll carousel with instant arrows, static cert ledger, static footer wordmark, Latest jumps instead of flying, collapsed CSS motion globally.
-- Touch devices get the complete static experience (pointer interactions are fine-pointer only).
+Semantic landmarks, full keyboard flow with visible focus, aria labels on icon-only controls. Every animation has a reduced-motion equivalent via `useMountedReducedMotion` (gated post-mount so SSR and hydration match): static hero, static statement stack, native-scroll carousel, instant opens, static wordmark. Touch devices get the complete experience without pointer-only interactions.
 
-## Performance philosophy
+## Deployment
 
-Performance is a hard requirement. Server Components by default, one small lazy chunk (`ProjectPanel`), compositor-only animation (transform/opacity/clip-path), single rAF loops gated by pointer presence or viewport visibility, static-first build. Budget: 150 kB First Load JS; current 165 kB (see `docs/PERFORMANCE.md` for the measured state and reclaim options).
+Vercel, at https://shikharsahay.vercel.app/. No CI, no analytics, no custom domain yet. Budget: 150 kB First Load JS; currently 165 kB (see `docs/PERFORMANCE.md`).
 
-## Persistence and backend status
+## Current status
 
-There is no analytics or contact form backend. The notes wall exposes API routes (`/api/notes`: viewport list/create, latest, random, one-level replies, secret-gated moderation) backed by Postgres through `@neondatabase/serverless`. Browser storage holds the theme choice (localStorage) and the intro-played flag (sessionStorage). If `DATABASE_URL` is missing, the API returns a setup error and the UI keeps a plain note count.
-
-### Notes Wall Setup
-
-1. Create a Postgres database, Neon is the intended production fit for Vercel.
-2. Run `db/001_wall_notes.sql`.
-3. Set `DATABASE_URL` in local and production environments.
-4. Set `WALL_ADMIN_SECRET` to enable the protected moderation endpoint.
-5. Never expose either value to the client.
-
-## Known placeholders (owner input needed)
-
-- Contact links: email, GitHub, LinkedIn, Instagram, Medium, X, Spotify, and Drive resume are real and wired; the Discord username is stored in profile data but not rendered (no public URL exists)
-- Resume PDF is the real owner-supplied file (Drive link remains canonical for viewing)
-- Project Live/GitHub links are real and wired
-- Skilledity Social Media Management Intern: no dates or summary supplied
-- Two skills keep monogram emblems (SQL, Nmap: no genuine CC0 mark found)
-- All copy is provisional until the owner approves it
-
-Placeholders never navigate: client components swallow the click, server components render plain text, every placeholder carries a "coming soon" label.
-
-## Documentation map
-
-- `AGENTS.md` (repo root) is the canonical agent instruction set. `CLAUDE.md` points to it.
-- `docs/HANDOFF.md`: current state, the read-first/write-last sync point.
-- `docs/DESIGN_SYSTEM.md`, `docs/ARCHITECTURE.md`, `docs/ANIMATION.md`: the built system as it exists.
-- `docs/CONTENT.md`: content schemas and placeholder inventory.
-- `docs/PERFORMANCE.md`: budgets and measured state.
-- `docs/ROADMAP.md`: milestone history and what remains (signature experience, launch).
-- `docs/DECISIONS.md`: decision log with rationale.
-- `docs/PROJECT_CONTEXT.md`: person, purpose, direction.
-- `docs/AGENTS.md`: multi-agent session protocol.
-
-## Development rules that matter
-
-- `AGENTS.md` is canonical; `docs/HANDOFF.md` is the sync point. Read both before changing anything.
-- Never silently override a `FINALIZED` decision; propose via `docs/DECISIONS.md`.
-- No em dashes anywhere (copy, docs, comments, UI). No CGPA, no coordinates, no invented facts, no visible section numbering, no ghost numerals, no face zoom.
-- Server Components by default; justify every client component and every new dependency.
-- Validate visual work in a real browser (desktop + mobile, both themes, reduced motion) before claiming completion.
+Shipped and stable; copy is provisional until approved. Still open: Pieces of Me detail content, the deferred top-left identity mark, JSON-LD, Lighthouse plus real-device measurement, and the final performance QA pass. See `docs/ROADMAP.md` and `docs/HANDOFF.md`.
 
 ## License
 
