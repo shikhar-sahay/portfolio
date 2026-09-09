@@ -17,10 +17,12 @@ const AUTO_SPEED = 40; // px per second, the resting drift
  * Projects: a continuously drifting infinite carousel. The track holds two
  * copies of the row and the offset wraps modulo one copy width, so cards
  * leaving the right re-enter from the left with no seam. The drift runs
- * until the visitor touches it (drag, swipe, arrows, keys): from that
- * moment it stays manual for the session. One rAF loop owns the track and
- * pauses entirely when the carousel is offscreen. Reduced motion gets the
- * same cards in a plain native scroll row with no drift.
+ * until the visitor genuinely takes over (a real drag, swipe, arrow, or
+ * key): incidental touches such as taps or vertical scroll pass-throughs
+ * over the track never kill it, so mobile keeps the same slow rest drift
+ * as desktop. One rAF loop owns the track and pauses entirely when the
+ * carousel is offscreen. Reduced motion gets the same cards in a plain
+ * native scroll row with no drift.
  */
 export function Projects() {
   const reduce = useMountedReducedMotion();
@@ -135,7 +137,10 @@ export function Projects() {
   const onPointerDown = (e: React.PointerEvent) => {
     if ((e.target as HTMLElement).closest('[data-carousel-interactive="true"]')) return;
     const st = s.current;
-    stopAuto();
+    // Deliberately not stopping the drift here: on touch screens almost
+    // every scroll gesture starts with a pointerdown on whatever is under
+    // the finger, so killing auto on press would end the drift before the
+    // visitor ever sees it move. Only genuine drag intent stops it (below).
     st.dragging = true;
     st.lastX = e.clientX;
     st.moved = 0;
@@ -151,6 +156,11 @@ export function Projects() {
     st.lastX = e.clientX;
     st.offset += dx;
     st.moved += Math.abs(dx);
+    // A real drag or swipe takes over the carousel for the session. The
+    // threshold matches the click-suppression distance so taps and scroll
+    // jitter never count as intent. While dragging, the rAF loop already
+    // yields (auto is gated on !dragging), so nothing fights the finger.
+    if (st.moved > 6) stopAuto();
   };
 
   const endDrag = () => {
@@ -158,8 +168,14 @@ export function Projects() {
     if (!st.dragging) return;
     st.dragging = false;
     viewportRef.current?.classList.remove('project-carousel-dragging');
-    // Settle gently onto the card grid; no hard snap.
-    st.target = Math.round(st.offset / st.step) * st.step;
+    if (st.moved > 6) {
+      // Genuine drag: settle gently onto the card grid; no hard snap.
+      st.target = Math.round(st.offset / st.step) * st.step;
+    } else {
+      // Incidental touch (tap, vertical scroll pass-through): leave no
+      // snap target behind so the rest drift resumes cleanly.
+      st.target = null;
+    }
   };
 
   // A drag should not fire the links under the pointer on release.
