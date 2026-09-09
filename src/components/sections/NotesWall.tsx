@@ -92,7 +92,7 @@ export function NotesWall() {
 
   const [notes, setNotes] = useState<WallNote[]>(SEED_NOTES);
   const [total, setTotal] = useState(SEED_NOTES.length);
-  const [status, setStatus] = useState<WallStatus>('offline');
+  const [, setStatus] = useState<WallStatus>('offline');
   const [visibleIds, setVisibleIds] = useState<Set<string>>(new Set(SEED_NOTES.map(n => n.id)));
   const [openId, setOpenId] = useState<string | null>(null);
   const [composing, setComposing] = useState(false);
@@ -443,15 +443,24 @@ export function NotesWall() {
   };
 
   const rendered = notes.filter(note => visibleIds.has(note.id));
-  const statusText =
-    status === 'live'
-      ? `${total} notes`
-      : status === 'setup'
-        ? `${total} seed notes, database setup pending`
-        : `${total} seed notes, offline`;
+  const statusText = `${total} notes`;
+  const countText = `${total} NOTES`;
 
   return (
     <div className="mt-[12vh]">
+      <div className="mx-auto max-w-6xl">
+        <p className="flex items-center gap-3 text-micro uppercase tracking-[0.16em] text-accent">
+          <span className="inline-block h-px w-10 bg-accent" aria-hidden="true" />
+          The notes wall
+        </p>
+        <div className="mt-8 max-w-[34ch] text-[clamp(2.65rem,6.3vw,6rem)] font-medium leading-[0.96] tracking-tight text-ink sm:max-w-[18ch]">
+          <p>I am a mosaic of everyone I have ever known.</p>
+          <p className="mt-5">
+            If they are a piece of me, they deserve to be a piece of{' '}
+            <em className="font-serif font-normal italic">this place</em> too.
+          </p>
+        </div>
+      </div>
       <div
         ref={viewportRef}
         role="region"
@@ -472,24 +481,6 @@ export function NotesWall() {
           className="absolute left-0 top-0 z-[2] will-change-transform"
           style={{ transform: 'translate3d(0,0,0)' }}
         >
-          <div className="absolute left-[-44vw] top-[-34vh] w-[min(32rem,82vw)] sm:left-[-38vw] lg:left-[-42vw]">
-            <p className="flex items-center gap-3 text-micro uppercase tracking-[0.16em] text-accent">
-              <span className="inline-block h-px w-10 bg-accent" aria-hidden="true" />
-              The notes wall
-            </p>
-            <p className="mt-6 font-serif text-[clamp(3rem,6.5vw,5.9rem)] leading-[0.96] tracking-tight text-ink">
-              I am a mosaic of everyone I have ever known.
-            </p>
-            <p className="mt-5 max-w-[18ch] text-[clamp(1.55rem,3vw,2.45rem)] leading-tight tracking-tight text-ink">
-              If they are a piece of me, they deserve to be a piece of{' '}
-              <em className="font-serif font-normal italic">this place</em> too.
-            </p>
-            <p className="mt-6 max-w-[34ch] text-sm leading-relaxed text-muted">
-              Drag to look around. Leave a note, or just see what people have left behind. Be kind:
-              everything here is public.
-            </p>
-          </div>
-
           {rendered.map(note => (
             <button
               key={note.id}
@@ -539,6 +530,11 @@ export function NotesWall() {
           )}
         </div>
 
+        <p className="absolute left-4 top-4 z-20 max-w-[30ch] text-xs leading-relaxed text-muted sm:left-6">
+          Drag to look around. Leave a note, or just see what people have left behind. Be kind:
+          everything here is public.
+        </p>
+
         <div
           data-wall-interactive="true"
           className="absolute bottom-4 left-4 z-20 flex flex-wrap items-center gap-2 sm:left-6"
@@ -558,7 +554,7 @@ export function NotesWall() {
             Center
           </WallButton>
           <p className="border border-ink bg-paper px-3 py-2 text-micro uppercase tracking-[0.14em] text-muted">
-            {statusText}
+            {countText}
           </p>
         </div>
 
