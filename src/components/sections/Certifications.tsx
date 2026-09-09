@@ -105,7 +105,7 @@ function CertRow({
           aria-expanded={open}
           aria-controls={panelId}
           onClick={onToggle}
-          className="group flex min-w-0 flex-1 cursor-pointer items-center gap-4 text-left sm:gap-5"
+          className="group flex min-w-0 flex-[1_1_100%] cursor-pointer items-center gap-4 text-left sm:flex-1 sm:gap-5"
         >
           <span
             aria-hidden="true"
