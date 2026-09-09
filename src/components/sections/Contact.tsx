@@ -152,6 +152,8 @@ function EmailLink() {
   return (
     <a
       href={href}
+      target="_blank"
+      rel="noopener noreferrer"
       className="group mt-7 inline-flex items-baseline gap-3 text-lg font-medium tracking-tight text-ink transition-colors duration-300 hover:text-accent sm:text-xl"
     >
       <span aria-hidden="true" className="text-accent">

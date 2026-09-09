@@ -18,7 +18,7 @@ export const profile = {
   // Real destinations, owner-supplied. Resume PDF file still pending.
   // Typed as generic strings so placeholder checks keep working.
   links: {
-    email: 'mailto:sahay.shikhar@gmail.com',
+    email: 'https://mail.google.com/mail/?view=cm&fs=1&to=sahay.shikhar@gmail.com',
     github: 'https://github.com/shikhar-sahay',
     linkedin: 'https://www.linkedin.com/in/shikharsahay/',
     resume: 'https://drive.google.com/file/d/1P3cGQWpB5S2DN4xn9gbVk5xg1QGcFrJ8/view?usp=sharing',
