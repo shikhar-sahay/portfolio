@@ -991,3 +991,22 @@ Do not make significant design/architecture decisions without documenting them h
 **Rationale:** The Toolkit instrument needed local closure after the second carousel. The Contact threshold over-explained the footer entrance. The manifesto reads better in the site's section-intro grammar, while the wall can stay focused on interaction.
 
 **Alternatives Considered:** Reusing the old Toolkit border utility (rejected after browser inspection showed the rule was not visible); keeping a footer threshold because #46 allowed it (rejected by owner direction); leaving setup status text for local development (rejected because production persistence is now confirmed).
+
+---
+
+### 51. Notes Wall Width, Inscription, Seed Wipe, and Spacing Tune (EXPERIMENTAL polish)
+
+**Decision:** Follow-up polish after production persistence was confirmed.
+
+1. The Notes Wall manifesto keeps the normal section-intro grammar but uses the full content measure with responsive type, so the first sentence fits on one line at wide desktop widths where space allows.
+2. The operational guidance stays exactly "Drag to look around. Leave a note, or just see what people have left behind. Be kind: everything here is public." with line breaks in the rendered inscription. It lives inside the transformed world layer near the initial upper-left view, with stronger emphasis on the first sentence and serif italic emphasis on "Be kind:".
+3. Temporary seed/demo notes are removed from `src/content/wall.ts`; `db/001_wall_notes.sql` keeps schema and indexes only and no longer inserts seed rows. This does not delete live visitor notes.
+4. Late chapter spacing is tightened selectively: mobile breath is reduced around Experience, Toolkit, Certifications, Projects, and Pieces of Me, while desktop retains the established cinematic rhythm. The Notes Wall to Contact handoff is now short, intentional whitespace rather than a long void.
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-09-09
+
+**Rationale:** The live database no longer needs local demo content, and the wall reads better when the manifesto behaves like a major section intro while the guidance feels printed into the field. The spacing tune addresses actual measured dead air instead of applying one global reduction.
+
+**Alternatives Considered:** Keeping seed rows for local demos (rejected now that production has real persistence); anchoring guidance as fixed overlay text (rejected because it should belong to the spatial field); hardcoded line breaks in the manifesto (rejected to preserve responsive typography); globally reducing section padding (rejected because each transition has different content density).

@@ -16,7 +16,7 @@
 
 | Metric                              | Target         | Measured (2026-09-07, `next build`)                                                                                           |
 | ----------------------------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| **Initial JS (First Load)**         | < 150KB        | 166 kB (16 kB over; see reclaim below; Postgres wall rebuild measured 2026-09-09)                                             |
+| **Initial JS (First Load)**         | < 150KB        | 165 kB (15 kB over; see reclaim below; notes wall polish measured 2026-09-09)                                                 |
 | **LCP (Largest Contentful Paint)**  | < 2.5s         | Not measured (no Lighthouse run yet)                                                                                          |
 | **CLS (Cumulative Layout Shift)**   | < 0.1          | Not measured                                                                                                                  |
 | **INP (Interaction to Next Paint)** | < 200ms        | Not measured                                                                                                                  |
@@ -119,7 +119,7 @@
 
 - [ ] Lighthouse audit (target 90+ performance, 95+ accessibility)
 - [ ] Core Web Vitals measurement (LCP, CLS, INP)
-- [ ] Bundle size back under 150 kB initial JS (currently ~163 kB)
+- [ ] Bundle size back under 150 kB initial JS (currently 165 kB)
 - [ ] Vercel deployment + custom domain + production measurement
 - [ ] Real-device checks (iOS Safari, Chrome Android)
 - [ ] Cross-browser checks (Firefox, Safari, Edge; only Chromium verified so far)
@@ -174,8 +174,9 @@ There is no `.github/` directory and no Lighthouse CI, bundle gate, or deploy pi
 
 ## v5.4 Status (2026-09-09)
 
-- Production build: 166 kB First Load JS, route chunk 78.5 kB. The notes wall now uses `@neondatabase/serverless` in route handlers only, adds no client database credentials, and keeps API routes at 0 B in the app build report.
+- Production build: 165 kB First Load JS, route chunk 77.9 kB. The notes wall now uses `@neondatabase/serverless` in route handlers only, adds no client database credentials, and keeps API routes at 0 B in the app build report.
 - Runtime changes stay event-gated: wall panning writes one transform through rAF only while dragging or during short camera flights; visible notes are capped at 150 and recomputed after movement or data changes. No wheel hijack and no idle wall animation were added.
+- Follow-up polish removes local seed/demo notes and SQL seed inserts. The guidance inscription, static manifesto width change, and spacing tune add no dependencies and no recurring runtime work.
 
 ## v4.5 Status (2026-09-05)
 

@@ -263,8 +263,9 @@ This file will evolve as design decisions are finalized. Each section should be 
 - **Projects closing punctuation:** the Projects carousel keeps its existing architecture and gains one centered, low-opacity 1px hairline beneath the instruction and control row. It is local punctuation, not a restored section divider.
 - **Pieces fragments:** Pieces of Me now has five provisional fragments: Writing, Music, Football, Rabbit Holes, Communities. The selector rebalances as a clean five-item instrument, with selected state and keyboard behavior preserved.
 - **Toolkit closing punctuation:** the second Toolkit carousel now has a matching content-width 1px ink hairline after it. It closes the local instrument only, with no diamond and no section-divider role.
-- **Notes Wall intro plus spatial field:** the manifesto sits above the field as a normal wide section intro. The wall remains a full-bleed editorial field of human traces, with dotted field, vignette, restrained cream/ink note treatments, small vermilion pins, plain count status, and compact Leave a note, Latest, Random, Center controls. Light and dark themes use the same token system rather than a dark-only treatment.
+- **Notes Wall intro plus spatial field:** the manifesto sits above the field as a normal wide section intro and uses the full content measure at desktop. The wall remains a full-bleed editorial field of human traces, with dotted field, vignette, restrained cream/ink note treatments, small vermilion pins, a printed guidance inscription near the initial upper-left view, plain count status, and compact Leave a note, Latest, Random, Center controls. Light and dark themes use the same token system rather than a dark-only treatment.
 - **Contact threshold removed:** Contact arrives through whitespace. The footer keeps only its internal resume and credit rules.
+- **Late chapter spacing:** mobile and tablet rhythm is tighter around Experience, Toolkit, Certifications, Projects, and Pieces of Me; desktop keeps the broader editorial breath. Notes Wall into Contact is intentionally short whitespace.
 
 ## v5.0 Additions (EXPERIMENTAL, 2026-09-07)
 

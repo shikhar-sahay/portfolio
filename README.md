@@ -84,7 +84,7 @@ Performance is a hard requirement. Server Components by default, one small lazy 
 
 ## Persistence and backend status
 
-There is no analytics or contact form backend. The notes wall exposes API routes (`/api/notes`: viewport list/create, latest, random, one-level replies, secret-gated moderation) backed by Postgres through `@neondatabase/serverless`. Browser storage holds the theme choice (localStorage) and the intro-played flag (sessionStorage). If `DATABASE_URL` is missing, the API returns a setup error and the UI shows seed notes only.
+There is no analytics or contact form backend. The notes wall exposes API routes (`/api/notes`: viewport list/create, latest, random, one-level replies, secret-gated moderation) backed by Postgres through `@neondatabase/serverless`. Browser storage holds the theme choice (localStorage) and the intro-played flag (sessionStorage). If `DATABASE_URL` is missing, the API returns a setup error and the UI keeps a plain note count.
 
 ### Notes Wall Setup
 

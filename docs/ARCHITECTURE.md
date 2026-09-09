@@ -76,7 +76,7 @@ src/
 └── content/               # Typed data: profile, sections, projects, experience,
                              #   systems, personality, wall, techLogos, channelGlyphs
 db/
-└── 001_wall_notes.sql      # Postgres schema and seed notes for the wall
+└── 001_wall_notes.sql      # Postgres schema and indexes for the wall
 public/
 └── resume.pdf             # Real owner-supplied resume (committed 2026-09-06)
 ```

@@ -195,7 +195,7 @@ Above the wall field, a wide static section intro establishes why the surface ex
 
 ### Notes wall model (`src/content/wall.ts`, API under `src/app/api/notes/`)
 
-Visitor marks are not owner content and never sync anywhere except through the wall API. Notes carry id, world coordinates, display name, message, timestamp, style variant, owner flag, reply count, and one-level replies; replies carry id, note id, name, message, timestamp. Limits: names 24 chars, messages 140, replies 100, 10 notes and 20 replies per IP per hour, 4 KB payloads. Rendering is plain text nodes only. Seeds are neutral `Guest NN` sample notes plus one labeled Shikhar owner note, never fabricated testimonials from real people.
+Visitor marks are not owner content and never sync anywhere except through the wall API. Notes carry id, world coordinates, display name, message, timestamp, style variant, owner flag, reply count, and one-level replies; replies carry id, note id, name, message, timestamp. Limits: names 24 chars, messages 140, replies 100, 10 notes and 20 replies per IP per hour, 4 KB payloads. Rendering is plain text nodes only. Temporary seed notes have been removed, and setup SQL no longer inserts demo rows.
 
 Persistence is PostgreSQL through `@neondatabase/serverless`, configured by server-only `DATABASE_URL`. Schema lives in `db/001_wall_notes.sql`. Missing database configuration returns 503 from the API; the visible wall status remains a plain note count. `WALL_ADMIN_SECRET` protects the moderation hide endpoint.
 
