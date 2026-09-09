@@ -1,6 +1,6 @@
 'use client';
 
-import { Fragment, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { motion, useScroll, useSpring } from 'motion/react';
 import { useMountedReducedMotion } from '@/hooks/useMountedReducedMotion';
 import { WordReveal } from '@/components/ui/WordReveal';
@@ -38,7 +38,7 @@ export function Experience() {
     <section
       id="experience"
       aria-label="Experience"
-      className="theme-fade bg-paper px-5 py-[14vh] sm:px-10"
+      className="theme-fade bg-paper px-5 pb-[10vh] pt-[12vh] sm:px-10 md:py-[14vh]"
     >
       <div className="mx-auto max-w-6xl">
         <motion.p
