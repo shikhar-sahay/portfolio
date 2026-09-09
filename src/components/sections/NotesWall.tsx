@@ -465,9 +465,9 @@ export function NotesWall() {
           <span className="inline-block h-px w-10 bg-accent" aria-hidden="true" />
           The notes wall
         </p>
-        <div className="mt-8 max-w-6xl text-[clamp(2.35rem,4.25vw,3.8rem)] font-medium leading-[0.98] tracking-tight text-ink">
+        <div className="mt-8 max-w-[24ch] text-lede font-medium tracking-tight text-ink">
           <p>I am a mosaic of everyone I have ever known.</p>
-          <p className="mt-5">
+          <p className="mt-4">
             If they are a piece of me, they deserve to be a piece of{' '}
             <em className="font-serif font-normal italic">this place</em> too.
           </p>
@@ -495,15 +495,12 @@ export function NotesWall() {
         >
           <p
             ref={guideRef}
-            className="absolute left-14 top-[4.5rem] w-[25ch] text-sm leading-[1.65] tracking-[0.01em] text-muted sm:w-[28ch] sm:text-[0.95rem]"
+            className="absolute left-14 top-[4.5rem] w-[26ch] text-[0.95rem] leading-[1.7] tracking-[0.01em] text-muted [text-wrap:pretty] sm:w-[30ch] sm:text-base"
           >
             <strong className="font-medium text-ink">Drag to look around.</strong> Leave a note, or
-            just
-            <br />
-            see what people have left behind.{' '}
-            <em className="font-serif font-normal italic text-ink">Be kind:</em>
-            <br />
-            everything here is public.
+            just see what people have left behind.{' '}
+            <em className="font-serif font-normal italic text-ink">Be kind:</em> everything here is
+            public.
           </p>
 
           {rendered.map(note => (
