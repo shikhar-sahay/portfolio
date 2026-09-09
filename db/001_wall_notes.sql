@@ -29,20 +29,3 @@ create index if not exists wall_notes_visible_top_xy_idx
 create index if not exists wall_notes_visible_replies_idx
   on wall_notes (parent_id, created_at asc)
   where parent_id is not null and moderation_state = 'visible';
-
-insert into wall_notes (id, author_name, body, x, y, variant, is_owner, created_at)
-values
-  ('seed-ananya', 'Guest 01', 'A small note can still change the room.', 280, -120, 0, false, '2026-09-01T08:00:00Z'),
-  ('seed-ritvik', 'Guest 02', 'Different perspectives make the world more interesting.', 500, -180, 1, false, '2026-09-01T08:01:00Z'),
-  ('seed-kartik', 'Guest 03', 'Leave the place kinder than you found it.', 250, 80, 0, false, '2026-09-01T08:02:00Z'),
-  ('seed-meera', 'Guest 04', 'Found a corner worth remembering.', -20, 260, 1, false, '2026-09-01T08:03:00Z'),
-  ('seed-shruti', 'Guest 05', 'Technical things feel better with a human edge.', 420, 230, 0, false, '2026-09-01T08:04:00Z'),
-  ('seed-aarav', 'Guest 06', 'Football, old toys, and security notes can share a table.', 650, 360, 1, false, '2026-09-01T08:05:00Z'),
-  ('seed-dev', 'Guest 07', 'Leaving a mark, quietly.', -100, 520, 0, false, '2026-09-01T08:06:00Z'),
-  ('seed-tanvi', 'Guest 08', 'Good ideas find good people.', 320, 520, 1, false, '2026-09-01T08:07:00Z'),
-  ('seed-aditya', 'Guest 09', 'Keep building with intention.', 620, 600, 0, false, '2026-09-01T08:08:00Z'),
-  ('seed-sameer', 'Guest 10', 'Some weekends are worth losing to a match.', 180, 760, 0, false, '2026-09-01T08:09:00Z'),
-  ('seed-nish', 'Guest 11', 'Saving this as a reference for later.', 760, 820, 1, false, '2026-09-01T08:10:00Z'),
-  ('seed-owner', 'Shikhar', 'Different people. Same direction.', -260, 740, 2, true, '2026-09-01T08:11:00Z'),
-  ('seed-lina', 'Guest 12', 'Strangers today, stories tomorrow.', 900, 120, 1, false, '2026-09-01T08:12:00Z')
-on conflict (id) do nothing;

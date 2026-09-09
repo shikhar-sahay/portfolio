@@ -78,6 +78,7 @@ export function NotesWall() {
   const reduce = useMountedReducedMotion();
   const viewportRef = useRef<HTMLDivElement>(null);
   const worldRef = useRef<HTMLDivElement>(null);
+  const guideRef = useRef<HTMLParagraphElement>(null);
   const drag = useRef<{
     sx: number;
     sy: number;
@@ -119,6 +120,16 @@ export function NotesWall() {
     const x = Math.round(viewport.clientWidth / 2 - current.x);
     const y = Math.round(viewport.clientHeight / 2 - current.y);
     world.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+  }, []);
+
+  const placeGuide = useCallback(() => {
+    const viewport = viewportRef.current;
+    const guide = guideRef.current;
+    if (!viewport || !guide) return;
+    const gutter = Math.max(56, (viewport.clientWidth - 1152) / 2 + 56);
+    const top = viewport.clientWidth < 640 ? 74 : 72;
+    guide.style.left = `${Math.round(camera.current.x - viewport.clientWidth / 2 + gutter)}px`;
+    guide.style.top = `${Math.round(camera.current.y - viewport.clientHeight / 2 + top)}px`;
   }, []);
 
   const viewportBounds = useCallback(() => {
@@ -193,10 +204,11 @@ export function NotesWall() {
       camera.current = homeCamera(width);
       cameraInitialized.current = true;
     }
+    placeGuide();
     applyCamera();
     refreshVisible();
     void fetchVisibleNotes();
-  }, [applyCamera, fetchVisibleNotes, refreshVisible]);
+  }, [applyCamera, fetchVisibleNotes, placeGuide, refreshVisible]);
 
   useEffect(() => {
     refreshVisible();
@@ -453,7 +465,7 @@ export function NotesWall() {
           <span className="inline-block h-px w-10 bg-accent" aria-hidden="true" />
           The notes wall
         </p>
-        <div className="mt-8 max-w-[24ch] text-lede font-medium tracking-tight text-ink">
+        <div className="mt-8 max-w-6xl text-[clamp(2.35rem,4.25vw,3.8rem)] font-medium leading-[0.98] tracking-tight text-ink">
           <p>I am a mosaic of everyone I have ever known.</p>
           <p className="mt-5">
             If they are a piece of me, they deserve to be a piece of{' '}
@@ -481,6 +493,19 @@ export function NotesWall() {
           className="absolute left-0 top-0 z-[2] will-change-transform"
           style={{ transform: 'translate3d(0,0,0)' }}
         >
+          <p
+            ref={guideRef}
+            className="absolute left-14 top-[4.5rem] w-[25ch] text-sm leading-[1.65] tracking-[0.01em] text-muted sm:w-[28ch] sm:text-[0.95rem]"
+          >
+            <strong className="font-medium text-ink">Drag to look around.</strong> Leave a note, or
+            just
+            <br />
+            see what people have left behind.{' '}
+            <em className="font-serif font-normal italic text-ink">Be kind:</em>
+            <br />
+            everything here is public.
+          </p>
+
           {rendered.map(note => (
             <button
               key={note.id}
@@ -529,11 +554,6 @@ export function NotesWall() {
             />
           )}
         </div>
-
-        <p className="absolute left-4 top-4 z-20 max-w-[30ch] text-xs leading-relaxed text-muted sm:left-6">
-          Drag to look around. Leave a note, or just see what people have left behind. Be kind:
-          everything here is public.
-        </p>
 
         <div
           data-wall-interactive="true"
