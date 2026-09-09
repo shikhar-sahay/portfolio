@@ -33,7 +33,13 @@ export function Skills() {
         <div className="mt-[9vh] space-y-[9vh]">
           {skillGroups.map((group, gi) => (
             <Reveal key={group.id} delay={gi * 0.05}>
-              <div className="border-ink/15 border-t pt-5">
+              {/* Group rule: the same standalone 1px ink hairline the
+                  closing rule below uses, so all three read as one system.
+                  (A border-t with an opacity modifier renders as the
+                  fallback border color against var() tokens, never the
+                  intended quiet ink.) */}
+              <div aria-hidden="true" className="h-px bg-ink opacity-15" />
+              <div className="pt-5">
                 <h3 className="font-serif text-3xl italic tracking-tight text-ink sm:text-4xl">
                   {group.label}
                 </h3>
