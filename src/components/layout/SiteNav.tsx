@@ -86,7 +86,7 @@ export function SiteNav() {
         className="fixed inset-x-0 top-0 z-50"
       >
         <div
-          className={`transition-all duration-500 ease-expo ${
+          className={`nav-shell transition-all duration-500 ease-expo ${
             compact
               ? 'border-ink/10 bg-paper/85 lm-nav border-b backdrop-blur-md'
               : 'border-b border-transparent bg-transparent'
@@ -111,7 +111,7 @@ export function SiteNav() {
             {/* Six destinations fit one premium row from md up; below
                 that the links collapse into a disclosure menu instead of
                 shrinking into unreadable text. */}
-            <ul className="hidden items-center gap-4 md:flex lg:gap-6 xl:gap-7">
+            <ul className="hidden items-center gap-4 lg:flex lg:gap-6 xl:gap-7">
               {navLinks.map(link => {
                 const section = sections.find(s => `#${s.id}` === link.href);
                 const isActive = section?.id === active.id;
@@ -134,7 +134,7 @@ export function SiteNav() {
                 <ThemeToggle />
               </li>
             </ul>
-            <div className="flex items-center gap-4 md:hidden">
+            <div className="flex items-center gap-4 lg:hidden">
               <button
                 type="button"
                 onClick={() => setMenuOpen(v => !v)}
@@ -152,7 +152,7 @@ export function SiteNav() {
               id="mobile-nav"
               aria-label="Mobile"
               ref={panelRef}
-              className="border-t border-ink bg-paper px-4 py-2 md:hidden"
+              className="border-t border-ink bg-paper px-4 py-2 lg:hidden"
             >
               <ul className="divide-y divide-ink">
                 {navLinks.map(link => {

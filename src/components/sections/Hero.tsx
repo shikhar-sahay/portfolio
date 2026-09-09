@@ -167,14 +167,14 @@ export function Hero() {
   return (
     <div ref={sceneRef} id="top" className={`relative ${reduceMotion ? '' : 'h-[120svh]'}`}>
       <div
-        className={`${reduceMotion ? '' : 'sticky top-0'} flex ${reduceMotion ? 'min-h-dvh' : 'h-dvh'} items-center overflow-hidden`}
+        className={`hero-sticky ${reduceMotion ? '' : 'sticky top-0'} flex ${reduceMotion ? 'min-h-dvh' : 'h-dvh'} items-center overflow-hidden`}
       >
-        <div className="grid w-full grid-cols-1 items-center gap-10 px-5 pb-16 pt-24 sm:px-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-4 lg:pb-0 lg:pt-0">
+        <div className="hero-grid grid w-full grid-cols-1 items-center gap-10 px-5 pb-16 pt-24 sm:px-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-4 lg:pb-0 lg:pt-0">
           {/* Identity column: min-w-0 so the oversized name can bleed over
               the portrait instead of squeezing the grid. */}
-          <div className="relative z-10 order-2 min-w-0 lg:order-1">
+          <div className="hero-identity relative z-10 order-2 min-w-0 lg:order-1">
             <motion.h1
-              className="select-none overflow-visible text-display uppercase"
+              className="hero-title select-none overflow-visible text-display uppercase"
               {...scroll({ scale: nameScale })}
             >
               <motion.span
@@ -211,14 +211,14 @@ export function Hero() {
                 {...scroll({ opacity: metaO })}
                 className="anim-fade-rise mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 [animation-delay:calc(var(--intro-delay)+0.8s)]"
               >
-                <p className="text-micro uppercase tracking-[0.16em] text-muted">
+                <p className="hero-meta-item text-micro uppercase tracking-[0.16em] text-muted">
                   CS @ VIT Vellore
                 </p>
                 <span
                   className="bg-ink/25 lm-fill-line hidden h-3 w-px sm:block"
                   aria-hidden="true"
                 />
-                <p className="text-micro uppercase tracking-[0.16em] text-muted">
+                <p className="hero-meta-item text-micro uppercase tracking-[0.16em] text-muted">
                   Software, security &amp; the web
                 </p>
               </motion.div>
@@ -229,7 +229,7 @@ export function Hero() {
               looks into the type, and the column nudges right on small
               desktop widths so the name never reaches the face. */}
           <motion.div
-            className="group/arch relative z-0 order-1 mx-auto w-[64vw] max-w-[300px] sm:w-[42vw] sm:max-w-[380px] lg:order-2 lg:mx-0 lg:ml-[3vw] lg:w-full lg:max-w-[460px] lg:justify-self-center xl:ml-0"
+            className="hero-arch group/arch relative z-0 order-1 mx-auto w-[64vw] max-w-[300px] sm:w-[42vw] sm:max-w-[380px] lg:order-2 lg:mx-0 lg:ml-[3vw] lg:w-full lg:max-w-[460px] lg:justify-self-center xl:ml-0"
             {...scroll({
               x: archX,
               y: archY,
@@ -275,7 +275,7 @@ export function Hero() {
         />
         {/* Scroll invitation */}
         <motion.div
-          className="absolute bottom-6 right-5 z-10 sm:right-10"
+          className="hero-cue absolute bottom-6 right-5 z-10 sm:right-10"
           {...scroll({ opacity: cueO })}
         >
           <div className="anim-fade-in flex flex-col items-center gap-3 [animation-delay:calc(var(--intro-delay)+1.4s)]">

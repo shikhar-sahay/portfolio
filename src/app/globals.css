@@ -397,6 +397,62 @@ html:not(.dark) .lm-nav {
   -webkit-text-stroke: 1.5px var(--ink);
 }
 
+@media (orientation: landscape) and (max-height: 560px) and (max-width: 1023px) {
+  .hero-grid {
+    grid-template-columns: minmax(0, 1.1fr) minmax(150px, 0.8fr);
+    gap: clamp(1rem, 3vw, 2rem);
+    padding: max(4.75rem, env(safe-area-inset-top)) 1.25rem 1.25rem;
+  }
+
+  .hero-identity {
+    order: 1;
+  }
+
+  .hero-arch {
+    order: 2;
+    width: min(22vw, calc(100svh - 7.25rem)) !important;
+    max-width: 200px !important;
+    min-width: 150px;
+    margin-inline: auto 0;
+  }
+
+  .hero-title {
+    font-size: clamp(3rem, 13vh, 5.6rem);
+    line-height: 0.86;
+  }
+
+  .hero-title + div > p {
+    max-width: 24ch;
+    margin-top: 1rem;
+    font-size: clamp(1.1rem, 4.6vh, 1.45rem);
+    line-height: 1.12;
+  }
+
+  .hero-title + div > div {
+    margin-top: 1rem;
+    gap: 0.5rem 1rem;
+  }
+
+  .hero-meta-item {
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+  }
+
+  .hero-cue {
+    display: none;
+  }
+
+  .statement-bridge {
+    height: 155svh;
+  }
+
+  .nav-shell {
+    border-bottom: 1px solid color-mix(in srgb, var(--ink) 16%, transparent);
+    background-color: color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter: blur(12px);
+  }
+}
+
 /* Light variant for the opening sequence's ink field */
 .type-outline-light {
   color: transparent;

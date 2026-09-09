@@ -52,24 +52,27 @@ function ThoughtLine({
   line,
   index,
   progress,
+  compact,
 }: {
   line: Line;
   index: number;
   progress: MotionValue<number>;
+  compact: boolean;
 }) {
   const c = line.center;
   const isFirst = index === 0;
   const isLast = index === lines.length - 1;
+  const inactiveOpacity = compact ? 0.08 : 0.22;
   const opInputs = isFirst
     ? [0, c, c + 0.28, 1]
     : isLast
       ? [0, c - 0.28, c, 1]
       : [0, c, c + 0.28, 1];
   const opOutputs = isFirst
-    ? [0, 1, 0.22, 0.22]
+    ? [1, 1, inactiveOpacity, inactiveOpacity]
     : isLast
-      ? [0.22, 0.22, 1, 1]
-      : [0.22, 1, 0.22, 0.22];
+      ? [inactiveOpacity, inactiveOpacity, 1, 1]
+      : [inactiveOpacity, 1, inactiveOpacity, inactiveOpacity];
   const opacity = useTransform(progress, opInputs, opOutputs);
   const scale = useTransform(
     progress,
@@ -92,7 +95,8 @@ function ThoughtLine({
   return (
     <motion.div
       style={{ opacity, scale }}
-      className={`relative flex h-[30svh] flex-col justify-center will-change-transform sm:h-[32vh] ${line.offsetClass}`}
+      data-verb={line.verb.slice(0, -1).toUpperCase()}
+      className={`statement-row relative flex h-[30svh] flex-col justify-center will-change-transform sm:h-[32vh] ${line.offsetClass}`}
     >
       {/* Full-word echo: the complete verb, oversized and cropped by the
           frame edge, so the full viewport reads as composition. Same word
@@ -102,7 +106,7 @@ function ThoughtLine({
           motion state, deterministic in both directions. */}
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute -right-[6vw] top-1/2 -translate-y-[30%] select-none whitespace-nowrap text-[21vw] font-semibold uppercase leading-none tracking-[-0.03em] text-ink opacity-[0.06] dark:opacity-[0.09]"
+        className="pointer-events-none absolute -right-[6vw] top-1/2 -translate-y-[30%] select-none whitespace-nowrap text-[21vw] font-semibold uppercase leading-none tracking-[-0.03em] text-ink opacity-[0.04] dark:opacity-[0.06] sm:opacity-[0.06] sm:dark:opacity-[0.09]"
       >
         {line.verb.slice(0, -1)}
       </span>
@@ -112,7 +116,7 @@ function ThoughtLine({
       >
         I
       </motion.p>
-      <p className="relative whitespace-nowrap text-[clamp(4rem,12.5vw,14rem)] font-semibold uppercase leading-[0.95] tracking-[-0.03em] text-ink">
+      <p className="relative whitespace-nowrap text-[clamp(3.7rem,13vw,14rem)] font-semibold uppercase leading-[0.95] tracking-[-0.03em] text-ink sm:text-[clamp(4rem,12.5vw,14rem)]">
         {line.verb.slice(0, -1)}
         <span className="text-accent">{line.verb.slice(-1)}</span>
       </p>
@@ -144,13 +148,14 @@ export function TransitionStatements() {
     offset: ['start start', 'end end'],
   });
 
-  // Small screens get a tighter cut of the same choreography: the type
-  // stays small while viewports stay tall, so the full travel parks each
-  // thought too high and leaves dead frame below it. Desktop values are
-  // untouched; the compact flag only ever engages below sm.
+  // Small and short-wide screens get a tighter cut of the same
+  // choreography. This is height-aware, not just width-aware, so mobile
+  // landscape cannot inherit the portrait timeline and park type offstage.
   const [compact, setCompact] = useState(false);
   useEffect(() => {
-    const mq = window.matchMedia('(max-width: 639px)');
+    const mq = window.matchMedia(
+      '(max-width: 639px), (orientation: landscape) and (max-height: 560px)'
+    );
     const update = () => setCompact(mq.matches);
     update();
     mq.addEventListener('change', update);
@@ -165,9 +170,9 @@ export function TransitionStatements() {
   // runs 165svh with a lower finale resolve so REBUILD shares the frame
   // with the About entry instead of parking above a void.
   const stackYFull = useTransform(scrollYProgress, [0, 1], ['42vh', '-40vh']);
-  const stackYCompact = useTransform(scrollYProgress, [0, 1], ['28vh', '-20vh']);
+  const stackYCompact = useTransform(scrollYProgress, [0, 1], ['30vh', '-18vh']);
   const stackY = compact ? stackYCompact : stackYFull;
-  const panelO = useTransform(scrollYProgress, [0, 0.04, 1], [0, 1, 1]);
+  const panelO = useTransform(scrollYProgress, [0, 0.005, 1], [0, 1, 1]);
 
   if (reduce) {
     return (
@@ -203,7 +208,8 @@ export function TransitionStatements() {
     <section
       ref={ref}
       aria-label="Introduction statements"
-      className="pointer-events-none relative -mt-[100dvh] h-[165svh] sm:h-[200svh]"
+      data-compact={compact ? 'true' : 'false'}
+      className="statement-bridge pointer-events-none relative -mt-[100dvh] h-[155svh] sm:h-[200svh]"
     >
       <div className="sticky top-0 h-dvh overflow-hidden">
         <motion.div
@@ -211,10 +217,19 @@ export function TransitionStatements() {
           className="theme-fade absolute inset-0 bg-paper"
           aria-hidden="true"
         />
-        <motion.div style={{ y: stackY }} className="absolute inset-0 will-change-transform">
+        <motion.div
+          style={{ y: stackY, opacity: panelO }}
+          className="absolute inset-0 will-change-transform"
+        >
           <div className="flex h-full flex-col justify-center px-5 sm:px-10">
             {lines.map((line, i) => (
-              <ThoughtLine key={line.verb} line={line} index={i} progress={scrollYProgress} />
+              <ThoughtLine
+                key={`${line.verb}-${compact ? 'compact' : 'full'}`}
+                line={line}
+                index={i}
+                progress={scrollYProgress}
+                compact={compact}
+              />
             ))}
           </div>
         </motion.div>
