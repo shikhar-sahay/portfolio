@@ -16,7 +16,7 @@
 
 | Metric                              | Target         | Measured (2026-09-07, `next build`)                                                                                           |
 | ----------------------------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| **Initial JS (First Load)**         | < 150KB        | 165 kB (15 kB over; see reclaim below; notes wall polish measured 2026-09-09)                                                 |
+| **Initial JS (First Load)**         | < 150KB        | 165 kB (15 kB over; see reclaim below; measured 2026-09-10)                                                                   |
 | **LCP (Largest Contentful Paint)**  | < 2.5s         | Not measured (no Lighthouse run yet)                                                                                          |
 | **CLS (Cumulative Layout Shift)**   | < 0.1          | Not measured                                                                                                                  |
 | **INP (Interaction to Next Paint)** | < 200ms        | Not measured                                                                                                                  |
@@ -65,7 +65,7 @@
 
 - **Static Assets:** Immutable cache keys (content hash in filename)
 - **Fonts/Images:** Long-term immutable cache via Next.js defaults
-- **ISR:** Unused (fully static export)
+- **ISR:** Unused (homepage is fully static; notes API plus generated icon/image routes render on demand)
 
 ### Third Party Scripts
 
@@ -190,6 +190,10 @@ There is no `.github/` directory and no Lighthouse CI, bundle gate, or deploy pi
 ## v5.7 Status (2026-09-09)
 
 - Production build: 165 kB First Load JS, route chunk 78.2 kB. The responsive-system pass adds CSS media-query rules, a height-aware bridge compact flag, and smaller mobile spacing values. No dependency, new client component, new image, or recurring runtime loop was added.
+
+## v5.8 Status (2026-09-10)
+
+- Production build: 165 kB First Load JS, route chunk 78.2 kB, unchanged. The metadata pass adds two edge-rendered image routes (`opengraph-image`, `apple-icon`) and swaps the mailto email link for Gmail compose: zero client JS, no new dependency, no recurring runtime work. The social preview renders server-side on demand from real site copy.
 
 ## v4.5 Status (2026-09-05)
 

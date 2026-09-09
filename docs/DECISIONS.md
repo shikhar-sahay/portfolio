@@ -1096,3 +1096,24 @@ Do not make significant design/architecture decisions without documenting them h
 **Alternatives Considered:** Removing the hero and bridge overlap (rejected: it is the desktop handoff mechanism); reducing every section's padding globally (rejected: each transition has different content density); forcing desktop nav into tablet landscape (rejected: it crosses the hero image and becomes hard to read); adding a new animation dependency (rejected: Motion plus CSS already solve it).
 
 **Impact:** No new dependencies and no new client components. One additional media-query strategy lives in `globals.css`; the bridge reuses its existing Motion progress. Build size unchanged in local checks.
+
+---
+
+### 56. Identity Metadata, Diamond Favicon, Social Preview, Gmail Compose (EXPERIMENTAL polish)
+
+**Decision:** Identity and sharing pass with no visual redesign (the top-left `S. SAHAY` mark is deliberately deferred and untouched).
+
+1. Favicon is now the vermilion diamond only: `src/app/icon.svg` is a single rotated square in the existing light accent (`#BC3F1A`), transparent field, no letters, no container. A matching opaque tile for iOS (`src/app/apple-icon.tsx`: diamond on the ink field) exists because Apple touch icons technically require full-bleed art. No PWA manifest: the site does not need one.
+2. Metadata is finalized in `layout.tsx` against the canonical production URL (`https://shikharsahay.vercel.app/` via `metadataBase`): title "Shikhar Sahay | Portfolio", the canonical description everywhere (standard, Open Graph, Twitter), canonical URL, Open Graph site name plus `website` type, and `summary_large_image` Twitter card. Icons and preview images resolve through Next.js file-convention discovery (verified in the built HTML).
+3. Social preview is an edge-rendered 1200x630 editorial card (`src/app/opengraph-image.tsx`): paper field, eyebrow tick, giant SHIKHAR SAHAY, serif-italic tagline, metadata line, vermilion diamond. Every string is real site copy; no portrait (keeps the output light and crisp), no fake data. Fonts load as TTF from the Fontsource CDN because satori cannot parse woff2. Both image routes declare `runtime = 'edge'`: the `@vercel/og` node entry crashes at import on Windows dev machines with spaces in the project path (it joins an `import.meta.url` into `fileURLToPath`), while the edge entry renders cleanly and is also the documented serving runtime on Vercel.
+4. The primary email action opens Gmail compose (`https://mail.google.com/mail/?view=cm&fs=1&to=sahay.shikhar@gmail.com`, new tab, `noopener noreferrer`) instead of invoking the OS `mailto:` handler. The visible `Email` label is unchanged and no other contact link moves.
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-09-10
+
+**Rationale:** Shared links previously resolved to a generic title plus placeholder-era description. The diamond is already the site's mark everywhere (timeline nodes, tagline rule, wordmark separators), so the favicon extends the identity instead of inventing a logo. Gmail compose matches how the owner actually receives mail; `mailto:` on a Windows browser otherwise launches Outlook.
+
+**Alternatives Considered:** Raster PNG favicon set (rejected: vector scales from tab to high-DPI with one file); portrait in the OG card (rejected: heavier output, weaker typography at small sizes); keeping `mailto:` (rejected by owner direction); a PWA manifest with maskable icons (rejected: no install use case); JSON-LD in this pass (left for the QA pass backlog).
+
+**Impact:** First Load JS unchanged at 165 kB (route chunk 78.2 kB). No new dependency (`next/og` ships with Next.js 14). Two on-demand edge routes, zero client JS, no recurring runtime work. Verified: built-HTML meta audit, live 1200x630 and 180x180 renders, Gmail compose opens a new tab with the recipient populated, 1440/390 light plus dark regression clean, no hydration warnings.

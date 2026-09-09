@@ -22,7 +22,7 @@ src/content/
 ### Rules encoded in the model
 
 - Metrics and claims come only from owner-supplied source material (55K+ users, 1.2M+ views, top 1% of 4,000+, top 3% of 2,000+, 1.8L+ rupees, DevJams 750+ participants, tens of thousands of followers, 4 to 7 member team). Academic scores in source material are never displayed anywhere on the site.
-- `profile.links` holds real destinations (mailto email, GitHub, LinkedIn, Drive resume, local resume file); `profile.socials` holds the broader set (Instagram, Medium, X, Spotify) with handles; `profile.discord` holds a username only (no public URL exists, rendered as a copy action).
+- `profile.links` holds real destinations (Gmail compose for email, GitHub, LinkedIn, Drive resume, local resume file); `profile.socials` holds the broader set (Instagram, Medium, X, Spotify) with handles; `profile.discord` holds a username only (no public URL exists, and nothing renders it: there is no Discord row anywhere on the site).
 - Certifications link to owner-supplied verification URLs (Credly, Coursera). Their owner-supplied PNG proof files map in the authoritative `systems.ts` order: CompTIA Security+, Google Cybersecurity Professional, IBM Cybersecurity Fundamentals, then Cisco Introduction to Cybersecurity.
 - Project links now point only to real owner-supplied destinations. Cards show no placeholder or fake case-study actions.
 - Pieces of Me captions are voice lines, deliberately not factual claims.
@@ -98,7 +98,7 @@ export interface Project {
   description: string;
   stack: string[]; // rendered with breakable separators
   links: { live?: string; github?: string };
-  currentLocationLabel?: string; // This Site only: "YOU'RE ALREADY HERE."
+  currentLocationLabel?: string; // Portfolio Website only: "YOU'RE ALREADY HERE."
   artwork: {
     src: StaticImageData;
     alt: string;
@@ -108,9 +108,9 @@ export interface Project {
 }
 ```
 
-Current items (5, in order): Papers by CodeChef, Hawk3ye, HolmesKit, This Site, RT-ENSS. Categories are intentionally removed from the visible card hierarchy. Papers has Live and GitHub, Hawk3ye has Live and GitHub, HolmesKit has GitHub only, This Site shows "YOU'RE ALREADY HERE." plus GitHub, and RT-ENSS has GitHub only. No project detail pages, filters, or galleries exist.
+Current items (5, in order): Papers by CodeChef, Hawk3ye, HolmesKit, Portfolio Website, RT-ENSS. Categories are intentionally removed from the visible card hierarchy. Papers has Live and GitHub, Hawk3ye has Live and GitHub, HolmesKit has GitHub only, Portfolio Website shows "YOU'RE ALREADY HERE." plus GitHub, and RT-ENSS has GitHub only. The Portfolio Website stack reads Next.js / TypeScript / TailwindCSS (Motion stays out of the displayed stack even though the site genuinely uses it). No project detail pages, filters, or galleries exist.
 
-Artwork lives in `src/assets/projects/` and is owner-supplied: `papersbackdrop.jpg`, `hawk3yebackdrop.png`, `holmeskitbackdrop.png`, `portfoliobackdrop.jpg`, and `rtenssbackdrop.jpg`. These are rendered through `next/image` without generated replacements, recoloring, grayscale treatment, mockups, or global duotone. Per-image `fit` and `position` preserve the recognizable artifact.
+Artwork lives in `src/assets/projects/` and is owner-supplied: `papersbackdrop.png`, `hawk3yebackdrop.png`, `holmeskitbackdrop.png`, `portfoliobackdrop.jpg`, and `rtenssbackdrop.png`. These are rendered through `next/image` without generated replacements, recoloring, grayscale treatment, mockups, or global duotone. Per-image `fit` and `position` preserve the recognizable artifact.
 
 Accuracy constraints: Papers by CodeChef was an existing CodeChef VIT product Shikhar helped maintain. Hawk3ye uses the rebuilt FastAPI, React, TypeScript, PostgreSQL architecture represented by the current repository. RT-ENSS is a simulation; never imply physical embedded deployment, production CAN deployment, or real-world infrastructure deployment.
 
@@ -216,13 +216,13 @@ Presentation (not content, lives in `NotesWall.tsx`): deterministic tilt and res
 
 ## Contact Content
 
-Actual model: `profile.links` (mailto email, GitHub, LinkedIn, Drive resume, local resume file), `profile.location` (Bangalore, India: home; rendered in the footer credit line and echoed by the footer clock), `profile.socials` (GitHub, LinkedIn, Instagram, Medium, X, Spotify with hrefs; handles are stored but the footer Elsewhere column renders icon plus name only), `profile.discord` (username, copy action), plus `navLinks` in `sections.ts` (About, Experience, Toolkit, Projects, Pieces of Me, Contact anchors). Placeholders that remain (project URLs) render inert with "coming soon" labels. There is no contact form, no form endpoint, and no phone number on the site.
+Actual model: `profile.links` (Gmail compose email, GitHub, LinkedIn, Drive resume, local resume file), `profile.location` (Bangalore, India: home; rendered in the footer credit line and echoed by the footer clock), `profile.socials` (GitHub, LinkedIn, Instagram, Medium, X, Spotify with hrefs; handles are stored but the footer Elsewhere column renders icon plus name only), plus `navLinks` in `sections.ts` (About, Experience, Toolkit, Projects, Pieces of Me, Contact anchors). Every rendered contact link points at a real destination; the only unrendered handle is the Discord username (no public URL exists). There is no contact form, no form endpoint, and no phone number on the site.
 
 ---
 
 ## Site Metadata
 
-Actual model: the `metadata` export in `src/app/layout.tsx` (title "Shikhar Sahay - Portfolio", description, authors, OpenGraph, Twitter card, robots) plus `src/app/icon.svg` (ink field, vermilion diamond). There is no custom OG image, no Twitter handle, no production URL, and no JSON-LD structured data yet.
+Actual model: the `metadata` export in `src/app/layout.tsx` (title "Shikhar Sahay | Portfolio", the canonical description, authors, canonical URL via `metadataBase`, OpenGraph with site name and `website` type, `summary_large_image` Twitter card, robots) plus `src/app/icon.svg` (vermilion diamond only), `src/app/apple-icon.tsx` (edge-rendered opaque diamond tile), and `src/app/opengraph-image.tsx` (edge-rendered 1200x630 editorial preview from real site copy). There is no Twitter handle and no JSON-LD structured data yet.
 
 ---
 
@@ -244,10 +244,10 @@ The following need owner input before milestones can proceed:
 | Milestone | Needed From Owner                                                                                             |
 | --------- | ------------------------------------------------------------------------------------------------------------- |
 | M1        | Copy approval (hero statement, lede wording); portrait alt text review (current: "Portrait of Shikhar Sahay") |
-| M3        | Real project links (live, GitHub, case study per project); case studies if written                            |
+| M3        | Case studies if written (project Live/GitHub links are real and wired)                                        |
 | M4        | Skilledity intern dates and facts                                                                             |
 | M5        | Nothing open (fragments and captions are in place; wall backend is an infrastructure task, not content)       |
-| M7        | Production URL, OG image (real resume PDF committed 2026-09-06; Drive link still canonical for viewing)       |
+| M7        | JSON-LD, print stylesheet (production URL canonical, OG image shipped, real resume PDF committed)             |
 
 ---
 

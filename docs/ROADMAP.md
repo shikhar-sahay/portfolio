@@ -11,9 +11,9 @@
 | 0   | Documentation & Project Foundation      | Docs, repo setup, config               | **COMPLETED**                                                          |
 | 1   | Entrance + Hero                         | Arrival experience, hero section       | **COMPLETED** (implementation; copy provisional, owner review pending) |
 | 2   | Navigation + Scroll Architecture        | Nav, smooth scroll, section structure  | **COMPLETED** (native scroll, sticky scenes; no Lenis by decision)     |
-| 3   | Selected Projects                       | Work showcase, project artifacts       | **COMPLETED** (5 artifacts; real links pending)                        |
+| 3   | Selected Projects                       | Work showcase, project artifacts       | **COMPLETED** (5 artifacts; real Live/GitHub links wired)              |
 | 4   | Experience / Journey                    | Timeline, career/education narrative   | **COMPLETED** (org timeline; Skilledity dates pending)                 |
-| 5   | Personality / Human Layer               | Interests, writing, human touches      | **COMPLETED** (fragment instrument; no backend by decision)            |
+| 5   | Personality / Human Layer               | Interests, writing, human touches      | **COMPLETED** (fragment instrument; wall is Postgres-backed)           |
 | 6   | Signature Interactive Experience        | The "holy shit" moment                 | NOT_STARTED (open ideation)                                            |
 | 7   | Final Polish                            | Micro-interactions, content refinement | **COMPLETED** (passes v4.2-v4.5; copy approval pending)                |
 | 8   | Performance, Accessibility & Deployment | Audits, optimization, launch           | NOT_STARTED                                                            |
@@ -134,7 +134,7 @@
 ### Tasks
 
 - [x] Project data structure (`src/content/projects.ts`: name, description, stack, truthful links, artwork metadata)
-- [x] Populated with 5 owner-supplied artifacts in final order (Papers by CodeChef, Hawk3ye, HolmesKit, This Site, RT-ENSS) with real Live/GitHub actions
+- [x] Populated with 5 owner-supplied artifacts in final order (Papers by CodeChef, Hawk3ye, HolmesKit, Portfolio Website, RT-ENSS) with real Live/GitHub actions
 - [x] Infinite drifting carousel (drag/swipe/arrows/keyboard, grid-exact wrap)
 - [ ] Project detail views (decided: details live in the resume; no modals)
 - [x] Real project artwork (`src/assets/projects/`, per-image contain or cover, `next/image`)
@@ -262,8 +262,8 @@
 - [x] No layout shift sources found (fixed display sizes, blur placeholder, uniform slots)
 - [x] Loading states (blur placeholder, carousel skeleton, session loader)
 - [x] Real owner links wired (email, socials, Drive resume, cert verifications, real resume PDF, real project Live/GitHub links)
-- [x] SEO metadata basic set (title, description, OG/Twitter cards, robots) + favicon + genuine 404 scene
-- [ ] OG image, JSON-LD, print stylesheet (open; 404 scene exists)
+- [x] SEO metadata full set (title, description, canonical, OG/Twitter cards, robots) + diamond favicon + Apple touch icon + edge-rendered OG preview + genuine 404 scene
+- [ ] JSON-LD, print stylesheet (open; 404 scene exists)
 
 ### Exit Criteria
 
@@ -285,12 +285,12 @@
 - [ ] Bundle size analysis (target: < 150KB JS gzipped initial)
 - [ ] Accessibility audit (axe, manual keyboard/screen reader)
 - [ ] Fix all a11y violations (WCAG 2.1 AA)
-- [ ] Configure Vercel (or chosen platform)
+- [x] Configure Vercel (deployed: https://shikharsahay.vercel.app/)
 - [ ] Set up preview deployments
 - [ ] Configure custom domain
 - [ ] Add analytics (privacy-friendly)
 - [ ] Final performance budget sign-off
-- [ ] Deploy to production
+- [x] Deploy to production (Vercel; custom domain open)
 
 ### Performance Budgets (FINALIZED - Targets)
 

@@ -185,7 +185,7 @@ The identity system beyond type and color. Used consistently so sections read as
 - ThemeToggle (quiet text control in the nav)
 - Reveal / WordReveal primitives (ui)
 - InteractiveLetters (pointer spring field, hero + footer wordmark), TechLogo (monochrome brand marks)
-- Sections: Hero (arch + interactive name + tagline rule + veil exit), TransitionStatements (vertical accumulation with full-word whisper echoes, themed surfaces; tighter compact cut below sm), About (reading reveal + meta row), Experience (org timeline + spine), Skills as Toolkit (two marquee emblem rows under the Toolkit eyebrow, content-width closing rule), Certifications (four-row disclosure stack with in-place PNG proof and independent Verify links), Projects (drifting carousel of real artwork cards) + ProjectPanel (lazy chunk with theme-relative preview matte), Pieces of Me (fragment instrument + section-scale wall manifesto + printed guidance inscription + full-bleed notes wall, theme-following), Contact (footer: contact grid + icon-name social rows + small live Bangalore IST clock + resume row + whole-word marquee wordmark), 404 (You BROKE. misregistered composition plus REBUILD settle-and-route, slim chrome)
+- Sections: Hero (arch + interactive name + tagline rule + veil exit), TransitionStatements (vertical accumulation with full-word whisper echoes, themed surfaces; tighter compact cut below sm), About (reading reveal + meta row), Experience (org timeline + spine), Skills as Toolkit (two marquee emblem rows under the Toolkit eyebrow, content-width closing rule), Certifications (four-row disclosure stack with in-place PNG proof and independent Verify links), Projects (drifting carousel of real artwork cards) + ProjectPanel (lazy chunk with theme-relative preview matte), Pieces of Me (fragment instrument + section-scale wall manifesto + printed guidance inscription + full-bleed notes wall, theme-following), Contact (footer: contact grid with Email opening Gmail compose + icon-name social rows + small live Bangalore IST clock + resume row + whole-word marquee wordmark), 404 (You BROKE. misregistered composition plus REBUILD settle-and-route, slim chrome)
 
 ## Shadows & Elevation (UNDECIDED)
 
@@ -211,7 +211,7 @@ The identity system beyond type and color. Used consistently so sections read as
 
 - Buttons: sharp-cornered filled and outline variants as used in the resume row; no separate button system.
 - Footer is the Contact section (formal, not deferred).
-- No form elements exist (no contact form, no backend).
+- No form elements exist (no contact form; the notes wall API is the only backend).
 
 ---
 
@@ -248,6 +248,10 @@ The identity system beyond type and color. Used consistently so sections read as
 This file will evolve as design decisions are finalized. Each section should be updated with `FINALIZED` status once decided, with the actual values documented.
 
 ---
+
+## v5.8 Additions (EXPERIMENTAL, 2026-09-10)
+
+- **Identity metadata (see DECISIONS.md #56):** the favicon is the vermilion diamond only (`icon.svg`, transparent field, no letters or container); iOS gets an opaque diamond tile (`apple-icon.tsx`, the one platform exception); link previews use an edge-rendered 1200x630 editorial card (`opengraph-image.tsx`) set in real site copy. Metadata (title, description, canonical, OG, Twitter) is finalized against the production URL. The top-left `S. SAHAY` mark is deliberately deferred and untouched.
 
 ## v5.1 Additions (EXPERIMENTAL, 2026-09-09)
 

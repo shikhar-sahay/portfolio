@@ -82,13 +82,13 @@ The website is a **portfolio first, an experience second, and a story third**.
 ```
 OPENING (signal-line loader)
   → IDENTITY (arch portrait + interactive name + tagline rule + veil exit)
-  → STATEMENTS (themed accumulation with same-word residues: BUILD, BREAK, REBUILD)
+  → STATEMENTS (themed accumulation with full-word echoes: BUILD, BREAK, REBUILD)
   → ABOUT (reading reveal + meta row)
   → EXPERIENCE (org-grouped timeline)
   → SKILLS (marquee emblem rows)
   → CERTIFICATIONS (credential ledger)
   → PROJECTS (drifting carousel)
-  → PERSONALITY (fragment instrument, mosaic, full-bleed wall, fixed panel)
+  → PERSONALITY (fragment instrument, mosaic, full-bleed wall, theme-following)
   → CONTACT + FOOTER (contact grid, small live Bangalore IST clock, resume row, marquee wordmark)
 ```
 
@@ -117,8 +117,8 @@ The hero should contain:
 - **Styling:** Tailwind CSS 3 + CSS variables
 - **Animation:** Motion v13 (the only animation library)
 - **Advanced animation / smooth scroll / 3D:** none (GSAP, Lenis, Three.js excluded by rule unless a documented reason emerges)
-- **Backend / persistence:** notes wall API (`/api/notes`, validation plus rate limits, Postgres through `DATABASE_URL`, one-level replies, secret-gated moderation); otherwise static (theme in localStorage, intro flag in sessionStorage)
-- **Deployment:** Vercel (planned, not yet deployed)
+- **Backend / persistence:** notes wall API (`/api/notes`, validation plus rate limits, Postgres through `DATABASE_URL`, one-level replies, secret-gated moderation); the homepage itself stays static (theme in localStorage, intro flag in sessionStorage)
+- **Deployment:** Vercel (live: https://shikharsahay.vercel.app/)
 
 ## Performance Requirement
 

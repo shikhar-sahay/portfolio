@@ -152,7 +152,7 @@ The name as a slow infinite marquee (two identical groups, -50% loop, pauses on 
 - The guidance inscription is positioned from the initial camera and viewport, then belongs to the world as the visitor pans. It has no animation, box, icon, or separate overlay treatment.
 - Discovery controls: Latest and Random fly the camera to the matching persisted top-level note and open it; Center returns to the viewport-appropriate initial camera; Leave a note opens the composer. Flights use a short 620ms ease-out camera move and jump immediately under reduced motion.
 - Cards rest tilted (deterministic per id) and straighten plus lift on hover and keyboard focus (500ms expo; instant under reduced motion); placed notes arrive with a short fade-rise settle. Composing shows a cursor-following placement ghost written straight to the DOM (no re-renders). No continuous animation anywhere.
-- Virtualized: only notes near the viewport render (capped at 150); visibility recomputes on pan end and data change, never per frame. API reads can use viewport bounds so the persistent store can scale beyond the initial seed set.
+- Virtualized: only notes near the viewport render (capped at 150); visibility recomputes on pan end and data change, never per frame. API reads can use viewport bounds so the persistent store scales as notes accumulate.
 
 ### Footer clock (`FooterClock.tsx`; the Control Center panel is deleted, see DECISIONS.md #44)
 
