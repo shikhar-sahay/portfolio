@@ -71,6 +71,12 @@ export function SiteNav() {
   const linkHover =
     'relative after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-accent after:transition-transform after:duration-500 after:ease-expo hover:after:scale-x-100 focus-visible:after:scale-x-100';
 
+  // Brand lockup variant: the underline lives on the text span (never the
+  // diamond), so it answers to the whole link through group triggers. The
+  // unfocusable span can never be :hover/:focus-visible itself.
+  const brandHover =
+    'relative after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-accent after:transition-transform after:duration-500 after:ease-expo group-hover:after:scale-x-100 group-focus-visible:after:scale-x-100';
+
   return (
     <>
       {/* Scroll progress hairline */}
@@ -101,11 +107,15 @@ export function SiteNav() {
             <a
               href="#top"
               aria-label="Back to top"
-              className={`inline-block whitespace-nowrap font-semibold uppercase tracking-[0.16em] text-ink transition-opacity duration-300 hover:opacity-60 ${linkHover} ${
+              className={`group inline-flex items-center gap-2.5 whitespace-nowrap font-semibold uppercase text-ink transition-opacity duration-300 hover:opacity-60 ${
                 compact ? 'text-micro' : 'text-micro sm:text-sm'
               }`}
             >
-              S. Sahay
+              <span
+                aria-hidden="true"
+                className="h-[9px] w-[9px] rotate-45 bg-accent transition-transform duration-500 ease-expo group-hover:rotate-90 group-hover:scale-110 motion-reduce:group-hover:rotate-45 motion-reduce:group-hover:scale-100"
+              />
+              <span className={`tracking-[0.16em] ${brandHover}`}>Portfolio / 26</span>
             </a>
 
             {/* Six destinations fit one premium row from md up; below

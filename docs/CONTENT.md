@@ -222,7 +222,7 @@ Actual model: `profile.links` (Gmail compose email, GitHub, LinkedIn, Drive resu
 
 ## Site Metadata
 
-Actual model: the `metadata` export in `src/app/layout.tsx` (title "Shikhar Sahay | Portfolio", the canonical description, authors, canonical URL via `metadataBase`, OpenGraph with site name and `website` type, `summary_large_image` Twitter card, robots) plus `src/app/icon.svg` (vermilion diamond only), `src/app/apple-icon.tsx` (edge-rendered opaque diamond tile), and `src/app/opengraph-image.tsx` (edge-rendered 1200x630 editorial preview from real site copy). There is no Twitter handle and no JSON-LD structured data yet.
+Actual model: the `metadata` export in `src/app/layout.tsx` (title "Shikhar Sahay | Portfolio", the canonical description, authors, canonical URL via `metadataBase`, OpenGraph with site name and `website` type, `summary_large_image` Twitter card, robots) plus `src/app/icon.svg` (finalized ink tile with diamond and perimeter), `src/app/apple-icon.tsx` (edge-rendered opaque diamond tile), and `src/app/opengraph-image.tsx` (edge-rendered 1200x630 editorial preview from real site copy). There is no Twitter handle and no JSON-LD structured data yet.
 
 ---
 

@@ -1103,7 +1103,7 @@ Do not make significant design/architecture decisions without documenting them h
 
 **Decision:** Identity and sharing pass with no visual redesign (the top-left `S. SAHAY` mark is deliberately deferred and untouched).
 
-1. Favicon is now the vermilion diamond only: `src/app/icon.svg` is a single rotated square in the existing light accent (`#BC3F1A`), transparent field, no letters, no container. A matching opaque tile for iOS (`src/app/apple-icon.tsx`: diamond on the ink field) exists because Apple touch icons technically require full-bleed art. No PWA manifest: the site does not need one.
+1. Favicon was the vermilion diamond only (superseded by #57 below: the finalized mark is an ink rounded tile with a large diamond and thin vermilion perimeter on both routes). A matching opaque tile for iOS (`src/app/apple-icon.tsx`: diamond on the ink field) exists because Apple touch icons technically require full-bleed art. No PWA manifest: the site does not need one.
 2. Metadata is finalized in `layout.tsx` against the canonical production URL (`https://shikharsahay.vercel.app/` via `metadataBase`): title "Shikhar Sahay | Portfolio", the canonical description everywhere (standard, Open Graph, Twitter), canonical URL, Open Graph site name plus `website` type, and `summary_large_image` Twitter card. Icons and preview images resolve through Next.js file-convention discovery (verified in the built HTML).
 3. Social preview is an edge-rendered 1200x630 editorial card (`src/app/opengraph-image.tsx`): paper field, eyebrow tick, giant SHIKHAR SAHAY, serif-italic tagline, metadata line, vermilion diamond. Every string is real site copy; no portrait (keeps the output light and crisp), no fake data. Fonts load as TTF from the Fontsource CDN because satori cannot parse woff2. Both image routes declare `runtime = 'edge'`: the `@vercel/og` node entry crashes at import on Windows dev machines with spaces in the project path (it joins an `import.meta.url` into `fileURLToPath`), while the edge entry renders cleanly and is also the documented serving runtime on Vercel.
 4. The primary email action opens Gmail compose (`https://mail.google.com/mail/?view=cm&fs=1&to=sahay.shikhar@gmail.com`, new tab, `noopener noreferrer`) instead of invoking the OS `mailto:` handler. The visible `Email` label is unchanged and no other contact link moves.
@@ -1117,3 +1117,19 @@ Do not make significant design/architecture decisions without documenting them h
 **Alternatives Considered:** Raster PNG favicon set (rejected: vector scales from tab to high-DPI with one file); portrait in the OG card (rejected: heavier output, weaker typography at small sizes); keeping `mailto:` (rejected by owner direction); a PWA manifest with maskable icons (rejected: no install use case); JSON-LD in this pass (left for the QA pass backlog).
 
 **Impact:** First Load JS unchanged at 165 kB (route chunk 78.2 kB). No new dependency (`next/og` ships with Next.js 14). Two on-demand edge routes, zero client JS, no recurring runtime work. Verified: built-HTML meta audit, live 1200x630 and 180x180 renders, Gmail compose opens a new tab with the recipient populated, 1440/390 light plus dark regression clean, no hydration warnings.
+
+---
+
+### 57. Header Identity Lockup plus Finalized Favicon (EXPERIMENTAL polish)
+
+**Decision:** Top-left identity becomes the edition mark `◆ PORTFOLIO / 26`, built natively (accent diamond span plus micro tracked text), keeping the home link, header height, and nav balance. The existing underline mechanism is preserved with identical timing but now lives on the text span through group triggers, so diamond hover and keyboard focus reveal it too (the unfocusable span could never be `:hover` itself). The diamond rotates 45 degrees toward square with a slight scale on hover and springs back on leave; reduced motion cancels the rotation and keeps only the instant underline. Favicon is the finalized geometry on both routes: ink rounded tile, large centered diamond, thin vermilion perimeter (vector `icon.svg`, opaque 180 PNG tile).
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-09-10
+
+**Rationale:** The hero owns the personal identity; the header carries edition metadata. Native markup keeps the lockup crisp at every size and theme-following without raster weight. Group triggers fix the real defect QA found (diamond hover and focus showed no underline) without changing the animation character.
+
+**Alternatives Considered:** Placing the reference raster into the nav (rejected: heavier, fixed colors, blurry at small sizes); spinning or looping diamond (rejected: advertises itself); a separate mobile logo (rejected: full lockup fits at 360 with clearance); theme-adaptive favicon tiles (rejected: the dark tile reads on both chromes).
+
+**Impact:** No new dependency, no client JS change (CSS classes only). First Load JS unchanged at 165 kB. Verified 1440/1280/1024/820/430/390/375/360 plus short landscape, both themes, hover/leave/click/focus/touch/reduced motion, favicon routes, zero overflow, no hydration warnings.

@@ -62,7 +62,7 @@ src/
 │   │                       #   Experience, Toolkit, Projects, Pieces of Me, Contact)
 │   ├── not-found.tsx      # 404 scene: You BROKE. plus REBUILD (client, CSS transitions only)
 │   ├── globals.css        # Tokens, keyframes, arch/mask/marquee/reduced-motion styles
-│   ├── icon.svg           # Favicon: vermilion diamond only, no container
+│   ├── icon.svg           # Favicon: finalized ink tile, diamond, perimeter (vector)
 │   ├── apple-icon.tsx     # Apple touch icon (edge-rendered PNG: diamond on ink)
 │   ├── opengraph-image.tsx # Social preview 1200x630 (edge-rendered PNG, real copy)
 │   └── api/notes/         # Wall API: Postgres list/create, replies, secret-gated moderation
