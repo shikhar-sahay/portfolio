@@ -20,7 +20,7 @@ The goal is a directed digital experience that feels personal, cinematic, and te
 - **Opening:** a minimal signal-line loader on an ink field (a hairline draws while a vermilion marker rides its tip), then the field lifts into the hero. ~1.6s, once per session, skipped pre-paint for returning visitors and reduced motion. No counters, no "loading" text.
 - **Hero to About bridge:** a pinned stage with a vertical accumulative composition traveling upward through I / BUILD, BREAK, and REBUILD (emphasis follows distance from center, inactive thoughts persist as dimmed history, full-word echoes trail low-right at whisper element opacity), themed per colorway and overlapping the hero exit by exactly one viewport so the handoff never goes blank. The finale holds its frame into About.
 - **Toolkit:** one navigational destination spanning the Skills emblems and the Certifications ledger chapter (hairline rows, featured first credential, boxed Verify links, scroll mask-wipe rows). The ledger keeps its element id as a deep anchor but has no nav entry.
-- **Pieces of Me:** a theme-following chapter (paper in light, warm charcoal in dark) holding the fragment instrument, the mosaic statement, and the full-bleed notes wall.
+- **Pieces of Me:** a theme-following chapter (paper in light, warm charcoal in dark) holding the fragment instrument (no default selection; Literature opens an editorial archive stage below the selectors), the mosaic statement, and the full-bleed notes wall.
 - **Atmosphere:** static film grain plus a very slow drifting light field. Nothing space-like, nothing neon.
 - Full status and values: `docs/DESIGN_SYSTEM.md`.
 

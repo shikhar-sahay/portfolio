@@ -1192,3 +1192,19 @@ Do not make significant design/architecture decisions without documenting them h
 **Alternatives Considered:** A subtler entrance (rejected: any scroll-linked entrance keeps the glitch surface); a section-level fade (rejected: unnecessary, default to simplicity).
 
 **Impact:** Removed the `motion` import, the shared `ease` tuple, and the per-row viewport reveal from `Certifications.tsx`. Route chunk 78.4 to 78.3 kB, First Load JS unchanged at 166 kB. Verified production build plus production-server smoke (all four names and toggles present in SSR HTML, no clip remnants), typecheck, lint, format on the touched file.
+
+---
+
+### 61. Pieces of Me Literature Archive (EXPERIMENTAL polish)
+
+**Decision:** Pieces of Me opens with no fragment selected: eyebrow, lede, and five click-only selectors. Clicking Literature opens an editorial stage below the row: story column (identity, micro, weighted opening, three paragraphs with the purest-expression sentence in semibold ink plus vermilion underline) beside two fixed warm-paper article sheets (serif titles, category micro, teasers, whole-sheet READ links to the real essay URLs, static tilt with CSS-only straighten and lift on hover), with a four-record FROM THE ARCHIVES strip beneath (native touch scroll plus snap and arrows below lg, plain grid on desktop). Other fragments keep their selectors and render an identity-plus-voice teaser until their stages are supplied. No entrance choreography, no observers, no loops, no new assets.
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-09-11
+
+**Rationale:** The default-selected giant word gave every fragment the same display whether or not it had content; per-fragment stages let Literature carry a real archive while later fragments take their own shapes. Hover-to-select was removed because it fought the click-to-open model.
+
+**Alternatives Considered:** Keeping hover selection (rejected: opens stages the visitor did not ask for); raster book artwork (rejected: weight and fragility, CSS layering carries the archive feel); a carousel dependency for archives (rejected: native overflow plus snap suffices); forcing all fragments into the Literature layout (rejected: brief requires independent stages).
+
+**Impact:** Content and stage live in `personality.ts` plus `Personality.tsx` (still one client island, no Motion used). Route chunk 78.3 to 80.4 kB, First Load JS 166 to 168 kB (copy and markup only). Verified production build plus production-server smoke, typecheck, lint, format on touched files, banned-phrase and em-dash audits clean.
