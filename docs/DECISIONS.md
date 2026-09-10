@@ -1248,3 +1248,23 @@ Do not make significant design/architecture decisions without documenting them h
 **Alternatives Considered:** Four-across archive cards in the narrow column (rejected: cramped, cards must stay secondary); shrinking the Spotify card further (rejected: it must stay the primary artifact); a brighter timestamp (rejected: secondary by design); cropping the photo (rejected: jersey, number, shorts, socks, and ball must all read).
 
 **Impact:** Two commits: `refactor(pieces)` for the Literature and Music rebalancing, `feat(pieces)` for Football plus the photo. Route chunk 81.8 to 82.3 kB, First Load JS unchanged at 169 kB. Verified typecheck, lint, format, production build at both commits, plus a live Spotify regression check (playing state, zero secret strings).
+
+---
+
+### 64. Music Compaction plus Football Two-Photo Composition (EXPERIMENTAL polish)
+
+**Decision:** Presentation-only refinement of the two newest stages, no copy or API changes.
+
+1. The Spotify card compacts vertically to meet the Favourite Artist and Song baseline: artwork 400px to 320px cap, card padding one step down, status, artwork, title, progress, and track-link gaps each tightened one step. All states, type sizes, and API behavior untouched.
+2. Football replaces the single oversized portrait with two resting prints: the Brazil portrait (natural ratio, 220 to 260px, minus 2deg, front) and the Barca landscape (4:3 CSS crop favoring the left-center at 30 percent, 300 to 375px, plus 2deg, tucked behind with a modest overlap). Squared edges, print shadows, per-photo CSS lift plus settle on hover, static under reduced motion. Sources untouched; framing is containers plus object-fit only. Mobile staggers the pair (Barca up and right, Brazil front and overlapping) at 1deg rotations with no overlap-driven clipping.
+3. The uppercase `.JPG` filename is preserved exactly as supplied; a one-block ambient declaration (`src/assets.d.ts`) mirrors the default `*.jpg` handling so the static import typechecks without renaming the owner file.
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-09-11
+
+**Rationale:** The card was hundreds of pixels taller than its column; controlled shrinkage plus rhythm tightening closes the gap without touching hierarchy. One tall portrait could never balance the copy column; two mismatched prints at rest can.
+
+**Alternatives Considered:** Shrinking type (rejected: readability); a generic two-card grid (rejected: matching boxes kill the print feel); pre-cropped duplicate JPEGs (rejected: source duplication, CSS crop suffices); renaming to lowercase `.jpg` (rejected: the supplied filename stays canonical).
+
+**Impact:** Route chunk 82.3 to 82.6 kB, First Load JS 169 to 170 kB (second static import metadata; both photos lazy below the fold). Verified typecheck, lint, format, production build, plus a live Spotify regression check (playing state, zero secret strings).

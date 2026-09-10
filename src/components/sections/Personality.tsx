@@ -4,7 +4,8 @@ import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { fragments, football, literature, music, type SpotifyTrack } from '@/content/personality';
 import { NotesWall } from '@/components/sections/NotesWall';
-import footballPhoto from '../../assets/pieces/football-brazil.jpg';
+import footballBrazil from '../../assets/pieces/football-brazil.jpg';
+import footballBarca from '../../assets/pieces/football-barca.JPG';
 
 /**
  * Pieces of Me: fragments of a person. Nothing is selected at first:
@@ -305,10 +306,12 @@ function MusicStage() {
 }
 
 /**
- * Football: a two-column personal stage. The story holds the left; the
- * childhood Brazil-kit photograph is the only visual on the right,
- * resting at a slight print-like angle with a CSS-only settle on
- * hover. Full color in both themes, static under reduced motion.
+ * Football: a two-column personal stage. The story holds the left;
+ * the right rests two childhood prints together: the Brazil portrait
+ * in front, the Barca landscape tucked behind it. Opposing angles
+ * and a modest overlap keep it physical; both stay full color in
+ * both themes and static under reduced motion. Sources untouched:
+ * framing is CSS containers plus object-fit only.
  */
 function FootballStage() {
   return (
@@ -336,14 +339,30 @@ function FootballStage() {
         <p className="mt-6 text-lg font-semibold tracking-tight text-ink">{football.closing}</p>
       </div>
 
-      <div className="content-start">
-        <Image
-          src={footballPhoto}
-          alt="Shikhar as a child wearing a Brazil number 10 kit and holding a football"
-          placeholder="blur"
-          sizes="(max-width: 1024px) 100vw, 560px"
-          className="h-auto w-full rotate-[2deg] shadow-[0_28px_50px_-24px_rgba(0,0,0,0.55)] transition-transform duration-500 ease-expo hover:-translate-y-1 hover:rotate-0"
-        />
+      <div className="content-start lg:self-center">
+        <div className="relative mx-auto w-full max-w-[440px] lg:mx-0 lg:max-w-none">
+          <div className="relative z-0 ml-auto w-[78%] rotate-[1deg] transition-transform duration-500 ease-expo hover:-translate-y-1 hover:rotate-0 lg:absolute lg:left-[168px] lg:top-6 lg:ml-0 lg:w-[300px] lg:rotate-[2deg] xl:left-[205px] xl:w-[375px]">
+            <div className="aspect-[4/3] overflow-hidden shadow-[0_24px_44px_-24px_rgba(0,0,0,0.5)]">
+              <Image
+                src={footballBarca}
+                alt="Shikhar as a child outdoors wearing a red FC Barcelona shirt, hat and sunglasses"
+                width={6000}
+                height={4000}
+                sizes="(max-width: 1024px) 78vw, 380px"
+                className="h-full w-full object-cover object-[30%_50%]"
+              />
+            </div>
+          </div>
+          <div className="relative z-10 -mt-12 w-[54%] -rotate-[1deg] transition-transform duration-500 ease-expo hover:-translate-y-1 hover:rotate-0 lg:mt-0 lg:w-[220px] lg:-rotate-[2deg] xl:w-[260px]">
+            <Image
+              src={footballBrazil}
+              alt="Shikhar as a child wearing a Brazil number 10 kit and holding a football"
+              placeholder="blur"
+              sizes="(max-width: 1024px) 54vw, 260px"
+              className="h-auto w-full shadow-[0_24px_44px_-24px_rgba(0,0,0,0.5)]"
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -375,7 +394,7 @@ function SpotifyCard() {
 
   return (
     <div
-      className="border p-5 transition-transform duration-500 ease-expo hover:-translate-y-1 sm:p-6"
+      className="border p-4 transition-transform duration-500 ease-expo hover:-translate-y-1 sm:p-5"
       style={{ borderColor: 'color-mix(in srgb, var(--ink) 22%, transparent)' }}
     >
       <div className="flex items-center justify-between gap-4">
@@ -422,7 +441,7 @@ function SpotifyCard() {
           </a>
         </div>
       ) : (
-        <div className="mt-6">
+        <div className="mt-4">
           <p className="flex flex-wrap items-center gap-2.5 text-micro font-semibold uppercase tracking-[0.16em] text-accent">
             <span aria-hidden="true" className="inline-block h-1.5 w-1.5 rotate-45 bg-accent" />
             <span>{track.status === 'playing' ? 'Now playing' : 'Last played'}</span>
@@ -438,10 +457,10 @@ function SpotifyCard() {
               alt={`${track.title ?? 'Track'} album artwork`}
               width={640}
               height={640}
-              className="mt-4 h-auto w-full max-w-[400px]"
+              className="mt-3 h-auto w-full max-w-[320px]"
             />
           )}
-          <p className="mt-4 font-serif text-2xl leading-tight tracking-tight text-ink sm:text-[1.7rem]">
+          <p className="mt-3 font-serif text-2xl leading-tight tracking-tight text-ink sm:text-[1.7rem]">
             {track.title}
           </p>
           <p className="mt-1.5 text-sm text-muted">
@@ -453,7 +472,7 @@ function SpotifyCard() {
             track.durationMs !== undefined &&
             track.durationMs > 0 && (
               <div
-                className="mt-5 h-[3px] w-full bg-ink opacity-15"
+                className="mt-4 h-[3px] w-full bg-ink opacity-15"
                 role="img"
                 aria-label="Playback progress snapshot"
               >
@@ -471,7 +490,7 @@ function SpotifyCard() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`Open ${track.title ?? 'this track'} in Spotify`}
-              className="group mt-6 inline-flex min-h-11 items-center gap-2 text-micro font-semibold uppercase tracking-[0.16em] text-ink transition-colors duration-300 hover:text-accent"
+              className="group mt-4 inline-flex min-h-11 items-center gap-2 text-micro font-semibold uppercase tracking-[0.16em] text-ink transition-colors duration-300 hover:text-accent"
             >
               <span className="underline decoration-accent underline-offset-[5px] group-hover:no-underline">
                 Open in Spotify
