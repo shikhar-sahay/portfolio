@@ -530,17 +530,18 @@ export function NotesWall() {
           )}
         </div>
 
-        {/* Anchored guidance: a static foreground patch of the wall surface
-            with the copy printed on it. It is a sibling of the translated
-            world, so panning moves notes and replies underneath while this
-            patch stays pinned to the viewport and occludes them. The patch
-            is plain wall paper feathered with its own shadow (no card, no
-            border, no container aesthetic); pointer-events-none keeps every
-            wall gesture working through it. */}
-        <div className="pointer-events-none absolute left-5 top-6 z-10 sm:left-10 sm:top-10">
+        {/* Anchored guidance: a static foreground wall surface pinned to the
+            viewport, printed with the copy. It is a sibling of the
+            translated world, so panning moves notes underneath while this
+            surface stays put and occludes them. The surface runs flush from
+            the viewport left and top edges to the inset copy (no gap where
+            notes could reappear), feathered into the field on its inner
+            edges with its own paper shadow (no card, no border, no chrome);
+            pointer-events-none keeps every wall gesture working through it. */}
+        <div className="pointer-events-none absolute left-0 top-0 z-10 pb-8 pl-6 pr-8 pt-6 sm:pb-10 sm:pl-16 sm:pr-10 sm:pt-8">
           <div
             aria-hidden="true"
-            className="absolute -inset-5 bg-paper shadow-[0_0_36px_28px_var(--paper)] sm:-inset-6"
+            className="absolute inset-0 bg-paper shadow-[0_0_36px_28px_var(--paper)]"
           />
           <p className="relative max-w-[26ch] text-[0.95rem] leading-[1.7] tracking-[0.01em] text-muted [text-wrap:pretty] sm:max-w-[30ch] sm:text-base">
             <strong className="font-medium text-ink">Drag to look around.</strong> Leave a note, or
@@ -550,14 +551,22 @@ export function NotesWall() {
           </p>
         </div>
 
+        {/* Bottom dock foreground: a static wall surface flush to the
+            viewport bottom (including the safe area) so panning notes slide
+            underneath the controls and never overlap them. Plain paper
+            feathered upward, no card or border. The buttons sit above it. */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 bottom-0 z-[15] h-32 bg-paper shadow-[0_-24px_40px_32px_var(--paper)] sm:h-24"
+        />
         <div
           data-wall-interactive="true"
-          className="absolute bottom-4 left-4 z-20 flex flex-wrap items-center gap-2 sm:left-6"
+          className="absolute inset-x-0 bottom-0 z-20 flex flex-wrap items-center gap-2 px-4 pb-[max(0.9rem,env(safe-area-inset-bottom))] pt-8 sm:px-6"
         >
           <button
             type="button"
             onClick={startComposer}
-            className="border border-accent bg-accent px-4 py-2 text-micro font-semibold uppercase tracking-[0.16em] text-paper transition-opacity duration-300 hover:opacity-90"
+            className="inline-flex min-h-[44px] items-center border border-accent bg-accent px-4 py-2 text-micro font-semibold uppercase tracking-[0.16em] text-paper transition-opacity duration-300 hover:opacity-90"
           >
             Leave a note
           </button>
@@ -568,7 +577,7 @@ export function NotesWall() {
           >
             Center
           </WallButton>
-          <p className="border border-ink bg-paper px-3 py-2 text-micro uppercase tracking-[0.14em] text-muted">
+          <p className="inline-flex min-h-[44px] items-center border border-ink bg-paper px-3 py-2 text-micro uppercase tracking-[0.14em] text-muted">
             {countText}
           </p>
         </div>
@@ -579,7 +588,7 @@ export function NotesWall() {
             role="dialog"
             aria-modal="false"
             aria-label={`Note by ${openNote.name}`}
-            className="absolute bottom-4 left-4 right-4 z-30 border border-ink bg-paper p-5 text-ink shadow-[0_24px_50px_-20px_rgba(0,0,0,0.55)] sm:left-auto sm:right-6 sm:top-6 sm:w-80"
+            className="absolute bottom-[max(1rem,env(safe-area-inset-bottom))] left-4 right-4 z-30 border border-ink bg-paper p-5 text-ink shadow-[0_24px_50px_-20px_rgba(0,0,0,0.55)] sm:left-auto sm:right-6 sm:top-6 sm:w-80"
           >
             <div className="flex items-start justify-between gap-4">
               <p className="text-micro uppercase tracking-[0.14em] text-accent">
@@ -643,7 +652,7 @@ export function NotesWall() {
         {composing && (
           <div
             data-wall-interactive="true"
-            className="absolute bottom-4 left-4 right-4 z-40 border border-ink bg-paper p-5 text-ink shadow-[0_24px_50px_-20px_rgba(0,0,0,0.55)] sm:left-auto sm:right-6 sm:top-6 sm:w-80"
+            className="absolute bottom-[max(1rem,env(safe-area-inset-bottom))] left-4 right-4 z-40 border border-ink bg-paper p-5 text-ink shadow-[0_24px_50px_-20px_rgba(0,0,0,0.55)] sm:left-auto sm:right-6 sm:top-6 sm:w-80"
           >
             <span
               aria-hidden="true"
@@ -719,7 +728,7 @@ function WallButton({ children, onClick }: { children: React.ReactNode; onClick:
     <button
       type="button"
       onClick={onClick}
-      className="border border-ink bg-paper px-4 py-2 text-micro font-semibold uppercase tracking-[0.16em] text-ink transition-colors duration-300 hover:border-accent hover:text-accent"
+      className="inline-flex min-h-[44px] items-center border border-ink bg-paper px-4 py-2 text-micro font-semibold uppercase tracking-[0.16em] text-ink transition-colors duration-300 hover:border-accent hover:text-accent"
     >
       {children}
     </button>
