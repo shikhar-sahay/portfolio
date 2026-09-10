@@ -2,15 +2,12 @@
 
 import { useState } from 'react';
 import Image, { type StaticImageData } from 'next/image';
-import { motion } from 'motion/react';
 import { useMountedReducedMotion } from '@/hooks/useMountedReducedMotion';
 import { certifications } from '@/content/systems';
 import comptiaSecurityPlus from '@/assets/certifications/comptia-security-plus.png';
 import googleCybersecurity from '@/assets/certifications/Google Cybersecurity Professional Certificate.png';
 import ibmFundamentals from '@/assets/certifications/ibm-cybersecurity-fundamentals.png';
 import ciscoIntro from '@/assets/certifications/cisco-intro-cybersecurity.png';
-
-const ease = [0.19, 1, 0.22, 1] as const;
 
 /**
  * Display artwork for each credential, in `certifications` order. These
@@ -86,11 +83,7 @@ function CertRow({
   const panelId = `cert-panel-${index}`;
 
   return (
-    <motion.li
-      initial={reduce ? false : { clipPath: 'inset(0 0 100% 0)' }}
-      whileInView={reduce ? undefined : { clipPath: 'inset(0 0 0% 0)' }}
-      viewport={{ once: true, margin: '-12% 0px' }}
-      transition={reduce ? undefined : { duration: 0.9, delay: index * 0.07, ease }}
+    <li
       className={`border transition-colors duration-500 ${open ? 'relative z-10' : '-mt-px'}`}
       style={{
         borderColor: open
@@ -192,6 +185,6 @@ function CertRow({
           </div>
         </div>
       </div>
-    </motion.li>
+    </li>
   );
 }

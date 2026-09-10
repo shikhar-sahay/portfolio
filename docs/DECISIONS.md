@@ -1176,3 +1176,19 @@ Do not make significant design/architecture decisions without documenting them h
 **Alternatives Considered:** Padding-only guidance shift (rejected: leaves the reappearance strip); pushing notes to new coordinates (rejected: mutates real positions); removing the hero cue on mobile (rejected: repositioning solves it); global section-height cuts (rejected: per-transition density differs); forcing the 150 kB budget now (rejected: documented, needs its own pass).
 
 **Impact:** First Load JS 165 to 166 kB (route chunk 78.2 to 78.4 kB, markup only). No new dependencies. Verified production build, production-server smoke (200 with guidance, footer, colophon, cue strings), typecheck, lint, format, zero em dashes.
+
+---
+
+### 60. Certifications Stable Rows (EXPERIMENTAL polish)
+
+**Decision:** Delete the progressive row reveal. Each credential row used a scroll-driven mask wipe (`whileInView` clip-path with an index stagger) that caused occasional visual glitches. All four rows now render as plain list items on first paint. Order, typography, layout, hairlines, Verify links, expand behavior, one-open rule, images, copy, themes, and mobile stacking are untouched, and no replacement animation was added. The expansion transitions keep their existing reduced-motion branches.
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-09-11
+
+**Rationale:** A credential ledger should feel calm and reliable; staggered entrances added instability without meaning.
+
+**Alternatives Considered:** A subtler entrance (rejected: any scroll-linked entrance keeps the glitch surface); a section-level fade (rejected: unnecessary, default to simplicity).
+
+**Impact:** Removed the `motion` import, the shared `ease` tuple, and the per-row viewport reveal from `Certifications.tsx`. Route chunk 78.4 to 78.3 kB, First Load JS unchanged at 166 kB. Verified production build plus production-server smoke (all four names and toggles present in SSR HTML, no clip remnants), typecheck, lint, format on the touched file.
