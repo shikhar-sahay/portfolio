@@ -109,10 +109,12 @@ function FragmentTeaser({ index }: { index: number }) {
 }
 
 /**
- * Literature: a two-column editorial stage. The story holds the left,
- * the archive of published sheets holds the right, and the archive
- * records run underneath. Sheets are fixed warm paper in both themes
- * with CSS-only hover; the records strip scrolls natively on touch.
+ * Literature: a two-column editorial stage. The story holds the left;
+ * the right pairs the published sheets with the archive records
+ * directly beneath them, so the composition fills intentionally
+ * instead of stranding the archives across the full width. Sheets are
+ * fixed warm paper in both themes with CSS-only hover; the records
+ * sit 2x2 on desktop and scroll natively on touch.
  */
 function LiteratureStage() {
   const stripRef = useRef<HTMLDivElement>(null);
@@ -141,98 +143,103 @@ function LiteratureStage() {
           ))}
         </div>
 
-        <div className="grid content-start gap-6 sm:grid-cols-2 sm:gap-5">
-          {literature.articles.map((article, i) => (
-            <a
-              key={article.title}
-              href={article.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`${article.title}, read the essay`}
-              style={{
-                backgroundImage:
-                  'linear-gradient(155deg, rgba(255,255,255,0.30), rgba(255,255,255,0) 44%)',
-              }}
-              className={`group relative flex min-h-[320px] flex-col bg-[#ece1c6] p-7 text-[#221a12] shadow-[0_24px_44px_-24px_rgba(0,0,0,0.5)] transition-transform duration-500 ease-expo hover:-translate-y-1 hover:rotate-0 hover:shadow-[0_30px_50px_-24px_rgba(0,0,0,0.55)] sm:min-h-[340px] ${
-                i === 0 ? 'sm:-rotate-[2.5deg]' : 'sm:-ml-10 sm:translate-y-8 sm:rotate-[2deg]'
-              }`}
-            >
-              <span
-                aria-hidden="true"
-                className="absolute right-6 top-6 h-2.5 w-2.5 rotate-45 border border-[#b3401a]"
-              />
-              <p className="text-micro font-semibold uppercase tracking-[0.16em] text-[#7a6a4f]">
-                {article.category}
-              </p>
-              <p className="mt-4 font-serif text-[1.7rem] leading-[1.08] tracking-tight">
-                {article.title}
-              </p>
-              <p className="mt-4 text-sm leading-relaxed text-[#4f4436]">{article.teaser}</p>
-              <span className="mt-auto inline-flex items-center gap-2 pt-6 text-micro font-semibold uppercase tracking-[0.16em] text-[#b3401a]">
-                <span className="underline decoration-[#b3401a] underline-offset-[5px] group-hover:no-underline">
-                  {article.action}
-                </span>
+        <div className="content-start">
+          <div className="grid content-start gap-6 sm:grid-cols-2 sm:gap-5">
+            {literature.articles.map((article, i) => (
+              <a
+                key={article.title}
+                href={article.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${article.title}, read the essay`}
+                style={{
+                  backgroundImage:
+                    'linear-gradient(155deg, rgba(255,255,255,0.30), rgba(255,255,255,0) 44%)',
+                }}
+                className={`group relative flex min-h-[320px] flex-col bg-[#ece1c6] p-7 text-[#221a12] shadow-[0_24px_44px_-24px_rgba(0,0,0,0.5)] transition-transform duration-500 ease-expo hover:-translate-y-1 hover:rotate-0 hover:shadow-[0_30px_50px_-24px_rgba(0,0,0,0.55)] sm:min-h-[340px] ${
+                  i === 0 ? 'sm:-rotate-[2.5deg]' : 'sm:-ml-10 sm:translate-y-8 sm:rotate-[2deg]'
+                }`}
+              >
                 <span
                   aria-hidden="true"
-                  className="transition-transform duration-500 ease-expo group-hover:-translate-y-px group-hover:translate-x-px"
-                >
-                  ↗
+                  className="absolute right-6 top-6 h-2.5 w-2.5 rotate-45 border border-[#b3401a]"
+                />
+                <p className="text-micro font-semibold uppercase tracking-[0.16em] text-[#7a6a4f]">
+                  {article.category}
+                </p>
+                <p className="mt-4 font-serif text-[1.7rem] leading-[1.08] tracking-tight">
+                  {article.title}
+                </p>
+                <p className="mt-4 text-sm leading-relaxed text-[#4f4436]">{article.teaser}</p>
+                <span className="mt-auto inline-flex items-center gap-2 pt-6 text-micro font-semibold uppercase tracking-[0.16em] text-[#b3401a]">
+                  <span className="underline decoration-[#b3401a] underline-offset-[5px] group-hover:no-underline">
+                    {article.action}
+                  </span>
+                  <span
+                    aria-hidden="true"
+                    className="transition-transform duration-500 ease-expo group-hover:-translate-y-px group-hover:translate-x-px"
+                  >
+                    ↗
+                  </span>
                 </span>
-              </span>
-            </a>
-          ))}
-        </div>
-      </div>
-
-      <div className="mt-[6vh] md:mt-[7vh]">
-        <div className="flex items-center gap-4">
-          <p className="shrink-0 text-micro font-semibold uppercase tracking-[0.16em] text-accent">
-            From the archives
-          </p>
-          <span aria-hidden="true" className="h-px flex-1 bg-ink opacity-20" />
-          <div className="flex shrink-0 gap-2 lg:hidden">
-            <button
-              type="button"
-              onClick={() => nudge(-1)}
-              aria-label="Scroll archive backward"
-              className="flex h-11 w-11 items-center justify-center border text-lg text-ink transition-colors duration-300 hover:text-accent"
-              style={{ borderColor: 'color-mix(in srgb, var(--ink) 22%, transparent)' }}
-            >
-              <span aria-hidden="true">&larr;</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => nudge(1)}
-              aria-label="Scroll archive forward"
-              className="flex h-11 w-11 items-center justify-center border text-lg text-ink transition-colors duration-300 hover:text-accent"
-              style={{ borderColor: 'color-mix(in srgb, var(--ink) 22%, transparent)' }}
-            >
-              <span aria-hidden="true">&rarr;</span>
-            </button>
+              </a>
+            ))}
           </div>
-        </div>
 
-        <div
-          ref={stripRef}
-          className="mt-5 flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 lg:grid lg:grid-cols-4 lg:overflow-visible lg:pb-0"
-        >
-          {literature.archives.map(record => (
-            <div
-              key={record.name}
-              className="flex min-w-[240px] snap-start items-start justify-between gap-3 border p-4 sm:p-5 lg:min-w-0"
-              style={{ borderColor: 'color-mix(in srgb, var(--ink) 22%, transparent)' }}
-            >
-              <div>
-                <p className="text-micro font-semibold uppercase tracking-[0.14em] text-ink">
-                  {record.name}
-                </p>
-                <p className="mt-2 text-micro uppercase tracking-[0.14em] text-muted">
-                  {record.detail}
-                </p>
+          <div className="mt-10 lg:mt-12">
+            <div className="flex items-center gap-4">
+              <p className="shrink-0 text-micro font-semibold uppercase tracking-[0.16em] text-accent">
+                From the archives
+              </p>
+              <span aria-hidden="true" className="h-px flex-1 bg-ink opacity-20" />
+              <div className="flex shrink-0 gap-2 lg:hidden">
+                <button
+                  type="button"
+                  onClick={() => nudge(-1)}
+                  aria-label="Scroll archive backward"
+                  className="flex h-11 w-11 items-center justify-center border text-lg text-ink transition-colors duration-300 hover:text-accent"
+                  style={{ borderColor: 'color-mix(in srgb, var(--ink) 22%, transparent)' }}
+                >
+                  <span aria-hidden="true">&larr;</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => nudge(1)}
+                  aria-label="Scroll archive forward"
+                  className="flex h-11 w-11 items-center justify-center border text-lg text-ink transition-colors duration-300 hover:text-accent"
+                  style={{ borderColor: 'color-mix(in srgb, var(--ink) 22%, transparent)' }}
+                >
+                  <span aria-hidden="true">&rarr;</span>
+                </button>
               </div>
-              <span aria-hidden="true" className="mt-1 h-1.5 w-1.5 shrink-0 rotate-45 bg-accent" />
             </div>
-          ))}
+
+            <div
+              ref={stripRef}
+              className="mt-5 flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 lg:grid lg:grid-cols-2 lg:overflow-visible lg:pb-0"
+            >
+              {literature.archives.map(record => (
+                <div
+                  key={record.name}
+                  className="flex min-w-[220px] snap-start items-start justify-between gap-3 border p-4 lg:min-w-0"
+                  style={{ borderColor: 'color-mix(in srgb, var(--ink) 22%, transparent)' }}
+                >
+                  <div>
+                    <p className="text-micro font-semibold uppercase tracking-[0.14em] text-ink">
+                      {record.name}
+                    </p>
+                    <p className="mt-2 text-micro uppercase tracking-[0.14em] text-muted">
+                      {record.detail}
+                    </p>
+                  </div>
+                  <span
+                    aria-hidden="true"
+                    className="mt-1 h-1.5 w-1.5 shrink-0 rotate-45 bg-accent"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -268,11 +275,10 @@ function MusicStage() {
             {paragraph}
           </p>
         ))}
-      </div>
-
-      <div className="content-start">
-        <SpotifyCard />
-        <div className="mt-8 grid gap-6 sm:grid-cols-2">
+        <div
+          className="mt-8 grid gap-6 border-t pt-6 sm:grid-cols-2"
+          style={{ borderColor: 'color-mix(in srgb, var(--ink) 22%, transparent)' }}
+        >
           <div>
             <p className="text-micro uppercase tracking-[0.16em] text-muted">Favourite artist</p>
             <p className="mt-2 text-lg font-semibold tracking-tight text-ink">
@@ -286,6 +292,10 @@ function MusicStage() {
             </p>
           </div>
         </div>
+      </div>
+
+      <div className="content-start">
+        <SpotifyCard />
       </div>
     </div>
   );
@@ -317,7 +327,7 @@ function SpotifyCard() {
 
   return (
     <div
-      className="border p-6 transition-transform duration-500 ease-expo hover:-translate-y-1 sm:p-7"
+      className="border p-5 transition-transform duration-500 ease-expo hover:-translate-y-1 sm:p-6"
       style={{ borderColor: 'color-mix(in srgb, var(--ink) 22%, transparent)' }}
     >
       <div className="flex items-center justify-between gap-4">
@@ -365,12 +375,12 @@ function SpotifyCard() {
         </div>
       ) : (
         <div className="mt-6">
-          <p className="flex items-center gap-2.5 text-micro font-semibold uppercase tracking-[0.16em] text-accent">
+          <p className="flex flex-wrap items-center gap-2.5 text-micro font-semibold uppercase tracking-[0.16em] text-accent">
             <span aria-hidden="true" className="inline-block h-1.5 w-1.5 rotate-45 bg-accent" />
-            {track.status === 'playing' ? 'Now playing' : 'Last played'}
+            <span>{track.status === 'playing' ? 'Now playing' : 'Last played'}</span>
             {track.status === 'recent' && track.playedAt && (
-              <span className="font-normal normal-case tracking-normal text-muted">
-                · {relativePlayed(track.playedAt)}
+              <span className="ml-auto pl-6 font-normal normal-case tracking-normal text-muted">
+                {relativePlayed(track.playedAt)}
               </span>
             )}
           </p>
@@ -380,10 +390,10 @@ function SpotifyCard() {
               alt={`${track.title ?? 'Track'} album artwork`}
               width={640}
               height={640}
-              className="mt-5 h-auto w-full"
+              className="mt-4 h-auto w-full max-w-[400px]"
             />
           )}
-          <p className="mt-5 font-serif text-2xl leading-tight tracking-tight text-ink sm:text-[1.7rem]">
+          <p className="mt-4 font-serif text-2xl leading-tight tracking-tight text-ink sm:text-[1.7rem]">
             {track.title}
           </p>
           <p className="mt-1.5 text-sm text-muted">
