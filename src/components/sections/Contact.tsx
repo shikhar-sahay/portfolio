@@ -33,8 +33,8 @@ export function Contact() {
               Let&apos;s talk.
             </h2>
             <p className="mt-5 max-w-[42ch] text-sm leading-relaxed text-muted">
-              Internships, collaborations, security rabbit holes, or a good argument about football:
-              the inbox is open.
+              Internships, collaborations, ideas that sound slightly unreasonable, or a good
+              argument about football. My inbox is open.
             </p>
             <EmailLink />
             <FooterClock />
@@ -120,9 +120,7 @@ export function Contact() {
         <p className="text-micro uppercase tracking-[0.16em] text-muted">
           Designed and built by Shikhar Sahay
         </p>
-        <p className="text-micro uppercase tracking-[0.16em] text-muted">
-          {profile.location} · 2026
-        </p>
+        <p className="text-micro uppercase tracking-[0.16em] text-muted">PORTFOLIO / 26</p>
       </div>
     </footer>
   );
