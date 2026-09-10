@@ -78,7 +78,6 @@ export function NotesWall() {
   const reduce = useMountedReducedMotion();
   const viewportRef = useRef<HTMLDivElement>(null);
   const worldRef = useRef<HTMLDivElement>(null);
-  const guideRef = useRef<HTMLParagraphElement>(null);
   const drag = useRef<{
     sx: number;
     sy: number;
@@ -120,16 +119,6 @@ export function NotesWall() {
     const x = Math.round(viewport.clientWidth / 2 - current.x);
     const y = Math.round(viewport.clientHeight / 2 - current.y);
     world.style.transform = `translate3d(${x}px, ${y}px, 0)`;
-  }, []);
-
-  const placeGuide = useCallback(() => {
-    const viewport = viewportRef.current;
-    const guide = guideRef.current;
-    if (!viewport || !guide) return;
-    const gutter = Math.max(56, (viewport.clientWidth - 1152) / 2 + 56);
-    const top = viewport.clientWidth < 640 ? 74 : 72;
-    guide.style.left = `${Math.round(camera.current.x - viewport.clientWidth / 2 + gutter)}px`;
-    guide.style.top = `${Math.round(camera.current.y - viewport.clientHeight / 2 + top)}px`;
   }, []);
 
   const viewportBounds = useCallback(() => {
@@ -204,11 +193,10 @@ export function NotesWall() {
       camera.current = homeCamera(width);
       cameraInitialized.current = true;
     }
-    placeGuide();
     applyCamera();
     refreshVisible();
     void fetchVisibleNotes();
-  }, [applyCamera, fetchVisibleNotes, placeGuide, refreshVisible]);
+  }, [applyCamera, fetchVisibleNotes, refreshVisible]);
 
   useEffect(() => {
     refreshVisible();
@@ -493,16 +481,6 @@ export function NotesWall() {
           className="absolute left-0 top-0 z-[2] will-change-transform"
           style={{ transform: 'translate3d(0,0,0)' }}
         >
-          <p
-            ref={guideRef}
-            className="absolute left-14 top-[4.5rem] w-[26ch] text-[0.95rem] leading-[1.7] tracking-[0.01em] text-muted [text-wrap:pretty] sm:w-[30ch] sm:text-base"
-          >
-            <strong className="font-medium text-ink">Drag to look around.</strong> Leave a note, or
-            just see what people have left behind.{' '}
-            <em className="font-serif font-normal italic text-ink">Be kind:</em> everything here is
-            public.
-          </p>
-
           {rendered.map(note => (
             <button
               key={note.id}
@@ -551,6 +529,17 @@ export function NotesWall() {
             />
           )}
         </div>
+
+        {/* Anchored guidance: a sibling of the translated world, so panning
+            moves notes and replies underneath while this copy stays pinned
+            to the viewport. pointer-events-none keeps every wall gesture
+            working through it; no card, no container, just wall type. */}
+        <p className="pointer-events-none absolute left-5 top-6 z-10 max-w-[26ch] text-[0.95rem] leading-[1.7] tracking-[0.01em] text-muted [text-wrap:pretty] sm:left-10 sm:top-10 sm:max-w-[30ch] sm:text-base">
+          <strong className="font-medium text-ink">Drag to look around.</strong> Leave a note, or
+          just see what people have left behind.{' '}
+          <em className="font-serif font-normal italic text-ink">Be kind:</em> everything here is
+          public.
+        </p>
 
         <div
           data-wall-interactive="true"
