@@ -1,7 +1,8 @@
 'use client';
 
-import { useRef, useState } from 'react';
-import { fragments, literature } from '@/content/personality';
+import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
+import { fragments, literature, music, type SpotifyTrack } from '@/content/personality';
 import { NotesWall } from '@/components/sections/NotesWall';
 
 /**
@@ -63,7 +64,13 @@ export function Personality() {
 
         {active !== null && (
           <div id="fragment-stage" aria-live="polite" className="mt-[6vh] md:mt-[8vh]">
-            {active === 0 ? <LiteratureStage /> : <FragmentTeaser index={active} />}
+            {active === 0 ? (
+              <LiteratureStage />
+            ) : active === 1 ? (
+              <MusicStage />
+            ) : (
+              <FragmentTeaser index={active} />
+            )}
           </div>
         )}
 
@@ -84,8 +91,9 @@ function StageEyebrow({ index, word }: { index: number; word: string }) {
 }
 
 /**
- * Holder for fragments whose full stage has not been supplied yet:
- * identity plus the existing voice line, nothing invented.
+ * Holder for fragments whose full stage has not been supplied yet
+ * (Football, Rabbit Holes, Communities): identity plus the existing
+ * voice line, nothing invented.
  */
 function FragmentTeaser({ index }: { index: number }) {
   const fragment = fragments[index];
@@ -145,8 +153,8 @@ function LiteratureStage() {
                 backgroundImage:
                   'linear-gradient(155deg, rgba(255,255,255,0.30), rgba(255,255,255,0) 44%)',
               }}
-              className={`group relative flex min-h-[380px] flex-col bg-[#ece1c6] p-7 text-[#221a12] shadow-[0_28px_50px_-24px_rgba(0,0,0,0.55)] transition-transform duration-500 ease-expo hover:-translate-y-1 hover:rotate-0 hover:shadow-[0_34px_56px_-24px_rgba(0,0,0,0.6)] sm:min-h-[420px] ${
-                i === 0 ? 'sm:-rotate-2' : 'sm:translate-y-10 sm:rotate-1'
+              className={`group relative flex min-h-[320px] flex-col bg-[#ece1c6] p-7 text-[#221a12] shadow-[0_24px_44px_-24px_rgba(0,0,0,0.5)] transition-transform duration-500 ease-expo hover:-translate-y-1 hover:rotate-0 hover:shadow-[0_30px_50px_-24px_rgba(0,0,0,0.55)] sm:min-h-[340px] ${
+                i === 0 ? 'sm:-rotate-[2.5deg]' : 'sm:-ml-10 sm:translate-y-8 sm:rotate-[2deg]'
               }`}
             >
               <span
@@ -229,6 +237,215 @@ function LiteratureStage() {
       </div>
     </div>
   );
+}
+
+/**
+ * Music: a two-column contemporary stage that contrasts the Literature
+ * archive. The story holds the left; a live listening artifact plus the
+ * personal metadata holds the right. The artifact fetches once on mount
+ * (no polling) and renders playing, recent, or a quiet fallback.
+ */
+function MusicStage() {
+  return (
+    <div className="grid gap-12 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:gap-10">
+      <div>
+        <StageEyebrow index={1} word="Music" />
+        <p className="mt-8 font-serif text-[clamp(3rem,6vw,5.5rem)] leading-[0.95] tracking-tight text-ink">
+          Music
+        </p>
+        <p className="mt-3 font-serif text-xl italic tracking-tight text-ink sm:text-2xl">
+          {fragments[1].micro}
+        </p>
+
+        <p className="mt-8 text-lg font-semibold leading-snug tracking-tight text-ink">
+          {music.opening}
+        </p>
+        {music.body.map(paragraph => (
+          <p
+            key={paragraph.slice(0, 24)}
+            className="mt-5 text-[0.95rem] leading-relaxed text-muted"
+          >
+            {paragraph}
+          </p>
+        ))}
+      </div>
+
+      <div className="content-start">
+        <SpotifyCard />
+        <div className="mt-8 grid gap-6 sm:grid-cols-2">
+          <div>
+            <p className="text-micro uppercase tracking-[0.16em] text-muted">Favourite artist</p>
+            <p className="mt-2 text-lg font-semibold tracking-tight text-ink">
+              {music.favouriteArtist}
+            </p>
+          </div>
+          <div>
+            <p className="text-micro uppercase tracking-[0.16em] text-muted">Favourite song</p>
+            <p className="mt-2 text-lg font-semibold tracking-tight text-ink">
+              {music.favouriteSong}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * The listening artifact: one fetch on mount, then a static render of
+ * whatever Spotify truthfully reports. No polling, no animation loop,
+ * no fake controls. The progress snapshot appears only while a track
+ * is actively playing.
+ */
+function SpotifyCard() {
+  const [track, setTrack] = useState<SpotifyTrack | null>(null);
+
+  useEffect(() => {
+    let live = true;
+    fetch('/api/spotify', { headers: { accept: 'application/json' } })
+      .then(response => response.json())
+      .then(data => {
+        if (live) setTrack(data as SpotifyTrack);
+      })
+      .catch(() => {
+        if (live) setTrack({ status: 'unavailable' });
+      });
+    return () => {
+      live = false;
+    };
+  }, []);
+
+  return (
+    <div
+      className="border p-6 transition-transform duration-500 ease-expo hover:-translate-y-1 sm:p-7"
+      style={{ borderColor: 'color-mix(in srgb, var(--ink) 22%, transparent)' }}
+    >
+      <div className="flex items-center justify-between gap-4">
+        <p className="text-micro font-semibold uppercase tracking-[0.16em] text-muted">
+          On rotation
+        </p>
+        <a
+          href={music.profileUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Open my Spotify profile"
+          className="group inline-flex min-h-11 items-center gap-1.5 text-micro font-semibold uppercase tracking-[0.16em] text-ink transition-colors duration-300 hover:text-accent"
+        >
+          Spotify
+          <span
+            aria-hidden="true"
+            className="text-accent transition-transform duration-500 ease-expo group-hover:-translate-y-px group-hover:translate-x-px"
+          >
+            ↗
+          </span>
+        </a>
+      </div>
+
+      {track === null ? (
+        <p className="mt-8 text-micro uppercase tracking-[0.16em] text-muted">Tuning in</p>
+      ) : track.status === 'unavailable' ? (
+        <div className="mt-8">
+          <p className="text-lede font-medium tracking-tight text-ink">
+            Spotify is being difficult.
+          </p>
+          <a
+            href={music.profileUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group mt-6 inline-flex min-h-11 items-center gap-2 border border-accent px-4 py-2 text-micro font-semibold uppercase tracking-[0.16em] text-accent transition-opacity duration-300 hover:opacity-80"
+          >
+            Open my Spotify
+            <span
+              aria-hidden="true"
+              className="transition-transform duration-500 ease-expo group-hover:-translate-y-px group-hover:translate-x-px"
+            >
+              ↗
+            </span>
+          </a>
+        </div>
+      ) : (
+        <div className="mt-6">
+          <p className="flex items-center gap-2.5 text-micro font-semibold uppercase tracking-[0.16em] text-accent">
+            <span aria-hidden="true" className="inline-block h-1.5 w-1.5 rotate-45 bg-accent" />
+            {track.status === 'playing' ? 'Now playing' : 'Last played'}
+            {track.status === 'recent' && track.playedAt && (
+              <span className="font-normal normal-case tracking-normal text-muted">
+                · {relativePlayed(track.playedAt)}
+              </span>
+            )}
+          </p>
+          {track.artwork && (
+            <Image
+              src={track.artwork}
+              alt={`${track.title ?? 'Track'} album artwork`}
+              width={640}
+              height={640}
+              className="mt-5 h-auto w-full"
+            />
+          )}
+          <p className="mt-5 font-serif text-2xl leading-tight tracking-tight text-ink sm:text-[1.7rem]">
+            {track.title}
+          </p>
+          <p className="mt-1.5 text-sm text-muted">
+            {track.artist}
+            {track.album && ` · ${track.album}`}
+          </p>
+          {track.status === 'playing' &&
+            track.progressMs !== undefined &&
+            track.durationMs !== undefined &&
+            track.durationMs > 0 && (
+              <div
+                className="mt-5 h-[3px] w-full bg-ink opacity-15"
+                role="img"
+                aria-label="Playback progress snapshot"
+              >
+                <div
+                  className="h-full bg-accent"
+                  style={{
+                    width: `${Math.min(100, Math.round((track.progressMs / track.durationMs) * 100))}%`,
+                  }}
+                />
+              </div>
+            )}
+          {track.spotifyUrl && (
+            <a
+              href={track.spotifyUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Open ${track.title ?? 'this track'} in Spotify`}
+              className="group mt-6 inline-flex min-h-11 items-center gap-2 text-micro font-semibold uppercase tracking-[0.16em] text-ink transition-colors duration-300 hover:text-accent"
+            >
+              <span className="underline decoration-accent underline-offset-[5px] group-hover:no-underline">
+                Open in Spotify
+              </span>
+              <span
+                aria-hidden="true"
+                className="text-accent transition-transform duration-500 ease-expo group-hover:-translate-y-px group-hover:translate-x-px"
+              >
+                ↗
+              </span>
+            </a>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/**
+ * Snapshot label for a recent play, computed once at render (the card
+ * never re-renders on a timer, so nothing can drift or mismatch).
+ */
+function relativePlayed(playedAt: string): string {
+  const then = new Date(playedAt).getTime();
+  if (!Number.isFinite(then)) return 'played recently';
+  const minutes = Math.max(0, Math.round((Date.now() - then) / 60000));
+  if (minutes < 1) return 'just now';
+  if (minutes < 60) return `${minutes}m ago`;
+  const hours = Math.round(minutes / 60);
+  if (hours < 24) return `${hours}h ago`;
+  const days = Math.round(hours / 24);
+  return `${days}d ago`;
 }
 
 /**

@@ -1208,3 +1208,22 @@ Do not make significant design/architecture decisions without documenting them h
 **Alternatives Considered:** Keeping hover selection (rejected: opens stages the visitor did not ask for); raster book artwork (rejected: weight and fragility, CSS layering carries the archive feel); a carousel dependency for archives (rejected: native overflow plus snap suffices); forcing all fragments into the Literature layout (rejected: brief requires independent stages).
 
 **Impact:** Content and stage live in `personality.ts` plus `Personality.tsx` (still one client island, no Motion used). Route chunk 78.3 to 80.4 kB, First Load JS 166 to 168 kB (copy and markup only). Verified production build plus production-server smoke, typecheck, lint, format on touched files, banned-phrase and em-dash audits clean.
+
+---
+
+### 62. Literature Refinements plus Live Music (EXPERIMENTAL polish)
+
+**Decision:** Two-track Pieces of Me pass, no redesigns elsewhere.
+
+1. Literature keeps its architecture with four refinements: the final paragraph now ends on the technology-writing turn that points at the sheets (the habit sentence keeps the semibold ink plus vermilion underline treatment); the sheets swap so Your Device is Cheating on You leads left with its correct link; the pair counter-rotates (left minus 2.5deg, right plus 2deg with an 8px-class drop and a 40px overlap pull) for deliberate asymmetry; sheet minimum heights drop to 320px mobile and 340px sm and up (about 16 percent) while READ stays bottom-anchored. Archives, copy, themes, and mobile stacking untouched.
+2. Music opens in the shared stage (no route, no default selection) with a contemporary graphic voice against the Literature archive: story column plus a live listening artifact plus favourite artist and song metadata. `/api/spotify` refreshes the access token server-side, serves currently-playing as `playing` with a static progress snapshot, falls back to one recent play as `recent` with a snapshot relative timestamp, and answers `unavailable` (with an intentional profile-link fallback) on any failure. The response carries only the normalized track fields, never tokens or headers. The route revalidates every 60 seconds and the client fetches once on mount with no polling. Artwork renders through `next/image` with a single added `i.scdn.co` remote pattern.
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-09-11
+
+**Rationale:** The paragraph edit earns the sheets narratively; the swap puts the detective story first as the stronger visual lead; counter-rotation plus overlap reads placed, not gridded. Live Spotify state must be truthful (playing, recent, or an honest fallback), cached conservatively, and secret-safe by construction.
+
+**Alternatives Considered:** Spotify iframe embed (rejected: generic widget, heavy); equalizer or vinyl motifs (rejected: decoration pretending to be signal); SWR or polling (rejected: one fetch per open is enough); `unoptimized` artwork (rejected: the remote pattern keeps the optimizer).
+
+**Impact:** New files: `src/app/api/spotify/route.ts` (zero client JS). Route chunk 80.4 to 81.8 kB, First Load JS 168 to 169 kB. Verified live `playing` payload locally (real track, artist, artwork, progress, zero secret strings), typecheck, lint, format on touched files, production build with the route registered.
