@@ -32,7 +32,7 @@ export function Contact() {
             <h2 className="font-serif text-[clamp(2.4rem,4.5vw,3.75rem)] italic leading-[1.05] tracking-tight text-ink">
               Let&apos;s talk.
             </h2>
-            <p className="mt-5 max-w-[42ch] text-sm leading-relaxed text-muted">
+            <p className="mt-5 max-w-[64ch] text-sm leading-relaxed text-muted">
               Internships, collaborations, ideas that sound slightly unreasonable, or a good
               argument about football. My inbox is open.
             </p>
