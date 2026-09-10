@@ -62,7 +62,7 @@ function ThoughtLine({
   const c = line.center;
   const isFirst = index === 0;
   const isLast = index === lines.length - 1;
-  const inactiveOpacity = compact ? 0.08 : 0.22;
+  const inactiveOpacity = compact ? 0.14 : 0.22;
   const opInputs = isFirst
     ? [0, c, c + 0.28, 1]
     : isLast
@@ -96,7 +96,7 @@ function ThoughtLine({
     <motion.div
       style={{ opacity, scale }}
       data-verb={line.verb.slice(0, -1).toUpperCase()}
-      className={`statement-row relative flex h-[30svh] flex-col justify-center will-change-transform sm:h-[32vh] ${line.offsetClass}`}
+      className={`statement-row relative flex h-[24svh] flex-col justify-center will-change-transform sm:h-[32vh] ${line.offsetClass}`}
     >
       {/* Full-word echo: the complete verb, oversized and cropped by the
           frame edge, so the full viewport reads as composition. Same word
@@ -167,10 +167,11 @@ export function TransitionStatements() {
   // while still sharing the frame with it briefly. The section runs
   // 200svh (down from 240svh) with a short REBUILD hold (0.9 to 1.0):
   // enough breath before About, never an empty wait. The compact cut
-  // runs 165svh with a lower finale resolve so REBUILD shares the frame
-  // with the About entry instead of parking above a void.
+  // runs 140svh with tighter rows and shorter travel so the three
+  // thoughts read as one continuous sequence on phones instead of
+  // three disconnected screens.
   const stackYFull = useTransform(scrollYProgress, [0, 1], ['42vh', '-40vh']);
-  const stackYCompact = useTransform(scrollYProgress, [0, 1], ['30vh', '-18vh']);
+  const stackYCompact = useTransform(scrollYProgress, [0, 1], ['20vh', '-14vh']);
   const stackY = compact ? stackYCompact : stackYFull;
   const panelO = useTransform(scrollYProgress, [0, 0.005, 1], [0, 1, 1]);
 
@@ -209,7 +210,7 @@ export function TransitionStatements() {
       ref={ref}
       aria-label="Introduction statements"
       data-compact={compact ? 'true' : 'false'}
-      className="statement-bridge pointer-events-none relative -mt-[100dvh] h-[155svh] sm:h-[200svh]"
+      className="statement-bridge pointer-events-none relative -mt-[100dvh] h-[140svh] sm:h-[200svh]"
     >
       <div className="sticky top-0 h-dvh overflow-hidden">
         <motion.div

@@ -209,7 +209,7 @@ export function Hero() {
               {/* Compact personal context: part of the composition, not cards */}
               <motion.div
                 {...scroll({ opacity: metaO })}
-                className="anim-fade-rise mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 [animation-delay:calc(var(--intro-delay)+0.8s)]"
+                className="anim-fade-rise mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 pr-10 [animation-delay:calc(var(--intro-delay)+0.8s)] sm:pr-0"
               >
                 <p className="hero-meta-item text-micro uppercase tracking-[0.16em] text-muted">
                   CS @ VIT Vellore

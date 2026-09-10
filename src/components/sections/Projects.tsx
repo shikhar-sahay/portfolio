@@ -266,8 +266,8 @@ export function Projects() {
         </div>
 
         {/* Controls */}
-        <div className="projects-controls mx-auto mt-8 flex max-w-6xl items-center justify-between gap-4">
-          <p className="text-micro uppercase tracking-[0.16em] text-muted">
+        <div className="projects-controls mx-auto mt-8 flex max-w-6xl flex-wrap items-center justify-between gap-x-4 gap-y-3">
+          <p className="min-w-0 flex-1 text-micro uppercase tracking-[0.16em] text-muted">
             IT MOVES ON ITS OWN. DRAG, SWIPE, OR INTERRUPT.
           </p>
           <div className="flex gap-3">

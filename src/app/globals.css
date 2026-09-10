@@ -286,6 +286,18 @@ html.dark .wall-vignette {
   animation: cue-travel 2.2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
 }
 
+/* Small screens: keep the vertical scroll instrument clear of the hero
+   metadata row. The metadata keeps right clearance (see Hero) while the
+   cue tucks to the edge with a shorter, quieter line. */
+@media (max-width: 639px) {
+  .hero-cue {
+    right: 0.9rem;
+  }
+  .cue-line {
+    height: 32px;
+  }
+}
+
 /* ------------------------------------------------------------------ */
 /* Light-mode structural contrast. Opacity-modifier color utilities    */
 /* (border-ink/15, bg-ink/20, border-gold/60, ...) do not compile      */
@@ -461,7 +473,7 @@ html:not(.dark) .lm-nav {
   }
 
   .statement-bridge {
-    height: 155svh;
+    height: 140svh;
   }
 
   .nav-shell {
