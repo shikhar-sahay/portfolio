@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { fragments, football, literature, music, type SpotifyTrack } from '@/content/personality';
 import { NotesWall } from '@/components/sections/NotesWall';
-import footballBrazil from '../../assets/pieces/football-brazil.jpg';
 import footballBarca from '../../assets/pieces/football-barca.JPG';
 
 /**
@@ -306,12 +305,10 @@ function MusicStage() {
 }
 
 /**
- * Football: a two-column personal stage. The story holds the left;
- * the right rests two childhood prints together: the Brazil portrait
- * in front, the Barca landscape tucked behind it. Opposing angles
- * and a modest overlap keep it physical; both stay full color in
- * both themes and static under reduced motion. Sources untouched:
- * framing is CSS containers plus object-fit only.
+ * Football: a two-column personal stage. The story holds the left; a
+ * single confident Barca childhood print holds the right, cropped in
+ * CSS around the subject with the garden falling away. Full color in
+ * both themes, static under reduced motion. Source untouched.
  */
 function FootballStage() {
   return (
@@ -340,26 +337,15 @@ function FootballStage() {
       </div>
 
       <div className="min-w-0 content-start lg:self-center">
-        <div className="relative mx-auto w-full max-w-[440px] lg:mx-0 lg:max-w-none">
-          <div className="relative z-0 ml-auto w-[78%] rotate-[1deg] transition-transform duration-500 ease-expo hover:-translate-y-1 hover:rotate-0 lg:absolute lg:left-[168px] lg:top-6 lg:ml-0 lg:w-[300px] lg:rotate-[2deg] xl:left-[205px] xl:w-[375px]">
-            <div className="aspect-[4/3] overflow-hidden shadow-[0_24px_44px_-24px_rgba(0,0,0,0.5)]">
-              <Image
-                src={footballBarca}
-                alt="Shikhar as a child outdoors wearing a red FC Barcelona shirt, hat and sunglasses"
-                width={6000}
-                height={4000}
-                sizes="(max-width: 1024px) 78vw, 380px"
-                className="h-full w-full object-cover object-[30%_50%]"
-              />
-            </div>
-          </div>
-          <div className="relative z-10 -mt-12 w-[54%] -rotate-[1deg] transition-transform duration-500 ease-expo hover:-translate-y-1 hover:rotate-0 lg:mt-0 lg:w-[220px] lg:-rotate-[2deg] xl:w-[260px]">
+        <div className="mx-auto w-full max-w-[520px] rotate-[1deg] transition-transform duration-500 ease-expo hover:-translate-y-1 hover:rotate-0 lg:mx-0 lg:w-[440px] lg:max-w-none lg:rotate-[2deg] xl:w-[480px]">
+          <div className="aspect-[5/4] overflow-hidden shadow-[0_24px_44px_-24px_rgba(0,0,0,0.5)]">
             <Image
-              src={footballBrazil}
-              alt="Shikhar as a child wearing a Brazil number 10 kit and holding a football"
-              placeholder="blur"
-              sizes="(max-width: 1024px) 54vw, 260px"
-              className="h-auto w-full shadow-[0_24px_44px_-24px_rgba(0,0,0,0.5)]"
+              src={footballBarca}
+              alt="Shikhar as a child outdoors wearing a red FC Barcelona shirt, hat and sunglasses"
+              width={6000}
+              height={4000}
+              sizes="(max-width: 1024px) 100vw, 480px"
+              className="h-full w-full object-cover object-[30%_50%]"
             />
           </div>
         </div>
