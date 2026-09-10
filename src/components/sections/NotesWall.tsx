@@ -530,16 +530,25 @@ export function NotesWall() {
           )}
         </div>
 
-        {/* Anchored guidance: a sibling of the translated world, so panning
-            moves notes and replies underneath while this copy stays pinned
-            to the viewport. pointer-events-none keeps every wall gesture
-            working through it; no card, no container, just wall type. */}
-        <p className="pointer-events-none absolute left-5 top-6 z-10 max-w-[26ch] text-[0.95rem] leading-[1.7] tracking-[0.01em] text-muted [text-wrap:pretty] sm:left-10 sm:top-10 sm:max-w-[30ch] sm:text-base">
-          <strong className="font-medium text-ink">Drag to look around.</strong> Leave a note, or
-          just see what people have left behind.{' '}
-          <em className="font-serif font-normal italic text-ink">Be kind:</em> everything here is
-          public.
-        </p>
+        {/* Anchored guidance: a static foreground patch of the wall surface
+            with the copy printed on it. It is a sibling of the translated
+            world, so panning moves notes and replies underneath while this
+            patch stays pinned to the viewport and occludes them. The patch
+            is plain wall paper feathered with its own shadow (no card, no
+            border, no container aesthetic); pointer-events-none keeps every
+            wall gesture working through it. */}
+        <div className="pointer-events-none absolute left-5 top-6 z-10 sm:left-10 sm:top-10">
+          <div
+            aria-hidden="true"
+            className="absolute -inset-5 bg-paper shadow-[0_0_36px_28px_var(--paper)] sm:-inset-6"
+          />
+          <p className="relative max-w-[26ch] text-[0.95rem] leading-[1.7] tracking-[0.01em] text-muted [text-wrap:pretty] sm:max-w-[30ch] sm:text-base">
+            <strong className="font-medium text-ink">Drag to look around.</strong> Leave a note, or
+            just see what people have left behind.{' '}
+            <em className="font-serif font-normal italic text-ink">Be kind:</em> everything here is
+            public.
+          </p>
+        </div>
 
         <div
           data-wall-interactive="true"
