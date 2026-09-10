@@ -49,7 +49,7 @@ export function Personality() {
                 onClick={() => setActive(active === i ? null : i)}
                 aria-expanded={active === i}
                 aria-controls={active === i ? 'fragment-stage' : undefined}
-                className={`h-full w-full border px-3.5 py-2 text-left text-sm tracking-tight transition-colors duration-300 ease-expo sm:min-h-16 lg:text-center ${
+                className={`h-full min-h-11 w-full border px-3.5 py-2 text-left text-sm tracking-tight transition-colors duration-300 ease-expo sm:min-h-16 lg:text-center ${
                   active === i
                     ? 'border-accent bg-accent text-paper'
                     : 'border-muted text-muted hover:border-ink hover:text-ink'
@@ -129,8 +129,8 @@ function LiteratureStage() {
 
   return (
     <div>
-      <div className="grid gap-12 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:gap-10">
-        <div>
+      <div className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:gap-10">
+        <div className="min-w-0">
           <StageEyebrow index={0} word="Literature" />
           <p className="mt-8 font-serif text-[clamp(3rem,6vw,5.5rem)] leading-[0.95] tracking-tight text-ink">
             Literature
@@ -147,8 +147,8 @@ function LiteratureStage() {
           ))}
         </div>
 
-        <div className="content-start">
-          <div className="grid content-start gap-6 sm:grid-cols-2 sm:gap-5">
+        <div className="min-w-0 content-start">
+          <div className="grid grid-cols-1 content-start gap-6 sm:grid-cols-2 sm:gap-5">
             {literature.articles.map((article, i) => (
               <a
                 key={article.title}
@@ -259,7 +259,7 @@ function LiteratureStage() {
 function MusicStage() {
   return (
     <div className="grid gap-12 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:gap-10">
-      <div>
+      <div className="min-w-0">
         <StageEyebrow index={1} word="Music" />
         <p className="mt-8 font-serif text-[clamp(3rem,6vw,5.5rem)] leading-[0.95] tracking-tight text-ink">
           Music
@@ -280,7 +280,7 @@ function MusicStage() {
           </p>
         ))}
         <div
-          className="mt-8 grid gap-6 border-t pt-6 sm:grid-cols-2"
+          className="mt-8 grid grid-cols-1 gap-6 border-t pt-6 sm:grid-cols-2"
           style={{ borderColor: 'color-mix(in srgb, var(--ink) 22%, transparent)' }}
         >
           <div>
@@ -298,7 +298,7 @@ function MusicStage() {
         </div>
       </div>
 
-      <div className="content-start">
+      <div className="min-w-0 content-start">
         <SpotifyCard />
       </div>
     </div>
@@ -316,7 +316,7 @@ function MusicStage() {
 function FootballStage() {
   return (
     <div className="grid gap-12 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:gap-10">
-      <div>
+      <div className="min-w-0">
         <StageEyebrow index={2} word="Football" />
         <p className="mt-8 font-serif text-[clamp(3rem,6vw,5.5rem)] leading-[0.95] tracking-tight text-ink">
           Football
@@ -339,7 +339,7 @@ function FootballStage() {
         <p className="mt-6 text-lg font-semibold tracking-tight text-ink">{football.closing}</p>
       </div>
 
-      <div className="content-start lg:self-center">
+      <div className="min-w-0 content-start lg:self-center">
         <div className="relative mx-auto w-full max-w-[440px] lg:mx-0 lg:max-w-none">
           <div className="relative z-0 ml-auto w-[78%] rotate-[1deg] transition-transform duration-500 ease-expo hover:-translate-y-1 hover:rotate-0 lg:absolute lg:left-[168px] lg:top-6 lg:ml-0 lg:w-[300px] lg:rotate-[2deg] xl:left-[205px] xl:w-[375px]">
             <div className="aspect-[4/3] overflow-hidden shadow-[0_24px_44px_-24px_rgba(0,0,0,0.5)]">
