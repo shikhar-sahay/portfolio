@@ -1153,3 +1153,26 @@ Do not make significant design/architecture decisions without documenting them h
 **Alternatives Considered:** Dotted-texture patch (rejected: dot-phase seam against the moving field); glassmorphism or bordered card (rejected: app-widget read); hardcoding footer line breaks (rejected: fragile across widths); multi-size ICO set (rejected: one clean 256 PNG downscales predictably); regenerating the Apple tile from glow art (rejected: edge runtime cannot read local bytes, existing tile stays consistent).
 
 **Impact:** No new dependency, no client JS change. First Load JS unchanged at 165 kB. Verified guidance anchoring plus occlusion, controls/composer/scroll, footer lines, favicon serving plus single-definition metadata, overflow, both themes, no hydration warnings.
+
+---
+
+### 59. Mobile Collision Pass: Wall Foreground Layers, Hero Cue, Compact Statements, Footer Lines (EXPERIMENTAL polish)
+
+**Decision:** Targeted fixes for three phone-screenshot collisions plus one deliberate footer composition, no redesigns.
+
+1. Notes Wall guidance now sits on a foreground surface flush to the viewport left and top edges, with the copy inset (24px mobile, 64px left plus 32px top on sm and up). The previous patch was offset from the edges, leaving a strip where panning notes reappeared left of the copy. The copy is unchanged.
+2. Notes Wall controls gain the same treatment below: a full-bleed paper foreground strip flush to the viewport bottom (covering the safe area) sits under the dock, so notes slide underneath instead of colliding with LEAVE A NOTE, LATEST, RANDOM, CENTER, and the count. The dock moves to an inset-x row with safe-area-aware bottom padding, every action keeps a 44px touch target, and thread plus composer sheets use safe-area-aware offsets. Stored positions never change.
+3. Hero metadata keeps right clearance below sm while the vertical scroll cue tucks closer to the edge with a shorter line, ending the overlap with SOFTWARE, SECURITY and THE WEB. Desktop and short-landscape behavior untouched (landscape already hides the cue).
+4. Statements compact cut tightens for phones: section 140svh, rows 24svh, travel 20vh to minus 14vh, inactive opacity 0.08 to 0.14, so BUILD, BREAK, REBUILD read as one continuous sequence instead of three disconnected screens. Desktop travel, centers, and reduced-motion branches untouched; short-landscape override follows the compact height.
+5. Projects control row wraps (hint flexes, arrows keep 44px targets) so the hint line and arrows cannot squeeze at 360px.
+6. Footer contact paragraph resolves to the approved desktop two lines via a desktop-only break after unreasonable, with a 52ch measure; mobile wraps naturally. Copy and colophon unchanged.
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-09-10
+
+**Rationale:** Each fix extends an existing mechanism (foreground occlusion surfaces, compact choreography cut, measure plus break) instead of inventing new UI. Occlusion beats repositioning for the wall because note coordinates are real persisted data.
+
+**Alternatives Considered:** Padding-only guidance shift (rejected: leaves the reappearance strip); pushing notes to new coordinates (rejected: mutates real positions); removing the hero cue on mobile (rejected: repositioning solves it); global section-height cuts (rejected: per-transition density differs); forcing the 150 kB budget now (rejected: documented, needs its own pass).
+
+**Impact:** First Load JS 165 to 166 kB (route chunk 78.2 to 78.4 kB, markup only). No new dependencies. Verified production build, production-server smoke (200 with guidance, footer, colophon, cue strings), typecheck, lint, format, zero em dashes.
