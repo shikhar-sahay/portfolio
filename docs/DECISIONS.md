@@ -1268,3 +1268,23 @@ Do not make significant design/architecture decisions without documenting them h
 **Alternatives Considered:** Shrinking type (rejected: readability); a generic two-card grid (rejected: matching boxes kill the print feel); pre-cropped duplicate JPEGs (rejected: source duplication, CSS crop suffices); renaming to lowercase `.jpg` (rejected: the supplied filename stays canonical).
 
 **Impact:** Route chunk 82.3 to 82.6 kB, First Load JS 169 to 170 kB (second static import metadata; both photos lazy below the fold). Verified typecheck, lint, format, production build, plus a live Spotify regression check (playing state, zero secret strings).
+
+---
+
+### 65. Mobile Grid Hardening, Single-Photo Football, Side Quests Recommendations (EXPERIMENTAL polish)
+
+**Decision:** Focused Pieces pass with three objectives, verified against real headless renders.
+
+1. Root cause of the mobile truncation: stage grids used bare `display: grid` with no template below lg, so the implicit single column sized to max-content (the longest paragraph unwrapped, measured 916px in a 794px container) and every child filled the oversized track, reading as cut-off text clipped by the section. Fix at the shared level: explicit `grid-cols-1` on all stage, sheet, and metadata grids plus `min-w-0` on every stage column, with 44px minimum selector targets. Desktop templates untouched. Verified fixed at exact 390px.
+2. Football renders only the Barca childhood print (5:4 CSS crop at 30 percent object position, single rotation, no frame), with the Brazil asset kept in the repo but unimported.
+3. Rabbit Holes becomes Side Quests with owner copy verbatim and one recommendation instrument: `src/content/shows.ts` holds the 29-title dataset with trim, collapse, and casefold normalization; `POST /api/shows/recommend` answers watched (never stored), added (201 on insert), duplicate (atomic increment), invalid (422), unavailable (503, never added), with per-IP rate limiting adapted from the notes convention. The UI renders only server-confirmed states with a live-region announcement. `db/002_show_recommendations.sql` is prepared but NOT run: until it is, new recommendations fail honestly as unavailable.
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-09-11
+
+**Rationale:** Implicit grid tracks are a silent desktop-safe, mobile-broken default; explicit tracks plus min-w-0 remove the class, not the instance. One confident photo beats a weaker collage. Recommendations must be truthful about persistence from day one.
+
+**Alternatives Considered:** Hiding overflow to conceal the cut (rejected: masks the bug); per-fragment width hacks (rejected: same class everywhere); fuzzy title matching (rejected: false positives); localStorage stand-in persistence (rejected: dishonest); pre-cropped photo duplicates (rejected: CSS crop suffices).
+
+**Impact:** Route chunk 82.6 to 84.2 kB, First Load JS 170 to 171 kB (form plus stage markup; shows route adds zero client JS). Verified watched, invalid, unavailable, and rate-limit states live; typecheck, lint, format, production build; screenshot QA at 390, 844x390, 1024, and 1440 in light plus dark and reduced motion.

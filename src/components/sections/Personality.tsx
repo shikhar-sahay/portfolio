@@ -2,7 +2,15 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import { fragments, football, literature, music, type SpotifyTrack } from '@/content/personality';
+import {
+  fragments,
+  football,
+  literature,
+  music,
+  sideQuests,
+  type SpotifyTrack,
+} from '@/content/personality';
+import { SHOW_LIMITS, WATCHED_SHOWS, type RecommendResponse } from '@/content/shows';
 import { NotesWall } from '@/components/sections/NotesWall';
 import footballBarca from '../../assets/pieces/football-barca.JPG';
 
@@ -71,6 +79,8 @@ export function Personality() {
               <MusicStage />
             ) : active === 2 ? (
               <FootballStage />
+            ) : active === 3 ? (
+              <SideQuestsStage />
             ) : (
               <FragmentTeaser index={active} />
             )}
@@ -95,8 +105,8 @@ function StageEyebrow({ index, word }: { index: number; word: string }) {
 
 /**
  * Holder for fragments whose full stage has not been supplied yet
- * (Rabbit Holes, Communities): identity plus the existing voice
- * line, nothing invented.
+ * (Communities): identity plus the existing voice line, nothing
+ * invented.
  */
 function FragmentTeaser({ index }: { index: number }) {
   const fragment = fragments[index];
@@ -350,6 +360,197 @@ function FootballStage() {
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+/**
+ * Side Quests: one continuous thought on the left, one recommendation
+ * instrument on the right. The form posts to `/api/shows/recommend`
+ * and renders only what the server confirms: watched, added,
+ * already recommended, or an honest failure. No feed, no accounts,
+ * no local persistence masquerading as shared state.
+ */
+function SideQuestsStage() {
+  return (
+    <div className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:gap-10">
+      <div className="min-w-0">
+        <StageEyebrow index={3} word="Side Quests" />
+        <p className="mt-8 font-serif text-[clamp(3rem,6vw,5.5rem)] leading-[0.95] tracking-tight text-ink">
+          Side Quests
+        </p>
+        <p className="mt-3 font-serif text-xl italic tracking-tight text-ink sm:text-2xl">
+          {fragments[3].micro}
+        </p>
+
+        <p className="mt-8 text-lg font-semibold leading-snug tracking-tight text-ink">
+          {sideQuests.opening}
+        </p>
+        {sideQuests.body.map(paragraph => (
+          <SideQuestsParagraph key={paragraph.slice(0, 24)} text={paragraph} />
+        ))}
+        <p className="mt-6 font-semibold tracking-tight text-ink">{sideQuests.closing}</p>
+      </div>
+
+      <div className="min-w-0 content-start lg:self-center">
+        <RecommendationCard />
+      </div>
+    </div>
+  );
+}
+
+/**
+ * One Side Quests body paragraph. The "(concerning)" aside keeps a
+ * quiet serif italic; everything else reads as plain body copy.
+ */
+function SideQuestsParagraph({ text }: { text: string }) {
+  const aside = '(concerning)';
+  const at = text.indexOf(aside);
+  if (at === -1) {
+    return <p className="mt-5 text-[0.95rem] leading-relaxed text-muted">{text}</p>;
+  }
+  return (
+    <p className="mt-5 text-[0.95rem] leading-relaxed text-muted">
+      {text.slice(0, at)}
+      <em className="font-serif italic text-ink">{aside}</em>
+      {text.slice(at + aside.length)}
+    </p>
+  );
+}
+
+type RecommendState =
+  | { kind: 'idle' }
+  | { kind: 'sending' }
+  | { kind: 'done'; status: RecommendResponse['status']; show?: string; error?: string };
+
+/**
+ * The recommendation instrument: a bordered editorial panel with one
+ * input and one action. Feedback is compact, announced through a
+ * live region, and never claims persistence the server did not
+ * confirm.
+ */
+function RecommendationCard() {
+  const [input, setInput] = useState('');
+  const [state, setState] = useState<RecommendState>({ kind: 'idle' });
+
+  const submit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (state.kind === 'sending') return;
+    if (input.trim().length === 0) {
+      setState({ kind: 'done', status: 'invalid', error: 'Type a show first.' });
+      return;
+    }
+    setState({ kind: 'sending' });
+    try {
+      const response = await fetch('/api/shows/recommend', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', accept: 'application/json' },
+        body: JSON.stringify({ show: input }),
+      });
+      const data = (await response.json()) as RecommendResponse;
+      if (data.status === 'added') setInput('');
+      setState({ kind: 'done', status: data.status, show: data.show, error: data.error });
+    } catch {
+      setState({
+        kind: 'done',
+        status: 'unavailable',
+        error: 'Recommendations are offline right now. Your show was not saved.',
+      });
+    }
+  };
+
+  return (
+    <div
+      className="border p-6 sm:p-7"
+      style={{ borderColor: 'color-mix(in srgb, var(--ink) 22%, transparent)' }}
+    >
+      <p className="text-micro font-semibold uppercase tracking-[0.16em] text-muted">
+        Show recommendation
+      </p>
+      <p className="mt-4 font-serif text-2xl leading-tight tracking-tight text-ink sm:text-[1.7rem]">
+        What should I watch next?
+      </p>
+
+      <form onSubmit={submit} className="mt-6 flex flex-col gap-3 sm:flex-row">
+        <label htmlFor="show-recommendation-input" className="sr-only">
+          Recommend a show
+        </label>
+        <input
+          id="show-recommendation-input"
+          value={input}
+          onChange={event => setInput(event.target.value.slice(0, SHOW_LIMITS.titleMax))}
+          placeholder="Type a show..."
+          autoComplete="off"
+          maxLength={SHOW_LIMITS.titleMax}
+          className="min-h-11 w-full flex-1 border bg-transparent px-4 py-2.5 text-base text-ink outline-none placeholder:text-muted focus:border-accent"
+          style={{ borderColor: 'color-mix(in srgb, var(--ink) 22%, transparent)' }}
+        />
+        <button
+          type="submit"
+          disabled={state.kind === 'sending'}
+          className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 border border-accent px-5 py-2.5 text-micro font-semibold uppercase tracking-[0.16em] text-accent transition-opacity duration-300 hover:opacity-80 disabled:cursor-wait disabled:opacity-50"
+        >
+          {state.kind === 'sending' ? 'Sending' : 'Recommend'}
+          <span aria-hidden="true">&rarr;</span>
+        </button>
+      </form>
+
+      <p className="mt-5 text-sm leading-relaxed text-muted">
+        {WATCHED_SHOWS.length} shows watched. Think you can find one I haven&apos;t?
+      </p>
+
+      <div aria-live="polite" className="mt-2 min-h-[3.5rem]">
+        {state.kind === 'done' && <RecommendFeedback state={state} />}
+      </div>
+    </div>
+  );
+}
+
+function RecommendFeedback({ state }: { state: Extract<RecommendState, { kind: 'done' }> }) {
+  if (state.status === 'watched') {
+    return (
+      <div>
+        <p className="text-micro font-semibold uppercase tracking-[0.16em] text-accent">
+          Already seen it.
+        </p>
+        <p className="mt-1.5 text-sm leading-relaxed text-muted">
+          You have excellent taste, though.
+        </p>
+      </div>
+    );
+  }
+  if (state.status === 'added') {
+    return (
+      <div>
+        <p className="text-micro font-semibold uppercase tracking-[0.16em] text-accent">
+          Added to the list.
+        </p>
+        <p className="mt-1.5 text-sm leading-relaxed text-muted">
+          Thanks. I&apos;ll blame you if I lose another weekend.
+        </p>
+      </div>
+    );
+  }
+  if (state.status === 'duplicate') {
+    return (
+      <div>
+        <p className="text-micro font-semibold uppercase tracking-[0.16em] text-accent">
+          Someone beat you to it.
+        </p>
+        <p className="mt-1.5 text-sm leading-relaxed text-muted">
+          Apparently I really need to watch this one.
+        </p>
+      </div>
+    );
+  }
+  return (
+    <div>
+      <p className="text-micro font-semibold uppercase tracking-[0.16em] text-accent">
+        {state.status === 'unavailable' ? 'Recommendations offline.' : 'Not quite.'}
+      </p>
+      <p className="mt-1.5 text-sm leading-relaxed text-muted">
+        {state.error ?? 'Something went wrong. Nothing was saved.'}
+      </p>
     </div>
   );
 }

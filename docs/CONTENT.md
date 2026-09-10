@@ -179,15 +179,16 @@ Actual model (`src/content/personality.ts`):
 export interface Fragment {
   word: string;
   caption: string;
+  micro?: string;
 }
 export const fragments: Fragment[] = [
-  { word: 'Writing', caption: 'notes, drafts, and sentences that almost work' },
-  { word: 'Music', caption: 'the one background process that never exits' },
-  // ... Football, Rabbit Holes, Communities
+  { word: 'Literature', caption: 'notes, drafts, and sentences that almost work' /* ... */ },
+  { word: 'Music', caption: 'the one background process that never exits' /* ... */ },
+  // ... Football, Side Quests, Communities
 ];
 ```
 
-Five provisional fragments, each a tonal word plus a voice caption: Writing, Music, Football, Rabbit Holes, Communities. The prior expanded set is intentionally removed. There are no writing links, no external profiles, no fragment-specific graphics, and no new routes. Fragment selection is local component state only.
+Five fragments open stages below the selector row with no default selection: Literature (owner archive copy plus two essay sheets plus archive records), Music (owner copy plus live `/api/spotify` listening artifact), Football (owner copy plus the Barca childhood print), Side Quests (owner copy plus the show recommendation instrument backed by `src/content/shows.ts` and `/api/shows/recommend`), Communities (identity teaser only). Fragment selection is local component state only.
 
 ### Notes Wall intro (EXPERIMENTAL copy, owner meaning preserved)
 
