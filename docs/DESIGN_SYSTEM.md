@@ -251,7 +251,7 @@ This file will evolve as design decisions are finalized. Each section should be 
 
 ## v5.8 Additions (EXPERIMENTAL, 2026-09-10)
 
-- **Identity metadata (see DECISIONS.md #56, favicon superseded by #57):** the favicon is the finalized ink tile with large diamond and thin vermilion perimeter on both routes (`icon.svg` vector, opaque `apple-icon.tsx` tile); link previews use an edge-rendered 1200x630 editorial card (`opengraph-image.tsx`) set in real site copy. Metadata (title, description, canonical, OG, Twitter) is finalized against the production URL. The header home action is the `◆ PORTFOLIO / 26` edition mark (see #57).
+- **Identity metadata (see DECISIONS.md #56, favicon superseded by #57 then #58):** the favicon is the finalized owner-supplied diamond artwork as a tightly cropped 256px `icon.png` (transparent ground, glow intact); iOS keeps the opaque diamond tile (`apple-icon.tsx`); link previews use an edge-rendered 1200x630 editorial card (`opengraph-image.tsx`) set in real site copy. Metadata (title, description, canonical, OG, Twitter) is finalized against the production URL. The header home action is the `◆ PORTFOLIO / 26` edition mark (see #57).
 - **Header identity lockup (see DECISIONS.md #57):** the top-left home action is the edition mark `◆ PORTFOLIO / 26` (accent diamond plus micro tracked ink text, no box, subordinate to the hero name). The vermilion underline reveal lives on the text span through group triggers; the diamond rotates toward square with a slight scale on hover and holds still under reduced motion. The favicon on both routes is the finalized ink tile with large diamond and thin vermilion perimeter.
 
 ## v5.1 Additions (EXPERIMENTAL, 2026-09-09)

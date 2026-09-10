@@ -113,7 +113,7 @@
 - [x] Timeline data static; reveals via Motion IO primitives
 - [x] No layout shifts from fonts/images (fixed display sizes, blur placeholder)
 - [x] Focus styles via global `:focus-visible` ring
-- [x] Favicon resolves (`src/app/icon.svg`), no console 404s
+- [x] Favicon resolves (`src/app/icon.png`), no console 404s
 
 ### Open (M8 and owner inputs)
 

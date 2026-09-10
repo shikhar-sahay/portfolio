@@ -62,7 +62,7 @@ src/
 │   │                       #   Experience, Toolkit, Projects, Pieces of Me, Contact)
 │   ├── not-found.tsx      # 404 scene: You BROKE. plus REBUILD (client, CSS transitions only)
 │   ├── globals.css        # Tokens, keyframes, arch/mask/marquee/reduced-motion styles
-│   ├── icon.svg           # Favicon: finalized ink tile, diamond, perimeter (vector)
+│   ├── icon.png           # Favicon: finalized diamond artwork (cropped 256px)
 │   ├── apple-icon.tsx     # Apple touch icon (edge-rendered PNG: diamond on ink)
 │   ├── opengraph-image.tsx # Social preview 1200x630 (edge-rendered PNG, real copy)
 │   └── api/notes/         # Wall API: Postgres list/create, replies, secret-gated moderation
@@ -134,7 +134,7 @@ There is no `src/lib/`, `src/types/`, `src/styles/`, `src/components/effects/`, 
 | **Pieces of Me**        | `src/content/personality.ts` (five provisional fragments + captions)                                                                                | `FINALIZED` |
 | **Sections/nav**        | `src/content/sections.ts` (order source of truth; visible nav is About/Experience/Toolkit/Projects/Pieces of Me/Contact)                            | `FINALIZED` |
 | **Images**              | `src/assets/` static imports + `next/image`                                                                                                         | `FINALIZED` |
-| **SEO/Metadata**        | `metadata` export in `layout.tsx` (canonical title, description, OG/Twitter, canonical URL) + `icon.svg` + generated `opengraph-image`/`apple-icon` | `FINALIZED` |
+| **SEO/Metadata**        | `metadata` export in `layout.tsx` (canonical title, description, OG/Twitter, canonical URL) + `icon.png` + generated `opengraph-image`/`apple-icon` | `FINALIZED` |
 
 **Principle (FINALIZED):** Content as data: separate from components. Single source of truth in `src/content/`.
 

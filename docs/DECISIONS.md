@@ -1133,3 +1133,23 @@ Do not make significant design/architecture decisions without documenting them h
 **Alternatives Considered:** Placing the reference raster into the nav (rejected: heavier, fixed colors, blurry at small sizes); spinning or looping diamond (rejected: advertises itself); a separate mobile logo (rejected: full lockup fits at 360 with clearance); theme-adaptive favicon tiles (rejected: the dark tile reads on both chromes).
 
 **Impact:** No new dependency, no client JS change (CSS classes only). First Load JS unchanged at 165 kB. Verified 1440/1280/1024/820/430/390/375/360 plus short landscape, both themes, hover/leave/click/focus/touch/reduced motion, favicon routes, zero overflow, no hydration warnings.
+
+---
+
+### 58. Guidance Foreground Patch, Footer Measure, Finalized Favicon Artwork
+
+**Decision:** Three narrow refinements, no redesigns.
+
+1. Notes Wall guidance is now printed on a static foreground patch: the anchored container holds a plain wall-paper backdrop (feathered with its own paper-colored shadow, no card, no border) behind the unchanged copy. The patch is a viewport-positioned sibling above the translated world, so panning notes disappear underneath it. Verified by pixel-decoding screenshots with a probe note parked behind the text (zero bleed pixels) and byte-identical guidance regions before and after a 440px pan. Replaces the transparent anchored text from the previous pass; `placeGuide` JS placement is deleted.
+2. Footer contact paragraph keeps its exact copy and typography with the measure widened from 42ch to 64ch, so it resolves into the intended balanced two lines at desktop widths (column-limited, verified 1440/1280/1024) and reflows naturally on mobile. No grid, font, tracking, or line-height change.
+3. Favicon supersedes #57 tile geometry: the attached finalized artwork (single glowing vermilion diamond on transparency) ships as a tightly cropped 256px `icon.png` generated from the owner-supplied source, replacing the CSS-recreation `icon.svg` (deleted, so no conflicting definition remains). The Apple touch tile and OG preview are unchanged. Supersedes the #56/#57 diamond-only and tile descriptions as the canonical favicon.
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-09-10
+
+**Rationale:** Transparency-only anchoring let world content intersect the guidance; occlusion needs a real surface, and the lightest honest surface is the wall itself. The footer needed measure, not new type. The favicon must be the approved art, not a redraw.
+
+**Alternatives Considered:** Dotted-texture patch (rejected: dot-phase seam against the moving field); glassmorphism or bordered card (rejected: app-widget read); hardcoding footer line breaks (rejected: fragile across widths); multi-size ICO set (rejected: one clean 256 PNG downscales predictably); regenerating the Apple tile from glow art (rejected: edge runtime cannot read local bytes, existing tile stays consistent).
+
+**Impact:** No new dependency, no client JS change. First Load JS unchanged at 165 kB. Verified guidance anchoring plus occlusion, controls/composer/scroll, footer lines, favicon serving plus single-definition metadata, overflow, both themes, no hydration warnings.
