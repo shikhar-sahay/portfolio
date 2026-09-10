@@ -2,8 +2,9 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import { fragments, literature, music, type SpotifyTrack } from '@/content/personality';
+import { fragments, football, literature, music, type SpotifyTrack } from '@/content/personality';
 import { NotesWall } from '@/components/sections/NotesWall';
+import footballPhoto from '../../assets/pieces/football-brazil.jpg';
 
 /**
  * Pieces of Me: fragments of a person. Nothing is selected at first:
@@ -68,6 +69,8 @@ export function Personality() {
               <LiteratureStage />
             ) : active === 1 ? (
               <MusicStage />
+            ) : active === 2 ? (
+              <FootballStage />
             ) : (
               <FragmentTeaser index={active} />
             )}
@@ -92,8 +95,8 @@ function StageEyebrow({ index, word }: { index: number; word: string }) {
 
 /**
  * Holder for fragments whose full stage has not been supplied yet
- * (Football, Rabbit Holes, Communities): identity plus the existing
- * voice line, nothing invented.
+ * (Rabbit Holes, Communities): identity plus the existing voice
+ * line, nothing invented.
  */
 function FragmentTeaser({ index }: { index: number }) {
   const fragment = fragments[index];
@@ -296,6 +299,51 @@ function MusicStage() {
 
       <div className="content-start">
         <SpotifyCard />
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Football: a two-column personal stage. The story holds the left; the
+ * childhood Brazil-kit photograph is the only visual on the right,
+ * resting at a slight print-like angle with a CSS-only settle on
+ * hover. Full color in both themes, static under reduced motion.
+ */
+function FootballStage() {
+  return (
+    <div className="grid gap-12 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:gap-10">
+      <div>
+        <StageEyebrow index={2} word="Football" />
+        <p className="mt-8 font-serif text-[clamp(3rem,6vw,5.5rem)] leading-[0.95] tracking-tight text-ink">
+          Football
+        </p>
+        <p className="mt-3 font-serif text-xl italic tracking-tight text-ink sm:text-2xl">
+          {fragments[2].micro}
+        </p>
+
+        <p className="mt-8 text-lg font-semibold leading-snug tracking-tight text-ink">
+          {football.opening}
+        </p>
+        {football.body.map(paragraph => (
+          <p
+            key={paragraph.slice(0, 24)}
+            className="mt-5 text-[0.95rem] leading-relaxed text-muted"
+          >
+            {paragraph}
+          </p>
+        ))}
+        <p className="mt-6 text-lg font-semibold tracking-tight text-ink">{football.closing}</p>
+      </div>
+
+      <div className="content-start">
+        <Image
+          src={footballPhoto}
+          alt="Shikhar as a child wearing a Brazil number 10 kit and holding a football"
+          placeholder="blur"
+          sizes="(max-width: 1024px) 100vw, 560px"
+          className="h-auto w-full rotate-[2deg] shadow-[0_28px_50px_-24px_rgba(0,0,0,0.55)] transition-transform duration-500 ease-expo hover:-translate-y-1 hover:rotate-0"
+        />
       </div>
     </div>
   );

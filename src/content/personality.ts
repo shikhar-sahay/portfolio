@@ -33,7 +33,11 @@ export const fragments: Fragment[] = [
     caption: 'the one background process that never exits',
     micro: 'the one background process that never exits',
   },
-  { word: 'Football', caption: 'some things are worth ruining a weekend over' },
+  {
+    word: 'Football',
+    caption: 'some things are worth ruining a weekend over',
+    micro: 'més que un club, and I mean it',
+  },
   { word: 'Rabbit Holes', caption: 'things I know suspiciously too much about' },
   { word: 'Communities', caption: 'most good things have people attached to them' },
 ];
@@ -90,6 +94,20 @@ export const music = {
   favouriteArtist: 'JUICE WRLD',
   favouriteSong: "DON'T MAKE ME CHOOSE.",
   profileUrl: 'https://open.spotify.com/user/e903cr9l76oafo6tt5oyi4gdh?si=ab8c9e51a25d446c',
+};
+
+/**
+ * Football stage: owner-supplied copy plus the childhood Brazil-kit
+ * photograph. The photo is the only visual; it carries that side of
+ * the story alone, so the copy says nothing about Brazil.
+ */
+export const football = {
+  opening: "There's nothing more beautiful than the beautiful game.",
+  body: [
+    'For me, it all started with Neymar Jr., one of the finest magicians to ever touch a football. I followed him everywhere, and when he found his way to FC Barcelona, so did I. What started with Neymar quickly became something bigger. I became a culer, fell in love with the way Barça played, and by the time he left, the club had already become a part of me.',
+    "Now, watching Lamine Yamal, I catch glimpses of the same magic that made eight-year-old me fall in love with football in the first place. And this season, we're bringing the Champions League back to the Camp Nou.",
+  ],
+  closing: 'Visca Barça. And fu** Madrid.',
 };
 
 export type SpotifyStatus = 'playing' | 'recent' | 'unavailable';

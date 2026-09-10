@@ -1227,3 +1227,24 @@ Do not make significant design/architecture decisions without documenting them h
 **Alternatives Considered:** Spotify iframe embed (rejected: generic widget, heavy); equalizer or vinyl motifs (rejected: decoration pretending to be signal); SWR or polling (rejected: one fetch per open is enough); `unoptimized` artwork (rejected: the remote pattern keeps the optimizer).
 
 **Impact:** New files: `src/app/api/spotify/route.ts` (zero client JS). Route chunk 80.4 to 81.8 kB, First Load JS 168 to 169 kB. Verified live `playing` payload locally (real track, artist, artwork, progress, zero secret strings), typecheck, lint, format on touched files, production build with the route registered.
+
+---
+
+### 63. Literature Right-Column Archives, Music Rebalance, Football (EXPERIMENTAL polish)
+
+**Decision:** Focused Pieces of Me refinement pass across three fragments, no changes elsewhere.
+
+1. Literature moves FROM THE ARCHIVES into the right column beneath the sheets (2x2 compact grid on desktop, native snap strip below lg), filling the void under the papers and balancing the taller text column. Titles, teasers, links, order, rotations, and copy untouched.
+2. Music moves Favourite Artist and Favourite Song into the left column below the prose (with a quiet top hairline), and the Spotify card slims down (tighter padding, artwork capped at 400px) so the columns balance. API behavior untouched; all card states preserved.
+3. The recent-played timestamp leaves the status line for the right edge (`ml-auto` plus padding, middle dot removed): secondary, breathing, same line where room allows, wrapping gracefully when not.
+4. Football arrives as the third stage in the shared architecture: owner copy verbatim (culer kept, accents kept, closing unsanitized), the 104 KB childhood Brazil-kit photograph (`src/assets/pieces/football-brazil.jpg`, static import with blur placeholder, lazy, full color both themes) as the sole visual at a 2deg print angle with a CSS-only settle on hover. Rabbit Holes and Communities keep teaser holders.
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-09-11
+
+**Rationale:** Archives belong to the papers they extend; metadata belongs to the prose it describes; the timestamp needed air, not emphasis. Football earns a full stage because its copy and artifact arrived together.
+
+**Alternatives Considered:** Four-across archive cards in the narrow column (rejected: cramped, cards must stay secondary); shrinking the Spotify card further (rejected: it must stay the primary artifact); a brighter timestamp (rejected: secondary by design); cropping the photo (rejected: jersey, number, shorts, socks, and ball must all read).
+
+**Impact:** Two commits: `refactor(pieces)` for the Literature and Music rebalancing, `feat(pieces)` for Football plus the photo. Route chunk 81.8 to 82.3 kB, First Load JS unchanged at 169 kB. Verified typecheck, lint, format, production build at both commits, plus a live Spotify regression check (playing state, zero secret strings).
