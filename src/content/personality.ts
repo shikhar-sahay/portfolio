@@ -101,9 +101,9 @@ export const music = {
 };
 
 /**
- * Football stage: owner-supplied copy plus the childhood Brazil-kit
+ * Football stage: owner-supplied copy plus the childhood Barca
  * photograph. The photo is the only visual; it carries that side of
- * the story alone, so the copy says nothing about Brazil.
+ * the story alone.
  */
 export const football = {
   opening: "There's nothing more beautiful than the beautiful game.",
@@ -125,7 +125,6 @@ export const sideQuests = {
     'Some of my favourite time is the least complicated: being around my friends and the people I love, going somewhere with no real plan, finding another show to binge, watching a movie, or just doing absolutely nothing together.',
     "Somewhere in between, I've made my way through just about every Pokémon game I could get my hands on, lost an unreasonable number of hours to FIFA and Fortnite, developed a (concerning) liking for crime stories and documentaries, and read enough Agatha Christie to know that the obvious suspect is almost never the right one.",
   ],
-  closing: 'The main quest gets the résumé. The side quests get the rest of me.',
 };
 
 export type SpotifyStatus = 'playing' | 'recent' | 'unavailable';

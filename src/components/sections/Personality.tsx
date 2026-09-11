@@ -10,7 +10,8 @@ import {
   sideQuests,
   type SpotifyTrack,
 } from '@/content/personality';
-import { SHOW_LIMITS, WATCHED_SHOWS, type RecommendResponse } from '@/content/shows';
+import { SHOW_LIMITS, type RecommendResponse } from '@/content/shows';
+import { channelGlyphs } from '@/content/channelGlyphs';
 import { NotesWall } from '@/components/sections/NotesWall';
 import footballBarca from '../../assets/pieces/football-barca.JPG';
 
@@ -131,10 +132,32 @@ function FragmentTeaser({ index }: { index: number }) {
  */
 function LiteratureStage() {
   const stripRef = useRef<HTMLDivElement>(null);
+  const [atStart, setAtStart] = useState(true);
+  const [atEnd, setAtEnd] = useState(false);
   const nudge = (dir: 1 | -1) => {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     stripRef.current?.scrollBy({ left: dir * 300, behavior: reduce ? 'auto' : 'smooth' });
   };
+
+  // The strip is finite: arrows disable at the real scroll bounds and
+  // re-enable on swipe, arrow travel, resize, or layout change. A tiny
+  // tolerance absorbs subpixel rounding so the end state never flickers.
+  useEffect(() => {
+    const strip = stripRef.current;
+    if (!strip) return;
+    const updateBounds = () => {
+      const max = strip.scrollWidth - strip.clientWidth;
+      setAtStart(strip.scrollLeft <= 2);
+      setAtEnd(strip.scrollLeft >= max - 2);
+    };
+    updateBounds();
+    strip.addEventListener('scroll', updateBounds, { passive: true });
+    window.addEventListener('resize', updateBounds);
+    return () => {
+      strip.removeEventListener('scroll', updateBounds);
+      window.removeEventListener('resize', updateBounds);
+    };
+  }, []);
 
   return (
     <div>
@@ -209,8 +232,11 @@ function LiteratureStage() {
                 <button
                   type="button"
                   onClick={() => nudge(-1)}
+                  disabled={atStart}
                   aria-label="Scroll archive backward"
-                  className="flex h-11 w-11 items-center justify-center border text-lg text-ink transition-colors duration-300 hover:text-accent"
+                  className={`flex h-11 w-11 items-center justify-center border text-lg transition-colors duration-300 ${
+                    atStart ? 'cursor-default text-ink opacity-30' : 'text-ink hover:text-accent'
+                  }`}
                   style={{ borderColor: 'color-mix(in srgb, var(--ink) 22%, transparent)' }}
                 >
                   <span aria-hidden="true">&larr;</span>
@@ -218,8 +244,11 @@ function LiteratureStage() {
                 <button
                   type="button"
                   onClick={() => nudge(1)}
+                  disabled={atEnd}
                   aria-label="Scroll archive forward"
-                  className="flex h-11 w-11 items-center justify-center border text-lg text-ink transition-colors duration-300 hover:text-accent"
+                  className={`flex h-11 w-11 items-center justify-center border text-lg transition-colors duration-300 ${
+                    atEnd ? 'cursor-default text-ink opacity-30' : 'text-ink hover:text-accent'
+                  }`}
                   style={{ borderColor: 'color-mix(in srgb, var(--ink) 22%, transparent)' }}
                 >
                   <span aria-hidden="true">&rarr;</span>
@@ -317,8 +346,8 @@ function MusicStage() {
 /**
  * Football: a two-column personal stage. The story holds the left; a
  * single confident Barca childhood print holds the right, cropped in
- * CSS around the subject with the garden falling away. Full color in
- * both themes, static under reduced motion. Source untouched.
+ * CSS around the subject with excess garden falling away. Full color
+ * in both themes, static under reduced motion. Source untouched.
  */
 function FootballStage() {
   return (
@@ -347,14 +376,15 @@ function FootballStage() {
       </div>
 
       <div className="min-w-0 content-start lg:self-center">
-        <div className="mx-auto w-full max-w-[520px] rotate-[1deg] transition-transform duration-500 ease-expo hover:-translate-y-1 hover:rotate-0 lg:mx-0 lg:w-[440px] lg:max-w-none lg:rotate-[2deg] xl:w-[480px]">
-          <div className="aspect-[5/4] overflow-hidden shadow-[0_24px_44px_-24px_rgba(0,0,0,0.5)]">
+        <div className="mx-auto w-full max-w-[520px] rotate-[1deg] transition-transform duration-500 ease-expo hover:-translate-y-1 hover:rotate-0 lg:mx-auto lg:w-[420px] lg:max-w-none lg:rotate-[1.5deg] xl:w-[440px]">
+          <div className="aspect-[4/3] overflow-hidden shadow-[0_24px_44px_-24px_rgba(0,0,0,0.5)]">
             <Image
               src={footballBarca}
               alt="Shikhar as a child outdoors wearing a red FC Barcelona shirt, hat and sunglasses"
               width={6000}
               height={4000}
-              sizes="(max-width: 1024px) 100vw, 480px"
+              sizes="(max-width: 1024px) 100vw, 440px"
+              quality={90}
               className="h-full w-full object-cover object-[30%_50%]"
             />
           </div>
@@ -389,7 +419,6 @@ function SideQuestsStage() {
         {sideQuests.body.map(paragraph => (
           <SideQuestsParagraph key={paragraph.slice(0, 24)} text={paragraph} />
         ))}
-        <p className="mt-6 font-semibold tracking-tight text-ink">{sideQuests.closing}</p>
       </div>
 
       <div className="min-w-0 content-start lg:self-center">
@@ -461,17 +490,17 @@ function RecommendationCard() {
 
   return (
     <div
-      className="border p-6 sm:p-7"
+      className="border p-5 sm:p-6"
       style={{ borderColor: 'color-mix(in srgb, var(--ink) 22%, transparent)' }}
     >
       <p className="text-micro font-semibold uppercase tracking-[0.16em] text-muted">
         Show recommendation
       </p>
-      <p className="mt-4 font-serif text-2xl leading-tight tracking-tight text-ink sm:text-[1.7rem]">
+      <p className="mt-3 font-serif text-2xl leading-tight tracking-tight text-ink sm:text-[1.7rem]">
         What should I watch next?
       </p>
 
-      <form onSubmit={submit} className="mt-6 flex flex-col gap-3 sm:flex-row">
+      <form onSubmit={submit} className="mt-5 flex flex-col gap-3 sm:flex-row">
         <label htmlFor="show-recommendation-input" className="sr-only">
           Recommend a show
         </label>
@@ -495,11 +524,11 @@ function RecommendationCard() {
         </button>
       </form>
 
-      <p className="mt-5 text-sm leading-relaxed text-muted">
-        {WATCHED_SHOWS.length} shows watched. Think you can find one I haven&apos;t?
+      <p className="mt-4 text-sm leading-relaxed text-muted">
+        Think you&apos;ve got a banger I haven&apos;t seen yet?
       </p>
 
-      <div aria-live="polite" className="mt-2 min-h-[3.5rem]">
+      <div aria-live="polite" className="mt-2 min-h-[3rem]">
         {state.kind === 'done' && <RecommendFeedback state={state} />}
       </div>
     </div>
@@ -581,29 +610,29 @@ function SpotifyCard() {
 
   return (
     <div
-      className="border p-4 transition-transform duration-500 ease-expo hover:-translate-y-1 sm:p-5"
+      className="border p-6 text-center transition-transform duration-500 ease-expo hover:-translate-y-1 sm:p-8"
       style={{ borderColor: 'color-mix(in srgb, var(--ink) 22%, transparent)' }}
     >
-      <div className="flex items-center justify-between gap-4">
-        <p className="text-micro font-semibold uppercase tracking-[0.16em] text-muted">
-          On rotation
-        </p>
-        <a
-          href={music.profileUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Open my Spotify profile"
-          className="group inline-flex min-h-11 items-center gap-1.5 text-micro font-semibold uppercase tracking-[0.16em] text-ink transition-colors duration-300 hover:text-accent"
+      <a
+        href={music.profileUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Open my Spotify profile"
+        className="group mx-auto inline-flex min-h-11 flex-col items-center gap-2.5"
+      >
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          className="h-[22px] w-[22px] text-muted transition-colors duration-300 group-hover:text-accent"
         >
+          <path d={channelGlyphs.Spotify.path} />
+        </svg>
+        <span className="text-micro font-semibold uppercase tracking-[0.16em] text-ink transition-colors duration-300 group-hover:text-accent">
           Spotify
-          <span
-            aria-hidden="true"
-            className="text-accent transition-transform duration-500 ease-expo group-hover:-translate-y-px group-hover:translate-x-px"
-          >
-            ↗
-          </span>
-        </a>
-      </div>
+        </span>
+      </a>
+      <p className="mt-2 text-micro uppercase tracking-[0.16em] text-muted">On rotation</p>
 
       {track === null ? (
         <p className="mt-8 text-micro uppercase tracking-[0.16em] text-muted">Tuning in</p>
@@ -628,12 +657,15 @@ function SpotifyCard() {
           </a>
         </div>
       ) : (
-        <div className="mt-4">
-          <p className="flex flex-wrap items-center gap-2.5 text-micro font-semibold uppercase tracking-[0.16em] text-accent">
+        <div
+          className="mt-6 border-t pt-6"
+          style={{ borderColor: 'color-mix(in srgb, var(--ink) 22%, transparent)' }}
+        >
+          <p className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1 text-micro font-semibold uppercase tracking-[0.16em] text-accent">
             <span aria-hidden="true" className="inline-block h-1.5 w-1.5 rotate-45 bg-accent" />
             <span>{track.status === 'playing' ? 'Now playing' : 'Last played'}</span>
             {track.status === 'recent' && track.playedAt && (
-              <span className="ml-auto pl-6 font-normal normal-case tracking-normal text-muted">
+              <span className="font-normal normal-case tracking-normal text-muted">
                 {relativePlayed(track.playedAt)}
               </span>
             )}
@@ -644,13 +676,13 @@ function SpotifyCard() {
               alt={`${track.title ?? 'Track'} album artwork`}
               width={640}
               height={640}
-              className="mt-3 h-auto w-full max-w-[320px]"
+              className="mx-auto mt-5 h-auto w-full max-w-[280px]"
             />
           )}
-          <p className="mt-3 font-serif text-2xl leading-tight tracking-tight text-ink sm:text-[1.7rem]">
+          <p className="mx-auto mt-5 max-w-[26ch] break-words font-serif text-[1.35rem] leading-snug tracking-tight text-ink">
             {track.title}
           </p>
-          <p className="mt-1.5 text-sm text-muted">
+          <p className="mx-auto mt-1.5 max-w-[32ch] break-words text-sm text-muted">
             {track.artist}
             {track.album && ` · ${track.album}`}
           </p>
@@ -659,7 +691,7 @@ function SpotifyCard() {
             track.durationMs !== undefined &&
             track.durationMs > 0 && (
               <div
-                className="mt-4 h-[3px] w-full bg-ink opacity-15"
+                className="mx-auto mt-5 h-[3px] w-full max-w-[280px] bg-ink opacity-15"
                 role="img"
                 aria-label="Playback progress snapshot"
               >
@@ -677,7 +709,7 @@ function SpotifyCard() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`Open ${track.title ?? 'this track'} in Spotify`}
-              className="group mt-4 inline-flex min-h-11 items-center gap-2 text-micro font-semibold uppercase tracking-[0.16em] text-ink transition-colors duration-300 hover:text-accent"
+              className="group mt-5 inline-flex min-h-11 items-center gap-2 text-micro font-semibold uppercase tracking-[0.16em] text-ink transition-colors duration-300 hover:text-accent"
             >
               <span className="underline decoration-accent underline-offset-[5px] group-hover:no-underline">
                 Open in Spotify
