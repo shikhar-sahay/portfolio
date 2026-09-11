@@ -15,7 +15,7 @@ export function Skills() {
     <section
       id="toolkit"
       aria-label="Toolkit"
-      className="theme-fade bg-paper px-5 py-[10vh] sm:px-10 md:py-[14vh]"
+      className="theme-fade bg-paper px-5 py-[10vh] sm:px-10 md:py-[14vh] md:pt-[10vh] lg:pt-[14vh]"
     >
       <div className="mx-auto max-w-6xl">
         <Reveal>
@@ -48,7 +48,7 @@ export function Skills() {
             </Reveal>
           ))}
         </div>
-        <div aria-hidden="true" className="mt-[7vh] h-px bg-ink opacity-15 md:mt-[9vh]" />
+        <div aria-hidden="true" className="mt-[6vh] h-px bg-ink opacity-15" />
       </div>
     </section>
   );

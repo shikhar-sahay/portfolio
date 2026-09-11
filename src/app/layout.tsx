@@ -54,7 +54,7 @@ export const viewport: Viewport = {
   maximumScale: 5,
 };
 
-const themeScript = `(function(){try{var t=new URLSearchParams(location.search).get("theme")||localStorage.getItem("theme");var d=t?t==="dark":window.matchMedia("(prefers-color-scheme: dark)").matches;document.documentElement.classList.toggle("dark",d);var r=window.matchMedia("(prefers-reduced-motion: reduce)").matches;var s=sessionStorage.getItem("opened");if(r||s){document.documentElement.dataset.intro="skip";document.documentElement.style.setProperty("--intro-delay","0s")}else{document.documentElement.dataset.intro="play";document.documentElement.style.setProperty("--intro-delay","1.35s")}}catch(e){}})();`;
+const themeScript = `(function(){try{var t=new URLSearchParams(location.search).get("theme")||localStorage.getItem("theme");var d=t?t==="dark":window.matchMedia("(prefers-color-scheme: dark)").matches;document.documentElement.classList.toggle("dark",d);var r=window.matchMedia("(prefers-reduced-motion: reduce)").matches;var s=sessionStorage.getItem("opened");if(r||s){document.documentElement.dataset.intro="skip";document.documentElement.style.setProperty("--intro-delay","0s")}else{document.documentElement.dataset.intro="play";document.documentElement.style.setProperty("--intro-delay","0.45s")}}catch(e){}})();`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

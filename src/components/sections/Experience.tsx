@@ -38,7 +38,7 @@ export function Experience() {
     <section
       id="experience"
       aria-label="Experience"
-      className="theme-fade bg-paper px-5 pb-[9vh] pt-[10vh] sm:px-10 md:py-[14vh]"
+      className="theme-fade bg-paper px-5 pb-[9vh] pt-[10vh] sm:px-10 md:py-[14vh] md:pb-[10vh] lg:pb-[14vh]"
     >
       <div className="mx-auto max-w-6xl">
         <motion.p

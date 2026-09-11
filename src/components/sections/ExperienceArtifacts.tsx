@@ -248,7 +248,7 @@ export function OrgArtifact({
   return (
     <div
       aria-hidden="true"
-      className={`mt-10 flex items-center justify-start lg:row-start-1 lg:mt-0 lg:justify-center lg:self-stretch ${
+      className={`mt-6 flex items-center justify-start lg:row-start-1 lg:mt-0 lg:justify-center lg:self-stretch ${
         left ? 'lg:col-start-3 lg:pl-4' : 'lg:col-start-1 lg:pr-4'
       }`}
     >

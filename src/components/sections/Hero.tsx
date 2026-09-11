@@ -165,7 +165,7 @@ export function Hero() {
   const scroll = (style: Record<string, unknown>) => (reduceMotion ? undefined : { style });
 
   return (
-    <div ref={sceneRef} id="top" className={`relative ${reduceMotion ? '' : 'h-[120svh]'}`}>
+    <div ref={sceneRef} id="top" className="hero-scene relative h-[120svh]">
       <div
         className={`hero-sticky ${reduceMotion ? '' : 'sticky top-0'} flex ${reduceMotion ? 'min-h-dvh' : 'h-dvh'} items-center overflow-hidden`}
       >

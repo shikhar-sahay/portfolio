@@ -37,7 +37,7 @@ export function Certifications() {
     <section
       id="certifications"
       aria-label="Certifications"
-      className="theme-fade bg-paper px-5 pb-[9vh] pt-[10vh] sm:px-10 md:pb-[12vh] md:pt-[14vh]"
+      className="theme-fade bg-paper px-5 pb-[9vh] pt-[8vh] sm:px-10 md:pb-[12vh] md:pt-[8vh]"
     >
       <div className="mx-auto max-w-6xl">
         <p className="flex items-center gap-3 text-micro uppercase tracking-[0.16em] text-muted">

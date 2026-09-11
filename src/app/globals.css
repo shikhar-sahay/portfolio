@@ -17,7 +17,7 @@
   --gold: #b08d2f;
   /* Hero entrance waits for the opening sequence; the head script sets
      this to 0s for returning visitors and reduced-motion users. */
-  --intro-delay: 1.35s;
+  --intro-delay: 0.45s;
 }
 
 .dark {
@@ -560,6 +560,17 @@ html:not(.dark) .lm-nav {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  /*
+    The hero scene reserves 120svh of scroll room for the pinned
+    choreography. Under reduced motion there is no pinning, so the
+    scene is auto height from first paint: doing this in CSS (rather
+    than the post-mount React branch) means the static height is
+    already correct pre-hydration and mounting never shifts layout.
+  */
+  .hero-scene {
+    height: auto;
   }
 
   *,
