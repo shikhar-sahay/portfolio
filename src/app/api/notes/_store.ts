@@ -1,5 +1,6 @@
 import { neon } from '@neondatabase/serverless';
-import { LIMITS, type WallNote, type WallReply } from '@/content/wall';
+import { createHash } from 'crypto';
+import { LIMITS, normalizeWallText, type WallNote, type WallReply } from '@/content/wall';
 
 interface ListOptions {
   limit: number;
@@ -25,6 +26,9 @@ export interface NoteStore {
     noteId: string,
     reply: Omit<WallReply, 'id' | 'noteId' | 'createdAt'>
   ): Promise<WallReply | null>;
+  checkPostGate(ip: string, kind: PostKind): Promise<RateGate>;
+  checkDuplicate(ip: string, kind: PostKind, key: string): Promise<boolean>;
+  recordPostEvent(ip: string, kind: PostKind, key: string): Promise<void>;
 }
 
 interface NoteRow {
@@ -38,6 +42,16 @@ interface NoteRow {
   is_owner: boolean;
   created_at: string;
   reply_count?: number | string;
+}
+
+type PostKind = 'notes' | 'replies';
+
+interface PostEventRow {
+  created_at: string;
+}
+
+interface DuplicateRow {
+  exists: boolean;
 }
 
 function databaseUrl(): string {
@@ -208,6 +222,46 @@ class PostgresNoteStore implements NoteStore {
     return toReply(rows[0]);
   }
 
+  async checkPostGate(ip: string, kind: PostKind): Promise<RateGate> {
+    const now = Date.now();
+    const { windowMs, max } = policyFor(kind);
+    const rows = (await this.sql`
+      select created_at
+      from wall_post_events
+      where ip_hash = ${rateKey(ip)}
+        and kind = ${kind}
+        and created_at >= now() - (${Math.ceil(windowMs / 1000)}::text || ' seconds')::interval
+      order by created_at asc
+      limit ${max}
+    `) as PostEventRow[];
+    return evaluatePostGate(
+      rows.map(row => createdAtMs(row.created_at)),
+      kind,
+      now
+    );
+  }
+
+  async checkDuplicate(ip: string, kind: PostKind, key: string): Promise<boolean> {
+    const rows = (await this.sql`
+      select exists(
+        select 1
+        from wall_post_events
+        where ip_hash = ${rateKey(ip)}
+          and kind = ${kind}
+          and content_key = ${key}
+          and created_at >= now() - (${Math.ceil(LIMITS.duplicateWindowMs / 1000)}::text || ' seconds')::interval
+      ) as exists
+    `) as DuplicateRow[];
+    return Boolean(rows[0]?.exists);
+  }
+
+  async recordPostEvent(ip: string, kind: PostKind, key: string): Promise<void> {
+    await this.sql`
+      insert into wall_post_events (ip_hash, kind, content_key)
+      values (${rateKey(ip)}, ${kind}, ${key})
+    `;
+  }
+
   private async repliesForOne(noteId: string) {
     const replies = await this.repliesFor([noteId]);
     return replies.get(noteId) ?? [];
@@ -242,28 +296,52 @@ export function persistenceErrorResponse() {
   );
 }
 
-/** Sliding-window rate limiter (per process; pair with platform limits in prod). */
-const buckets = new Map<string, { notes: number[]; replies: number[] }>();
-export function checkRateLimit(
-  ip: string,
-  kind: 'notes' | 'replies'
-): { ok: boolean; retryAfter: number } {
-  const now = Date.now();
-  const windowMs = 60 * 60 * 1000;
-  let bucket = buckets.get(ip);
-  if (!bucket) {
-    bucket = { notes: [], replies: [] };
-    buckets.set(ip, bucket);
+function policyFor(kind: 'notes' | 'replies'): {
+  windowMs: number;
+  max: number;
+  minGapMs: number;
+} {
+  return kind === 'notes'
+    ? {
+        windowMs: LIMITS.notesWindowMs,
+        max: LIMITS.notesMax,
+        minGapMs: LIMITS.notesMinGapMs,
+      }
+    : {
+        windowMs: LIMITS.repliesWindowMs,
+        max: LIMITS.repliesMax,
+        minGapMs: LIMITS.repliesMinGapMs,
+      };
+}
+
+export interface RateGate {
+  ok: boolean;
+  retryAfter: number;
+}
+
+export function evaluatePostGate(stamps: number[], kind: PostKind, now: number): RateGate {
+  const { windowMs, max, minGapMs } = policyFor(kind);
+  const recent = stamps.filter(stamp => now - stamp < windowMs).sort((a, b) => a - b);
+  if (recent.length >= max) {
+    return { ok: false, retryAfter: secondsUntil(recent[0] + windowMs, now) };
   }
-  const stamps = bucket[kind].filter(t => now - t < windowMs);
-  bucket[kind] = stamps;
-  const limit = kind === 'notes' ? LIMITS.notesPerHourPerIp : LIMITS.repliesPerHourPerIp;
-  if (stamps.length >= limit) {
-    const retryAfter = Math.ceil((stamps[0] + windowMs - now) / 1000);
-    return { ok: false, retryAfter };
+  const latest = recent[recent.length - 1];
+  if (latest !== undefined && now - latest < minGapMs) {
+    return { ok: false, retryAfter: secondsUntil(latest + minGapMs, now) };
   }
-  stamps.push(now);
   return { ok: true, retryAfter: 0 };
+}
+
+export function duplicateKey(parts: string[]): string {
+  return parts.map(normalizeWallText).join('\n');
+}
+
+function secondsUntil(targetMs: number, nowMs: number): number {
+  return Math.max(1, Math.ceil((targetMs - nowMs) / 1000));
+}
+
+function rateKey(ip: string): string {
+  return createHash('sha256').update(`wall:${ip}`).digest('hex');
 }
 
 export function clientIp(headers: Headers): string {

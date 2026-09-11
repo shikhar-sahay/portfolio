@@ -2,7 +2,14 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useMountedReducedMotion } from '@/hooks/useMountedReducedMotion';
-import { LIMITS, SEED_NOTES, WORLD, type WallNote } from '@/content/wall';
+import {
+  LIMITS,
+  SEED_NOTES,
+  WORLD,
+  wallClientError,
+  type WallClientError,
+  type WallNote,
+} from '@/content/wall';
 
 const OVERSCAN = 900;
 const NOTE_W = 232;
@@ -92,14 +99,18 @@ export function NotesWall() {
 
   const [notes, setNotes] = useState<WallNote[]>(SEED_NOTES);
   const [total, setTotal] = useState(SEED_NOTES.length);
-  const [, setStatus] = useState<WallStatus>('offline');
+  const [status, setStatus] = useState<WallStatus>('offline');
   const [visibleIds, setVisibleIds] = useState<Set<string>>(new Set(SEED_NOTES.map(n => n.id)));
   const [openId, setOpenId] = useState<string | null>(null);
   const [composing, setComposing] = useState(false);
   const [draft, setDraft] = useState<Draft>({ name: '', message: '', x: 240, y: 420 });
   const [replyName, setReplyName] = useState('');
   const [replyText, setReplyText] = useState('');
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<WallClientError | null>(null);
+  const [submitError, setSubmitError] = useState<WallClientError | null>(null);
+  const [replyError, setReplyError] = useState<WallClientError | null>(null);
+  const [sendingNote, setSendingNote] = useState(false);
+  const [sendingReply, setSendingReply] = useState(false);
   const [flashId, setFlashId] = useState<string | null>(null);
 
   const notesRef = useRef(notes);
@@ -174,7 +185,7 @@ export function NotesWall() {
       };
       if (!response.ok) {
         setStatus(response.status === 503 ? 'setup' : 'offline');
-        if (response.status !== 503) setError(data.error ?? 'The wall is unreachable right now.');
+        if (response.status !== 503) setError(wallClientError('note', response.status, data));
         return;
       }
       const server = (data.notes ?? []).filter(note => note && typeof note.id === 'string');
@@ -183,7 +194,7 @@ export function NotesWall() {
       setStatus('live');
     } catch {
       setStatus('offline');
-      setError('The wall is unreachable right now.');
+      setError(wallClientError('note', 0, null));
     }
   }, [viewportBounds]);
 
@@ -271,16 +282,23 @@ export function NotesWall() {
           headers: { accept: 'application/json' },
         });
         const data = (await response.json()) as { note?: WallNote | null; error?: string };
-        if (!response.ok || !data.note) {
+        if (!response.ok) {
           setStatus(response.status === 503 ? 'setup' : 'offline');
-          setError(data.error ?? `Could not find a ${order} note.`);
+          setError(wallClientError('note', response.status, data));
+          return;
+        }
+        if (!data.note) {
+          setError({
+            title: 'NOTHING THERE YET.',
+            body: 'The wall is still empty, so there is no note to visit.',
+          });
           return;
         }
         setStatus('live');
         focusNote(data.note);
       } catch {
         setStatus('offline');
-        setError('The wall is unreachable right now.');
+        setError(wallClientError('note', 0, null));
       }
     },
     [focusNote]
@@ -288,6 +306,7 @@ export function NotesWall() {
 
   const startComposer = useCallback(() => {
     setError(null);
+    setSubmitError(null);
     const viewport = viewportRef.current;
     const x = camera.current.x + (viewport?.clientWidth ?? 900) * 0.12;
     const y = camera.current.y + (viewport?.clientHeight ?? 700) * 0.12;
@@ -296,13 +315,19 @@ export function NotesWall() {
   }, []);
 
   const submitNote = async () => {
-    setError(null);
+    if (sendingNote) return;
+    setSubmitError(null);
     const message = draft.message.trim();
     const name = draft.name.trim() || 'anonymous';
     if (!message) {
-      setError(`Write a message first, up to ${LIMITS.messageMax} characters.`);
+      setSubmitError(
+        wallClientError('note', 422, {
+          error: `Write a message first, up to ${LIMITS.messageMax} characters.`,
+        })
+      );
       return;
     }
+    setSendingNote(true);
     try {
       const response = await fetch('/api/notes', {
         method: 'POST',
@@ -315,10 +340,14 @@ export function NotesWall() {
           variant: notes.length % 3,
         }),
       });
-      const data = (await response.json()) as { note?: WallNote; error?: string };
+      const data = (await response.json()) as {
+        note?: WallNote;
+        error?: string;
+        retryAfter?: number;
+      };
       if (!response.ok || !data.note) {
         setStatus(response.status === 503 ? 'setup' : 'offline');
-        setError(data.error ?? 'Could not place the note.');
+        setSubmitError(wallClientError('note', response.status, data));
         return;
       }
       setStatus('live');
@@ -329,19 +358,26 @@ export function NotesWall() {
       focusNote(data.note);
     } catch {
       setStatus('offline');
-      setError('The wall is unreachable right now. Your draft is still here.');
+      setSubmitError(wallClientError('note', 0, null));
+    } finally {
+      setSendingNote(false);
     }
   };
 
   const submitReply = async () => {
-    if (!openNote) return;
-    setError(null);
+    if (!openNote || sendingReply) return;
+    setReplyError(null);
     const message = replyText.trim();
     const name = replyName.trim() || 'anonymous';
     if (!message) {
-      setError(`Write a reply first, up to ${LIMITS.replyMax} characters.`);
+      setReplyError(
+        wallClientError('reply', 422, {
+          error: `Write a reply first, up to ${LIMITS.replyMax} characters.`,
+        })
+      );
       return;
     }
+    setSendingReply(true);
     try {
       const response = await fetch(`/api/notes/${openNote.id}/replies`, {
         method: 'POST',
@@ -351,10 +387,11 @@ export function NotesWall() {
       const data = (await response.json()) as {
         reply?: WallNote['replies'][number];
         error?: string;
+        retryAfter?: number;
       };
       if (!response.ok || !data.reply) {
         setStatus(response.status === 503 ? 'setup' : 'offline');
-        setError(data.error ?? 'Could not post the reply.');
+        setReplyError(wallClientError('reply', response.status, data));
         return;
       }
       setStatus('live');
@@ -372,7 +409,9 @@ export function NotesWall() {
       setReplyText('');
     } catch {
       setStatus('offline');
-      setError('The wall is unreachable right now. Your reply is still here.');
+      setReplyError(wallClientError('reply', 0, null));
+    } finally {
+      setSendingReply(false);
     }
   };
 
@@ -489,6 +528,7 @@ export function NotesWall() {
               onClick={() => {
                 setOpenId(note.id);
                 setError(null);
+                setReplyError(null);
               }}
               aria-label={`Note by ${note.name}: ${note.message.slice(0, 64)}${
                 note.replyCount > 0 ? `, ${note.replyCount} replies` : ''
@@ -529,6 +569,33 @@ export function NotesWall() {
             />
           )}
         </div>
+
+        {/*
+          Honest empty state: only after a live fetch confirms zero notes
+          (never on setup/offline, never faked). A quiet card that opens
+          the composer, speaking the same note-card language.
+        */}
+        {status === 'live' && total === 0 && notes.length === 0 && !composing && (
+          <div className="absolute left-1/2 top-[36%] z-[3] -translate-x-1/2">
+            <button
+              type="button"
+              data-wall-interactive="true"
+              onClick={startComposer}
+              className="relative block w-56 border border-ink bg-paper p-4 text-left shadow-[0_24px_50px_-22px_rgba(0,0,0,0.5)] transition-transform duration-300 ease-expo hover:-translate-y-1"
+            >
+              <span
+                aria-hidden="true"
+                className="absolute -top-[7px] left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-accent"
+              />
+              <span className="block text-micro uppercase tracking-[0.14em] text-muted">
+                The wall is empty
+              </span>
+              <span className="mt-2 block font-serif text-lg italic tracking-tight text-ink">
+                Leave the first note.
+              </span>
+            </button>
+          </div>
+        )}
 
         {/* Anchored guidance: a static foreground wall surface pinned to the
             viewport, printed with the copy. It is a sibling of the
@@ -640,11 +707,13 @@ export function NotesWall() {
                 <button
                   type="button"
                   onClick={submitReply}
-                  className="bg-ink px-4 py-2 text-micro font-semibold uppercase tracking-[0.14em] text-paper transition-opacity hover:opacity-85"
+                  disabled={sendingReply}
+                  className="bg-ink px-4 py-2 text-micro font-semibold uppercase tracking-[0.14em] text-paper transition-opacity hover:opacity-85 disabled:cursor-wait disabled:opacity-50"
                 >
-                  Post
+                  {sendingReply ? 'Posting' : 'Post'}
                 </button>
               </div>
+              {replyError && <WallError error={replyError} />}
             </div>
           </div>
         )}
@@ -691,6 +760,7 @@ export function NotesWall() {
               <p className="text-xs leading-relaxed text-muted">
                 Everything here is public. Plain text only.
               </p>
+              {submitError && <WallError error={submitError} />}
               <div className="flex items-center justify-between gap-3">
                 <button
                   type="button"
@@ -705,9 +775,10 @@ export function NotesWall() {
                 <button
                   type="button"
                   onClick={submitNote}
-                  className="bg-ink px-4 py-2 text-micro font-semibold uppercase tracking-[0.14em] text-paper transition-opacity hover:opacity-85"
+                  disabled={sendingNote}
+                  className="bg-ink px-4 py-2 text-micro font-semibold uppercase tracking-[0.14em] text-paper transition-opacity hover:opacity-85 disabled:cursor-wait disabled:opacity-50"
                 >
-                  Pin it
+                  {sendingNote ? 'Pinning' : 'Pin it'}
                 </button>
               </div>
             </div>
@@ -715,10 +786,30 @@ export function NotesWall() {
         )}
       </div>
       {error && (
-        <p role="alert" className="mt-3 text-sm text-accent">
-          {error}
-        </p>
+        <div className="mt-3">
+          <WallError error={error} />
+        </div>
       )}
+    </div>
+  );
+}
+
+/**
+ * Themed wall failure block: vermilion micro label, muted body, thin
+ * accent rule. Used for composer, reply, and fetch errors alike so
+ * every wall failure speaks the same editorial language. No red boxes,
+ * no raw backend text (copy arrives mapped via `wallClientError`).
+ */
+function WallError({ error }: { error: WallClientError }) {
+  return (
+    <div role="alert" className="border-l-2 border-accent pl-3">
+      <p className="text-micro font-semibold uppercase tracking-[0.16em] text-accent">
+        {error.title}
+      </p>
+      <p className="mt-1 text-sm leading-relaxed text-muted">
+        {error.body}
+        {error.hint ? ` ${error.hint}` : ''}
+      </p>
     </div>
   );
 }
