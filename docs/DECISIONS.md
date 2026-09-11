@@ -1400,3 +1400,24 @@ Do not make significant design/architecture decisions without documenting them h
 **Alternatives Considered:** Global spacing reduction (rejected: would damage intentional desktop rhythm); negative margin spacing patches (rejected: structural tokens were enough); a fake progress loader (rejected: the root delay was artificial); client storage rate limits (rejected: not a security boundary); process-local maps (rejected: not Vercel-safe); Redis or KV (rejected: new infrastructure for a small event log).
 
 **Impact:** First Load JS is 173 kB, route chunk 85.7 kB. No new dependencies. Production timing measured in Playwright against the built app: cold first session FCP about 764ms, repeat same-session FCP about 304ms, reduced-motion FCP about 300ms. Local database success-path abuse tests need a `DATABASE_URL`; mocked 429 UI and no-database 503 honesty were verified.
+
+---
+
+### 71. Final Mobile Rhythm and Opening Caption (EXPERIMENTAL polish)
+
+**Decision:** Add the centered opening microcopy `CATCH ME IF YOU CAN.` above the full-gutter signal rule, and tighten only mobile section rhythm. Desktop and md-up spacing remain preserved.
+
+1. Opening timing and behavior are unchanged: first-session signal 420ms, lift 380ms, unmount 850ms, once per session, skipped for returning and reduced-motion users. The caption is small uppercase editorial type, centered about 16px above the rule, with the period in vermilion.
+2. Compact statements now use a 120svh bridge, 20svh rows, and 14vh to minus 10vh travel. This reduces the mobile Hero to About handoff from about 320 to 373px to about 160 to 187px across 360, 375, 390, and 430px.
+3. Mobile-only section padding trims keep later section boundaries adjacent without touching md and desktop values: About `pt-[4vh] pb-[9vh]`, Experience `pt-[8vh] pb-[8vh]`, Skills `py-[8vh]`, Certifications `pt-[7vh] pb-[8vh]`, Projects `pt-[8vh] pb-[8vh]`, Pieces `pt-[8vh] pb-[5vh]`, Contact `pt-[8vh]`.
+4. The updated owner-supplied `public/resume.pdf` is committed unchanged as part of the checkpoint.
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-09-11
+
+**Rationale:** The only measured document gap on mobile was the overlapped hero to statement to About handoff; later sections were adjacent but visually heavy because base mobile padding stayed too close to desktop pacing. The fix trims compact mobile structure and wrapper padding at the source while keeping the wider editorial layout intact.
+
+**Alternatives Considered:** Re-auditing the whole page from scratch (rejected: this is a continuation and the mobile measurements were already complete); changing desktop spacing (rejected: desktop was already checked); hiding content during the statement bridge (rejected: order and continuity were already correct); adding a longer loader (rejected: opening timing stays fixed).
+
+**Impact:** No new dependencies. Verified after implementation at 360, 375, 390, and 430px: Hero to About gap now measures 160, 163, 169, and 187px respectively, later section boundaries remain adjacent, and no horizontal overflow appears. Opening caption measured centered at desktop with a 16px gap above the full-gutter rule.

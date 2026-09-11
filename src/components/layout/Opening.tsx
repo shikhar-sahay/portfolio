@@ -73,6 +73,9 @@ export function Opening() {
       >
         {/* The signal line uses explicit rgba (never bare-var slash
             utilities, which compile to nothing against var() tokens). */}
+        <p className="mb-4 text-center text-micro font-semibold uppercase tracking-[0.22em] text-[#f3efe6]/70">
+          Catch me if you can<span className="text-accent">.</span>
+        </p>
         <div className="relative h-px w-full bg-[rgba(243,239,230,0.15)]">
           <div
             className="absolute inset-y-0 left-0 bg-[rgba(243,239,230,0.7)]"

@@ -30,7 +30,7 @@ export function Personality() {
     <section
       id="pieces-of-me"
       aria-label="Pieces of Me"
-      className="theme-fade relative overflow-hidden bg-paper px-5 pb-[6vh] pt-[10vh] text-ink sm:px-10 md:pb-[10vh] md:pt-[16vh]"
+      className="theme-fade relative overflow-hidden bg-paper px-5 pb-[5vh] pt-[8vh] text-ink sm:px-10 md:pb-[10vh] md:pt-[16vh]"
     >
       {/* Theme-following section: paper surface in light, warm charcoal in
           dark, like every other chapter. No fixed panel treatment. */}

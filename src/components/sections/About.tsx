@@ -21,7 +21,7 @@ export function About() {
     <section
       id="about"
       aria-label="About"
-      className="theme-fade relative z-10 bg-paper px-5 pb-[11vh] pt-[5vh] sm:px-10 md:pb-[14vh] md:pt-[6vh]"
+      className="theme-fade relative z-10 bg-paper px-5 pb-[9vh] pt-[4vh] sm:px-10 md:pb-[14vh] md:pt-[6vh]"
     >
       <div className="mx-auto max-w-6xl">
         <motion.p

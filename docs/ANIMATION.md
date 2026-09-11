@@ -52,14 +52,16 @@ Remaining candidates remain UNDECIDED until more patterns exist.
 
 ### Opening: signal-line loader (`Opening.tsx`)
 
-An ink-field micro-opening, about 0.8s, once per session.
+An ink-field micro-opening, about 0.8s, once per session. The centered
+microcopy "CATCH ME IF YOU CAN." sits 16px above the full-width rule, with
+the period in vermilion.
 
-| t       | Beat                                                                                        |
-| ------- | ------------------------------------------------------------------------------------------- |
-| 0.00s   | Ink field, quiet. Micro "shikhar sahay" top-left, serif "2026" bottom-right                 |
-| 0-0.42s | A hairline draws left to right while a vermilion marker rides its tip (rAF, cubic ease-out) |
-| 0.42s   | Micro "Ready" appears; field lifts translateY(-100%), 380ms ease-expo; session flagged      |
-| 0.85s   | Overlay unmounts                                                                            |
+| t       | Beat                                                                                                    |
+| ------- | ------------------------------------------------------------------------------------------------------- |
+| 0.00s   | Ink field, quiet. Micro "shikhar sahay" top-left, serif "2026" bottom-right                             |
+| 0-0.42s | A full-gutter hairline draws left to right while a vermilion marker rides its tip (rAF, cubic ease-out) |
+| 0.42s   | Micro "Ready" appears; field lifts translateY(-100%), 380ms ease-expo; session flagged                  |
+| 0.85s   | Overlay unmounts                                                                                        |
 
 No counters, no percentage, no spinner. The hero boots beneath via the
 `--intro-delay` mechanism (head script sets `html[data-intro]` and

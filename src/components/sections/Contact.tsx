@@ -16,7 +16,7 @@ export function Contact() {
     <footer
       id="contact"
       aria-label="Contact and footer"
-      className="theme-fade bg-paper pt-[10vh] sm:px-10 md:pt-[14vh]"
+      className="theme-fade bg-paper pt-[8vh] sm:px-10 md:pt-[14vh]"
     >
       <div className="mx-auto max-w-6xl px-5 sm:px-0">
         <Reveal>
