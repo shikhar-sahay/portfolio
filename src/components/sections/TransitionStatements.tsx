@@ -163,7 +163,7 @@ export function TransitionStatements() {
   }, []);
 
   // The stack travels as one camera: BUILD centered early, REBUILD
-  // centered late, resolving just high enough to clear the About entry
+  // centered late, resolving high enough to clear the About entry
   // while still sharing the frame with it briefly. The section runs
   // 200svh (down from 240svh) with a short REBUILD hold (0.9 to 1.0):
   // enough breath before About, never an empty wait. The compact cut
@@ -171,7 +171,7 @@ export function TransitionStatements() {
   // thoughts read as one continuous sequence on phones instead of
   // three disconnected screens.
   const stackYFull = useTransform(scrollYProgress, [0, 1], ['42vh', '-40vh']);
-  const stackYCompact = useTransform(scrollYProgress, [0, 1], ['14vh', '-10vh']);
+  const stackYCompact = useTransform(scrollYProgress, [0, 1], ['0vh', '-18vh']);
   const stackY = compact ? stackYCompact : stackYFull;
   const panelO = useTransform(scrollYProgress, [0, 0.005, 1], [0, 1, 1]);
 

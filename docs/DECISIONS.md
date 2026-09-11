@@ -1408,7 +1408,7 @@ Do not make significant design/architecture decisions without documenting them h
 **Decision:** Add the centered opening microcopy `CATCH ME IF YOU CAN.` above the full-gutter signal rule, and tighten only mobile section rhythm. Desktop and md-up spacing remain preserved.
 
 1. Opening timing and behavior are unchanged: first-session signal 420ms, lift 380ms, unmount 850ms, once per session, skipped for returning and reduced-motion users. The caption is small uppercase editorial type, centered about 16px above the rule, with the period in vermilion.
-2. Compact statements now use a 120svh bridge, 20svh rows, and 14vh to minus 10vh travel. This reduces the mobile Hero to About handoff from about 320 to 373px to about 160 to 187px across 360, 375, 390, and 430px.
+2. Compact statements now use a 120svh bridge, 20svh rows, and 0vh to minus 18vh travel. This keeps the mobile Hero to About handoff at about 160 to 187px across 360, 375, 390, and 430px while lifting BUILD into the initial bridge frame and letting REBUILD clear into About more deliberately.
 3. Mobile-only section padding trims keep later section boundaries adjacent without touching md and desktop values: About `pt-[4vh] pb-[9vh]`, Experience `pt-[8vh] pb-[8vh]`, Skills `py-[8vh]`, Certifications `pt-[7vh] pb-[8vh]`, Projects `pt-[8vh] pb-[8vh]`, Pieces `pt-[8vh] pb-[5vh]`, Contact `pt-[8vh]`.
 4. The updated owner-supplied `public/resume.pdf` is committed unchanged as part of the checkpoint.
 
