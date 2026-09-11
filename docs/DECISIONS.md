@@ -1311,3 +1311,25 @@ Do not make significant design/architecture decisions without documenting them h
 **Alternatives Considered:** Full Spotify UI imitation (rejected: native-clone risk); upscaling or filtering the photo (rejected: hides rather than fixes); SELECT-then-INSERT (rejected: race); fuzzy matching (rejected: false positives); infinite archive wrap (rejected: finite strip must feel finite).
 
 **Impact:** Route chunk 84.2 to 84.8 kB, First Load JS 171 to 172 kB. Verified matcher matrix (Money Heist variants, aliases, Baby Reindeer and Elite Academy new), API watched/invalid/unavailable plus live Spotify recent, typecheck, lint, format, production build. Live added/duplicate round trip still needs DATABASE_URL access.
+
+---
+
+### 67. Pieces Baselines: Tightened Music, Unrotated Football, Taste Note, Shorter Literature, Indexed Archive (EXPERIMENTAL polish)
+
+**Decision:** Visual refinement over #66 with browser-measured before and after numbers, no copy changes beyond the specified Literature lines and the new taste note, no new dependencies, no new Motion usage.
+
+1. Music height mismatch root cause: the right card carried looser rhythm than the left column (p-8, 280px artwork, five mt-5 gaps), ending 87px below the metadata. Fix is spacing plus structure: padding to p-5/sm:p-6, artwork to 248px, title to 1.3rem, gaps to mt-4/mt-1.5/mt-1, and the loaded card stretches to the grid row (lg:h-full) so borders terminate together. Loading and unavailable states keep natural height. Result: 13px residual at 1440, balanced by eye.
+2. Football blur root cause: delivery was already correct (440px slot selected 640w at DPR1 and 1080w at DPR2, no upscaling against true candidate bytes; the 6000x4000 source is sharp on the subject at 100 percent with only the background in natural bokeh). The softness came from the 1.5deg resting rotation forcing GPU resampling. Fix: rotation removed (all transforms compute to none), presence widened to 480px (500px xl) with sizes updated to the 500px slot (640w at DPR1 is 1.28x, 1080w at DPR2 is 1.08x), quality 90 kept, 4:3 and 30/50 crop kept. Headless verdict: crisp, crest readable. Brazil stays unimported.
+3. Side Quests gains the locked WHAT USUALLY WORKS note (label plus the genre and characters copy, behind a thin rule inside the same artifact, no chips or extra inputs) and the card stretches to the prose row with the note pinned to its baseline (lg:mt-auto). Placeholder now reads Recommend a show per the brief. Result: 0px baseline difference at 1440.
+4. Literature body takes the three specified lines verbatim (opening kept, first paragraph kept, second and final replaced, tech blogs wording, emphasis underline preserved through the existing match). Result: prose ends 15px below the archives grid at 1440 (was 39px), balanced by eye.
+5. Archive strip navigation is now card-index based: stops derive from live card offsetLeft values plus max scroll, arrows scrollTo exact stops instead of fixed 300px steps. The terminal stop is max scroll itself, where the last card right edge equals the strip right edge with zero trailing blank. Verified walks at 390 (0 to 232 to 464 to 566, trailing 0) and 360 (ends 596, trailing 0), clean return to 0, no blank-only position, native swipe and snap preserved.
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-09-11
+
+**Rationale:** Measured deltas beat guessed magic numbers; grid stretch plus flex pinning aligns baselines for every track state without hardcoded heights. Rotation is decoration that cost sharpness, so crispness wins. Exact stop targets remove the overshoot class instead of patching one instance.
+
+**Alternatives Considered:** Tiny artwork to force the Music baseline (rejected: artwork is the anchor); fixed card heights (rejected: fragile across track states); SELECT-style generic scrollBy kept (rejected: produced unreachable snap targets); upscaling or filtering the photo (rejected: source already sharp); snap removal (rejected: swipe feel preserved).
+
+**Impact:** Route chunk 84.8 to 85 kB, First Load JS unchanged at 172 kB. Verified typecheck, lint, format, production build, both themes, reduced motion, keyboard, zero overflow at 1440/1280/1024/820/390/360 plus 844x390 landscape, console clean apart from the expected no-DB notes 503.
