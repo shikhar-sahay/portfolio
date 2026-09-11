@@ -67,13 +67,13 @@ export function Opening() {
 
       {/* The signal: a line drawing itself, a marker riding its tip */}
       <div
-        className={`transition-opacity duration-200 ${
+        className={`w-full transition-opacity duration-200 ${
           phase === 'exit' ? 'opacity-0' : 'opacity-100'
         }`}
       >
         {/* The signal line uses explicit rgba (never bare-var slash
             utilities, which compile to nothing against var() tokens). */}
-        <div className="relative h-px w-[min(200px,50vw)] bg-[rgba(243,239,230,0.15)]">
+        <div className="relative h-px w-full bg-[rgba(243,239,230,0.15)]">
           <div
             className="absolute inset-y-0 left-0 bg-[rgba(243,239,230,0.7)]"
             style={{ width: `${progress * 100}%` }}

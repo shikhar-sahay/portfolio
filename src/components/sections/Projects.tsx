@@ -250,7 +250,7 @@ export function Projects() {
         >
           <div
             ref={trackRef}
-            className={`flex will-change-transform ${reduce ? 'px-5 py-10 sm:px-10' : ''}`}
+            className={`flex will-change-transform ${reduce ? 'px-5 py-10 sm:px-10' : 'py-px'}`}
           >
             {[...projects, ...projects].map((project, i) => (
               <div

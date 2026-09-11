@@ -532,7 +532,7 @@ function RecommendationCard() {
         page load; submitted results additionally mount inside their own
         dedicated live region below.
       */}
-      <div className="mt-2 min-h-[4rem]">
+      <div className="mt-3 min-h-[3.75rem]">
         {state.kind === 'done' ? (
           <div aria-live="polite">
             <RecommendFeedback state={state} />
