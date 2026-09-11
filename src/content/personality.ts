@@ -56,13 +56,13 @@ export const literature = {
   body: [
     'I grew up buried in books, competing in spelling bees, writing essays, and developing a perhaps unreasonable attachment to finding exactly the right word. Somewhere along the way came poetry, stories, half-finished drafts, and pages nobody else will ever read.',
     "Writing became the purest form of expression for me. A place to make thoughts tangible, say what conversation sometimes couldn't, and understand what I was thinking in the first place.",
-    "The subjects have changed over the years. The habit hasn't. I read to disappear into other people's worlds, and write to make sense of my own. More recently, that has meant writing tech blogs too. A couple of those are sitting right over there.",
+    "The subjects have changed over the years. The habit hasn't. I read to disappear into other people's worlds, and write to make sense of my own. More recently, I've found myself writing tech blogs, including the two right over there.",
   ],
   emphasis: "The subjects have changed over the years. The habit hasn't.",
   articles: [
     {
       title: 'Your Device is Cheating on You',
-      category: 'Technology · Essay',
+      category: 'Technology · Blog',
       teaser:
         'A performance investigation into benchmarking, hidden villains, and the rabbit hole that ended with a Windows optimization toolkit.',
       href: 'https://dscv.it/optimization-blog',
@@ -70,7 +70,7 @@ export const literature = {
     },
     {
       title: 'How Vibe Coding Won Me $20 (And Cost Me My Soul)',
-      category: 'Technology · Essay',
+      category: 'Technology · Blog',
       teaser:
         'What if Swiggy was built entirely by AI? A look inside Shwikky, the wins, the failures, and where AI coding might be headed.',
       href: 'https://dscv.it/vibecoding-blog',
@@ -92,7 +92,7 @@ export const literature = {
 export const music = {
   opening: "I'll listen to almost anything, as long as it sounds good.",
   body: [
-    "I love discovering new music across genres, languages, and artists I would've never found otherwise. Rap and pop get a lot of airtime, melodic rap has a special place somewhere in there, and my embarrassingly westernized music taste is currently finding its way around Bollywood.",
+    "I love discovering new music across genres, languages, and artists I would've never found otherwise. Rap and pop get a lot of airtime, melodic rap has a special place somewhere in there, and my painfully white-washed music taste is finally making room for Bollywood, Punjabi music, and a whole lot I've apparently been missing out on.",
     "Some songs become attached to people, places, and oddly specific moments. Others are just bangers. I don't really organize my life into eras, but Spotify probably could.",
   ],
   favouriteArtist: 'JUICE WRLD',
@@ -111,7 +111,6 @@ export const football = {
     'For me, it all started with Neymar Jr., one of the finest magicians to ever touch a football. I followed him everywhere, and when he found his way to FC Barcelona, so did I. What started with Neymar quickly became something bigger. I became a culer, fell in love with the way Barça played, and by the time he left, the club had already become a part of me.',
     "Now, watching Lamine Yamal, I catch glimpses of the same magic that made eight-year-old me fall in love with football in the first place. And this season, we're bringing the Champions League back to the Camp Nou.",
   ],
-  closing: 'Visca Barça. And fu** Madrid.',
 };
 
 /**
@@ -123,11 +122,14 @@ export const sideQuests = {
   opening: 'Life would be pretty boring if I only ever stuck to the main quest.',
   body: [
     'Some of my favourite time is the least complicated: being around my friends and the people I love, going somewhere with no real plan, finding another show to binge, watching a movie, or just doing absolutely nothing together.',
-    "Somewhere in between, I've made my way through just about every Pokémon game I could get my hands on, lost an unreasonable number of hours to FIFA and Fortnite, developed a (concerning) liking for crime stories and documentaries, and read enough Agatha Christie to know that the obvious suspect is almost never the right one.",
+    "Somewhere in between, I've made my way through just about every Pokémon game I could get my hands on, lost an unreasonable number of hours to FIFA and Fortnite, developed a concerning liking for crime stories and documentaries, and read enough Agatha Christie to know that the obvious suspect is almost never the right one.",
   ],
-  tasteHeading: 'What usually works',
-  taste:
-    "I don't really care what genre it is. Give me good characters and a reason to watch one more episode, and I'm probably in.",
+  /**
+   * Shikhar's top five shows in exact intentional order. Rendered as
+   * an informational ranked list only; the recommendation matcher
+   * never reads this list.
+   */
+  favourites: ['Suits', 'Prison Break', 'Money Heist', 'Peaky Blinders', 'The Mentalist'],
 };
 
 export type SpotifyStatus = 'playing' | 'recent' | 'unavailable';

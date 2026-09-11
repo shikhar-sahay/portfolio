@@ -13,7 +13,7 @@ import {
 import { SHOW_LIMITS, type RecommendResponse } from '@/content/shows';
 import { channelGlyphs } from '@/content/channelGlyphs';
 import { NotesWall } from '@/components/sections/NotesWall';
-import footballBarca from '../../assets/pieces/football-barca.JPG';
+import footballBarca from '../../assets/pieces/football-barca-1200.jpg';
 
 /**
  * Pieces of Me: fragments of a person. Nothing is selected at first:
@@ -374,11 +374,13 @@ function MusicStage() {
 /**
  * Football: a two-column personal stage. The story holds the left; a
  * single confident Barca childhood print holds the right, cropped in
- * CSS around the subject with excess garden falling away. No resting
- * rotation: the print renders axis-aligned so the browser never
- * resamples it, which keeps the detail the 6000px source actually
- * holds. Full color in both themes, static under reduced motion.
- * Source untouched.
+ * CSS around the subject with excess garden falling away. The print
+ * ships as a prepared 1200px JPEG derivative served unoptimized: the
+ * default AVIF path compressed this photograph too aggressively
+ * (visible smoothing on cap, crest, and shirt at ~30 to 55 KB), while
+ * the derivative preserves that detail at a reasonable 175 KB.
+ * Axis-aligned at rest so the browser never resamples it. Full color
+ * in both themes, static under reduced motion. Source untouched.
  */
 function FootballStage() {
   return (
@@ -403,19 +405,17 @@ function FootballStage() {
             {paragraph}
           </p>
         ))}
-        <p className="mt-6 text-lg font-semibold tracking-tight text-ink">{football.closing}</p>
       </div>
 
       <div className="min-w-0 content-start lg:self-center">
-        <div className="mx-auto w-full max-w-[520px] transition-transform duration-500 ease-expo hover:-translate-y-1 lg:mx-auto lg:w-[480px] lg:max-w-none xl:w-[500px]">
+        <div className="mx-auto w-full max-w-[520px] transition-transform duration-500 ease-expo hover:-translate-y-1 lg:mx-auto lg:w-[520px] lg:max-w-none xl:w-[540px]">
           <div className="aspect-[4/3] overflow-hidden shadow-[0_24px_44px_-24px_rgba(0,0,0,0.5)]">
             <Image
               src={footballBarca}
               alt="Shikhar as a child outdoors wearing a red FC Barcelona shirt, hat and sunglasses"
-              width={6000}
-              height={4000}
-              sizes="(max-width: 1024px) 100vw, 500px"
-              quality={90}
+              width={1200}
+              height={800}
+              unoptimized
               className="h-full w-full object-cover object-[30%_50%]"
             />
           </div>
@@ -460,22 +460,10 @@ function SideQuestsStage() {
 }
 
 /**
- * One Side Quests body paragraph. The "(concerning)" aside keeps a
- * quiet serif italic; everything else reads as plain body copy.
+ * One Side Quests body paragraph, rendered as plain prose.
  */
 function SideQuestsParagraph({ text }: { text: string }) {
-  const aside = '(concerning)';
-  const at = text.indexOf(aside);
-  if (at === -1) {
-    return <p className="mt-5 text-[0.95rem] leading-relaxed text-muted">{text}</p>;
-  }
-  return (
-    <p className="mt-5 text-[0.95rem] leading-relaxed text-muted">
-      {text.slice(0, at)}
-      <em className="font-serif italic text-ink">{aside}</em>
-      {text.slice(at + aside.length)}
-    </p>
-  );
+  return <p className="mt-5 text-[0.95rem] leading-relaxed text-muted">{text}</p>;
 }
 
 type RecommendState =
@@ -485,8 +473,8 @@ type RecommendState =
 
 /**
  * The recommendation instrument: a bordered editorial panel with one
- * input and one action. On desktop it stretches to the prose row and
- * pins the taste note to its own baseline, so both columns terminate
+ * input and one action, followed by a ranked favourites list. On
+ * desktop it stretches to the prose row so both columns terminate
  * together. Feedback is compact, announced through a live region, and
  * never claims persistence the server did not confirm.
  */
@@ -526,13 +514,13 @@ function RecommendationCard() {
       style={{ borderColor: 'color-mix(in srgb, var(--ink) 22%, transparent)' }}
     >
       <p className="text-micro font-semibold uppercase tracking-[0.16em] text-muted">
-        Show recommendation
+        For the watchlist
       </p>
-      <p className="mt-4 font-serif text-2xl leading-tight tracking-tight text-ink sm:text-[1.7rem]">
+      <p className="mt-3 font-serif text-2xl leading-tight tracking-tight text-ink sm:text-[1.7rem]">
         What should I watch next?
       </p>
 
-      <form onSubmit={submit} className="mt-6 flex flex-col gap-3 sm:flex-row">
+      <form onSubmit={submit} className="mt-5 flex flex-col gap-3 sm:flex-row">
         <label htmlFor="show-recommendation-input" className="sr-only">
           Recommend a show
         </label>
@@ -556,7 +544,7 @@ function RecommendationCard() {
         </button>
       </form>
 
-      <p className="mt-5 text-sm leading-relaxed text-muted">
+      <p className="mt-4 text-sm leading-relaxed text-muted">
         Think you&apos;ve got a banger I haven&apos;t seen yet?
       </p>
 
@@ -565,13 +553,31 @@ function RecommendationCard() {
       </div>
 
       <div
-        className="mt-5 border-t pt-5 lg:mt-auto lg:pt-6"
+        className="mt-5 border-t pt-4"
         style={{ borderColor: 'color-mix(in srgb, var(--ink) 22%, transparent)' }}
       >
         <p className="text-micro font-semibold uppercase tracking-[0.16em] text-muted">
-          {sideQuests.tasteHeading}
+          My favourites
         </p>
-        <p className="mt-2.5 text-[0.95rem] leading-relaxed text-muted">{sideQuests.taste}</p>
+        <ol role="list" className="mt-2">
+          {sideQuests.favourites.map((title, i) => (
+            <li
+              key={title}
+              className="flex items-baseline gap-4 border-t py-2 first:border-t-0 first:pt-0 last:pb-0"
+              style={{ borderColor: 'color-mix(in srgb, var(--ink) 14%, transparent)' }}
+            >
+              <span
+                aria-hidden="true"
+                className="shrink-0 text-micro tabular-nums tracking-[0.14em] text-accent"
+              >
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <span className="text-[0.95rem] font-semibold uppercase tracking-[0.08em] text-ink">
+                {title}
+              </span>
+            </li>
+          ))}
+        </ol>
       </div>
     </div>
   );
