@@ -1,0 +1,16 @@
+{
+  // db/*.sql migrations are PostgreSQL (Neon). This keeps editors and
+  // SQL tooling from parsing them as MSSQL, which produces false
+  // red squiggles on valid Postgres syntax (pgcrypto,
+  // gen_random_uuid(), ::text, timestamptz, now()).
+  "files.associations": {
+    "db/*.sql": "pgsql"
+  },
+  // SQLTools (mtxr.sqltools) dialect, respected when that extension
+  // is installed. Harmless otherwise.
+  "sqltools.dialect": "PostgreSQL",
+  // vscode-postgres / other Postgres extensions that read this key.
+  "postgres.dialect": "postgres",
+  // Do not let the MSSQL extension claim .sql files in this repo.
+  "mssql.askForEncrypt": true
+}
