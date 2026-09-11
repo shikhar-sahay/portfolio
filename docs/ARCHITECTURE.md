@@ -65,7 +65,7 @@ src/
 │   ├── icon.png           # Favicon: finalized diamond artwork (cropped 256px)
 │   ├── apple-icon.tsx     # Apple touch icon (edge-rendered PNG: diamond on ink)
 │   ├── opengraph-image.tsx # Social preview 1200x630 (edge-rendered PNG, real copy)
-│   └── api/notes/         # Wall API: Postgres list/create, replies, secret-gated moderation
+│   └── api/notes/         # Wall API: Postgres list/create, replies, rate gates, secret-gated moderation
 ├── assets/                # Static imports (shikhar-hero.jpg; enables blur placeholders)
 ├── components/
 │   ├── ui/                # InteractiveLetters, TechLogo, Reveal, WordReveal
@@ -78,7 +78,8 @@ src/
 └── content/               # Typed data: profile, sections, projects, experience,
                              #   systems, personality, wall, techLogos, channelGlyphs
 db/
-└── 001_wall_notes.sql      # Postgres schema and indexes for the wall
+├── 001_wall_notes.sql      # Fresh Postgres schema and indexes for the wall
+└── 003_wall_post_events.sql # Existing-db migration for durable wall rate events
 public/
 └── resume.pdf             # Real owner-supplied resume (committed 2026-09-06)
 ```
@@ -108,18 +109,18 @@ There is no `src/lib/`, `src/types/`, `src/styles/`, `src/components/effects/`, 
 
 ## State Management
 
-| Need                       | Solution                                                                                                                                                          | Status         |
-| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
-| **Theme**                  | `<html>` class + localStorage, pre-paint head script                                                                                                              | `FINALIZED`    |
-| **Intro played**           | sessionStorage flag, read pre-paint                                                                                                                               | `FINALIZED`    |
-| **Reduced motion**         | `useMountedReducedMotion` hook (post-mount flag, hydration-safe)                                                                                                  | `FINALIZED`    |
-| **Scroll choreography**    | One `useScroll` progress per scene, pure `useTransform` mapping                                                                                                   | `FINALIZED`    |
-| **Carousel**               | Local ref + single rAF loop (no React state on scroll)                                                                                                            | `FINALIZED`    |
-| **Pieces of Me selection** | Local `useState` (no persistence)                                                                                                                                 | `FINALIZED`    |
-| **Wall persistence**       | `/api/notes` routes backed by Postgres through `@neondatabase/serverless`; list/create, one-level replies, moderation, latest, random, and viewport-bounded reads | `EXPERIMENTAL` |
-| **Global store / forms**   | None exist                                                                                                                                                        | `UNDECIDED`    |
+| Need                       | Solution                                                                                                                                                                                                              | Status         |
+| -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| **Theme**                  | `<html>` class + localStorage, pre-paint head script                                                                                                                                                                  | `FINALIZED`    |
+| **Intro played**           | sessionStorage flag, read pre-paint                                                                                                                                                                                   | `FINALIZED`    |
+| **Reduced motion**         | `useMountedReducedMotion` hook (post-mount flag, hydration-safe)                                                                                                                                                      | `FINALIZED`    |
+| **Scroll choreography**    | One `useScroll` progress per scene, pure `useTransform` mapping                                                                                                                                                       | `FINALIZED`    |
+| **Carousel**               | Local ref + single rAF loop (no React state on scroll)                                                                                                                                                                | `FINALIZED`    |
+| **Pieces of Me selection** | Local `useState` (no persistence)                                                                                                                                                                                     | `FINALIZED`    |
+| **Wall persistence**       | `/api/notes` routes backed by Postgres through `@neondatabase/serverless`; list/create, one-level replies, moderation, latest, random, viewport-bounded reads, durable per-IP rate events, and exact duplicate checks | `EXPERIMENTAL` |
+| **Global store / forms**   | None exist                                                                                                                                                                                                            | `UNDECIDED`    |
 
-**Principle (FINALIZED):** No global state library unless genuinely needed. Browser storage holds the theme choice and intro flag. The notes wall is the only database-backed feature: credentials stay server-only in `DATABASE_URL`, with `WALL_ADMIN_SECRET` for moderation.
+**Principle (FINALIZED):** No global state library unless genuinely needed. Browser storage holds the theme choice and intro flag. The notes wall is the only database-backed feature: credentials stay server-only in `DATABASE_URL`, with `WALL_ADMIN_SECRET` for moderation. Notes rate limiting is server-side only and uses Postgres event rows, not client storage or process memory.
 
 ---
 

@@ -196,15 +196,15 @@ Above the wall field, a wide static section intro establishes why the surface ex
 
 ### Notes wall model (`src/content/wall.ts`, API under `src/app/api/notes/`)
 
-Visitor marks are not owner content and never sync anywhere except through the wall API. Notes carry id, world coordinates, display name, message, timestamp, style variant, owner flag, reply count, and one-level replies; replies carry id, note id, name, message, timestamp. Limits: names 24 chars, messages 140, replies 100, 10 notes and 20 replies per IP per hour, 4 KB payloads. Rendering is plain text nodes only. Temporary seed notes have been removed, and setup SQL no longer inserts demo rows.
+Visitor marks are not owner content and never sync anywhere except through the wall API. Notes carry id, world coordinates, display name, message, timestamp, style variant, owner flag, reply count, and one-level replies; replies carry id, note id, name, message, timestamp. Limits: names 24 chars, messages 140, replies 100, 4 KB payloads. Posting policy is stricter for top-level notes than replies: 2 top-level notes per IP per rolling 10 minutes with 60 seconds between successful notes, and 6 replies per IP per rolling 10 minutes with 10 seconds between successful replies. Rendering is plain text nodes only. Temporary seed notes have been removed, and setup SQL no longer inserts demo rows.
 
-Persistence is PostgreSQL through `@neondatabase/serverless`, configured by server-only `DATABASE_URL`. Schema lives in `db/001_wall_notes.sql`. Missing database configuration returns 503 from the API; the visible wall status remains a plain note count. `WALL_ADMIN_SECRET` protects the moderation hide endpoint.
+Persistence is PostgreSQL through `@neondatabase/serverless`, configured by server-only `DATABASE_URL`. Schema lives in `db/001_wall_notes.sql`; existing databases apply `db/003_wall_post_events.sql` for the durable posting event log. Missing database configuration returns 503 from the API; the visible wall status remains a plain note count. `WALL_ADMIN_SECRET` protects the moderation hide endpoint.
 
 Presentation (not content, lives in `NotesWall.tsx`): deterministic tilt and restrained widths derive from note ids; tilt, width, and variant are display-only. The wall uses a practical large coordinate range rather than a visible finite canvas. (The older geometric-glyph stamp wall, `MarkWall.tsx`, was deleted in v4.7; no glyph system exists.)
 
 ### Discovery API
 
-`GET /api/notes?order=latest` returns the newest top-level note across the whole database. `GET /api/notes?order=random` returns a random visible top-level note. Normal list calls accept optional `minX`, `maxX`, `minY`, and `maxY` bounds for viewport-oriented fetching. Rate limits, validation, and caps are server-side.
+`GET /api/notes?order=latest` returns the newest top-level note across the whole database. `GET /api/notes?order=random` returns a random visible top-level note. Normal list calls accept optional `minX`, `maxX`, `minY`, and `maxY` bounds for viewport-oriented fetching. Rate limits, duplicate checks, validation, and caps are server-side. Successful posts record one durable `wall_post_events` row; invalid requests and failed writes do not consume quota.
 
 ### Content Guidelines (FINALIZED)
 

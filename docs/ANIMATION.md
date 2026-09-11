@@ -52,19 +52,19 @@ Remaining candidates remain UNDECIDED until more patterns exist.
 
 ### Opening: signal-line loader (`Opening.tsx`)
 
-An ink-field loader, ~1.6s, once per session.
+An ink-field micro-opening, about 0.8s, once per session.
 
 | t       | Beat                                                                                        |
 | ------- | ------------------------------------------------------------------------------------------- |
 | 0.00s   | Ink field, quiet. Micro "shikhar sahay" top-left, serif "2026" bottom-right                 |
-| 0-1.05s | A hairline draws left to right while a vermilion marker rides its tip (rAF, cubic ease-out) |
-| 1.05s   | Micro "Ready" appears; field lifts translateY(-100%), 850ms ease-expo; session flagged      |
-| 1.9s    | Overlay unmounts                                                                            |
+| 0-0.42s | A hairline draws left to right while a vermilion marker rides its tip (rAF, cubic ease-out) |
+| 0.42s   | Micro "Ready" appears; field lifts translateY(-100%), 380ms ease-expo; session flagged      |
+| 0.85s   | Overlay unmounts                                                                            |
 
 No counters, no percentage, no spinner. The hero boots beneath via the
 `--intro-delay` mechanism (head script sets `html[data-intro]` and
-`--intro-delay`; skipped pre-paint for returning visitors and reduced
-motion).
+`--intro-delay`; 0.45s for a first visit, skipped pre-paint for returning
+visitors and reduced motion).
 
 ### Hero entrance (time-based CSS, `forwards` fill where needed)
 

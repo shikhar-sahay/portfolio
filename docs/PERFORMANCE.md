@@ -16,8 +16,8 @@
 
 | Metric                              | Target         | Measured (2026-09-07, `next build`)                                                                                           |
 | ----------------------------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| **Initial JS (First Load)**         | < 150KB        | 165 kB (15 kB over; see reclaim below; measured 2026-09-10)                                                                   |
-| **LCP (Largest Contentful Paint)**  | < 2.5s         | Not measured (no Lighthouse run yet)                                                                                          |
+| **Initial JS (First Load)**         | < 150KB        | 173 kB (23 kB over; measured 2026-09-11, includes the protected local `probex9` route in the build report)                    |
+| **LCP (Largest Contentful Paint)**  | < 2.5s         | Not measured by Lighthouse. Local production Playwright did not surface an LCP entry.                                         |
 | **CLS (Cumulative Layout Shift)**   | < 0.1          | Not measured                                                                                                                  |
 | **INP (Interaction to Next Paint)** | < 200ms        | Not measured                                                                                                                  |
 | **Total Page Weight (initial)**     | < 500KB        | Not measured                                                                                                                  |
@@ -119,7 +119,7 @@
 
 - [ ] Lighthouse audit (target 90+ performance, 95+ accessibility)
 - [ ] Core Web Vitals measurement (LCP, CLS, INP)
-- [ ] Bundle size back under 150 kB initial JS (currently 165 kB)
+- [ ] Bundle size back under 150 kB initial JS (currently 173 kB in the local build report)
 - [ ] Vercel deployment + custom domain + production measurement
 - [ ] Real-device checks (iOS Safari, Chrome Android)
 - [ ] Cross-browser checks (Firefox, Safari, Edge; only Chromium verified so far)
@@ -194,6 +194,13 @@ There is no `.github/` directory and no Lighthouse CI, bundle gate, or deploy pi
 ## v5.8 Status (2026-09-10)
 
 - Production build: 165 kB First Load JS, route chunk 78.2 kB, unchanged. The metadata pass adds two edge-rendered image routes (`opengraph-image`, `apple-icon`) and swaps the mailto email link for Gmail compose: zero client JS, no new dependency, no recurring runtime work. The social preview renders server-side on demand from real site copy.
+
+## v5.9 Status (2026-09-11)
+
+- Production build: 173 kB First Load JS, route chunk 85.7 kB. The protected local `src/app/probex9/` route appears in the build report but was not touched or staged. Notes hardening adds zero browser JS for the server limiter; the visible route growth comes from already-in-progress Pieces work plus Notes Wall error UI state.
+- Local production timing via Playwright at 1440x900: first-session TTFB 409ms, FCP 764ms, DOMContentLoaded 722ms, load 769ms; repeat-session TTFB 80ms, FCP 304ms, DOMContentLoaded 113ms, load 320ms; reduced-motion TTFB 69ms, FCP 300ms, DOMContentLoaded 258ms, load 304ms. CLS, INP, transferred bytes, and Lighthouse remain unmeasured.
+- Opening delay root cause: the hero was ready under the overlay, but the first-session opening held it for about 1.5s. The opening is now a micro-opening: 420ms signal, 380ms lift, unmount at 850ms, `--intro-delay` 0.45s. Repeat-session and reduced-motion paths still skip pre-paint.
+- Remaining opportunities: HIGH impact, MEDIUM complexity, LOW visual risk: audit client islands and lazy-load genuinely below-fold Pieces or Notes Wall code, approximate saving unknown without analyzer, should be considered before launch. MEDIUM impact, LOW complexity, LOW risk: trim InteractiveLetters accent tint math if owner accepts a quieter hover, approximate saving small. MEDIUM impact, MEDIUM complexity, MEDIUM risk: revisit carousel hint and state footprint. LOW impact, LOW complexity, LOW risk: image request `sizes` tuning for below-fold artifacts, mostly transfer savings rather than First Load JS.
 
 ## v4.5 Status (2026-09-05)
 

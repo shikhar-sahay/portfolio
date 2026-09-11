@@ -1378,3 +1378,25 @@ Do not make significant design/architecture decisions without documenting them h
 **Alternatives Considered:** Hiding Communities with CSS (rejected: dead content); a fifth replacement fragment (rejected: out of scope); 4-across below lg (rejected: cramped labels, 2x2 is balanced); aria-hidden on the idle text (rejected: static copy should remain navigable, it simply is not live); removing the stage-level live region (rejected: pre-existing announcement behavior for all fragments, out of scope); pointer cursor or focusable rows (rejected: rows have no action).
 
 **Impact:** Route chunk unchanged at 84.9 kB, First Load JS unchanged at 172 kB. Verified typecheck, lint, format, production build, selectors plus copy plus hover plus baselines plus handoff at 1280/1440, zero overflow at 360/375/390/430/820/1024 plus 844x390 landscape, both themes, reduced motion, keyboard, zero pageerrors.
+
+---
+
+### 70. Responsive Spacing, Opening Micro-Opening, Durable Wall Rate Events (EXPERIMENTAL polish)
+
+**Decision:** Continuation pass over interrupted production audit work. Preserve the already-correct responsive spacing, Notes Wall error UI, submit locks, seed removal, and opening cleanup, then finish the missing durable server-side limiter and documentation.
+
+1. Skills to Certifications uses the prior implemented spacing tokens: Toolkit leading padding `md:pt-[10vh] lg:pt-[14vh]`, the Skills closing rule at `mt-[6vh]`, and Certifications at `pt-[8vh] md:pt-[8vh]`. Measured 1440 effective gap is about 225px, down from the earlier 334px outlier.
+2. Experience to Toolkit keeps desktop rhythm with `md:pb-[10vh] lg:pb-[14vh]` on Experience and `mt-6` on the artifact stack below lg. The 820px gap measures about 223px instead of the earlier near-500px tablet outlier.
+3. Opening keeps the identity beat but stops holding a ready hero. First-session `--intro-delay` is 0.45s, the signal runs 420ms, the lift runs 380ms, and the opening unmounts at 850ms. Returning sessions and reduced motion skip it pre-paint. Reduced motion also sets `.hero-scene` height to auto in CSS before hydration.
+4. Notes Wall public writes use durable Postgres event rows in `wall_post_events`, keyed by hashed IP, post kind, normalized content key, and timestamp. Top-level notes allow 2 successful posts per IP per rolling 10 minutes with a 60s minimum gap. Replies allow 6 successful posts per IP per rolling 10 minutes with a 10s minimum gap.
+5. Exact normalized duplicate protection uses a 120s window per IP and kind. Note keys include name plus message. Reply keys include note id, name, and message. Invalid requests and failed writes do not record quota events.
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-09-11
+
+**Rationale:** The measured spacing fixes remove duplicated transition air without flattening the site globally. A short micro-opening preserves the cinematic signature while letting server-rendered hero content become visible quickly. The Notes Wall runs on Vercel/serverless, so process-local memory cannot be a security boundary; the existing Neon database is the simplest durable store already in the architecture.
+
+**Alternatives Considered:** Global spacing reduction (rejected: would damage intentional desktop rhythm); negative margin spacing patches (rejected: structural tokens were enough); a fake progress loader (rejected: the root delay was artificial); client storage rate limits (rejected: not a security boundary); process-local maps (rejected: not Vercel-safe); Redis or KV (rejected: new infrastructure for a small event log).
+
+**Impact:** First Load JS is 173 kB, route chunk 85.7 kB. No new dependencies. Production timing measured in Playwright against the built app: cold first session FCP about 764ms, repeat same-session FCP about 304ms, reduced-motion FCP about 300ms. Local database success-path abuse tests need a `DATABASE_URL`; mocked 429 UI and no-database 503 honesty were verified.

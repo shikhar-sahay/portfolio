@@ -88,9 +88,10 @@ Warm print-inspired identity: cream paper, warm ink, vermilion accent. Dark is a
 ### Direction (EXPERIMENTAL)
 
 - Tailwind default 4px-based scale; no custom spacing tokens
-- Section rhythm: `py-[14vh]` standard (About `pt-[6vh]`, footer `pt-[14vh]`); content container `max-w-6xl`
+- Section rhythm: `py-[14vh]` standard on larger canvases, with selected mobile and tablet reductions where measured gaps grew accidental; content container `max-w-6xl`
 - Consistent page gutter: `px-5` mobile, `px-10` from sm up
 - Hero scene `h-[120svh]` with `h-dvh` sticky; statements `h-[200svh]` pulled up `-mt-[100dvh]` so its sticky engages the pixel the hero releases
+- Toolkit to Certifications removes redundant chapter padding: Toolkit keeps the internal closing hairline at `mt-[6vh]`, Certifications starts at `pt-[8vh]`, and the 1440 measured Technologies row to Certifications eyebrow gap is about 225px
 - Formal token scale remains UNDECIDED
 
 ---
