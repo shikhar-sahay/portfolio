@@ -184,11 +184,11 @@ export interface Fragment {
 export const fragments: Fragment[] = [
   { word: 'Literature', caption: 'notes, drafts, and sentences that almost work' /* ... */ },
   { word: 'Music', caption: 'the one background process that never exits' /* ... */ },
-  // ... Football, Side Quests, Communities
+  // ... Football, Side Quests
 ];
 ```
 
-Five fragments open stages below the selector row with no default selection: Literature (owner archive copy plus two essay sheets plus archive records), Music (owner copy plus live `/api/spotify` listening artifact), Football (owner copy plus the Barca childhood print), Side Quests (owner copy plus the show recommendation instrument backed by `src/content/shows.ts` and `/api/shows/recommend`), Communities (identity teaser only). Fragment selection is local component state only.
+Four fragments open stages below the selector row with no default selection: Literature (owner archive copy plus two blog sheets plus archive records), Music (owner copy plus live `/api/spotify` listening artifact), Football (owner copy plus the Barca childhood print), Side Quests (owner copy plus the show recommendation instrument backed by `src/content/shows.ts` and `/api/shows/recommend`, with an idle prompt state and a static top-five favourites list). The Notes Wall below carries the people and community idea. Fragment selection is local component state only.
 
 ### Notes Wall intro (EXPERIMENTAL copy, owner meaning preserved)
 

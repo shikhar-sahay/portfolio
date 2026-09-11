@@ -1356,3 +1356,25 @@ Do not make significant design/architecture decisions without documenting them h
 **Alternatives Considered:** quality 100 AVIF (rejected: still encoder-dependent, Vercel sharp output would differ from local squoosh verification); global WebP-first formats (rejected: changes hero and project bytes site-wide for one photo); shipping the raw 7.4 MB JPEG (rejected: wasteful); CSS sharpening or grain (rejected: hides rather than fixes); keeping the taste note alongside favourites (rejected: redundant, and the brief replaces it); bottom-pinning favourites (rejected: recreates the void).
 
 **Impact:** Route chunk 84.9 kB (was 85 kB), First Load JS unchanged at 172 kB. One new static asset (175 KB JPEG, lazy-loaded inside one fragment). Verified typecheck, lint, format, production build, all fragments at 360/375/390/430/820/1024/1280/1440 plus 844x390 landscape, both themes, reduced motion, keyboard, zero overflow, zero pageerrors.
+
+---
+
+### 69. Pieces Final Cleanup: Four Fragments, Idle Prompt, Favourite Hover (EXPERIMENTAL polish)
+
+**Decision:** Final cleanup pass over #68, verified in headless Chromium against the production build. No API, matcher, persistence, fragment redesign, dependency, or Motion changes.
+
+1. Communities removed outright: registry entry, selector item, teaser holder, and current-state references in CONTENT, DESIGN_SYSTEM, and HANDOFF. Historical decision log entries stay as written (they describe past states). The selector is four equal columns on desktop (280.5px each at 1440) and 2x2 below lg with 44px targets. Numbering ends naturally at 04 Side Quests. No fifth fragment, no placeholder, nothing hidden with CSS.
+2. Side Quests prose orders Fortnite before FIFA, verified verbatim; nothing else in the paragraph changed.
+3. The feedback region gains the locked idle prompt (YOUR MOVE. as a restrained muted micro label with muted body copy beneath, quieter than every card heading). Idle renders as static copy and replaces cleanly on submit (idle to watched card height delta 0px). The stage mounts only on user selection so the idle text can never announce on page load; submitted results mount inside their own dedicated aria-live region. The pre-existing stage-level live region is untouched.
+4. Favourite rows share one micro-interaction: title shifts 4px horizontally over 200ms ease-expo (motion-safe only, so reduced motion gets no movement) plus a 5pct ink wash on the row (color-only, present in both modes). Same treatment on all five rows. Rows stay non-actionable: no buttons, links, tabindex, cursor, diamonds, arrows, or icons. Content and order untouched.
+5. Baselines after the idle block: card ends 36px below prose at 1440 and 45px at 1280, both stretched structurally with no filler. The Pieces to Notes Wall handoff is unchanged by construction (108px at 1440, 76px at 390, wall top margin only; wall layout untouched), so the mosaic statement now directly continues the four fragments into the people idea with no bridge copy.
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-09-11
+
+**Rationale:** Five selectors included a placeholder with no stage; four real fragments read as a complete set and the wall carries the community idea. An empty feedback region made idle feel broken next to submitted; the idle prompt occupies the same semantic region with zero height delta. A static list felt dead; one restrained hover makes it responsive without implying action.
+
+**Alternatives Considered:** Hiding Communities with CSS (rejected: dead content); a fifth replacement fragment (rejected: out of scope); 4-across below lg (rejected: cramped labels, 2x2 is balanced); aria-hidden on the idle text (rejected: static copy should remain navigable, it simply is not live); removing the stage-level live region (rejected: pre-existing announcement behavior for all fragments, out of scope); pointer cursor or focusable rows (rejected: rows have no action).
+
+**Impact:** Route chunk unchanged at 84.9 kB, First Load JS unchanged at 172 kB. Verified typecheck, lint, format, production build, selectors plus copy plus hover plus baselines plus handoff at 1280/1440, zero overflow at 360/375/390/430/820/1024 plus 844x390 landscape, both themes, reduced motion, keyboard, zero pageerrors.
