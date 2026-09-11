@@ -2,7 +2,7 @@ import { neon } from '@neondatabase/serverless';
 import { NextResponse } from 'next/server';
 import {
   SHOW_LIMITS,
-  isWatchedShow,
+  matchWatchedShow,
   normalizeShowTitle,
   type RecommendResponse,
 } from '@/content/shows';
@@ -68,32 +68,33 @@ export async function POST(request: Request) {
     );
   }
 
-  if (isWatchedShow(normalized)) {
-    return NextResponse.json({ status: 'watched', show: display } satisfies RecommendResponse);
+  const watched = matchWatchedShow(raw);
+  if (watched) {
+    return NextResponse.json({
+      status: 'watched',
+      show: watched.title,
+    } satisfies RecommendResponse);
   }
 
   if (!process.env.DATABASE_URL) return unavailable();
   try {
     const sql = neon(process.env.DATABASE_URL);
-    const existing = (await sql`
-      select id, recommendation_count from show_recommendations
-      where normalized_name = ${normalized}
-    `) as { id: string; recommendation_count: number }[];
-    if (existing.length > 0) {
-      await sql`
-        update show_recommendations
-        set recommendation_count = recommendation_count + 1, updated_at = now()
-        where id = ${existing[0].id}
-      `;
-      return NextResponse.json({ status: 'duplicate', show: display } satisfies RecommendResponse);
-    }
-    await sql`
+    // Atomic upsert: concurrent identical submissions converge on one
+    // row instead of racing between select and insert. xmax is zero
+    // exactly when the row was inserted rather than updated.
+    const rows = (await sql`
       insert into show_recommendations (show_name, normalized_name)
       values (${display.slice(0, SHOW_LIMITS.titleMax)}, ${normalized})
-    `;
-    return NextResponse.json({ status: 'added', show: display } satisfies RecommendResponse, {
-      status: 201,
-    });
+      on conflict (normalized_name) do update set
+        recommendation_count = show_recommendations.recommendation_count + 1,
+        updated_at = now()
+      returning (xmax = 0) as inserted
+    `) as { inserted: boolean }[];
+    const inserted = rows.length > 0 && rows[0].inserted === true;
+    return NextResponse.json(
+      { status: inserted ? 'added' : 'duplicate', show: display } satisfies RecommendResponse,
+      { status: inserted ? 201 : 200 }
+    );
   } catch {
     return unavailable();
   }
