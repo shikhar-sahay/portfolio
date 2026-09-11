@@ -132,11 +132,36 @@ function FragmentTeaser({ index }: { index: number }) {
  */
 function LiteratureStage() {
   const stripRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<Array<HTMLDivElement | null>>([]);
   const [atStart, setAtStart] = useState(true);
   const [atEnd, setAtEnd] = useState(false);
+
+  // Valid stop positions: every card start the browser can reach,
+  // plus max scroll itself when the final card cannot start-align.
+  // Every target sits at or inside the content, so no arrow, swipe,
+  // or trackpad gesture can ever rest on trailing blank space.
+  const stops = () => {
+    const strip = stripRef.current;
+    if (!strip) return [0];
+    const max = strip.scrollWidth - strip.clientWidth;
+    const starts = cardRefs.current.map(card => (card ? card.offsetLeft - strip.offsetLeft : 0));
+    const valid = starts.filter(s => s <= max + 2);
+    const list = valid.length > 0 ? valid : [0];
+    if (max - list[list.length - 1] > 2) list.push(max);
+    return list;
+  };
+
   const nudge = (dir: 1 | -1) => {
+    const strip = stripRef.current;
+    if (!strip) return;
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    stripRef.current?.scrollBy({ left: dir * 300, behavior: reduce ? 'auto' : 'smooth' });
+    const list = stops();
+    const current = strip.scrollLeft;
+    const target =
+      dir === 1
+        ? (list.find(s => s > current + 2) ?? list[list.length - 1])
+        : ([...list].reverse().find(s => s < current - 2) ?? 0);
+    strip.scrollTo({ left: target, behavior: reduce ? 'auto' : 'smooth' });
   };
 
   // The strip is finite: arrows disable at the real scroll bounds and
@@ -260,9 +285,12 @@ function LiteratureStage() {
               ref={stripRef}
               className="mt-5 flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 lg:grid lg:grid-cols-2 lg:overflow-visible lg:pb-0"
             >
-              {literature.archives.map(record => (
+              {literature.archives.map((record, i) => (
                 <div
                   key={record.name}
+                  ref={el => {
+                    cardRefs.current[i] = el;
+                  }}
                   className="flex min-w-[220px] snap-start items-start justify-between gap-3 border p-4 lg:min-w-0"
                   style={{ borderColor: 'color-mix(in srgb, var(--ink) 22%, transparent)' }}
                 >
@@ -346,8 +374,11 @@ function MusicStage() {
 /**
  * Football: a two-column personal stage. The story holds the left; a
  * single confident Barca childhood print holds the right, cropped in
- * CSS around the subject with excess garden falling away. Full color
- * in both themes, static under reduced motion. Source untouched.
+ * CSS around the subject with excess garden falling away. No resting
+ * rotation: the print renders axis-aligned so the browser never
+ * resamples it, which keeps the detail the 6000px source actually
+ * holds. Full color in both themes, static under reduced motion.
+ * Source untouched.
  */
 function FootballStage() {
   return (
@@ -376,14 +407,14 @@ function FootballStage() {
       </div>
 
       <div className="min-w-0 content-start lg:self-center">
-        <div className="mx-auto w-full max-w-[520px] rotate-[1deg] transition-transform duration-500 ease-expo hover:-translate-y-1 hover:rotate-0 lg:mx-auto lg:w-[420px] lg:max-w-none lg:rotate-[1.5deg] xl:w-[440px]">
+        <div className="mx-auto w-full max-w-[520px] transition-transform duration-500 ease-expo hover:-translate-y-1 lg:mx-auto lg:w-[480px] lg:max-w-none xl:w-[500px]">
           <div className="aspect-[4/3] overflow-hidden shadow-[0_24px_44px_-24px_rgba(0,0,0,0.5)]">
             <Image
               src={footballBarca}
               alt="Shikhar as a child outdoors wearing a red FC Barcelona shirt, hat and sunglasses"
               width={6000}
               height={4000}
-              sizes="(max-width: 1024px) 100vw, 440px"
+              sizes="(max-width: 1024px) 100vw, 500px"
               quality={90}
               className="h-full w-full object-cover object-[30%_50%]"
             />
@@ -421,7 +452,7 @@ function SideQuestsStage() {
         ))}
       </div>
 
-      <div className="min-w-0 content-start lg:self-center">
+      <div className="min-w-0 content-start">
         <RecommendationCard />
       </div>
     </div>
@@ -454,9 +485,10 @@ type RecommendState =
 
 /**
  * The recommendation instrument: a bordered editorial panel with one
- * input and one action. Feedback is compact, announced through a
- * live region, and never claims persistence the server did not
- * confirm.
+ * input and one action. On desktop it stretches to the prose row and
+ * pins the taste note to its own baseline, so both columns terminate
+ * together. Feedback is compact, announced through a live region, and
+ * never claims persistence the server did not confirm.
  */
 function RecommendationCard() {
   const [input, setInput] = useState('');
@@ -490,17 +522,17 @@ function RecommendationCard() {
 
   return (
     <div
-      className="border p-5 sm:p-6"
+      className="border p-5 sm:p-6 lg:flex lg:h-full lg:flex-col"
       style={{ borderColor: 'color-mix(in srgb, var(--ink) 22%, transparent)' }}
     >
       <p className="text-micro font-semibold uppercase tracking-[0.16em] text-muted">
         Show recommendation
       </p>
-      <p className="mt-3 font-serif text-2xl leading-tight tracking-tight text-ink sm:text-[1.7rem]">
+      <p className="mt-4 font-serif text-2xl leading-tight tracking-tight text-ink sm:text-[1.7rem]">
         What should I watch next?
       </p>
 
-      <form onSubmit={submit} className="mt-5 flex flex-col gap-3 sm:flex-row">
+      <form onSubmit={submit} className="mt-6 flex flex-col gap-3 sm:flex-row">
         <label htmlFor="show-recommendation-input" className="sr-only">
           Recommend a show
         </label>
@@ -508,7 +540,7 @@ function RecommendationCard() {
           id="show-recommendation-input"
           value={input}
           onChange={event => setInput(event.target.value.slice(0, SHOW_LIMITS.titleMax))}
-          placeholder="Type a show..."
+          placeholder="Recommend a show"
           autoComplete="off"
           maxLength={SHOW_LIMITS.titleMax}
           className="min-h-11 w-full flex-1 border bg-transparent px-4 py-2.5 text-base text-ink outline-none placeholder:text-muted focus:border-accent"
@@ -524,12 +556,22 @@ function RecommendationCard() {
         </button>
       </form>
 
-      <p className="mt-4 text-sm leading-relaxed text-muted">
+      <p className="mt-5 text-sm leading-relaxed text-muted">
         Think you&apos;ve got a banger I haven&apos;t seen yet?
       </p>
 
       <div aria-live="polite" className="mt-2 min-h-[3rem]">
         {state.kind === 'done' && <RecommendFeedback state={state} />}
+      </div>
+
+      <div
+        className="mt-5 border-t pt-5 lg:mt-auto lg:pt-6"
+        style={{ borderColor: 'color-mix(in srgb, var(--ink) 22%, transparent)' }}
+      >
+        <p className="text-micro font-semibold uppercase tracking-[0.16em] text-muted">
+          {sideQuests.tasteHeading}
+        </p>
+        <p className="mt-2.5 text-[0.95rem] leading-relaxed text-muted">{sideQuests.taste}</p>
       </div>
     </div>
   );
@@ -610,7 +652,9 @@ function SpotifyCard() {
 
   return (
     <div
-      className="border p-6 text-center transition-transform duration-500 ease-expo hover:-translate-y-1 sm:p-8"
+      className={`border p-5 text-center transition-transform duration-500 ease-expo hover:-translate-y-1 sm:p-6 ${
+        track !== null && track.status !== 'unavailable' ? 'lg:h-full' : ''
+      }`}
       style={{ borderColor: 'color-mix(in srgb, var(--ink) 22%, transparent)' }}
     >
       <a
@@ -618,13 +662,13 @@ function SpotifyCard() {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Open my Spotify profile"
-        className="group mx-auto inline-flex min-h-11 flex-col items-center gap-2.5"
+        className="group mx-auto inline-flex min-h-11 flex-col items-center gap-2"
       >
         <svg
           aria-hidden="true"
           viewBox="0 0 24 24"
           fill="currentColor"
-          className="h-[22px] w-[22px] text-muted transition-colors duration-300 group-hover:text-accent"
+          className="h-5 w-5 text-muted transition-colors duration-300 group-hover:text-accent"
         >
           <path d={channelGlyphs.Spotify.path} />
         </svg>
@@ -632,7 +676,7 @@ function SpotifyCard() {
           Spotify
         </span>
       </a>
-      <p className="mt-2 text-micro uppercase tracking-[0.16em] text-muted">On rotation</p>
+      <p className="mt-1.5 text-micro uppercase tracking-[0.16em] text-muted">On rotation</p>
 
       {track === null ? (
         <p className="mt-8 text-micro uppercase tracking-[0.16em] text-muted">Tuning in</p>
@@ -658,7 +702,7 @@ function SpotifyCard() {
         </div>
       ) : (
         <div
-          className="mt-6 border-t pt-6"
+          className="mt-5 border-t pt-5"
           style={{ borderColor: 'color-mix(in srgb, var(--ink) 22%, transparent)' }}
         >
           <p className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1 text-micro font-semibold uppercase tracking-[0.16em] text-accent">
@@ -676,13 +720,13 @@ function SpotifyCard() {
               alt={`${track.title ?? 'Track'} album artwork`}
               width={640}
               height={640}
-              className="mx-auto mt-5 h-auto w-full max-w-[280px]"
+              className="mx-auto mt-4 h-auto w-full max-w-[248px]"
             />
           )}
-          <p className="mx-auto mt-5 max-w-[26ch] break-words font-serif text-[1.35rem] leading-snug tracking-tight text-ink">
+          <p className="mx-auto mt-4 max-w-[26ch] break-words font-serif text-[1.3rem] leading-snug tracking-tight text-ink">
             {track.title}
           </p>
-          <p className="mx-auto mt-1.5 max-w-[32ch] break-words text-sm text-muted">
+          <p className="mx-auto mt-1 max-w-[32ch] break-words text-sm text-muted">
             {track.artist}
             {track.album && ` · ${track.album}`}
           </p>
@@ -691,7 +735,7 @@ function SpotifyCard() {
             track.durationMs !== undefined &&
             track.durationMs > 0 && (
               <div
-                className="mx-auto mt-5 h-[3px] w-full max-w-[280px] bg-ink opacity-15"
+                className="mx-auto mt-4 h-[3px] w-full max-w-[248px] bg-ink opacity-15"
                 role="img"
                 aria-label="Playback progress snapshot"
               >
@@ -709,7 +753,7 @@ function SpotifyCard() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`Open ${track.title ?? 'this track'} in Spotify`}
-              className="group mt-5 inline-flex min-h-11 items-center gap-2 text-micro font-semibold uppercase tracking-[0.16em] text-ink transition-colors duration-300 hover:text-accent"
+              className="group mt-4 inline-flex min-h-11 items-center gap-2 text-micro font-semibold uppercase tracking-[0.16em] text-ink transition-colors duration-300 hover:text-accent"
             >
               <span className="underline decoration-accent underline-offset-[5px] group-hover:no-underline">
                 Open in Spotify

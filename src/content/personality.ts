@@ -55,8 +55,8 @@ export const literature = {
   opening: 'I was a reader before I was a writer, and a writer long before I wrote code.',
   body: [
     'I grew up buried in books, competing in spelling bees, writing essays, and developing a perhaps unreasonable attachment to finding exactly the right word. Somewhere along the way came poetry, stories, half-finished drafts, and pages nobody else will ever read.',
-    "Writing became the purest form of expression for me. A place to turn thoughts into something tangible, to say what conversation sometimes couldn't, and, more often than not, to understand what I was thinking in the first place.",
-    "The subjects have changed over the years. The habit hasn't. I read to disappear into other people's worlds, and write to make sense of my own. More recently, that has included writing about technology too. A couple of those pieces are sitting right over there.",
+    "Writing became the purest form of expression for me. A place to make thoughts tangible, say what conversation sometimes couldn't, and understand what I was thinking in the first place.",
+    "The subjects have changed over the years. The habit hasn't. I read to disappear into other people's worlds, and write to make sense of my own. More recently, that has meant writing tech blogs too. A couple of those are sitting right over there.",
   ],
   emphasis: "The subjects have changed over the years. The habit hasn't.",
   articles: [
@@ -125,6 +125,9 @@ export const sideQuests = {
     'Some of my favourite time is the least complicated: being around my friends and the people I love, going somewhere with no real plan, finding another show to binge, watching a movie, or just doing absolutely nothing together.',
     "Somewhere in between, I've made my way through just about every Pokémon game I could get my hands on, lost an unreasonable number of hours to FIFA and Fortnite, developed a (concerning) liking for crime stories and documentaries, and read enough Agatha Christie to know that the obvious suspect is almost never the right one.",
   ],
+  tasteHeading: 'What usually works',
+  taste:
+    "I don't really care what genre it is. Give me good characters and a reason to watch one more episode, and I'm probably in.",
 };
 
 export type SpotifyStatus = 'playing' | 'recent' | 'unavailable';
