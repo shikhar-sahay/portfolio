@@ -1288,3 +1288,26 @@ Do not make significant design/architecture decisions without documenting them h
 **Alternatives Considered:** Hiding overflow to conceal the cut (rejected: masks the bug); per-fragment width hacks (rejected: same class everywhere); fuzzy title matching (rejected: false positives); localStorage stand-in persistence (rejected: dishonest); pre-cropped photo duplicates (rejected: CSS crop suffices).
 
 **Impact:** Route chunk 82.6 to 84.2 kB, First Load JS 170 to 171 kB (form plus stage markup; shows route adds zero client JS). Verified watched, invalid, unavailable, and rate-limit states live; typecheck, lint, format, production build; screenshot QA at 390, 844x390, 1024, and 1440 in light plus dark and reduced motion.
+
+---
+
+### 66. Pieces Refinement: Centered Music Artifact, Narrower Football, Live Show Upsert, Bound Archive Arrows (EXPERIMENTAL polish)
+
+**Decision:** Focused refinement over the #64 and #65 stages, no copy rewrites, no new dependencies, no new Motion usage.
+
+1. Music Spotify card becomes one centered listening object: the Spotify brand mark plus label stack at the top center, On rotation sits beneath, then a hairline, then a centered status plus timestamp row, a 280px centered artwork, a wrapped serif title with artist, a centered real progress snapshot only while playing, and a centered Open in Spotify link. Timestamps no longer collide with status text; long titles wrap inside measured containers.
+2. Football narrows to a single 420px (440px xl) 4:3 Barca print at quality 90 with a 1.5deg rest, vertically centered against the prose. The source is a 6000x4000 7.4 MB JPEG, so the softness was oversized presentation plus the taller 5:4 crop, not an undersized source; the fix is deliberate smaller placement, not filters. Brazil stays unimported.
+3. Side Quests drops the closing line entirely and the helper copy reads exactly as specified with no watched count. The recommendation card tightens to its content (reduced padding, gaps, result min-height) so both columns share a baseline.
+4. Show persistence uses one atomic INSERT ON CONFLICT upsert with xmax insert detection: watched titles never touch the DB, first new titles insert with count 1 (201 added), repeats increment atomically (200 duplicate). Matching is canonical NFKC normalization shared by watched, alias, and DB uniqueness, plus a small explicit alias map and conservative multi-token containment so Baby Reindeer and Elite Academy stay new.
+5. Literature archive arrows disable at the real scroll bounds (2px tolerance) and re-enable on scroll, resize, or swipe; disabled arrows stay visible, inert, and unfocusable via native disabled semantics.
+6. Editor tooling: repo-local .vscode settings declare db migrations as pgsql with a PostgreSQL SQLTools dialect so valid Postgres no longer parses as MSSQL; the migration itself is untouched semantically.
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-09-11
+
+**Rationale:** The card read as content inside a rectangle because the brand floated at the far edge and the artwork anchored left; centering both gives one axis. A smaller sharp print beats a large soft slab. Honest states plus atomic writes keep recommendations truthful under concurrency.
+
+**Alternatives Considered:** Full Spotify UI imitation (rejected: native-clone risk); upscaling or filtering the photo (rejected: hides rather than fixes); SELECT-then-INSERT (rejected: race); fuzzy matching (rejected: false positives); infinite archive wrap (rejected: finite strip must feel finite).
+
+**Impact:** Route chunk 84.2 to 84.8 kB, First Load JS 171 to 172 kB. Verified matcher matrix (Money Heist variants, aliases, Baby Reindeer and Elite Academy new), API watched/invalid/unavailable plus live Spotify recent, typecheck, lint, format, production build. Live added/duplicate round trip still needs DATABASE_URL access.
