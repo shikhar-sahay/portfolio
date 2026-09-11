@@ -46,10 +46,7 @@ export function Personality() {
         </h2>
 
         {/* Fragment selectors: click to open, click again to close. */}
-        <ul
-          className="mt-[6vh] grid grid-cols-2 gap-2.5 sm:grid-cols-3 md:mt-[7vh] lg:grid-cols-5"
-          role="list"
-        >
+        <ul className="mt-[6vh] grid grid-cols-2 gap-2.5 md:mt-[7vh] lg:grid-cols-4" role="list">
           {fragments.map((f, i) => (
             <li key={f.word}>
               <button
@@ -80,10 +77,8 @@ export function Personality() {
               <MusicStage />
             ) : active === 2 ? (
               <FootballStage />
-            ) : active === 3 ? (
-              <SideQuestsStage />
             ) : (
-              <FragmentTeaser index={active} />
+              <SideQuestsStage />
             )}
           </div>
         )}
@@ -101,24 +96,6 @@ function StageEyebrow({ index, word }: { index: number; word: string }) {
       <span className="text-accent">{String(index + 1).padStart(2, '0')}</span>
       {word}
     </p>
-  );
-}
-
-/**
- * Holder for fragments whose full stage has not been supplied yet
- * (Communities): identity plus the existing voice line, nothing
- * invented.
- */
-function FragmentTeaser({ index }: { index: number }) {
-  const fragment = fragments[index];
-  return (
-    <div>
-      <StageEyebrow index={index} word={fragment.word} />
-      <p className="mt-8 font-serif text-[clamp(2.75rem,6vw,5rem)] leading-[0.95] tracking-tight text-ink">
-        {fragment.word}
-      </p>
-      <p className="mt-4 text-sm leading-relaxed text-muted">{fragment.caption}</p>
-    </div>
   );
 }
 
@@ -548,8 +525,28 @@ function RecommendationCard() {
         Think you&apos;ve got a banger I haven&apos;t seen yet?
       </p>
 
-      <div aria-live="polite" className="mt-2 min-h-[3rem]">
-        {state.kind === 'done' && <RecommendFeedback state={state} />}
+      {/*
+        Feedback region: the idle prompt lives here as static copy so the
+        card reads complete before any submission. The stage itself mounts
+        only on user selection, so the idle text can never announce on
+        page load; submitted results additionally mount inside their own
+        dedicated live region below.
+      */}
+      <div className="mt-2 min-h-[4rem]">
+        {state.kind === 'done' ? (
+          <div aria-live="polite">
+            <RecommendFeedback state={state} />
+          </div>
+        ) : state.kind === 'sending' ? null : (
+          <div>
+            <p className="text-micro font-semibold uppercase tracking-[0.16em] text-muted">
+              Your move.
+            </p>
+            <p className="mt-1.5 text-sm leading-relaxed text-muted">
+              Give me something worth losing a weekend to.
+            </p>
+          </div>
+        )}
       </div>
 
       <div
@@ -563,7 +560,7 @@ function RecommendationCard() {
           {sideQuests.favourites.map((title, i) => (
             <li
               key={title}
-              className="flex items-baseline gap-4 border-t py-2 first:border-t-0 first:pt-0 last:pb-0"
+              className="group flex items-baseline gap-4 border-t py-2 transition-colors duration-200 first:border-t-0 first:pt-0 last:pb-0 hover:bg-[color-mix(in_srgb,var(--ink)_5%,transparent)]"
               style={{ borderColor: 'color-mix(in srgb, var(--ink) 14%, transparent)' }}
             >
               <span
@@ -572,7 +569,7 @@ function RecommendationCard() {
               >
                 {String(i + 1).padStart(2, '0')}
               </span>
-              <span className="text-[0.95rem] font-semibold uppercase tracking-[0.08em] text-ink">
+              <span className="text-[0.95rem] font-semibold uppercase tracking-[0.08em] text-ink transition-transform duration-200 ease-expo motion-safe:group-hover:translate-x-1">
                 {title}
               </span>
             </li>

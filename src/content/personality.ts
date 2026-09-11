@@ -19,7 +19,7 @@ export interface ArchiveRecord {
 
 /**
  * Voice lines are tonal, not factual claims: they frame the supplied
- * interests (literature, music, football, rabbit holes, communities)
+ * interests (literature, music, football, side quests)
  * without inventing achievements.
  */
 export const fragments: Fragment[] = [
@@ -43,7 +43,6 @@ export const fragments: Fragment[] = [
     caption: 'where the rest of my time disappears',
     micro: 'where the rest of my time disappears',
   },
-  { word: 'Communities', caption: 'most good things have people attached to them' },
 ];
 
 /**
@@ -122,7 +121,7 @@ export const sideQuests = {
   opening: 'Life would be pretty boring if I only ever stuck to the main quest.',
   body: [
     'Some of my favourite time is the least complicated: being around my friends and the people I love, going somewhere with no real plan, finding another show to binge, watching a movie, or just doing absolutely nothing together.',
-    "Somewhere in between, I've made my way through just about every Pokémon game I could get my hands on, lost an unreasonable number of hours to FIFA and Fortnite, developed a concerning liking for crime stories and documentaries, and read enough Agatha Christie to know that the obvious suspect is almost never the right one.",
+    "Somewhere in between, I've made my way through just about every Pokémon game I could get my hands on, lost an unreasonable number of hours to Fortnite and FIFA, developed a concerning liking for crime stories and documentaries, and read enough Agatha Christie to know that the obvious suspect is almost never the right one.",
   ],
   /**
    * Shikhar's top five shows in exact intentional order. Rendered as
