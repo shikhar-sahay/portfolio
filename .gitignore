@@ -40,6 +40,13 @@ next-env.d.ts
 *.swp
 *.swo
 
+# local agent/tooling state
+.claude/
+.tmp-edge-release-qa/
+
+# local-only experiments
+src/app/probex9/
+
 # OS
 Thumbs.db
 ehthumbs.db

@@ -62,7 +62,7 @@ src/
 │   │                       #   Experience, Toolkit, Projects, Pieces of Me, Contact)
 │   ├── not-found.tsx      # 404 scene: You BROKE. plus REBUILD (client, CSS transitions only)
 │   ├── globals.css        # Tokens, keyframes, arch/mask/marquee/reduced-motion styles
-│   ├── icon.png           # Favicon: finalized diamond artwork (cropped 256px)
+│   ├── icon.png           # Canonical icon artwork (cropped 256px)
 │   ├── apple-icon.tsx     # Apple touch icon (edge-rendered PNG: diamond on ink)
 │   ├── opengraph-image.tsx # Social preview 1200x630 (edge-rendered PNG, real copy)
 │   └── api/notes/         # Wall API: Postgres list/create, replies, rate gates, secret-gated moderation
@@ -81,10 +81,11 @@ db/
 ├── 001_wall_notes.sql      # Fresh Postgres schema and indexes for the wall
 └── 003_wall_post_events.sql # Existing-db migration for durable wall rate events
 public/
-└── resume.pdf             # Real owner-supplied resume (committed 2026-09-06)
+├── favicon.ico            # Conventional /favicon.ico alias for the icon artwork
+└── resume.pdf             # Real owner-supplied resume
 ```
 
-There is no `src/lib/`, `src/types/`, `src/styles/`, `src/components/effects/`, or `public/images/` in the built site. Do not reference them.
+There is no `src/lib/`, `src/types/`, `src/styles/`, `src/components/effects/`, or `public/images/` in the built site. Do not reference them. `.claude/` and `src/app/probex9/` are local-only and ignored so tool settings and protected experiments are not released.
 
 ---
 

@@ -105,7 +105,7 @@ The section overlaps the hero by exactly one viewport so its sticky engages the 
 
 - One thought on stage at a time in a shared left-aligned composition: serif "I", then the verb unmasking bottom-up with a rise, then the micro note. BUILD [0, 0.08]/[0.28, 0.36], BREAK [0.28, 0.36]/[0.6, 0.68], REBUILD [0.6, 0.68] holding to release. Crossfade windows are shared, so one thought always leads and two never collide.
 - The finale never exits: it holds its frame while About enters beneath it.
-- Below sm, a compact cut of the same choreography runs: 110svh section, 18svh rows, minus 14vh to minus 38vh stack travel, quieter inactive rows, and a nearly immediate bridge opacity gate. Short landscape viewports up to 1023px wide use a 120svh bridge with the same compact travel. The gate prevents the overlapped bridge from leaking BREAK or REBUILD into the landing viewport before the hero releases. Desktop values are untouched.
+- Below sm, a compact cut of the same choreography runs: 110svh section, 18svh rows, minus 14vh to minus 30vh stack travel, quieter inactive rows, and a nearly immediate bridge opacity gate. Short landscape viewports up to 1023px wide use a 120svh bridge with the same compact travel. The shorter final travel keeps REBUILD in the meaningful viewport while the About eyebrow arrives. The gate prevents the overlapped bridge from leaking BREAK or REBUILD into the landing viewport before the hero releases. Desktop values are untouched.
 - Reduced motion: a static stacked block with matching alignment, full ink.
 
 ### Word-by-word reading reveal (`WordReveal.tsx`)

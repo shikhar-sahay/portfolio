@@ -90,7 +90,7 @@ Warm print-inspired identity: cream paper, warm ink, vermilion accent. Dark is a
 - Tailwind default 4px-based scale; no custom spacing tokens
 - Section rhythm: `py-[14vh]` standard on larger canvases, with selected mobile and tablet reductions where measured gaps grew accidental; current mobile base padding is mostly 8 to 9vh so sections stay connected without collapsing their internal editorial rhythm; content container `max-w-6xl`
 - Consistent page gutter: `px-5` mobile, `px-10` from sm up
-- Hero scene `h-[120svh]` with `h-dvh` sticky; statements use `h-[110svh] sm:h-[200svh]` pulled up `-mt-[100dvh]`, with compact rows at `18svh` and compact stack travel from `-14vh` to `-38vh` so the mobile handoff stays content-dense while desktop keeps the longer composition
+- Hero scene `h-[120svh]` with `h-dvh` sticky; statements use `h-[110svh] sm:h-[200svh]` pulled up `-mt-[100dvh]`, with compact rows at `18svh` and compact stack travel from `-14vh` to `-30vh` so the mobile REBUILD to About handoff stays content-dense while desktop keeps the longer composition
 - Toolkit to Certifications removes redundant chapter padding: Toolkit keeps the internal closing hairline at `mt-[6vh]`, Certifications starts at `pt-[8vh]`, and the 1440 measured Technologies row to Certifications eyebrow gap is about 225px
 - Formal token scale remains UNDECIDED
 

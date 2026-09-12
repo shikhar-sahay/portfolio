@@ -71,7 +71,7 @@ Experience precedes Toolkit; Toolkit precedes Projects. The section registry in 
 
 ## 7. Performance Constraints
 
-- Budget: **150 kB First Load JS**. Current: ~160 kB (measured `next build`). Audit before adding any client JS; reclaim options in `docs/HANDOFF.md` known issues.
+- Budget: **150 kB First Load JS**. Current: 173 kB (measured `next build`). Audit before adding any client JS; reclaim options in `docs/HANDOFF.md` known issues.
 - Stack is fixed: Next.js 14, React 18, TypeScript, Tailwind, Motion. Do not migrate frameworks or add animation/UI libraries without documented justification.
 - Server Components by default; every client component needs a reason (listed in `docs/HANDOFF.md`).
 - Animate only transform/opacity/clip-path. No layout-triggering animation, no continuous React state on scroll, no expensive scroll listeners.

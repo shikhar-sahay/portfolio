@@ -1444,3 +1444,24 @@ Do not make significant design/architecture decisions without documenting them h
 **Impact:** First Load JS remains 173 kB, route chunk 85.8 kB. No new dependencies. Security headers verified against the production server. Public show recommendation body limit verified with a 413. Local note success-path tests still need `DATABASE_URL`; the local no-database guard returns its existing 503 before write parsing.
 
 **Regression Follow-up (2026-09-12):** The original hash-bearing inline script policy blocked Next's own production inline bootstrap and RSC payload scripts because browsers ignore `unsafe-inline` when a hash is present. React never hydrated and the opening overlay could not unmount. The policy now uses `script-src 'self' 'unsafe-inline'` only for scripts, while external script loading remains limited to `self`.
+
+---
+
+### 73. Release Cleanup: Favicon Alias, Local Ignores, Compact REBUILD Handoff, README Front Door (EXPERIMENTAL release)
+
+**Decision:** Final release cleanup keeps the READY TO SHIP baseline intact while fixing the remaining mobile handoff and repository front-door issues.
+
+1. Compact statements keep the 110svh mobile bridge and 18svh rows from #72, but the compact stack resolves from `-14vh` to `-30vh` instead of `-38vh`. Desktop remains `42vh` to `-40vh`. This keeps REBUILD visible longer as the About eyebrow enters, reducing the remaining low-information gap without changing BUILD, BREAK, REBUILD order or using a negative margin.
+2. `public/favicon.ico` mirrors the finalized icon artwork so conventional `/favicon.ico` requests succeed in production while `src/app/icon.png` remains the canonical App Router icon source.
+3. `.claude/` and `src/app/probex9/` are ignored as local-only artifacts. They are not deleted, touched, or staged, and the protected local route is not part of the release commit.
+4. `README.md` is rewritten as the repository front door, documenting the actual static-first architecture, targeted client islands, Notes Wall persistence and hardening, show recommendations, Spotify server-side integration, security baseline, responsive and reduced-motion strategy, environment variables, and current 173 kB First Load JS state.
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-09-12
+
+**Rationale:** The release baseline was already approved, so this pass should remove only the final friction: one mobile handoff gap, a conventional favicon 404, stale documentation, and local-only files appearing in status. The compact travel change targets the structural statement camera rather than masking the gap with margins. The favicon alias preserves identity without introducing new artwork.
+
+**Alternatives Considered:** Reducing About padding again (rejected: About spacing is already tuned and the visual issue is the statement camera leaving too early); changing desktop statement travel (rejected: desktop passed QA); deleting local-only directories (rejected: protected local work); broad docs rewrite across every historical decision (rejected: history stays useful, current-state docs and README carry the final implementation).
+
+**Impact:** No new dependency or client component. One static favicon alias is added. Final production build remains 173 kB First Load JS.
