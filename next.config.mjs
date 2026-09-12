@@ -9,7 +9,7 @@ const csp = [
   "form-action 'self'",
   "img-src 'self' data: blob: https://i.scdn.co",
   "font-src 'self'",
-  `script-src 'self' 'sha256-iPKleRy1sLBnlLElx33eiHr+QB6cniBji2JRKw6bFV8='${isProd ? '' : " 'unsafe-eval'"}`,
+  `script-src 'self' 'unsafe-inline'${isProd ? '' : " 'unsafe-eval'"}`,
   "style-src 'self' 'unsafe-inline'",
   `connect-src 'self'${isProd ? '' : ' ws: http: https:'}`,
   "media-src 'none'",

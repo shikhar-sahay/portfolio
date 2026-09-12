@@ -101,7 +101,7 @@ export function Contact() {
               </a>
               <a
                 href={profile.links.resumeFile}
-                download
+                download="Shikhar_Sahay_Resume.pdf"
                 className="border-ink/25 lm-line inline-flex items-center gap-2.5 border px-5 py-2.5 text-micro font-semibold uppercase tracking-[0.16em] text-ink transition-colors duration-300 hover:border-accent hover:text-accent"
               >
                 Download PDF
