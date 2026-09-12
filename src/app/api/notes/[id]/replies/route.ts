@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { readJsonBody } from '@/app/api/_request';
 import { LIMITS, validateReply } from '@/content/wall';
 import {
   clientIp,
@@ -17,17 +18,9 @@ export async function GET(_request: Request, { params }: { params: { id: string 
 
 export async function POST(request: Request, { params }: { params: { id: string } }) {
   if (!notesPersistenceConfigured()) return persistenceErrorResponse();
-  const length = Number.parseInt(request.headers.get('content-length') ?? '0', 10);
-  if (length > LIMITS.maxPayloadBytes) {
-    return NextResponse.json({ error: 'Payload too large.' }, { status: 413 });
-  }
-  let body: unknown;
-  try {
-    body = await request.json();
-  } catch {
-    return NextResponse.json({ error: 'Bad payload.' }, { status: 400 });
-  }
-  const parsed = validateReply(body);
+  const body = await readJsonBody(request, LIMITS.maxPayloadBytes);
+  if (!body.ok) return body.response;
+  const parsed = validateReply(body.body);
   if (!parsed.ok) return NextResponse.json({ error: parsed.error }, { status: 422 });
   const ip = clientIp(request.headers);
   const store = getNoteStore();

@@ -96,7 +96,7 @@ function ThoughtLine({
     <motion.div
       style={{ opacity, scale }}
       data-verb={line.verb.slice(0, -1).toUpperCase()}
-      className={`statement-row relative flex h-[20svh] flex-col justify-center will-change-transform sm:h-[32vh] ${line.offsetClass}`}
+      className={`statement-row relative flex h-[18svh] flex-col justify-center will-change-transform sm:h-[32vh] ${line.offsetClass}`}
     >
       {/* Full-word echo: the complete verb, oversized and cropped by the
           frame edge, so the full viewport reads as composition. Same word
@@ -171,7 +171,7 @@ export function TransitionStatements() {
   // thoughts read as one continuous sequence on phones instead of
   // three disconnected screens.
   const stackYFull = useTransform(scrollYProgress, [0, 1], ['42vh', '-40vh']);
-  const stackYCompact = useTransform(scrollYProgress, [0, 1], ['0vh', '-18vh']);
+  const stackYCompact = useTransform(scrollYProgress, [0, 1], ['-14vh', '-38vh']);
   const stackY = compact ? stackYCompact : stackYFull;
   const panelO = useTransform(scrollYProgress, [0, 0.005, 1], [0, 1, 1]);
 
@@ -210,7 +210,7 @@ export function TransitionStatements() {
       ref={ref}
       aria-label="Introduction statements"
       data-compact={compact ? 'true' : 'false'}
-      className="statement-bridge pointer-events-none relative -mt-[100dvh] h-[120svh] sm:h-[200svh]"
+      className="statement-bridge pointer-events-none relative -mt-[100dvh] h-[110svh] sm:h-[200svh]"
     >
       <div className="sticky top-0 h-dvh overflow-hidden">
         <motion.div

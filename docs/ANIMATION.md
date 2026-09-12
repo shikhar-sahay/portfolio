@@ -105,7 +105,7 @@ The section overlaps the hero by exactly one viewport so its sticky engages the 
 
 - One thought on stage at a time in a shared left-aligned composition: serif "I", then the verb unmasking bottom-up with a rise, then the micro note. BUILD [0, 0.08]/[0.28, 0.36], BREAK [0.28, 0.36]/[0.6, 0.68], REBUILD [0.6, 0.68] holding to release. Crossfade windows are shared, so one thought always leads and two never collide.
 - The finale never exits: it holds its frame while About enters beneath it.
-- Below sm, and on short landscape viewports up to 1023px wide, a compact cut of the same choreography runs: 120svh section, 20svh rows, 0vh to minus 18vh stack travel, quieter inactive rows, and a nearly immediate bridge opacity gate. The gate prevents the overlapped bridge from leaking BREAK or REBUILD into the landing viewport before the hero releases. Desktop values are untouched.
+- Below sm, a compact cut of the same choreography runs: 110svh section, 18svh rows, minus 14vh to minus 38vh stack travel, quieter inactive rows, and a nearly immediate bridge opacity gate. Short landscape viewports up to 1023px wide use a 120svh bridge with the same compact travel. The gate prevents the overlapped bridge from leaking BREAK or REBUILD into the landing viewport before the hero releases. Desktop values are untouched.
 - Reduced motion: a static stacked block with matching alignment, full ink.
 
 ### Word-by-word reading reveal (`WordReveal.tsx`)
@@ -150,7 +150,7 @@ The name as a slow infinite marquee (two identical groups, -50% loop, pauses on 
 
 ### Notes wall (`NotesWall.tsx`, spatial field v5.4)
 
-- Full-bleed viewport-width field (no box, no visible world boundary): dotted field plus vignette only. The manifesto sits above the wall as a static section intro; guidance, notes, composer, and discovery controls share the spatial surface. Pan is direct manipulation: pointer drag writes a camera transform through rAF (no React state during pan); wheel always scrolls the page, never the wall; touch keeps vertical page scroll (`touch-pan-y`); arrow keys pan when focused.
+- Full-bleed viewport-width field (no box, no visible world boundary): dotted field plus vignette only. The manifesto sits above the wall as a static section intro; guidance, notes, composer, and discovery controls share the spatial surface. Pan is direct manipulation: pointer drag writes a camera transform through rAF (no React state during pan); dragging empty wall space or a note body pans the same camera, while controls, forms, and reply surfaces opt out; wheel always scrolls the page, never the wall; touch keeps vertical page scroll (`touch-pan-y`); arrow keys pan when focused.
 - The guidance inscription is positioned from the initial camera and viewport, then belongs to the world as the visitor pans. It has no animation, box, icon, or separate overlay treatment.
 - Discovery controls: Latest and Random fly the camera to the matching persisted top-level note and open it; Center returns to the viewport-appropriate initial camera; Leave a note opens the composer. Flights use a short 620ms ease-out camera move and jump immediately under reduced motion.
 - Cards rest tilted (deterministic per id) and straighten plus lift on hover and keyboard focus (500ms expo; instant under reduced motion); placed notes arrive with a short fade-rise settle. Composing shows a cursor-following placement ghost written straight to the DOM (no re-renders). No continuous animation anywhere.

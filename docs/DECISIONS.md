@@ -1421,3 +1421,24 @@ Do not make significant design/architecture decisions without documenting them h
 **Alternatives Considered:** Re-auditing the whole page from scratch (rejected: this is a continuation and the mobile measurements were already complete); changing desktop spacing (rejected: desktop was already checked); hiding content during the statement bridge (rejected: order and continuity were already correct); adding a longer loader (rejected: opening timing stays fixed).
 
 **Impact:** No new dependencies. Verified after implementation at 360, 375, 390, and 430px: Hero to About gap now measures 160, 163, 169, and 187px respectively, later section boundaries remain adjacent, and no horizontal overflow appears. Opening caption measured centered at desktop with a 16px gap above the full-gutter rule.
+
+---
+
+### 72. Security Baseline, Note-Body Pan, Compact Mobile Bridge (EXPERIMENTAL hardening)
+
+**Decision:** Add a practical production security baseline and tighten the remaining mobile statement travel without changing the desktop choreography.
+
+1. Every route now receives a Content Security Policy, `frame-ancestors 'none'`, `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, a deny-by-default Permissions-Policy for sensitive device features, and HSTS for the HTTPS-only Vercel deployment. The CSP is source-specific: self scripts plus the hashed pre-paint theme script, self images plus data/blob and Spotify artwork, self connections, self fonts, inline styles for framework style injection, and no object or media embeds.
+2. Public JSON write routes share a bounded body reader. Notes, replies, and show recommendations reject oversized bodies even when `content-length` is absent or wrong, and non-JSON writes no longer fall through to route-specific parsing. Validation still runs before rate-limit events, and failed database writes still do not record quota.
+3. Notes Wall panning now starts from note bodies as well as empty wall space. The same 7px movement threshold distinguishes drag from click; note controls, the dock, dialogs, inputs, and textareas still opt out through `data-wall-interactive`.
+4. Compact statements now use a 110svh bridge below sm, 18svh rows, and minus 14vh to minus 38vh travel. Short landscape keeps a 120svh bridge with the same compact travel. Desktop keeps the existing 200svh bridge and 42vh to minus 40vh travel.
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-09-12
+
+**Rationale:** The app had durable Notes Wall rate limiting and plain-text rendering already, but lacked a route-wide browser security policy and trusted `content-length` too much for public JSON writes. The Notes Wall is a spatial surface, so dragging a visible note body should move the wall unless the pointer starts on an actual control. Mobile screenshots still showed an empty-feeling runway before BUILD, so the compact cut needed structural tightening at section height, row height, and stack travel rather than a visual mask.
+
+**Alternatives Considered:** Broad CSP wildcards (rejected: weakens the policy); middleware-only headers (rejected: `next.config.mjs` covers static and dynamic routes simply); client-side posting limits (rejected: not a security boundary); making notes draggable objects (rejected: notes are persisted pins, not repositionable cards); static mobile statements (rejected: removes the signature handoff).
+
+**Impact:** First Load JS remains 173 kB, route chunk 85.8 kB. No new dependencies. Security headers verified against the production server. Public show recommendation body limit verified with a 413. Local note success-path tests still need `DATABASE_URL`; the local no-database guard returns its existing 503 before write parsing.

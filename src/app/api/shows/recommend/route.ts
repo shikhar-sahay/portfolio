@@ -1,5 +1,6 @@
 import { neon } from '@neondatabase/serverless';
 import { NextResponse } from 'next/server';
+import { readJsonBody } from '@/app/api/_request';
 import {
   SHOW_LIMITS,
   matchWatchedShow,
@@ -39,17 +40,12 @@ function unavailable() {
 }
 
 export async function POST(request: Request) {
-  const length = Number.parseInt(request.headers.get('content-length') ?? '0', 10);
-  if (length > SHOW_LIMITS.maxPayloadBytes) {
-    return NextResponse.json({ error: 'Payload too large.' }, { status: 413 });
-  }
-  let body: unknown;
-  try {
-    body = await request.json();
-  } catch {
+  const body = await readJsonBody(request, SHOW_LIMITS.maxPayloadBytes);
+  if (!body.ok) {
+    if (body.response.status === 413) return body.response;
     return invalid('That did not look like a show title.');
   }
-  const raw = (body as Record<string, unknown> | null)?.show;
+  const raw = (body.body as Record<string, unknown> | null)?.show;
   if (typeof raw !== 'string' || raw.trim().length === 0) {
     return invalid('Type a show first.');
   }

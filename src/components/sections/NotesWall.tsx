@@ -93,6 +93,7 @@ export function NotesWall() {
     moved: boolean;
     raf: number;
   } | null>(null);
+  const suppressNoteClick = useRef(false);
   const flight = useRef(0);
   const camera = useRef<Camera>(CAMERA_HOME);
   const cameraInitialized = useRef(false);
@@ -418,6 +419,7 @@ export function NotesWall() {
   const onPointerDown = (event: React.PointerEvent) => {
     if ((event.target as HTMLElement).closest('[data-wall-interactive="true"]')) return;
     if (event.button !== 0 && event.pointerType === 'mouse') return;
+    event.currentTarget.setPointerCapture(event.pointerId);
     cancelAnimationFrame(flight.current);
     const start = {
       sx: event.clientX,
@@ -431,8 +433,12 @@ export function NotesWall() {
     const move = (ev: PointerEvent) => {
       const dx = ev.clientX - start.sx;
       const dy = ev.clientY - start.sy;
-      if (!start.moved && Math.hypot(dx, dy) > 7) start.moved = true;
+      if (!start.moved && Math.hypot(dx, dy) > 7) {
+        start.moved = true;
+        suppressNoteClick.current = true;
+      }
       if (!start.moved) return;
+      ev.preventDefault();
       cancelAnimationFrame(start.raf);
       start.raf = requestAnimationFrame(() => {
         camera.current = clampCamera({ x: start.ox - dx, y: start.oy - dy });
@@ -445,6 +451,11 @@ export function NotesWall() {
       window.removeEventListener('pointercancel', up);
       cancelAnimationFrame(start.raf);
       if (drag.current === start) drag.current = null;
+      if (start.moved) {
+        window.setTimeout(() => {
+          suppressNoteClick.current = false;
+        }, 0);
+      }
       applyCamera();
       refreshVisible();
       void fetchVisibleNotes();
@@ -453,7 +464,7 @@ export function NotesWall() {
         setDraft(d => ({ ...d, x: point.x, y: point.y }));
       }
     };
-    window.addEventListener('pointermove', move);
+    window.addEventListener('pointermove', move, { passive: false });
     window.addEventListener('pointerup', up);
     window.addEventListener('pointercancel', up);
   };
@@ -524,8 +535,8 @@ export function NotesWall() {
             <button
               key={note.id}
               type="button"
-              data-wall-interactive="true"
               onClick={() => {
+                if (suppressNoteClick.current) return;
                 setOpenId(note.id);
                 setError(null);
                 setReplyError(null);

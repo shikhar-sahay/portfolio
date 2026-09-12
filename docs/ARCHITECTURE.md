@@ -165,6 +165,12 @@ There is no `src/lib/`, `src/types/`, `src/styles/`, `src/components/effects/`, 
 | **Error tracking**      | None installed                                                                         | `UNDECIDED`    |
 | **Edge/ISR**            | Icon/image routes render on demand (edge); notes API is dynamic; homepage stays static | `FINALIZED`    |
 
+### Security Headers
+
+`next.config.mjs` sets the production security baseline for every route: a source-specific Content Security Policy, `frame-ancestors 'none'`, `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, a deny-by-default Permissions-Policy for sensitive device features, and HSTS for the HTTPS-only Vercel deployment. The CSP allows only self-hosted scripts plus the hashed pre-paint theme script, self images plus data/blob and Spotify artwork from `i.scdn.co`, self connections, self fonts, inline styles for Next and Tailwind runtime style tags, and no object or media embeds.
+
+Public JSON write routes use a shared bounded body reader before validation. Notes, replies, and show recommendations reject non-JSON or oversized payloads without trusting `content-length` alone. User content remains rendered as plain React text nodes, with no user-controlled HTML injection.
+
 ---
 
 ## Developer Experience

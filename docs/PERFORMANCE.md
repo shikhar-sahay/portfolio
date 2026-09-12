@@ -202,6 +202,11 @@ There is no `.github/` directory and no Lighthouse CI, bundle gate, or deploy pi
 - Opening delay root cause: the hero was ready under the overlay, but the first-session opening held it for about 1.5s. The opening is now a micro-opening: 420ms signal, 380ms lift, unmount at 850ms, `--intro-delay` 0.45s. Repeat-session and reduced-motion paths still skip pre-paint.
 - Remaining opportunities: HIGH impact, MEDIUM complexity, LOW visual risk: audit client islands and lazy-load genuinely below-fold Pieces or Notes Wall code, approximate saving unknown without analyzer, should be considered before launch. MEDIUM impact, LOW complexity, LOW risk: trim InteractiveLetters accent tint math if owner accepts a quieter hover, approximate saving small. MEDIUM impact, MEDIUM complexity, MEDIUM risk: revisit carousel hint and state footprint. LOW impact, LOW complexity, LOW risk: image request `sizes` tuning for below-fold artifacts, mostly transfer savings rather than First Load JS.
 
+## v5.10 Status (2026-09-12)
+
+- Production build: 173 kB First Load JS, route chunk 85.8 kB. The security and mobile-interaction pass added response headers, a server-only bounded JSON reader, note-body pan handling in the existing Notes Wall client island, and tighter compact statement geometry. No new dependency, image, client component, or recurring loop was added.
+- Security headers verified against the local production server: CSP, frame blocking, nosniff, strict-origin referrers, Permissions-Policy, and HSTS are present. A 5000-byte show recommendation body returns 413 before route validation. Local Notes Wall write success-path testing still needs `DATABASE_URL`; the existing no-database guard returns 503 before write parsing.
+
 ## v4.5 Status (2026-09-05)
 
 - First Load JS: still ~153 kB against the 150 kB budget. The opening-architecture rework (overlap, crossfade windows, mask direction) added no measurable JS.
