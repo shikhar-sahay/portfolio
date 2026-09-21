@@ -71,6 +71,11 @@ export const orgTimeline: OrgEntry[] = [
     artifact: 'gdg',
     roles: [
       {
+        role: 'Management Lead',
+        period: 'Sep 2026 - Present',
+        body: 'Doing crazy things that matter.',
+      },
+      {
         role: 'Senior Core Member',
         period: 'Mar 2026 - Sep 2026',
         body: "By Senior Core, I had gone from helping run the room to owning parts of it. I served as PoC for DevJams'26, GDG's flagship hackathon with 3,000+ registrations, helped execute Women Techies'26 and Hexathon'26, and mentored the next Core cohort. Oh, and I also brought my sponsorship total to ₹3.3L+ along the way.",
