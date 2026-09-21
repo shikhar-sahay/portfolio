@@ -1,4 +1,4 @@
-export type EggKind = 'attack' | 'recover' | 'rupees' | 'crowd' | 'publish' | 'release';
+export type EggKind = 'attack' | 'recover' | 'rupees' | 'crowd' | 'publish' | 'release' | 'unruly';
 
 export interface EggTarget {
   kind: EggKind;
@@ -74,6 +74,7 @@ export const orgTimeline: OrgEntry[] = [
         role: 'Management Lead',
         period: 'Sep 2026 - Present',
         body: 'Doing crazy things that matter.',
+        egg: { kind: 'unruly', target: 'crazy things' },
       },
       {
         role: 'Senior Core Member',

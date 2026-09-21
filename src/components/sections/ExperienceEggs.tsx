@@ -260,6 +260,67 @@ function ReleaseEgg({ text, reduce }: { text: string; reduce: boolean }) {
   );
 }
 
+/** GDG Management Lead: "crazy things" goes briefly, spatially unruly on
+    hover, then settles back into order. Unlike AttackEgg (one synchronized
+    ±2px nudge with no rotation), each character gets its own irregular
+    displacement (4-10px vertical, a few px horizontal, ±3-6° rotation) with
+    scattered timing over ~600-800ms. CSS keyframes carry the motion (never
+    accumulated inline transforms), so the resting DOM is always the plain
+    settled phrase. Hover/fine-pointer only: no tab stop (purely decorative,
+    so no button role), no tap handler, and reduced motion renders plain
+    text. Screen readers get the phrase once via the wrapper label while the
+    visual characters stay hidden. */
+function UnrulyEgg({ text, reduce }: { text: string; reduce: boolean }) {
+  const [playing, setPlaying] = useState(false);
+  const later = useTimers();
+  const play = () => {
+    if (reduce || playing) return;
+    if (
+      typeof window !== 'undefined' &&
+      typeof window.matchMedia === 'function' &&
+      !window.matchMedia('(hover: hover) and (pointer: fine)').matches
+    ) {
+      return;
+    }
+    setPlaying(true);
+    later(() => setPlaying(false), 950);
+  };
+  if (reduce) return <>{text}</>;
+  return (
+    <span aria-label={text} onMouseEnter={play} className="egg-unruly">
+      <span aria-hidden="true">
+        <Chars
+          text={text}
+          render={(ch, i) => {
+            const sign = (i * 29 + 3) % 2 === 0 ? 1 : -1;
+            const dy = sign * (4 + ((i * 53 + 7) % 7));
+            const dx = ((i * 37 + 11) % 7) - 3;
+            const rot = ((i * 41 + 5) % 2 === 0 ? 1 : -1) * (3 + ((i * 23) % 4));
+            return (
+              <span
+                className="egg-unruly-char inline-block will-change-transform"
+                style={
+                  playing
+                    ? {
+                        animationDuration: `${600 + ((i * 71) % 5) * 50}ms`,
+                        animationDelay: `${(i * 137) % 160}ms`,
+                        ['--ux' as string]: `${dx}px`,
+                        ['--uy' as string]: `${dy}px`,
+                        ['--ur' as string]: `${rot}deg`,
+                      }
+                    : undefined
+                }
+              >
+                {ch}
+              </span>
+            );
+          }}
+        />
+      </span>
+    </span>
+  );
+}
+
 const EGGS: Record<EggKind, (p: { text: string; reduce: boolean }) => React.ReactNode> = {
   attack: p => <AttackEgg {...p} />,
   recover: p => <RecoverEgg {...p} />,
@@ -267,6 +328,7 @@ const EGGS: Record<EggKind, (p: { text: string; reduce: boolean }) => React.Reac
   crowd: p => <CrowdEgg {...p} />,
   publish: p => <PublishEgg {...p} />,
   release: p => <ReleaseEgg {...p} />,
+  unruly: p => <UnrulyEgg {...p} />,
 };
 
 export function EggPhrase({ kind, text }: { kind: EggKind; text: string }) {

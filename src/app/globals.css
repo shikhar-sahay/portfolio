@@ -421,6 +421,42 @@ html:not(.dark) .lm-nav {
   vertical-align: -0.12em;
 }
 
+/* GDG Management Lead "crazy things": localized typographic instability
+   that settles back into order. Per-character custom properties (--ux,
+   --uy, --ur) carry irregular offsets; the animation always ends at
+   identity, so characters can never stick mid-transform. Resting state is
+   unstyled text: no color, underline, or decoration changes. */
+@keyframes egg-unruly {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  28% {
+    transform: translate(var(--ux, 0px), var(--uy, 0px)) rotate(var(--ur, 0deg));
+  }
+  55% {
+    transform: translate(calc(var(--ux, 0px) * -0.45), calc(var(--uy, 0px) * -0.45))
+      rotate(calc(var(--ur, 0deg) * -0.5));
+  }
+  78% {
+    transform: translate(calc(var(--ux, 0px) * 0.2), calc(var(--uy, 0px) * 0.2))
+      rotate(calc(var(--ur, 0deg) * 0.25));
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
+.egg-unruly-char {
+  animation-name: egg-unruly;
+  animation-timing-function: cubic-bezier(0.3, 0.7, 0.3, 1);
+}
+/* Coarse pointers have no hover: the phrase stays ordinary static text and
+   never interferes with touch scrolling. */
+@media (hover: none) {
+  .egg-unruly-char {
+    animation: none;
+  }
+}
+
 /* Outline display type: second line of the name */
 .type-outline {
   color: transparent;
