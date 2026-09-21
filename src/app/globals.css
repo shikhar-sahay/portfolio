@@ -425,7 +425,14 @@ html:not(.dark) .lm-nav {
    that settles back into order. Per-character custom properties (--ux,
    --uy, --ur) carry irregular offsets; the animation always ends at
    identity, so characters can never stick mid-transform. Resting state is
-   unstyled text: no color, underline, or decoration changes. */
+   unstyled text: no color, underline, or decoration changes.
+   Implementation note: the animation is applied from React as one inline
+   `animation` shorthand per character (see UnrulyEgg). Splitting
+   name/duration/delay between this stylesheet and inline longhands
+   computes the same values but never instantiates in Chromium, so there is
+   deliberately no helper class here beyond the keyframes. Coarse pointers
+   never reach the trigger: UnrulyEgg only plays on
+   `(hover: hover) and (pointer: fine)`, so touch stays static text. */
 @keyframes egg-unruly {
   0% {
     transform: translate(0, 0) rotate(0deg);
@@ -443,17 +450,6 @@ html:not(.dark) .lm-nav {
   }
   100% {
     transform: translate(0, 0) rotate(0deg);
-  }
-}
-.egg-unruly-char {
-  animation-name: egg-unruly;
-  animation-timing-function: cubic-bezier(0.3, 0.7, 0.3, 1);
-}
-/* Coarse pointers have no hover: the phrase stays ordinary static text and
-   never interferes with touch scrolling. */
-@media (hover: none) {
-  .egg-unruly-char {
-    animation: none;
   }
 }
 

@@ -296,14 +296,21 @@ function UnrulyEgg({ text, reduce }: { text: string; reduce: boolean }) {
             const dy = sign * (4 + ((i * 53 + 7) % 7));
             const dx = ((i * 37 + 11) % 7) - 3;
             const rot = ((i * 41 + 5) % 2 === 0 ? 1 : -1) * (3 + ((i * 23) % 4));
+            // Note: the animation must be set as one `animation` shorthand.
+            // Splitting name/duration/delay across the stylesheet class and
+            // inline longhands computes identically but never instantiates
+            // the animation in Chromium (verified: full shorthand animates,
+            // split longhands stay at rest). Resting spans carry no animation
+            // at all, so the settled phrase is always plain text.
+            const dur = 600 + ((i * 71) % 5) * 50;
+            const delay = (i * 137) % 160;
             return (
               <span
-                className="egg-unruly-char inline-block will-change-transform"
+                className="inline-block will-change-transform"
                 style={
                   playing
                     ? {
-                        animationDuration: `${600 + ((i * 71) % 5) * 50}ms`,
-                        animationDelay: `${(i * 137) % 160}ms`,
+                        animation: `egg-unruly ${dur}ms cubic-bezier(0.3, 0.7, 0.3, 1) ${delay}ms`,
                         ['--ux' as string]: `${dx}px`,
                         ['--uy' as string]: `${dy}px`,
                         ['--ur' as string]: `${rot}deg`,
