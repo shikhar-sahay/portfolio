@@ -264,17 +264,19 @@ function ReleaseEgg({ text, reduce }: { text: string; reduce: boolean }) {
     hover, then settles back into order. Unlike AttackEgg (one synchronized
     ±2px nudge with no rotation), each character gets its own irregular
     displacement (4-10px vertical, a few px horizontal, ±3-6° rotation) with
-    scattered timing over ~600-800ms. CSS keyframes carry the motion (never
-    accumulated inline transforms), so the resting DOM is always the plain
-    settled phrase. Hover/fine-pointer only: no tab stop (purely decorative,
-    so no button role), no tap handler, and reduced motion renders plain
-    text. Screen readers get the phrase once via the wrapper label while the
-    visual characters stay hidden. */
+    scattered timing over ~600-800ms. Each accepted hover bumps a cycle
+    counter and remounts the characters (fresh nodes always restart their
+    CSS keyframes), so repeats behave cleanly and nothing can stick
+    mid-transform: the keyframes always end at identity and rapid re-entry
+    is ignored via a timestamp gate. Hover/fine-pointer only: no tab stop
+    (purely decorative, so no button role), no tap handler, and reduced
+    motion renders plain text. Screen readers get the phrase once via the
+    wrapper label while the visual characters stay hidden. */
 function UnrulyEgg({ text, reduce }: { text: string; reduce: boolean }) {
-  const [playing, setPlaying] = useState(false);
-  const later = useTimers();
+  const [cycle, setCycle] = useState(0);
+  const lastPlay = useRef(0);
   const play = () => {
-    if (reduce || playing) return;
+    if (reduce) return;
     if (
       typeof window !== 'undefined' &&
       typeof window.matchMedia === 'function' &&
@@ -282,8 +284,10 @@ function UnrulyEgg({ text, reduce }: { text: string; reduce: boolean }) {
     ) {
       return;
     }
-    setPlaying(true);
-    later(() => setPlaying(false), 950);
+    const now = Date.now();
+    if (now - lastPlay.current < 1000) return;
+    lastPlay.current = now;
+    setCycle(c => c + 1);
   };
   if (reduce) return <>{text}</>;
   return (
@@ -300,22 +304,24 @@ function UnrulyEgg({ text, reduce }: { text: string; reduce: boolean }) {
             // Splitting name/duration/delay across the stylesheet class and
             // inline longhands computes identically but never instantiates
             // the animation in Chromium (verified: full shorthand animates,
-            // split longhands stay at rest). Resting spans carry no animation
-            // at all, so the settled phrase is always plain text.
+            // split longhands stay at rest). Cycle 0 (initial mount, scroll
+            // reveals) carries no animation at all, so the effect can only
+            // ever start from a hover.
             const dur = 600 + ((i * 71) % 5) * 50;
             const delay = (i * 137) % 160;
             return (
               <span
+                key={`${cycle}-${i}`}
                 className="inline-block will-change-transform"
                 style={
-                  playing
-                    ? {
+                  cycle === 0
+                    ? undefined
+                    : {
                         animation: `egg-unruly ${dur}ms cubic-bezier(0.3, 0.7, 0.3, 1) ${delay}ms`,
                         ['--ux' as string]: `${dx}px`,
                         ['--uy' as string]: `${dy}px`,
                         ['--ur' as string]: `${rot}deg`,
                       }
-                    : undefined
                 }
               >
                 {ch}
