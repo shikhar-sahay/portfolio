@@ -9,6 +9,8 @@
 
 **Visual identity exploration (EXPERIMENTAL, 2026-10-03):** Isolated branch `refactor/visual-identity` starts at production commit `d778ee3`. Typography refinement reduces routine small serif italics in Toolkit, Certifications, Pieces, Contact, and wall utility copy. Hero, About, statement bridge, and Notes Wall manifesto remain expressive. No new font, color, motion, or dependency. The branch passes formatting, typecheck, lint, and production build (173 kB First Load JS). Browser checks covered both themes, 360/375/390/430/820/1024/1280/1440 and 844x390, with no horizontal overflow. Production checks covered opening and repeat visit, theme toggle, navigation and mobile menu, certificates, fragment switching, composer opening, project controls, 404, portrait loading, and console errors. Local database-backed Notes Wall posting and show submissions, live Spotify state, reduced-motion emulation, and physical touch remain unverified. Owner review is required before any merge.
 
+**V2 in progress (EXPERIMENTAL, 2026-10-03):** Rendered comparison with master found V1's Certifications and Pieces ledes too uniform. Upright serif contrast restores these two phrases while retaining V1's restraint elsewhere. Accent hierarchy and motif frequency are under review. No production or master changes.
+
 **Milestone:** Production audit and responsive polish (mobile-first)
 **Status:** Release cleanup checkpoint complete (production security headers intact; favicon convention fixed; compact statement bridge shortened again for the remaining mobile REBUILD to About gap; local-only `.claude/` and `src/app/probex9/` ignored; local Notes Wall success-path tests remain blocked on missing local DATABASE_URL)
 **Last Updated:** 2026-09-12

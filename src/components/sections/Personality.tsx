@@ -41,7 +41,8 @@ export function Personality() {
         </p>
 
         <h2 className="mt-8 max-w-[24ch] text-lede font-medium tracking-tight text-ink">
-          Resumes list skills. This lists fuel. Pick a fragment.
+          Resumes list skills. This lists <span className="font-serif font-normal">fuel</span>. Pick
+          a fragment.
         </h2>
 
         {/* Fragment selectors: click to open, click again to close. */}

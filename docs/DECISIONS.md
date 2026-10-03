@@ -1481,3 +1481,17 @@ Do not make significant design/architecture decisions without documenting them h
 **Impact:** No new font, dependency, client code, motion, or layout system. First Load JS remains 173 kB. Browser review covered both themes and target widths with no horizontal overflow. Owner review remains required before any merge.
 
 ---
+
+### 75. V2 Upright Serif Contrast (EXPERIMENTAL)
+
+**Decision:** Restore selected upright Instrument Serif contrasts where V1 made a meaningful phrase too uniform: the Certifications lede and the word `fuel` in Pieces of Me. Keep the V1 sans treatment for fragment captions and utility copy.
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-10-03
+
+**Rationale:** Side-by-side rendered comparison with production showed that V1's Certifications and Pieces ledes lost some typographic distinction. Upright serif restores contrast without returning to the repeated small italic pattern. The experiment was reviewed in both themes at desktop and at 375 and 430 pixels.
+
+**Alternatives Considered:** Restoring the original italic treatment would recreate the repeated convention. Keeping V1's all-sans ledes was quieter but too uniform.
+
+---

@@ -45,7 +45,7 @@ export function Certifications() {
           Certifications
         </p>
         <h2 className="mt-8 max-w-[28ch] text-lede font-medium tracking-tight text-ink">
-          Learning, with the paperwork to match.
+          Learning, <span className="font-serif font-normal">with the paperwork to match.</span>
         </h2>
         <p className="mt-4 text-sm leading-relaxed text-muted">
           Four credentials, collected along the way.

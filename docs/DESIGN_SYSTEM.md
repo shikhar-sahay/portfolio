@@ -14,7 +14,7 @@
 | Instrument Serif | Upright display type with rare italic emphasis | EXPERIMENTAL |
 
 - Loaded via `next/font/google` as `--font-sans` and `--font-serif` (serif: weight 400, normal + italic)
-- Rationale: the two faces were designed as a pair. Upright serif carries display moments; italic marks rare emphasis in the Hero, About, statements, and Notes Wall manifesto without adding a third family.
+- Rationale: the two faces were designed as a pair. Upright serif carries display moments and selected lede contrasts; italic marks rare emphasis in the Hero, About, statements, and Notes Wall manifesto without adding a third family.
 - Rejected earlier candidates: Geist (reads as Vercel template), Space Grotesk (weak at small sizes), Manrope (less distinctive), Satoshi (needs Fontshare self-hosting)
 
 ### Type Scale (EXPERIMENTAL)
