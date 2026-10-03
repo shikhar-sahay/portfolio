@@ -41,8 +41,7 @@ export function Personality() {
         </p>
 
         <h2 className="mt-8 max-w-[24ch] text-lede font-medium tracking-tight text-ink">
-          Resumes list skills. This lists <em className="font-serif font-normal italic">fuel</em>.
-          Pick a fragment.
+          Resumes list skills. This lists fuel. Pick a fragment.
         </h2>
 
         {/* Fragment selectors: click to open, click again to close. */}
@@ -169,7 +168,7 @@ function LiteratureStage() {
           <p className="mt-8 font-serif text-[clamp(3rem,6vw,5.5rem)] leading-[0.95] tracking-tight text-ink">
             Literature
           </p>
-          <p className="mt-3 font-serif text-xl italic tracking-tight text-ink sm:text-2xl">
+          <p className="mt-3 text-base font-medium tracking-tight text-muted sm:text-lg">
             {fragments[0].micro}
           </p>
 
@@ -307,7 +306,7 @@ function MusicStage() {
         <p className="mt-8 font-serif text-[clamp(3rem,6vw,5.5rem)] leading-[0.95] tracking-tight text-ink">
           Music
         </p>
-        <p className="mt-3 font-serif text-xl italic tracking-tight text-ink sm:text-2xl">
+        <p className="mt-3 text-base font-medium tracking-tight text-muted sm:text-lg">
           {fragments[1].micro}
         </p>
 
@@ -367,7 +366,7 @@ function FootballStage() {
         <p className="mt-8 font-serif text-[clamp(3rem,6vw,5.5rem)] leading-[0.95] tracking-tight text-ink">
           Football
         </p>
-        <p className="mt-3 font-serif text-xl italic tracking-tight text-ink sm:text-2xl">
+        <p className="mt-3 text-base font-medium tracking-tight text-muted sm:text-lg">
           {fragments[2].micro}
         </p>
 
@@ -417,7 +416,7 @@ function SideQuestsStage() {
         <p className="mt-8 font-serif text-[clamp(3rem,6vw,5.5rem)] leading-[0.95] tracking-tight text-ink">
           Side Quests
         </p>
-        <p className="mt-3 font-serif text-xl italic tracking-tight text-ink sm:text-2xl">
+        <p className="mt-3 text-base font-medium tracking-tight text-muted sm:text-lg">
           {fragments[3].micro}
         </p>
 

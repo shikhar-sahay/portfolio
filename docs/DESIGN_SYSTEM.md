@@ -8,13 +8,13 @@
 
 ### Font System (EXPERIMENTAL)
 
-| Font             | Role                                      | Status       |
-| ---------------- | ----------------------------------------- | ------------ |
-| Instrument Sans  | Primary: display, body, metadata          | EXPERIMENTAL |
-| Instrument Serif | Accent: italic emphasis words and moments | EXPERIMENTAL |
+| Font             | Role                                           | Status       |
+| ---------------- | ---------------------------------------------- | ------------ |
+| Instrument Sans  | Primary: display, body, metadata               | EXPERIMENTAL |
+| Instrument Serif | Upright display type with rare italic emphasis | EXPERIMENTAL |
 
 - Loaded via `next/font/google` as `--font-sans` and `--font-serif` (serif: weight 400, normal + italic)
-- Rationale: the two faces were designed as a pair; the high-contrast serif italic creates typographic moments (lede emphasis, statement pronoun, personality word, resume line) without adding a third family
+- Rationale: the two faces were designed as a pair. Upright serif carries display moments; italic marks rare emphasis in the Hero, About, statements, and Notes Wall manifesto without adding a third family.
 - Rejected earlier candidates: Geist (reads as Vercel template), Space Grotesk (weak at small sizes), Manrope (less distinctive), Satoshi (needs Fontshare self-hosting)
 
 ### Type Scale (EXPERIMENTAL)
@@ -172,7 +172,7 @@ The identity system beyond type and color. Used consistently so sections read as
 | Hairline rules         | Structural borders at ink 30 percent plus quiet hairlines at ink 16 percent (`lm-line` / `lm-line-soft` in light; dark keeps its absorbed rendering) | Every section                                             |
 | Diamond markers        | Small rotated squares; fill vermilion on hover                                                                                                       | Timeline, module labels, cert rows                        |
 | Marching dashes        | Dashed SVG edges with slow dash animation, gated by `data-inview`                                                                                    | Retired with the project preview motifs; no current usage |
-| Serif interventions    | Instrument Serif italic for emphasis words and moments                                                                                               | Ledes, statement pronoun, personality word                |
+| Serif interventions    | Instrument Serif upright for display, italic for rare emphasis                                                                                       | Hero, About, statements, Notes Wall manifesto             |
 | Outline display type   | `-webkit-text-stroke` transparent fill for second name line                                                                                          | Hero                                                      |
 | Arch aperture portrait | Arch mask + offset vermilion echo arch (see Imagery)                                                                                                 | Hero                                                      |
 | Film grain             | Static SVG turbulence overlay, ~5% opacity, fixed                                                                                                    | Whole site (`.grain`)                                     |

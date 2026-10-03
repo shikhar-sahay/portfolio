@@ -601,7 +601,7 @@ export function NotesWall() {
               <span className="block text-micro uppercase tracking-[0.14em] text-muted">
                 The wall is empty
               </span>
-              <span className="mt-2 block font-serif text-lg italic tracking-tight text-ink">
+              <span className="mt-2 block text-lg font-medium tracking-tight text-ink">
                 Leave the first note.
               </span>
             </button>
@@ -624,8 +624,7 @@ export function NotesWall() {
           <p className="relative max-w-[26ch] text-[0.95rem] leading-[1.7] tracking-[0.01em] text-muted [text-wrap:pretty] sm:max-w-[30ch] sm:text-base">
             <strong className="font-medium text-ink">Drag to look around.</strong> Leave a note, or
             just see what people have left behind.{' '}
-            <em className="font-serif font-normal italic text-ink">Be kind:</em> everything here is
-            public.
+            <strong className="font-medium text-ink">Be kind:</strong> everything here is public.
           </p>
         </div>
 
@@ -738,7 +737,7 @@ export function NotesWall() {
               aria-hidden="true"
               className="absolute -top-[7px] left-8 h-3 w-3 rotate-45 bg-accent"
             />
-            <p className="font-serif text-xl italic tracking-tight">Pin a note.</p>
+            <p className="font-serif text-xl tracking-tight">Pin a note.</p>
             <p className="mt-1 text-micro uppercase tracking-[0.14em] text-muted">
               Click the field to choose its spot
             </p>

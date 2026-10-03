@@ -40,7 +40,7 @@ export function Skills() {
                   intended quiet ink.) */}
               <div aria-hidden="true" className="h-px bg-ink opacity-15" />
               <div className="pt-5">
-                <h3 className="font-serif text-3xl italic tracking-tight text-ink sm:text-4xl">
+                <h3 className="font-serif text-3xl tracking-tight text-ink sm:text-4xl">
                   {group.label}
                 </h3>
               </div>
@@ -111,7 +111,7 @@ function SkillEmblem({ skill }: { skill: Skill }) {
             className="text-ink transition-all duration-500 ease-expo group-hover:scale-110 group-hover:text-accent"
           />
         ) : (
-          <span className="relative font-serif text-xl italic tracking-tight text-ink transition-colors duration-500 group-hover:text-accent">
+          <span className="relative font-serif text-xl tracking-tight text-ink transition-colors duration-500 group-hover:text-accent">
             {skill.abbr}
           </span>
         )}

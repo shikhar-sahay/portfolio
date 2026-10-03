@@ -1465,3 +1465,19 @@ Do not make significant design/architecture decisions without documenting them h
 **Alternatives Considered:** Reducing About padding again (rejected: About spacing is already tuned and the visual issue is the statement camera leaving too early); changing desktop statement travel (rejected: desktop passed QA); deleting local-only directories (rejected: protected local work); broad docs rewrite across every historical decision (rejected: history stays useful, current-state docs and README carry the final implementation).
 
 **Impact:** No new dependency or client component. One static favicon alias is added. Final production build remains 173 kB First Load JS.
+
+### 74. Visual Identity Typography Restraint (EXPERIMENTAL)
+
+**Decision:** Keep Instrument Sans, Instrument Serif, the paper and ink palette, the vermilion hue, the hero flourish, the About reveal, and the statement bridge. Make small italic serif treatments less routine: use upright serif for Toolkit group headings, emblem monograms, and the Contact invitation; use plain sans for the Certifications lede, Pieces introduction and fragment captions, resume row, and wall utility text. The Notes Wall manifesto retains its italic phrase.
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-10-03
+
+**Rationale:** The rendered baseline showed the same italic contrast recurring in introductions, category headings, captions, and utility copy. Those repeated transitions made the typography predictable. Upright Instrument Serif still gives the site its editorial character, while the factual and personal content carries the quieter lines.
+
+**Alternatives Considered:** Replacing Instrument Serif, changing vermilion, and flattening the hero or statement bridge were rejected. The glyphs and structural scenes were strong in the rendered baseline; frequency of the small italic treatment was the specific issue.
+
+**Impact:** No new font, dependency, client code, motion, or layout system. First Load JS remains 173 kB. Browser review covered both themes and target widths with no horizontal overflow. Owner review remains required before any merge.
+
+---

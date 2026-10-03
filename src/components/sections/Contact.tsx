@@ -29,7 +29,7 @@ export function Contact() {
         {/* Compact contact grid: gesture on the left, structured links on the right */}
         <div className="mt-10 grid gap-12 md:grid-cols-[1.15fr_1fr] md:gap-16">
           <Reveal delay={0.06}>
-            <h2 className="font-serif text-[clamp(2.4rem,4.5vw,3.75rem)] italic leading-[1.05] tracking-tight text-ink">
+            <h2 className="font-serif text-[clamp(2.4rem,4.5vw,3.75rem)] leading-[1.05] tracking-tight text-ink">
               Let&apos;s talk.
             </h2>
             <p className="mt-5 max-w-[52ch] text-sm leading-relaxed text-muted">
@@ -81,7 +81,7 @@ export function Contact() {
         {/* Resume moment, one slim row */}
         <Reveal delay={0.08}>
           <div className="border-ink/15 lm-line-soft mt-[7vh] flex flex-wrap items-center justify-between gap-5 border-t py-7 md:mt-[9vh]">
-            <p className="font-serif text-xl italic tracking-tight text-ink sm:text-2xl">
+            <p className="text-xl font-medium tracking-tight text-ink sm:text-2xl">
               Everything, condensed.
             </p>
             <div className="flex flex-wrap gap-3">
