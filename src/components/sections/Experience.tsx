@@ -200,7 +200,7 @@ function OrgBlock({
                   }`}
                 >
                   <p className="text-sm font-semibold text-ink">{role.role}</p>
-                  <p className="text-micro uppercase tabular-nums tracking-[0.14em] text-accent">
+                  <p className="text-micro uppercase tabular-nums tracking-[0.14em] text-ink opacity-70">
                     {role.period}
                   </p>
                 </div>

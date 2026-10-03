@@ -54,6 +54,8 @@ Name treatment: line 1 solid ink; line 2 outline only (`-webkit-text-stroke: 1.5
 
 Warm print-inspired identity: cream paper, warm ink, vermilion accent. Dark is an intentional alternate colorway (warm charcoal with caramel undertones), not inverted black/white.
 
+V2 hierarchy trial (EXPERIMENTAL, see DECISIONS.md #76): factual micro labels in About and Contact, Experience periods, and closed certificate issuers use ink. The section tick, timeline progress, selected credential holder, and hover or focus feedback carry vermilion. The existing hue and paper tone survived rendered rust and neutral-paper comparisons in both themes. Small text stays at ink or controlled ink opacity to keep light-mode contrast.
+
 | Role                           | Light   | Dark    | Status       |
 | ------------------------------ | ------- | ------- | ------------ |
 | Background (`--paper`)         | #F3EFE6 | #161310 | EXPERIMENTAL |

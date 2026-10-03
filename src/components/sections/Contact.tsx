@@ -44,7 +44,7 @@ export function Contact() {
           <Reveal delay={0.12}>
             <div className="grid grid-cols-2 gap-10">
               <div>
-                <p className="text-micro uppercase tracking-[0.16em] text-accent">Elsewhere</p>
+                <p className="text-micro uppercase tracking-[0.16em] text-ink">Elsewhere</p>
                 <ul className="mt-4 space-y-1">
                   {profile.socials.map(social => (
                     <li key={social.label}>
@@ -54,7 +54,7 @@ export function Contact() {
                 </ul>
               </div>
               <div>
-                <p className="text-micro uppercase tracking-[0.16em] text-accent">Pages</p>
+                <p className="text-micro uppercase tracking-[0.16em] text-ink">Pages</p>
                 <ul className="mt-4 space-y-1">
                   {navLinks.map(link => (
                     <li key={link.label}>
@@ -64,7 +64,7 @@ export function Contact() {
                       >
                         <span
                           aria-hidden="true"
-                          className="inline-block text-accent transition-transform duration-500 ease-expo group-hover:translate-x-0.5"
+                          className="inline-block text-ink opacity-70 transition-[transform,color,opacity] duration-500 ease-expo group-hover:translate-x-0.5 group-hover:text-accent group-hover:opacity-100 group-focus-visible:text-accent group-focus-visible:opacity-100"
                         >
                           →
                         </span>

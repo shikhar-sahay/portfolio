@@ -107,7 +107,9 @@ function CertRow({
             }`}
           />
           <span className="min-w-0">
-            <span className="block text-micro uppercase tracking-[0.16em] text-accent">
+            <span
+              className={`block text-micro uppercase tracking-[0.16em] ${open ? 'text-accent' : 'text-ink opacity-70'}`}
+            >
               {cert.issuer}
             </span>
             <span className="mt-1 block text-xl font-semibold tracking-tight text-ink transition-colors duration-300 group-hover:text-accent sm:text-3xl">

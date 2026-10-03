@@ -499,9 +499,9 @@ export function NotesWall() {
   return (
     <div className="mt-[9vh] md:mt-[12vh]">
       <div className="mx-auto max-w-6xl">
-        <p className="flex items-center gap-3 text-micro uppercase tracking-[0.16em] text-accent">
+        <p className="flex items-center gap-3 text-micro uppercase tracking-[0.16em] text-ink">
           <span className="inline-block h-px w-10 bg-accent" aria-hidden="true" />
-          The notes wall
+          <span className="opacity-70">The notes wall</span>
         </p>
         <div className="mt-8 max-w-6xl text-lede font-medium tracking-tight text-ink">
           <p>I am a mosaic of everyone I have ever known.</p>

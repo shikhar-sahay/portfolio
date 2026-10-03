@@ -1495,3 +1495,19 @@ Do not make significant design/architecture decisions without documenting them h
 **Alternatives Considered:** Restoring the original italic treatment would recreate the repeated convention. Keeping V1's all-sans ledes was quieter but too uniform.
 
 ---
+
+### 76. V2 Accent Hierarchy (EXPERIMENTAL)
+
+**Decision:** Keep the current vermilion tokens. Move repeated factual micro labels in About, Experience, Certifications, and Contact toward ink. Let the existing section ticks, timeline spine, selected certificate holder, and interaction feedback carry accent. In the Notes Wall introduction, keep the tick but stop coloring the whole eyebrow. Contact page-link arrows become accent on hover or focus rather than at rest.
+
+**Status:** EXPERIMENTAL
+
+**Date:** 2026-10-03
+
+**Rationale:** The light-mode sequence often combines an accent tick with adjacent accent microtype, and the Experience dates and certificate issuers repeat colored text across long lists. These marks are redundant at rest. Neutral copy leaves accent available for state and navigation without changing the established hue. Rendered checks at 375 and 1440 in both themes found stronger hierarchy. Light-mode muted text was too weak for the small labels, so they use ink with controlled opacity instead.
+
+**Rejected trials:** A deeper rust accent (#a63a27 light, #c8583b dark) weakened the energetic signature markers without making the composition more specific. A more neutral paper (#f2f0eb) made the light mode colder and more conventional. Both token trials were discarded before commit.
+
+**Protected uses:** Opening signal, Hero rule and echo arch, statement punctuation, Experience progress spine, active states, Notes Wall pins and controls, and focus indicators.
+
+---
